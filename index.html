@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style/style.css">
+  <link rel="manifest" href="json/manifest.json">
+  <title>TBWeb.</title>
+</head>
+<body>
+  <div class="mobileControls leftPanel"></div>
+  <div class="mobileControls rightPanel"></div>
+  <canvas class="gamePlane"></canvas>
+
+  <!-- DEV BUTTONS -->
+  <button onclick="gamePlane.stop()"
+    style='width:50px;
+    height:15px;font-size:10px;position:fixed;'
+  >STOP</button>
+  <button onclick="gamePlane.init()"
+    style='width:50px;
+    height:15px;font-size:10px;position:fixed;top:20px;'
+  >START</button>
+
+  <script src="js/components.js"></script>
+  <script src="js/functions.js"></script>
+  <script src="js/mapcontroller.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/controls.js"></script>
+  
+</body>
+</html>
+<!-- |GAME PROPERTIES| -->
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  let playerName = urlParams.get('player');
+  if(playerName == null){
+    playerName = "Newbie";
+  }
+  let inGameConsole;
+  // let myChar;
+  let player;
+  // let myMonster;
+  gamePlane = {
+    fps : 10,
+    creatures : {
+      list: [],
+      names: []
+    },
+    sprites: [],
+    canvas : document.querySelector(".gamePlane"),
+    init () {
+      this.canvas.width = 440;
+      this.canvas.height = this.canvas.width;
+      this.frameNo = 0;
+      this.gridSize = 40;
+      this.context = this.canvas.getContext("2d");
+      // myChar = new Creature("player",2,3,0,playerName);
+      // myMonster = new Creature("Dragon",1,7,1);
+      hitText = [];
+      inGameConsole = new Text();
+      this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
+      controls.init();
+      window.addEventListener('keydown', function (e) {
+        controls.update([e.keyCode,true]);
+        // gamePlane.key = e.keyCode;
+      })
+      window.addEventListener('keyup', function (e) {
+        controls.update([e.keyCode,false])
+        // gamePlane.key = false;
+      })
+    },
+    clear() {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    loadSprites(callback) {
+      for(const s of sprites){
+          this.sprites[s.name] = document.createElement("img");
+          this.sprites[s.name].src = s.src;
+      }
+      callback();
+    },
+    updategamePlane() {
+      gamePlane.clear();
+      gamePlane.frameNo++;
+      
+      map.update();
+      map.draw(-1);
+      map.draw(0);
+      serv.load();
+      let player;
+      for(const ac of gamePlane.creatures.list){
+        if(ac.name == playerName){
+          player = ac;
+          continue;
+        }
+        ac.update();
+        ac.draw();
+      }
+      player.update();
+      player.draw();
+      // myMonster.update();
+      // player.update();
+      // myChar.update();
+      // myChar.draw();        
+      map.draw(1);
+      // myMonster.draw();
+
+      // dragon.draw();
+      inGameConsole.update();
+      
+    // console.log("interval");
+    },
+    stop(){
+      clearInterval(this.interval);
+      console.log("Game stopped.")
+    }
+  }
+</script>
+
+<!-- SERWER CONNECTION -->
+<script>
+  // let allCreatures = [];
+  const serv = {
+    load(url = ""){
+    // send controls
+    url += "&controls="+controls.vals;     
+      fetch(window.location.origin+"/fetch/?name="+playerName+url).then((dt) => dt.json()).then((data) => {
+        // updating names and online/offline players
+        this.datetime = data.game.time;
+        this.time = new Date(data.game.time).getTime();
+        gamePlane.fps = data.game.fps;
+        for(const ac of gamePlane.creatures.list){
+          if(!gamePlane.creatures.names.includes(ac.name)){
+            gamePlane.creatures.names.push(ac.name);
+          }
+        }
+        // updating values
+        for(const creature of data.creatures){
+          creature.oldPos = creature.position;
+          creature.realPos = creature.position;
+          let myChar;
+          let charId;
+          if(!gamePlane.creatures.names.includes(creature.name)){
+            if(creature.name == playerName){
+              player = new Creature("player",2,3,0,playerName); 
+              myChar = player;
+            }else{
+              myChar = new Creature("enemy",creature.position[0],creature.position[1],creature.position[2],creature.name);
+            }
+            gamePlane.creatures.list.push(myChar);
+            charId = gamePlane.creatures.list.length-1;
+          }else{
+            // find it in gamePlane.creatures.list
+            for(const [i,pl] of gamePlane.creatures.list.entries()){
+              if(pl.name == creature.name){
+                myChar = creature;
+                charId = i;
+              }
+            }
+            // update console
+            if(creature.name == playerName && creature.text != ""){
+              inGameConsole.text = creature.text;
+            }
+
+          }
+          // updating values
+          for(const key of Object.keys(creature)){
+            if(creature.walk >= this.time && key == "position"){
+              if(typeof gamePlane.creatures.list[charId].walkStart == "undefined" || gamePlane.creatures.list[charId].walkStart == 0){
+                gamePlane.creatures.list[charId]["walkStart"] = new Date(serv.datetime).getTime();
+              }
+              continue;
+            }else if(creature.walk <= this.time){
+              gamePlane.creatures.list[charId]["walkStart"] = 0;
+            }
+            if(key == "type"){
+              continue;
+            }
+            gamePlane.creatures.list[charId][key] = creature[key];
+          }
+        }
+      }).catch((error)=>{
+        gamePlane.stop();
+        // console.log("Your connection is lost, ");
+        console.log(error);
+      })
+    }
+  }
+</script>
+
+<!-- PRELOAD -->
+<script>
+  // preload ;>
+  gamePlane.loadSprites(()=>{
+    serv.load();
+    console.log("Loaded.")
+    map.generate(()=>{
+      console.log("Generated.")
+      gamePlane.init();
+    })
+  })
+  // set elements resolution:
+  setResolution();
+  window.onresize = () =>{
+    setResolution();  
+  }
+</script>
