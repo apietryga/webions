@@ -2,112 +2,132 @@ class Creature {
   constructor(type,x, y, z, pName){
     this.type = type;
     this.cyle = 0;
-    // this.lastCyle = 0;
     this.name = pName;
     this.width = 40;
     this.height = 40;
     this.sprite = 'citizen'; 
-    this.speed = 10;
+    this.hideFloor = "none";
     this.x = x ;
     this.y = y ;
     this.z = z;
-    this.walking = 0;
     if(this.type == "player"){
       this.x = 200;
       this.y = 200;
     }
     this.direction = 1;
     this.position = [x, y, this.z]; //x y z
-    this.realPos = this.position;
-    this.oldPos = this.position;
-    this.phantomPos = equalArr(this.position);
+    this.newPos =  equalArr(this.position);
+    this.oldPos =  equalArr(this.position);
     this.walkFps = 0;
-    this.roznicaX = 0;
-    this.roznicaY = 0;
     this.health = 1000;
     this.maxHealth = 1000;
     this.targetlist = [];
     this.currentTarget = false;
+    this.sendTarget = false;
     this.isTarget = false;
     this.currentExshoust = false;
     this.fistExhoust = 15;
   }
   update(){
-    let directions = [[3, 2],[0,1]];
-    // walking animation and positions
+    // WALKING
     if(this.walk >= serv.time){
-      this.cyle = ((this.cyle )%2)+1;
-      let piece = Math.round(((this.walk - serv.time)*100)/(this.walk-this.walkStart))/100;
-      // for x and y 
-      for(let l of [[0,1],[1,0]]){       
-        if(this.position[l[0]] == this.oldPos[l[0]] ){
-          if(this.position[l[1]] > this.oldPos[l[1]]){
+      // walking cyle (animation)
+      this.walkFps++;
+      let cPC = 0; // change per cyle 
+      if(this.speed <= 1){cPC = 3;}
+      if(this.speed > 1 && this.speed < 3){cPC = 2;}
+      if(this.speed >= 3){cPC = 1;}
+      if((this.walkFps) % cPC == 0){
+        this.cyle = ((this.cyle)%2)+1;
+      }
+      // set position
+      const directions = [[3, 2],[0,1]];
+      const walkTime = this.walk - this.walkingStart;
+      const timeLeft = walkTime - (serv.time - this.walkingStart);
+      const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
+      this.position = equalArr(this.oldPos);
+      for(let l of [[0,1],[1,0]]){
+        if(this.newPos[2] != this.oldPos[2]){
+          this.position = this.newPos;
+        }
+        if(this.newPos[l[0]] == this.oldPos[l[0]] ){
+          if(this.newPos[l[1]] > this.oldPos[l[1]]){
             this.position[l[1]] = this.oldPos[l[1]] + piece;
-            this.direction = directions[l[1]][0];
-          }else if(this.position[l[1]] < this.oldPos[l[1]]){
-            this.position[l[1]] = this.oldPos[l[1]] - piece;
             this.direction = directions[l[1]][1];
-          }
-          this.position[l[1]] = Math.round(this.position[l[1]]*10)/10;
-        }else{
-          if(this.position[l[1]] != this.oldPos[l[1]]){
-            this.position = this.realPos;
+          }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
+            this.position[l[1]] = this.oldPos[l[1]] - piece;
+            this.direction = directions[l[1]][0];
           }
         }
       }
     }else{
       this.cyle = 0;
+      this.walkFps = 0;
+      this.position = this.newPos;
     }
 
-    // player death
+    // Death
     if(this.health <= 0){
-      this.die();
-    }
-    if(this.currentTarget){
-      this.attack();
+      // this.cyle = 7;
+      this.cyle = 0;
+      this.direction = 4;
+      this.whiteTarget = false;
     }
     if(this.type != "player"){
       this.x = (this.position[0] - player.position[0] + 5) * 40;
       this.y = (this.position[1] - player.position[1] + 5) * 40;  
     }
-    this.draw();
   }
-  draw(){
-    let ctx = gamePlane.context;
-    // draw target
-    if(this.type != "player" && !map.hideFloor.includes(this.zIndex)){
-        if(this.onTarget){
-          ctx.beginPath();
-          ctx.fillStyle = "red";
-          ctx.strokeStyle = 'red';
-          ctx.lineWidth = 3;
-          ctx.rect(this.x, this.y, this.w, this.h);
-          ctx.stroke();
-        }
-    }
-    // draw sprite
-    let img = gamePlane.sprites[this.sprite];
-    ctx.drawImage(
-      img, this.cyle * img.width/3, this.direction * img.width/3, img.width/3, img.height/5,
-      this.x - 40, this.y-40, 100, 100
-    );
-    // draw name and health bar
-    if(this.health > 0 && this.position[2] == player.position[2]){
-      let maxBarWidth = 28;
-      let barWidth = (maxBarWidth * this.health) / this.maxHealth;
-      let percHealth = (100 * this.health) / this.maxHealth;
-      ctx.fillStyle = hpColor(percHealth);
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 0.8;
-      ctx.font = '900 10px Tahoma';
-      ctx.textAlign = "center";
-      // console.log(this.name+" : "+this.y);
-      ctx.fillText(this.name, this.x + 5, this.y - 22);
-      ctx.strokeText(this.name, this.x + 5, this.y - 22);
-      ctx.beginPath();
-      ctx.rect(this.x - 11, this.y - 18, 30, 5);
-      ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
-      ctx.stroke();
+  draw(zIndex = 0){
+    // DRAW BY ZINDEX
+    if(zIndex == this.position[2] && player.hideFloor != zIndex){
+      let ctx = gamePlane.context;
+      // draw target
+      if(this.type != "player" && !map.hideFloor.includes(this.zIndex)){
+        if(this.whiteTarget){
+            // console.log(this.whiteTarget)
+            ctx.beginPath();
+            ctx.fillStyle = "white";
+            ctx.strokeStyle = 'white';
+
+            ctx.lineWidth = 3;
+            ctx.rect(this.x+3, this.y+3, this.width-6, this.height-6);
+            ctx.stroke();
+          }
+      
+          if(this.id == player.redTarget){
+            ctx.beginPath();
+            ctx.fillStyle = "red";
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 3;
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();  
+          }
+      }
+      // draw sprite
+      let img = gamePlane.sprites[this.sprite];
+      ctx.drawImage(
+        img, this.cyle * img.width/3, this.direction * img.width/3, img.width/3, img.height/5,
+        this.x - 40, this.y-40, 100, 100
+      );
+      // draw name and health bar
+      if(this.health > 0 && this.position[2] == player.position[2]){
+        let maxBarWidth = 28;
+        let barWidth = (maxBarWidth * this.health) / this.maxHealth;
+        let percHealth = (100 * this.health) / this.maxHealth;
+        ctx.fillStyle = hpColor(percHealth);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 0.8;
+        ctx.font = '900 10px Tahoma';
+        ctx.textAlign = "center";
+        // console.log(this.name+" : "+this.y);
+        ctx.fillText(this.name, this.x + 5, this.y - 22);
+        ctx.strokeText(this.name, this.x + 5, this.y - 22);
+        ctx.beginPath();
+        ctx.rect(this.x - 11, this.y - 18, 30, 5);
+        ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
+        ctx.stroke();
+      }
     }
   }
 }

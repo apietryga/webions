@@ -25,6 +25,7 @@ let map = {
   },
   draw(zIndex){
     this.hideFloor = [];
+    player.hideFloor = "none";
     // get info loop
     for(g of this.grids){
       // render only nearest objects
@@ -52,6 +53,7 @@ let map = {
         if(Math.floor(player.position[0]) == g.position[0] && Math.floor(player.position[1]) == g.position[1] && Math.floor(player.position[2])+1 == g.position[2]){
           if(g.type != "stairs"){
             this.hideFloor.push(g.position[2]);
+            player.hideFloor = g.position[2];
           }
         }
       }

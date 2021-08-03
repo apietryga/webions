@@ -1,21 +1,12 @@
 this.compareTables = (a,b) =>{
   let result = true;
-  for(i = 0; i < a.length; i++){
+  for(i = 0; i < a.length; i++){    
     if( a[i] != b[i] ){
       result = false;
     }
   }
   return result;
 }
-// function compareTables(a,b){
-//   let result = true;
-//   for(i = 0; i < a.length; i++){
-//     if( a[i] != b[i] ){
-//       result = false;
-//     }
-//   }
-//   return result;
-// }
 
 
 function everyInterval(n){
@@ -81,4 +72,25 @@ function checkClick(event) {
     }
   });
   return element;
+}
+
+// MOBILE CONTROLS
+function absorbEvent_(event) {
+  var e = event || window.event;
+  e.preventDefault && e.preventDefault();
+  e.stopPropagation && e.stopPropagation();
+  e.cancelBubble = true;
+  e.returnValue = false;
+  return false;
+}
+
+function preventLongPressMenu(node) {
+  node.ontouchstart = absorbEvent_;
+  node.ontouchmove = absorbEvent_;
+  node.ontouchend = absorbEvent_;
+  node.ontouchcancel = absorbEvent_;
+}
+
+function initPreventing() {
+  preventLongPressMenu(document);
 }

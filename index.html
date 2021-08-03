@@ -38,11 +38,10 @@
     playerName = "Newbie";
   }
   let inGameConsole;
-  // let myChar;
   let player;
-  // let myMonster;
   gamePlane = {
     fps : 10,
+    floors: [-1,0,1,2],
     creatures : {
       list: [],
       names: []
@@ -52,11 +51,8 @@
     init () {
       this.canvas.width = 440;
       this.canvas.height = this.canvas.width;
-      this.frameNo = 0;
       this.gridSize = 40;
       this.context = this.canvas.getContext("2d");
-      // myChar = new Creature("player",2,3,0,playerName);
-      // myMonster = new Creature("Dragon",1,7,1);
       hitText = [];
       inGameConsole = new Text();
       this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
@@ -82,12 +78,8 @@
     },
     updategamePlane() {
       gamePlane.clear();
-      gamePlane.frameNo++;
-      
-      map.update();
-      map.draw(-1);
-      map.draw(0);
-      serv.load();
+      map.update();     
+      serv.load();      
       let player;
       for(const ac of gamePlane.creatures.list){
         if(ac.name == playerName){
@@ -95,21 +87,16 @@
           continue;
         }
         ac.update();
-        ac.draw();
       }
       player.update();
-      player.draw();
-      // myMonster.update();
-      // player.update();
-      // myChar.update();
-      // myChar.draw();        
-      map.draw(1);
-      // myMonster.draw();
-
-      // dragon.draw();
+      for(const f of gamePlane.floors){
+        map.draw(f);
+        for(const ac of gamePlane.creatures.list){
+          ac.draw(f);
+        }
+        player.draw(f);
+      }
       inGameConsole.update();
-      
-    // console.log("interval");
     },
     stop(){
       clearInterval(this.interval);
@@ -123,13 +110,20 @@
   // let allCreatures = [];
   const serv = {
     load(url = ""){
-    // send controls
-    url += "&controls="+controls.vals;     
+      // send target options
+      // if(typeof player != "undefined" && player.isTarget && player.sendTarget){
+      if(typeof player != "undefined" && player.redTarget){
+        // url += "&redTarget="+player.isTarget;
+        url += "&redTarget="+player.redTarget;
+      }
+      // send controls
+      url += "&controls="+controls.vals;     
       fetch(window.location.origin+"/fetch/?name="+playerName+url).then((dt) => dt.json()).then((data) => {
-        // updating names and online/offline players
+        // set game properties
         this.datetime = data.game.time;
         this.time = new Date(data.game.time).getTime();
         gamePlane.fps = data.game.fps;
+        // updating names and online/offline players
         for(const ac of gamePlane.creatures.list){
           if(!gamePlane.creatures.names.includes(ac.name)){
             gamePlane.creatures.names.push(ac.name);
@@ -137,8 +131,6 @@
         }
         // updating values
         for(const creature of data.creatures){
-          creature.oldPos = creature.position;
-          creature.realPos = creature.position;
           let myChar;
           let charId;
           if(!gamePlane.creatures.names.includes(creature.name)){
@@ -166,17 +158,15 @@
           }
           // updating values
           for(const key of Object.keys(creature)){
-            if(creature.walk >= this.time && key == "position"){
-              if(typeof gamePlane.creatures.list[charId].walkStart == "undefined" || gamePlane.creatures.list[charId].walkStart == 0){
-                gamePlane.creatures.list[charId]["walkStart"] = new Date(serv.datetime).getTime();
+            if(key == "position"){
+              if(!compareTables(gamePlane.creatures.list[charId]["newPos"],creature[key])){
+                gamePlane.creatures.list[charId]["oldPos"] = gamePlane.creatures.list[charId]["newPos"];
+                gamePlane.creatures.list[charId]["newPos"] = creature[key];
+                gamePlane.creatures.list[charId]["walkingStart"] = serv.time;
               }
               continue;
-            }else if(creature.walk <= this.time){
-              gamePlane.creatures.list[charId]["walkStart"] = 0;
             }
-            if(key == "type"){
-              continue;
-            }
+            if(key == "type"){continue;}
             gamePlane.creatures.list[charId][key] = creature[key];
           }
         }
@@ -201,6 +191,7 @@
     })
   })
   // set elements resolution:
+  mobileControls.preventZoom();
   setResolution();
   window.onresize = () =>{
     setResolution();  

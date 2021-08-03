@@ -3,96 +3,46 @@ const https = require('https');
 const {URL} = require('url');
 const map = require("./json/map.json");
 const func = require("./js/functions");
-const ipv4 = '0.0.0.0';
+const Creature = require("./js/server_components.js");
 const static = require('node-static');
 const file = new(static.Server)(__dirname);
+const ipv4 = '0.0.0.0';
 const options = {
   key: fs.readFileSync('ssl_/cert/key.pem'),
   cert: fs.readFileSync('ssl_/cert/cert.pem')
 };
+
+
 const game = {
   time : new Date(),
-  fps: 10
-}
-class Creature {
-  constructor(nickName){
-    this.name = nickName;
-    this.position = [2,3,0];
-    this.walk = 0;
-    this.speed = 2; // grids per second
-    this.sprite = "citizen";
-  }
-  update(param = {name:""}){
-    // if(this.walk <= game.time.getTime()){this.walk = 0;}
-    if(this.controls != "" && this.walk <= game.time.getTime()){
-      let phantomPos;
-      if(this.type == "player"){
-        // get clicked key
-        const key = param.controls.split(",")[0];
-        // set probably future position
-        phantomPos = [this.position[0], this.position[1], this.position[2]];
-        switch (key) {
-          case '39':  // right key
-            phantomPos[0]++;
-            break;
-          case '37':  // left key
-            phantomPos[0]--;
-            break;
-          case '38':  // up key
-            phantomPos[1]--;
-            break;
-          case '40':  // down key
-            phantomPos[1]++;
-            break;
-        }
-      }else{
-        phantomPos = this.position;
-        if(phantomPos[0] < 15){
-          phantomPos[0]++;
-        }else{
-          phantomPos[0]--;
-        }
-      }
-      // check if position is availble
-      let isFloor = false;
-      // check grids
-      for (let grid of map) {
-        if (func.compareTables([grid[1],grid[2],grid[3]], phantomPos)) {
-          if (typeof grid[4] !== "undefined" && grid[4] == "stairs") {
-            // STAIRS / TELEPORTS ETC.
-            phantomPos = grid[5];
-            // console.log(grid[5]);
-          }else{
-            // console.log("IDEM");
-          }          
-          isFloor = true;
-          break;
-        }        
-      }
-      // check monsters and players
-      for(const c of creatures){
-        if (func.compareTables(c.position, phantomPos) && c.name != param.name) {
-          isFloor = false;
-        }        
-      }
-      // set new position or display error
-      if(isFloor){
-        this.position = phantomPos;
-        const key = param.controls.split(",")[0];
-        if(this.type == "player" && ['37','38','39','40'].includes(key)){
-          // set exhoust
-          this.walk = game.time.getTime() + Math.round(1000/this.speed);
-        }
-      }else{
-        this.text = "NO FUCKING WAY.";
-      }
-    }
-  }
+  fps: 10,
+  items:[]
 }
 const creatures = [];
 const monstersList = [
-  {id:1,name:"Dragon",position:[1,7,1],sprite:"dragon",type:"monster"},
-  {id:2,name:"Cyclops",position:[15,7,1],sprite:"cyclops",type:"monster"}
+  {
+    id:1,
+    name:"Dragon",
+    // position:[0,7,1], // left tower
+    position:[0,3,0],
+    sprite:"dragon",
+    type:"monster",
+    health:1000,
+    // maxHealth
+    maxHealth:1000,
+    speed:2
+  },
+  {
+    id:2,
+    name:"Cyclops",
+    // position:[15,7,1], // right tower
+    position:[4,3,0],
+    sprite:"cyclops",
+    type:"monster",
+    health:420,
+    maxHealth:420,
+    speed:2.5
+  }
 ]
 function handler(req, res) {
   game.time = new Date();
@@ -113,7 +63,7 @@ function handler(req, res) {
         }
       }
       if(!m.isset){
-        const monster = new Creature(m.name);
+        const monster = new Creature(m.name,creatures.length);
         monster.type = "monster";
         for(const key of Object.keys(m)){
           monster[key] = m[key];
@@ -124,11 +74,9 @@ function handler(req, res) {
     for(const c of creatures){
       // console.log(c.type == "monster");
       if(c.type == "monster"){
-        c.update();
+        c.update(param,game,map,func,creatures);
       }
     }
-
-
     // manage player:
     let player = {};
     let isPlayerSet = false;
@@ -139,12 +87,12 @@ function handler(req, res) {
       }
     }
     if(!isPlayerSet){
-      player = new Creature(param.name);
+      player = new Creature(param.name,creatures.length);
       creatures.push(player);
     }
     player.text = "";
     player.type = "player";
-    player.update(param);
+    player.update(param,game,map,func,creatures);
     // output
     const newData = {
       game: game,
