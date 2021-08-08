@@ -7,10 +7,21 @@ class Creature {
     this.walk = 0;
     this.speed = 5; // grids per second
     this.sprite = "citizen";
-    this.health = 1000;
+    if(nickName.includes("Zuzia")){
+      this.sprite = "femaleCitizen";
+    }
+    this.health = 3000;
+    this.maxHealth = this.health;
     this.redTarget = false;
+    this.fistFighting = false;
+    this.skills = {
+      exp:5,
+      fist:10,
+    }
   }
   update(param = {name:""},game,map,func,creatures){
+    // for monster walking and targeting
+    let playerInArea;
     // WALKING
     if(this.walk <= game.time.getTime() && this.health > 0){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];;
@@ -31,7 +42,6 @@ class Creature {
         // set walking type (random / follow / escape)
         let walkingMode = "random";
         let isPlayerNear = false;
-        let playerInArea;
         for(const c of creatures){
           if(c.type == "player"){
             // add z position
@@ -44,7 +54,7 @@ class Creature {
           }
         }
         if(isPlayerNear){
-          if(this.health > 200){
+          if(this.health > 0.2*this.maxHealth && playerInArea.health > 0){
             walkingMode = "follow";
           }else{
             walkingMode = "escape";
@@ -93,20 +103,20 @@ class Creature {
       // check grids
       for (let grid of map) {
         if (func.compareTables([grid[1],grid[2],grid[3]], phantomPos)) {
-          if (typeof grid[4] !== "undefined" && grid[4] == "stairs") {
+          if (typeof grid[4] != "undefined" && grid[4] == "stairs") {
             // STAIRS / TELEPORTS ETC.
             phantomPos = grid[5];
-            // console.log(grid[5]);
-          }else{
-            // console.log("IDEM");
-          }          
+            if(this.type == "monster"){
+              break;
+            }
+          }
           isFloor = true;
           break;
         }        
       }
       // check monsters and players
       for(const c of creatures){
-        if (func.compareTables(c.position, phantomPos) && c.name != param.name) {
+        if (func.compareTables(c.position, phantomPos) && c.name != param.name && c.health > 0) {
           isFloor = false;
         }        
       }
@@ -124,44 +134,62 @@ class Creature {
       }
     }
     // RED TARGETING
-    const key = "redTarget";
-    if(Object.keys(param).includes(key)){
-      if(param[key] != "clear"){
-        this[key] = param[key];     
-      }else{        
-        this[key] = false;
-      }
-    }
-    if(this.redTarget){
-      for(const c of creatures){
-        if(c.id == this.redTarget && this.id != c.id){
-          if(c.health > 0 ){
-            // FIST FIGHTING
-            if(
-              c.position[2] == this.position[2]
-              &&Math.abs(c.position[1] - this.position[1]) <= 1
-              &&Math.abs(c.position[0] - this.position[0]) <= 1  
-            ){
-              console.log(c.position[1]  +" / " +this.position[1] +" | "+c.position[0]  +" / " +this.position[0] )
-              c.health -= 5;
-            }
-          }else{
-            // DIE
-            this.redTarget = false;      
-            this.text = "Red target lost.";
-          }
-
+      // players
+      const key = "redTarget";
+      if(Object.keys(param).includes(key) && param.name == this.name){
+        if(param[key] != "clear"){
+          this[key] = param[key];     
+        }else{        
+          delete this[key];
         }
       }
+      //  monsters
+      if(this.type == "monster"&& typeof playerInArea != "undefined"&& this.health > 0.2*this.maxHealth){
+        // if(this.name=="Dragon"){console.log("dragonhit")}
+        this.redTarget = playerInArea.id;
+      }  
+      // console.log(this.redTarget)
+      if(this.redTarget){
+        for(const c of creatures){
+          if(c.id == this.redTarget && this.id != c.id){
+            if(c.health > 0 && this.health > 0){
+              // FIST FIGHTING
+              if(
+                this.fistFighting <= game.time.getTime()              
+                &&c.position[2] == this.position[2]
+                &&Math.abs(c.position[1] - this.position[1]) <= 1
+                &&Math.abs(c.position[0] - this.position[0]) <= 1  
+              ){
+                c.getHit(this.name,this.skills.exp*this.skills.fist);
+                this.fistFighting = game.time.getTime() + 1000;
+                // console.log(this.name +" bije "+ c.name)
+                // c.text = "dostałes=s"
+              }
+            }else{
+              // DIE
+              delete this.redTarget;
+              this.text = "Red target lost.";
+              // if(this.type == "monster"){
+                // this.restore = game.time.getTime() + 5000;
+              // }
+            }
 
-    
-
-
-
-    }
-
+          }
+        }
+      } 
+    // RESTORING
+    if(this.restore && game.time.getTime() > this.restore){
+      // this.health = this.maxHealth;
+    //   console.log("ema")
+    //   console.log(this)
+    //   this.cyle = 0;
+    //   this.direction = 1;
+    //   // console.log("RESTORING!");
+    //   this.restore = false;
+    } 
     // DYING
     if(this.health <= 0){
+      this.restore = game.time.getTime() + 1000;
       // DieList 
       for(const c of creatures){
         
@@ -179,8 +207,20 @@ class Creature {
       }
 
     }
+
+    // HEALING
+    if(param.controls){
+      
+
+    }
+  }
+  getHit = (from,hp) =>{
+    // console.log(from+" BIJE "+this.name)
+    this.health -= hp;
+    // FOR DEVELOP ONLY
+    // if(this.health < 0.3*this.maxHealth){
+    //   this.health = this.maxHealth;
+    // }
   }
 }
-
-
 module.exports = Creature;

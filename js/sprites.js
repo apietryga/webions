@@ -1,28 +1,38 @@
 let sprites = [
   { 
     name: "citizen",
-    // src : "img/sprites/male_citizen_rect.png"
     src : "img/sprites/web_citizen.webp"
+  },
+  { 
+    name: "mmage",
+    src : "img/sprites/mmage.webp"
+  },
+  { 
+    name: "femaleCitizen",
+    src : "img/sprites/female_citizen.webp"
   },
   {
     name: "floors",
-    src : "img/sprites/floors.jpg"
+    src : "img/sprites/floors.webp"
   },
   {
     name: "stairs",
-    src : "img/sprites/stairs.png"
+    src : "img/sprites/stairs.webp"
   },
   {
     name: "dragon",
-    // src : "img/sprites/tibia_dragon_standard.webp"
     src : "img/sprites/web_dragon.webp"
+  },
+  {
+    name: "hellknight",
+    src : "img/sprites/hellknight.webp"
   },
   {
     name: "cyclops",
     src : "img/sprites/web_cyclops.webp"
   },
   {
-    name: "mobile_controls",
-    src : "img/sprites/mobile_controls.png"
+    name: "actions",
+    src : "img/sprites/actions.webp"
   }
 ]

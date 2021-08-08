@@ -5,7 +5,7 @@ class Creature {
     this.name = pName;
     this.width = 40;
     this.height = 40;
-    this.sprite = 'citizen'; 
+    this.sprite = "citizen"; 
     this.hideFloor = "none";
     this.x = x ;
     this.y = y ;
@@ -93,16 +93,16 @@ class Creature {
             ctx.lineWidth = 3;
             ctx.rect(this.x+3, this.y+3, this.width-6, this.height-6);
             ctx.stroke();
-          }
-      
-          if(this.id == player.redTarget){
-            ctx.beginPath();
-            ctx.fillStyle = "red";
-            ctx.strokeStyle = 'red';
-            ctx.lineWidth = 3;
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();  
-          }
+        }
+        // console.log(player.redTarget)
+        if(this.id == player.redTarget & this.health > 0){
+          ctx.beginPath();
+          ctx.fillStyle = "red";
+          ctx.strokeStyle = 'red';
+          ctx.lineWidth = 3;
+          ctx.rect(this.x, this.y, this.width, this.height);
+          ctx.stroke();  
+        }
       }
       // draw sprite
       let img = gamePlane.sprites[this.sprite];
@@ -117,7 +117,7 @@ class Creature {
         let percHealth = (100 * this.health) / this.maxHealth;
         ctx.fillStyle = hpColor(percHealth);
         ctx.strokeStyle = 'black';
-        ctx.lineWidth = 0.8;
+        ctx.lineWidth = 1;
         ctx.font = '900 10px Tahoma';
         ctx.textAlign = "center";
         // console.log(this.name+" : "+this.y);
@@ -127,6 +127,12 @@ class Creature {
         ctx.rect(this.x - 11, this.y - 18, 30, 5);
         ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
         ctx.stroke();
+      }
+
+      // draw hits and healing
+      if(this.oldHealth != this.health){
+        const hitValue = this.oldHealth - this.health;
+        gamePlane.hitText.push(new Txt(this.position[0],this.position[1],100,200,hitValue));
       }
     }
   }
@@ -148,8 +154,10 @@ class Grid {
     this.y = (this.position[1]) * this.height;
   }
   update = () => {
-    this.x = (this.position[0] - player.position[0] + 5) * this.width;
-    this.y = (this.position[1] - player.position[1] + 5) * this.height;
+    if(typeof player != "undefined"){
+      this.x = (this.position[0] - player.position[0] + 5) * this.width;
+      this.y = (this.position[1] - player.position[1] + 5) * this.height;
+    }
   }
   draw = () => {
     let ctx = gamePlane.context;
@@ -178,7 +186,7 @@ class Text {
     this.showingLength = 25;
     this.showFPS = 0;
   }
-  update = () => {
+  update() {
     if (this.text != "") {
       if (this.text == this.oldText) {
         this.showFPS++;
@@ -200,4 +208,48 @@ class Text {
       }
     }
   }
+}
+class Txt{
+  constructor(x,y,w,h,text){
+    this.x = x;
+    this.y = y;
+    this.h = h;
+    this.w = w;
+    this.text = text;
+    this.showFPS = 0;
+    this.showingLength = 150/gamePlane.fps;
+    this.position = [this.x,this.y];
+  }
+  update(){
+    this.showFPS++;
+    let ctx = gamePlane.context;
+    // set color
+    if(this.text > 0){
+      ctx.fillStyle = '#f00';
+    }else{
+      ctx.fillStyle = '#0f0';
+    }
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 1;
+    ctx.font = '900 12px Tahoma';
+    ctx.textAlign = "center";
+    const x = ((this.x - player.position[0] + 5) * 40) + 20;    
+    const y = ((this.y - player.position[1] + 5) * 40) + 20  - (this.showFPS*2);  
+    ctx.fillText(Math.abs(this.text), x, y);
+    ctx.strokeText(Math.abs(this.text), x, y);
+    if (this.showFPS >= this.showingLength) {
+      for(const [i,h] of gamePlane.hitText.entries()){
+        if(h == this){
+          gamePlane.hitText.splice(i,1);
+        }    
+      }
+    }
+  }
+}
+
+class Actions{
+  constructor(){
+    this.position = [0,1,2];
+  }
+
 }

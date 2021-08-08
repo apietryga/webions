@@ -156,30 +156,40 @@ const mobileControls = {
         }
   },
   preventZoom: () => {
+    window.oncontextmenu = function() { return false; }
+    function preventLongPressMenu(nodes) {
+      for(var i=0; i<nodes.length; i++){
+         nodes[i].ontouchstart = absorbEvent_;
+         nodes[i].ontouchmove = absorbEvent_;
+         nodes[i].ontouchend = absorbEvent_;
+         nodes[i].ontouchcancel = absorbEvent_;
+      }
+    }
+    preventLongPressMenu(document.querySelectorAll('*'));
   //   var event = e || window.event;
   //  event.preventDefault();
   //  event.stopPropagation();
-    document.addEventListener('gesturestart', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        // special hack to prevent zoom-to-tabs gesture in safari
-        document.body.style.zoom = 0.99;
-    });
+    // document.addEventListener('gesturestart', function(e) {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     // special hack to prevent zoom-to-tabs gesture in safari
+    //     document.body.style.zoom = 0.99;
+    // });
     
-    document.addEventListener('gesturechange', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        // special hack to prevent zoom-to-tabs gesture in safari
-        document.body.style.zoom = 0.99;
-    });
+    // document.addEventListener('gesturechange', function(e) {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     // special hack to prevent zoom-to-tabs gesture in safari
+    //     document.body.style.zoom = 0.99;
+    // });
     
-    document.addEventListener('gestureend', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        // special hack to prevent zoom-to-tabs gesture in safari
-        document.body.style.zoom = 0.99;
-        initPreventing();
-    });
+    // document.addEventListener('gestureend', function(e) {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     // special hack to prevent zoom-to-tabs gesture in safari
+    //     document.body.style.zoom = 0.99;
+    //     initPreventing();
+    // });
 
 
     

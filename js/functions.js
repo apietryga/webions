@@ -8,7 +8,6 @@ this.compareTables = (a,b) =>{
   return result;
 }
 
-
 function everyInterval(n){
   if((gamePlane.frameNo/n) % 1 == 0){return true;}
   return false;
@@ -83,14 +82,6 @@ function absorbEvent_(event) {
   e.returnValue = false;
   return false;
 }
-
-function preventLongPressMenu(node) {
-  node.ontouchstart = absorbEvent_;
-  node.ontouchmove = absorbEvent_;
-  node.ontouchend = absorbEvent_;
-  node.ontouchcancel = absorbEvent_;
-}
-
 function initPreventing() {
   preventLongPressMenu(document);
 }

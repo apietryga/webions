@@ -3,6 +3,7 @@
 }
 
 body {
+  font-size: 20px;
   background-color: rgba(0, 0, 0, 0.863);
   display: grid;
   grid-template-rows: fit-content(1px);
@@ -13,7 +14,7 @@ body {
 }
 
 body .gamePlane {
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.61);
   grid-area: gp;
 }
@@ -63,15 +64,40 @@ body .rightPanel div {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+body .rightPanel div:before {
+  content: " ";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+body .rightPanel div:active {
+  background-color: rgba(111, 112, 65, 0.575);
 }
 
 body .leftPanel {
   left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  align-items: start;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: "";
 }
 
 body .leftPanel div {
-  width: 50%;
+  width: 30%;
+  height: 30%;
+  font-size: 0.5em;
+}
+
+body .leftPanel div:nth-child(1) {
+  grid-area: ch1;
+  width: 100%;
+}
+
+body .leftPanel div:nth-child(2) {
+  grid-area: ch2;
 }

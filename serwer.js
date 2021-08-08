@@ -1,17 +1,17 @@
 const fs = require('fs');
-const https = require('https');
+// const https = require('https');
+const http = require('http');
 const {URL} = require('url');
 const map = require("./json/map.json");
 const func = require("./js/functions");
-const Creature = require("./js/server_components.js");
 const static = require('node-static');
 const file = new(static.Server)(__dirname);
-const ipv4 = '0.0.0.0';
-const options = {
-  key: fs.readFileSync('ssl_/cert/key.pem'),
-  cert: fs.readFileSync('ssl_/cert/cert.pem')
-};
-
+const Creature = require("./js/server_components.js");
+// const ipv4 = '0.0.0.0';
+// const options = {
+//   key: fs.readFileSync('ssl_/cert/key.pem'),
+//   cert: fs.readFileSync('ssl_/cert/cert.pem')
+// };
 
 const game = {
   time : new Date(),
@@ -20,29 +20,66 @@ const game = {
 }
 const creatures = [];
 const monstersList = [
-  {
-    id:1,
-    name:"Dragon",
+  {name:"Mage",
+    id:3,
     // position:[0,7,1], // left tower
     position:[0,3,0],
+    sprite:"mmage",
+    type:"monster",
+    health:1000,
+    // maxHealth
+    maxHealth:1000,
+    speed:3,
+    skills:{
+      fist:10,
+      exp:1
+    }
+  },
+  {name:"Dragon",
+    id:1,
+    position:[0,7,1], // left tower
+    // position:[0,3,0],
     sprite:"dragon",
     type:"monster",
     health:1000,
     // maxHealth
     maxHealth:1000,
-    speed:2
+    speed:2,
+    skills:{
+      fist:10,
+      exp:10
+    }
   },
-  {
+  {name:"Cyclops",
     id:2,
-    name:"Cyclops",
-    // position:[15,7,1], // right tower
-    position:[4,3,0],
+    position:[15,7,1], // right tower
+    // position:[4,3,0],
     sprite:"cyclops",
     type:"monster",
-    health:420,
-    maxHealth:420,
-    speed:2.5
+    health:1500,
+    maxHealth:1500,
+    speed:2.5,
+    skills:{
+      fist:10,
+      exp:15
+    }
   }
+  // ,
+  // {name:"Hellknight",
+  //   id:0,
+  //   // position:[0,7,1], // left tower
+  //   position:[2,3,0],
+  //   sprite:"hellknight",
+  //   type:"monster",
+  //   health:1000,
+  //   // maxHealth
+  //   maxHealth:1000,
+  //   speed:4,
+  //   skills:{
+  //     fist:100,
+  //     exp:150
+  //   }
+  // }
 ]
 function handler(req, res) {
   game.time = new Date();
@@ -72,7 +109,6 @@ function handler(req, res) {
       }
     }
     for(const c of creatures){
-      // console.log(c.type == "monster");
       if(c.type == "monster"){
         c.update(param,game,map,func,creatures);
       }
@@ -107,5 +143,6 @@ function handler(req, res) {
   }
 }
 
-https.createServer(options,handler).listen(443,ipv4);
-console.log("serwer is running on: https://webions");
+// https.createServer(options,handler).listen(443,ipv4);
+http.createServer(handler).listen(80);
+console.log("serwer is running on: http://webions");

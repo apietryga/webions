@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="style/style.css">
   <link rel="manifest" href="json/manifest.json">
   <title>TBWeb.</title>
@@ -27,10 +27,9 @@
   <script src="js/mapcontroller.js"></script>
   <script src="js/sprites.js"></script>
   <script src="js/controls.js"></script>
-  
 </body>
 </html>
-<!-- |GAME PROPERTIES| -->
+<!--| GAME PROPERTIES |-->
 <script>
   const urlParams = new URLSearchParams(window.location.search);
   let playerName = urlParams.get('player');
@@ -39,8 +38,9 @@
   }
   let inGameConsole;
   let player;
-  gamePlane = {
+  const gamePlane = {
     fps : 10,
+    hitText: [],
     floors: [-1,0,1,2],
     creatures : {
       list: [],
@@ -79,7 +79,7 @@
     updategamePlane() {
       gamePlane.clear();
       map.update();     
-      serv.load();      
+      serv.load();
       let player;
       for(const ac of gamePlane.creatures.list){
         if(ac.name == playerName){
@@ -96,6 +96,7 @@
         }
         player.draw(f);
       }
+      for(const h of gamePlane.hitText){h.update();}
       inGameConsole.update();
     },
     stop(){
@@ -105,7 +106,7 @@
   }
 </script>
 
-<!-- SERWER CONNECTION -->
+<!--| SERWER CONNECTION |-->
 <script>
   // let allCreatures = [];
   const serv = {
@@ -153,6 +154,7 @@
             // update console
             if(creature.name == playerName && creature.text != ""){
               inGameConsole.text = creature.text;
+              // console.log(creature.text);
             }
 
           }
@@ -166,6 +168,7 @@
               }
               continue;
             }
+            if(key == "health"){gamePlane.creatures.list[charId]["oldHealth"] = gamePlane.creatures.list[charId]["health"];}
             if(key == "type"){continue;}
             gamePlane.creatures.list[charId][key] = creature[key];
           }
@@ -179,7 +182,7 @@
   }
 </script>
 
-<!-- PRELOAD -->
+<!--| PRELOAD |-->
 <script>
   // preload ;>
   gamePlane.loadSprites(()=>{
