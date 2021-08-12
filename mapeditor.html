@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAP Editor</title>
+  <style>
+    *{box-sizing: border-box;}
+    html{height: 100%;}
+    body{
+      border:2px dashed yellow;
+      background-color:rgb(155, 128, 128);
+      width:100;
+      height:100%;
+      margin:0;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+    }
+    body > canvas{
+      border:2px dashed red;
+      max-width: 80vw;
+      max-height: 80vh;
+    }
+    .editPanel{
+      border:2px dashed red;
+      max-height:80vh;
+      overflow:auto;
+    }
+    .editPanel > div{
+      border:2px dashed yellow;
+      padding:10px;
+    }
+    .editPanel > div > div{
+      border:2px dashed blue;
+      padding:20px;
+    }
+
+  </style>
+</head>
+<body>
+<script src="js/sprites.js"></script>
+<script>
+  const editor = {
+      canvas: document.createElement("canvas"),
+      map: [],
+      element: ["floors",0],
+      sprites:[],
+      reload(callback){fetch("json/map.json").then((dt)=>dt.json()).then((out)=>{
+          editor.map = out;
+      callback(out);});},
+      loadSprites(callback) {
+        let name;
+        for(const s of sprites){
+          if(s.group != "outfits" && s.group != "monsters"){
+            this.sprites[s.name] = document.createElement("img");
+            this.sprites[s.name].src = s.src;
+            if(typeof s.w != "undefined"){this.sprites[s.name].dataset.w = s.w;}
+            name = s.name;
+          }        
+        }
+        this.sprites[name].onload = () => {
+          callback();
+        }
+      },
+      init(){
+        this.canvas.width = 600;
+        this.canvas.height = 600;
+        document.body.append(this.canvas);
+        this.loadSprites((map)=>{
+          this.elemInit();
+          this.reload((map)=>{
+            this.drawMap(map);
+            this.controlInit();
+          });
+        });
+      },
+      position:[0,0,0],
+      controlInit(){
+        document.addEventListener("keydown",(e)=>{
+          switch (e.keyCode) {
+            case 37: this.position[0]--;break;          
+            case 39: this.position[0]++;break;          
+            case 38: this.position[1]--;break;          
+            case 40: this.position[1]++;break;          
+            case 32: this.push();break;          
+          }
+          this.drawMap(this.map);
+        })
+        // mouse picker
+        // document.querySelector("canvas").addEventListener("mousemove",(e)=>{
+        //   // console.log(e)
+        //   console.log("x: "+e.layerX + "/" + e.target.clientWidth + ", y: "+e.layerY +"/"+e.target.clientHeight)
+
+        //   const ctx =  this.canvas.getContext("2d");
+        //   ctx.beginPath();
+        //   ctx.strokeStyle = "#fff";
+        //   ctx.lineWidth = "5px";
+        //   ctx.rect((this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
+        //   ctx.stroke();
+
+        // })
+      },
+      drawMap(map = this.map){
+        // draw map
+        this.map = map;
+        const ctx =  this.canvas.getContext("2d");
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        for(const g of map){
+            ctx.drawImage(this.sprites.floors,
+            g[0] * 40, 0, 40, 40,
+            ( g[1] - this.position[0] + 7)*40, (g[2] - this.position[1] + 7)*40, 40, 40);
+        }
+
+        // draw editing element
+        ctx.drawImage(this.sprites[this.element[0]],
+        this.element[1] * 40, 0, 40, 40,
+        (this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
+        ctx.beginPath();
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = "5px";
+        ctx.rect((this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
+        ctx.stroke();
+
+
+        // draw current position in left down corner
+        ctx.font = "25px Arial";
+        ctx.fillText("["+this.position+"]", 0, this.canvas.height-5);
+      },
+      push(){
+        fetch("/?mapedit=true&position="+this.position+"&element="+this.element).then((dt) => dt.json()).then((e)=>{
+          this.drawMap(JSON.parse(e));
+        })
+      },
+      elemInit(){
+        // console.log(this.sprites);
+        const editPanel = document.createElement("div");
+        editPanel.className = "editPanel";
+        editPanel.innerHTML = "Floors:";
+        for(const s of Object.keys(this.sprites)){
+          const elem = document.createElement("div");
+          // console.log(this.sprites[s])
+          if(typeof this.sprites[s].dataset.w != "undefined"){
+            for(let e = 0; e < this.sprites[s].width/this.sprites[s].dataset.w;e++){
+              const opt = document.createElement("div");
+              opt.className = "opt";
+              opt.style.backgroundImage = "url("+this.sprites[s].src+")";
+              opt.style.backgroundRepeat = "no-repeat";
+              opt.style.backgroundPosition = "-"+e*this.sprites[s].dataset.w+"px 0px";
+              opt.onclick = () => {
+                this.element = [s,e];
+                this.drawMap();
+              }
+              elem.append(opt);
+              // console.log(e);
+            }
+
+          }
+          // elem.append(this.sprites[s]);
+          editPanel.append(elem);
+        
+        }
+        document.body.append(editPanel);
+        
+      }
+    }
+  editor.init();
+</script>
+</body>
+</html>

@@ -4,16 +4,25 @@ class Creature {
     this.name = nickName;
     this.position = [2,3,0];  // left tower down
     // this.position = [1,5,1];  // left tower up
+    this.startPosition = this.position;
     this.walk = 0;
     this.speed = 5; // grids per second
-    this.sprite = "citizen";
+    // this.sprite = "male_warrior";
+    this.sprite = "male_oriental";
+    // this.sprite = "citizen";
     if(nickName.includes("Zuzia")){
-      this.sprite = "femaleCitizen";
+      this.sprite = "female_oriental";
+      // this.sprite = "female_warrior";
+      // this.sprite = "femaleCitizen";
     }
     this.health = 3000;
     this.maxHealth = this.health;
+    this.healthExhoust = 0;
+    this.shotExhoust = 0;
+    // this.shotPosition = false;
     this.redTarget = false;
     this.fistFighting = false;
+    this.restore = false;
     this.skills = {
       exp:5,
       fist:10,
@@ -176,23 +185,47 @@ class Creature {
 
           }
         }
-      } 
+      }
+    
+    // DISTANCE SHOT - 68 is "D" key
+    if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type=="player" && this.health > 0 && this.redTarget){
+      // get victim 
+      for(const c of creatures){
+        if(c.id == this.redTarget){
+          this.shotVictim = c;
+          break;
+        }
+      }
+      if(typeof this.shotVictim != "undefined"){
+        // set trajectory
+        this.shotPosition = [this.position,this.shotVictim.position];
+        this.shotExhoust = game.time.getTime() + 1000;
+      }
+    }
+    // shot in target
+    if(this.shotExhoust <= game.time.getTime() && typeof this.shotVictim != "undefined"){
+      this.shotVictim.getHit(this.name,150);
+      delete this.shotVictim;
+      delete this.shotPosition;
+    }
+
+
     // RESTORING
-    if(this.restore && game.time.getTime() > this.restore){
-      // this.health = this.maxHealth;
-    //   console.log("ema")
-    //   console.log(this)
-    //   this.cyle = 0;
-    //   this.direction = 1;
-    //   // console.log("RESTORING!");
-    //   this.restore = false;
+    if(this.restore && game.time.getTime() >= this.restore){
+      this.health = this.maxHealth;
+      // this.cyle = 0;
+      // this.direction = 1;
+      delete this.cyle;
+      delete this.direction;
+      this.restore = false;
+      this.position = this.startPosition;
     } 
     // DYING
-    if(this.health <= 0){
-      this.restore = game.time.getTime() + 1000;
+    if(this.health <= 0 && !this.restore){
+      this.restore = game.time.getTime() + 10000;
+      this.text = "You are dead. Wait 10 seconds to retrive.";
       // DieList 
-      for(const c of creatures){
-        
+      for(const c of creatures){   
         if(c.id == this.id){
           this.direction = 4;
           this.cyle = 0;
@@ -208,10 +241,16 @@ class Creature {
 
     }
 
-    // HEALING
-    if(param.controls){
-      
-
+    // PLAYER HEALING
+    if(param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
+      // 72 is "H" key
+      const healthValue = [500,300]; // [ms(exhoust),hp(value)]      
+      if(this.health + healthValue[1] > this.maxHealth){
+        this.health = this.maxHealth;
+      }else{
+        this.health += healthValue[1];
+      }
+      this.healthExhoust =  game.time.getTime() + healthValue[0];
     }
   }
   getHit = (from,hp) =>{

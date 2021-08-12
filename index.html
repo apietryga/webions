@@ -40,7 +40,7 @@
   let player;
   const gamePlane = {
     fps : 10,
-    hitText: [],
+    actions: [],
     floors: [-1,0,1,2],
     creatures : {
       list: [],
@@ -53,7 +53,6 @@
       this.canvas.height = this.canvas.width;
       this.gridSize = 40;
       this.context = this.canvas.getContext("2d");
-      hitText = [];
       inGameConsole = new Text();
       this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
       controls.init();
@@ -96,7 +95,7 @@
         }
         player.draw(f);
       }
-      for(const h of gamePlane.hitText){h.update();}
+      for(const a of gamePlane.actions){a.update();}
       inGameConsole.update();
     },
     stop(){

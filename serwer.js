@@ -7,6 +7,7 @@ const func = require("./js/functions");
 const static = require('node-static');
 const file = new(static.Server)(__dirname);
 const Creature = require("./js/server_components.js");
+const stringify = require("json-stringify-pretty-compact");
 // const ipv4 = '0.0.0.0';
 // const options = {
 //   key: fs.readFileSync('ssl_/cert/key.pem'),
@@ -24,21 +25,23 @@ const monstersList = [
     id:3,
     // position:[0,7,1], // left tower
     position:[0,3,0],
+    startPosition:[0,3,0],
     sprite:"mmage",
     type:"monster",
     health:1000,
-    // maxHealth
     maxHealth:1000,
-    speed:3,
+    speed:0.3,
     skills:{
-      fist:10,
-      exp:1
+      fist:0,
+      exp:10
     }
-  },
+  }
+  ,
   {name:"Dragon",
     id:1,
     position:[0,7,1], // left tower
     // position:[0,3,0],
+    startPosition:[0,7,1],
     sprite:"dragon",
     type:"monster",
     health:1000,
@@ -46,7 +49,7 @@ const monstersList = [
     maxHealth:1000,
     speed:2,
     skills:{
-      fist:10,
+      fist:100,
       exp:10
     }
   },
@@ -54,6 +57,7 @@ const monstersList = [
     id:2,
     position:[15,7,1], // right tower
     // position:[4,3,0],
+    startPosition:[15,7,1],
     sprite:"cyclops",
     type:"monster",
     health:1500,
@@ -66,9 +70,10 @@ const monstersList = [
   }
   // ,
   // {name:"Hellknight",
-  //   id:0,
+  //   id:4,
   //   // position:[0,7,1], // left tower
-  //   position:[2,3,0],
+  //   position:[3,16,0],
+  //   startPosition:[3,16,0],
   //   sprite:"hellknight",
   //   type:"monster",
   //   health:1000,
@@ -76,7 +81,7 @@ const monstersList = [
   //   maxHealth:1000,
   //   speed:4,
   //   skills:{
-  //     fist:100,
+  //     fist:2,
   //     exp:150
   //   }
   // }
@@ -84,7 +89,8 @@ const monstersList = [
 function handler(req, res) {
   game.time = new Date();
   const {url} = req;
-  const href = "https://"+req.rawHeaders[1];
+  // const href = "https://"+req.rawHeaders[1];
+  const href = "http://"+req.rawHeaders[1];
   const myURL = new URL(href+url);
   const search = myURL.search;
   const param = Object.fromEntries(new URLSearchParams(search));
@@ -135,8 +141,22 @@ function handler(req, res) {
       creatures: creatures
     }
     res.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});
-    res.write(JSON.stringify(newData,null,2),"utf-8")
+    res.write(stringify(newData,null,2),"utf-8")
     res.end()
+  }else if(Object.keys(param).includes("mapedit")){
+  // map editor
+    const mapRead = fs.readFileSync("json/map.json",{encoding:'utf8'});
+    const mapArr = JSON.parse(mapRead);
+    const paramArr = param.position.split(",");
+    const paramEl = param.element.split(",");
+    mapArr.push([paramEl[1]*1,paramArr[0]*1,paramArr[1]*1,paramArr[2]*1]);
+    const mapString = stringify(mapArr,null,2);
+    fs.writeFileSync("json/map.json",mapString);
+    let output = mapString;
+    res.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});
+    res.write(stringify(output,null,2),"utf-8")
+    res.end()
+
   }else{
     // serve static files
     file.serve(req, res);

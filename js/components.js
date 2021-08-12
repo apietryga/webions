@@ -129,11 +129,30 @@ class Creature {
         ctx.stroke();
       }
 
+      // stand up after retrive
+      if(this.oldHealth <= 0 && this.health > 0){
+        this.direction = 1;
+      }
+
       // draw hits and healing
       if(this.oldHealth != this.health){
         const hitValue = this.oldHealth - this.health;
-        gamePlane.hitText.push(new Txt(this.position[0],this.position[1],100,200,hitValue));
+        gamePlane.actions.push(new Action("hitText",this.position[0],this.position[1],100,200,hitValue));
       }
+
+      // draw shot's bullets
+      if(this.shotPosition && typeof this.shotPosition != "undefined" ){
+        if(typeof this.shotBullet == "undefined"){
+          this.shotBullet = new Action("bullet",this.position[0],this.position[1],100,200,"POCISK");
+          gamePlane.actions.push(this.shotBullet);
+
+          console.log(gamePlane.actions);
+        }
+        
+
+        delete this.shotPosition;
+      }
+
     }
   }
 }
@@ -209,8 +228,9 @@ class Text {
     }
   }
 }
-class Txt{
-  constructor(x,y,w,h,text){
+class Action{  // class for hitText, Bullets,
+  constructor(type,x,y,w,h,text){
+    this.type = type;
     this.x = x;
     this.y = y;
     this.h = h;
@@ -223,33 +243,32 @@ class Txt{
   update(){
     this.showFPS++;
     let ctx = gamePlane.context;
-    // set color
-    if(this.text > 0){
-      ctx.fillStyle = '#f00';
-    }else{
-      ctx.fillStyle = '#0f0';
+    if(this.type == "hitText"){
+      // set color
+      if(this.text > 0){
+        ctx.fillStyle = '#f00';
+      }else{
+        ctx.fillStyle = '#0f0';
+      }
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 1;
+      ctx.font = '900 12px Tahoma';
+      ctx.textAlign = "center";
+      const x = ((this.x - player.position[0] + 5) * 40) + 20;    
+      const y = ((this.y - player.position[1] + 5) * 40) + 20  - (this.showFPS*2);  
+      ctx.fillText(Math.abs(this.text), x, y);
+      ctx.strokeText(Math.abs(this.text), x, y);
     }
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 1;
-    ctx.font = '900 12px Tahoma';
-    ctx.textAlign = "center";
-    const x = ((this.x - player.position[0] + 5) * 40) + 20;    
-    const y = ((this.y - player.position[1] + 5) * 40) + 20  - (this.showFPS*2);  
-    ctx.fillText(Math.abs(this.text), x, y);
-    ctx.strokeText(Math.abs(this.text), x, y);
+    if(this.type == "bullet"){
+      console.log("LECI");
+    }
+
     if (this.showFPS >= this.showingLength) {
-      for(const [i,h] of gamePlane.hitText.entries()){
+      for(const [i,h] of gamePlane.actions.entries()){
         if(h == this){
-          gamePlane.hitText.splice(i,1);
+          gamePlane.actions.splice(i,1);
         }    
       }
     }
   }
-}
-
-class Actions{
-  constructor(){
-    this.position = [0,1,2];
-  }
-
 }
