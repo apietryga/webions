@@ -138,12 +138,23 @@ const mobileControls = {
       const leftPanel = document.querySelector(".leftPanel");
       leftPanel.innerHTML = "";
         const buttons = [
-          ["TARGET",84],
-          ["SELECT",83]
+          ["T",84],
+          [" ",0],
+          ["S",83],
+          [" ",0],
+          ["D",68],
+          [" ",0],
+          ["H",72],
+          [" ",0],
+          [" ",0]
         ];
+        // console.log(buttons);
         for(const b of buttons){
           const butt = document.createElement("div");
-          butt.className = 'arrow';
+          if(b[0] != " "){
+            butt.className = 'arrow';
+          }
+
           butt.innerText = b[0];
           butt.dataset.keyCode = b[1];
           butt.addEventListener("touchstart",(e) => {
@@ -165,34 +176,7 @@ const mobileControls = {
          nodes[i].ontouchcancel = absorbEvent_;
       }
     }
-    preventLongPressMenu(document.querySelectorAll('*'));
-  //   var event = e || window.event;
-  //  event.preventDefault();
-  //  event.stopPropagation();
-    // document.addEventListener('gesturestart', function(e) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     // special hack to prevent zoom-to-tabs gesture in safari
-    //     document.body.style.zoom = 0.99;
-    // });
-    
-    // document.addEventListener('gesturechange', function(e) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     // special hack to prevent zoom-to-tabs gesture in safari
-    //     document.body.style.zoom = 0.99;
-    // });
-    
-    // document.addEventListener('gestureend', function(e) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     // special hack to prevent zoom-to-tabs gesture in safari
-    //     document.body.style.zoom = 0.99;
-    //     initPreventing();
-    // });
-
-
-    
-
+    preventLongPressMenu(document.querySelectorAll('*:not(button)'));
+  
   }
 }

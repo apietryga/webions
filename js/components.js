@@ -19,6 +19,7 @@ class Creature {
     this.newPos =  equalArr(this.position);
     this.oldPos =  equalArr(this.position);
     this.walkFps = 0;
+    this.bulletCyle = 0;
     this.health = 1000;
     this.maxHealth = 1000;
     this.targetlist = [];
@@ -65,7 +66,6 @@ class Creature {
       this.walkFps = 0;
       this.position = this.newPos;
     }
-
     // Death
     if(this.health <= 0){
       // this.cyle = 7;
@@ -128,30 +128,82 @@ class Creature {
         ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
         ctx.stroke();
       }
-
       // stand up after retrive
       if(this.oldHealth <= 0 && this.health > 0){
         this.direction = 1;
       }
-
-      // draw hits and healing
+      // draw hits and healing value
       if(this.oldHealth != this.health){
         const hitValue = this.oldHealth - this.health;
         gamePlane.actions.push(new Action("hitText",this.position[0],this.position[1],100,200,hitValue));
       }
-
       // draw shot's bullets
       if(this.shotPosition && typeof this.shotPosition != "undefined" ){
         if(typeof this.shotBullet == "undefined"){
-          this.shotBullet = new Action("bullet",this.position[0],this.position[1],100,200,"POCISK");
-          gamePlane.actions.push(this.shotBullet);
+          // first frame
+          this.shotBullet = new Action("bullet",this.position[0],this.position[1],10,10,"POCISK");
+          this.startBullet = serv.time;
+          this.bulletCyle = 0;
+          // this.bulletPiece[0] = this.shotPosition[1][0] - this.shotPosition[0][0];
+          // this.bulletPiece[1] = this.shotPosition[1][1] - this.shotPosition[0][1];
+        }else{
+          // other frames
+          this.bulletCyle++;
+          // console.log(this.bulletCyle);
+          // const distanceX = Math.abs(this.shotPosition[1][0] - this.shotPosition[0][0]);
+          const pieceX =  this.bulletCyle;
+          // startbullet - 0 
+          // endbullet
 
-          console.log(gamePlane.actions);
+
+          // console.log(pieceX )
+          for(const [x,y] of [[0,1],[1,0]]){
+            if(this.shotPosition[x][0] > this.shotPosition[y][0]){
+            // this.shotPosition[x][0]+=pieceX;
+              this.shotBullet.x -= pieceX;
+
+            }else{
+              // this.shotPosition[x][0]-=pieceX;
+              this.shotBullet.x += pieceX;
+
+            }
+            // on target
+            // if(this.shotPosition[1][0] == this.shotBullet.x
+            //   && this.shotPosition[1][1] == this.shotBullet.y){
+            //   console.log("ON TARGET")
+            // }
+          }       
+          this.shotBullet.update();
+        }
+        // console.log(this.shotPosition)
+        // if(typeof this.shotPosition == "undefined"){
+          // console.log("ON TARGET");
+        // }
+
+      }else{
+        // console.log(this.lastShotPosition);
+        // console.log(this.lastShotPosition);
+        // if(this.bulletCyle && this.bulletCyle != 0){
+        if(this.shotExhoust <= serv.time && this.bulletCyle > 0){
+          
+          console.log(this.shotPosition)
+
         }
         
-
-        delete this.shotPosition;
       }
+      // console.log(this.lastShotPosition +" / "+ this.shotPosition)
+      if( this.lastShotPosition && typeof this.shotPosition == "undefined" ){
+        // if(this.lastShotPosition && !this.bulletCyle){
+        console.log(this.lastShotPosition)
+        console.log(this.shotPosition)
+        // console.log(this.bulletCyle);
+        console.log("ON TARGET");
+        delete this.shotPosition;
+        delete this.lastShotPosition;
+
+        this.bulletCyle = false;
+      }
+      // console.log(this.lastShotPosition);
 
     }
   }
@@ -260,7 +312,17 @@ class Action{  // class for hitText, Bullets,
       ctx.strokeText(Math.abs(this.text), x, y);
     }
     if(this.type == "bullet"){
-      console.log("LECI");
+      // draw bullet
+      // console.log(this.y +" / "+this.x)
+      var img = gamePlane.sprites.actions;
+      ctx.drawImage(img, this.texture * 40, 0, 40, 40,
+        this.x+200, this.y+200, 40, 40);
+  
+      // console.log("LECI");
+      // ctx.beginPath();
+      // ctx.rect(this.x+200, this.y+200, this.w, this.h);
+      // ctx.strokeStyle = "red";
+      // ctx.stroke();
     }
 
     if (this.showFPS >= this.showingLength) {

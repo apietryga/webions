@@ -7,15 +7,15 @@ class Creature {
     this.startPosition = this.position;
     this.walk = 0;
     this.speed = 5; // grids per second
-    // this.sprite = "male_warrior";
-    this.sprite = "male_oriental";
+    this.sprite = "male_warrior";
+    // this.sprite = "male_oriental";
     // this.sprite = "citizen";
     if(nickName.includes("Zuzia")){
       this.sprite = "female_oriental";
       // this.sprite = "female_warrior";
       // this.sprite = "femaleCitizen";
     }
-    this.health = 3000;
+    this.health = 2000;
     this.maxHealth = this.health;
     this.healthExhoust = 0;
     this.shotExhoust = 0;
@@ -24,8 +24,8 @@ class Creature {
     this.fistFighting = false;
     this.restore = false;
     this.skills = {
-      exp:5,
-      fist:10,
+      exp:1,
+      fist:475,
     }
   }
   update(param = {name:""},game,map,func,creatures){
@@ -51,6 +51,7 @@ class Creature {
         // set walking type (random / follow / escape)
         let walkingMode = "random";
         let isPlayerNear = false;
+        creatures.sort().reverse();
         for(const c of creatures){
           if(c.type == "player"){
             // add z position
@@ -142,88 +143,64 @@ class Creature {
         this.text = "NO FUCKING WAY.";
       }
     }
-    // RED TARGETING
-      // players
-      const key = "redTarget";
-      if(Object.keys(param).includes(key) && param.name == this.name){
-        if(param[key] != "clear"){
-          this[key] = param[key];     
-        }else{        
-          delete this[key];
-        }
+    // RED TARGETING [player] 
+    const key = "redTarget";
+    if(Object.keys(param).includes(key) && param.name == this.name){
+      if(param[key] != "clear"){
+        this[key] = param[key];     
+      }else{        
+        delete this[key];
       }
-      //  monsters
-      if(this.type == "monster"&& typeof playerInArea != "undefined"&& this.health > 0.2*this.maxHealth){
-        // if(this.name=="Dragon"){console.log("dragonhit")}
-        this.redTarget = playerInArea.id;
-      }  
-      // console.log(this.redTarget)
-      if(this.redTarget){
-        for(const c of creatures){
-          if(c.id == this.redTarget && this.id != c.id){
-            if(c.health > 0 && this.health > 0){
-              // FIST FIGHTING
-              if(
-                this.fistFighting <= game.time.getTime()              
-                &&c.position[2] == this.position[2]
-                &&Math.abs(c.position[1] - this.position[1]) <= 1
-                &&Math.abs(c.position[0] - this.position[0]) <= 1  
-              ){
-                c.getHit(this.name,this.skills.exp*this.skills.fist);
-                this.fistFighting = game.time.getTime() + 1000;
-                // console.log(this.name +" bije "+ c.name)
-                // c.text = "dostałes=s"
-              }
-            }else{
-              // DIE
-              delete this.redTarget;
-              this.text = "Red target lost.";
-              // if(this.type == "monster"){
-                // this.restore = game.time.getTime() + 5000;
-              // }
+    }
+    // RED TARGETING [monster]
+    if(this.type == "monster"&& typeof playerInArea != "undefined"&& this.health > 0.2*this.maxHealth){
+      // if(this.name=="Dragon"){console.log("dragonhit")}
+      this.redTarget = playerInArea.id;
+    }  
+    // SHOTS
+    if(this.redTarget){
+      for(const c of creatures){
+        // attack
+        if(c.id == this.redTarget && this.id != c.id){
+          if(c.health > 0 && this.health > 0){
+            // FIST FIGHTING
+            if( this.fistFighting <= game.time.getTime() &&c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
+              c.getHit(this.name,this.skills.exp*this.skills.fist);
+              this.fistFighting = game.time.getTime() + 1000;
+              // console.log(this.name +" bije "+ c.name)
+              // c.text = "dostałes=s"
             }
-
+            // DISTANCE SHOT - 68 is "D" key
+            if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type == "player"){
+              // set coords
+              this.shotPosition = [this.position,c.position];
+              this.shotExhoust = game.time.getTime() + 1500;
+            }
           }
         }
+        
       }
-    
-    // DISTANCE SHOT - 68 is "D" key
-    if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type=="player" && this.health > 0 && this.redTarget){
-      // get victim 
-      for(const c of creatures){
-        if(c.id == this.redTarget){
-          this.shotVictim = c;
-          break;
+    }
+    // GET HITTING
+    for(const c of creatures){
+      if(c.redTarget == this.id){
+        // distance shot
+        if(c.shotExhoust <= game.time.getTime() 
+        && typeof c.shotPosition != "undefined"
+        ){
+          this.getHit(this.name,500);
+          delete c.shotPosition;
         }
       }
-      if(typeof this.shotVictim != "undefined"){
-        // set trajectory
-        this.shotPosition = [this.position,this.shotVictim.position];
-        this.shotExhoust = game.time.getTime() + 1000;
-      }
     }
-    // shot in target
-    if(this.shotExhoust <= game.time.getTime() && typeof this.shotVictim != "undefined"){
-      this.shotVictim.getHit(this.name,150);
-      delete this.shotVictim;
-      delete this.shotPosition;
-    }
-
-
-    // RESTORING
-    if(this.restore && game.time.getTime() >= this.restore){
-      this.health = this.maxHealth;
-      // this.cyle = 0;
-      // this.direction = 1;
-      delete this.cyle;
-      delete this.direction;
-      this.restore = false;
-      this.position = this.startPosition;
-    } 
     // DYING
     if(this.health <= 0 && !this.restore){
-      this.restore = game.time.getTime() + 10000;
-      this.text = "You are dead. Wait 10 seconds to retrive.";
+      this.restore = game.time.getTime() + 180000;
+      if(this.type=="player"){
+        this.restore = game.time.getTime();
+      }
+
+      this.text = "You are dead. Wait 30 seconds to retrive.";
       // DieList 
       for(const c of creatures){   
         if(c.id == this.id){
@@ -240,11 +217,20 @@ class Creature {
       }
 
     }
-
-    // PLAYER HEALING
+    // RESTORING
+    if(this.restore && game.time.getTime() >= this.restore){
+      this.health = this.maxHealth;
+      // this.cyle = 0;
+      // this.direction = 1;
+      delete this.cyle;
+      delete this.direction;
+      this.restore = false;
+      this.position = this.startPosition;
+    } 
+    // HEALING
     if(param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
-      const healthValue = [500,300]; // [ms(exhoust),hp(value)]      
+      const healthValue = [1500,300]; // [ms(exhoust),hp(value)]      
       if(this.health + healthValue[1] > this.maxHealth){
         this.health = this.maxHealth;
       }else{

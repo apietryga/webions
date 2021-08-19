@@ -105,13 +105,25 @@
       drawMap(map = this.map){
         // draw map
         this.map = map;
+        console.log(map);
+
         const ctx =  this.canvas.getContext("2d");
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // for 
         for(const g of map){
             ctx.drawImage(this.sprites.floors,
             g[0] * 40, 0, 40, 40,
             ( g[1] - this.position[0] + 7)*40, (g[2] - this.position[1] + 7)*40, 40, 40);
         }
+
+        // for maps with sectors
+        // for(const sector of map){
+        //   // console.log(sector);
+        //   console.log("sector["+sector[0]+","+sector[1]+"]:")
+        //   for(const floor of sector[2]){}
+        // }
+
+
 
         // draw editing element
         ctx.drawImage(this.sprites[this.element[0]],
@@ -122,7 +134,6 @@
         ctx.lineWidth = "5px";
         ctx.rect((this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
         ctx.stroke();
-
 
         // draw current position in left down corner
         ctx.font = "25px Arial";
@@ -166,6 +177,8 @@
       }
     }
   editor.init();
+  
+
 </script>
 </body>
 </html>

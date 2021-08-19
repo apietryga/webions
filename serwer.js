@@ -24,16 +24,18 @@ const monstersList = [
   {name:"Mage",
     id:3,
     // position:[0,7,1], // left tower
-    position:[0,3,0],
-    startPosition:[0,3,0],
+    // position:[1,2,0],
+    position:[20,19,0],
+    // startPosition:[1,2,0],
+    startPosition:[20,19,0],
     sprite:"mmage",
     type:"monster",
-    health:1000,
-    maxHealth:1000,
-    speed:0.3,
+    health:10000,
+    maxHealth:10000,
+    speed:2.5,
     skills:{
-      fist:0,
-      exp:10
+      fist:400,
+      exp:1
     }
   }
   ,
@@ -44,13 +46,13 @@ const monstersList = [
     startPosition:[0,7,1],
     sprite:"dragon",
     type:"monster",
-    health:1000,
+    health:10000,
     // maxHealth
-    maxHealth:1000,
+    maxHealth:10000,
     speed:2,
     skills:{
-      fist:100,
-      exp:10
+      fist:20,
+      exp:30
     }
   },
   {name:"Cyclops",
@@ -60,31 +62,31 @@ const monstersList = [
     startPosition:[15,7,1],
     sprite:"cyclops",
     type:"monster",
-    health:1500,
-    maxHealth:1500,
-    speed:2.5,
+    health:15000,
+    maxHealth:15000,
+    speed:6,
     skills:{
       fist:10,
       exp:15
     }
   }
-  // ,
-  // {name:"Hellknight",
-  //   id:4,
-  //   // position:[0,7,1], // left tower
-  //   position:[3,16,0],
-  //   startPosition:[3,16,0],
-  //   sprite:"hellknight",
-  //   type:"monster",
-  //   health:1000,
-  //   // maxHealth
-  //   maxHealth:1000,
-  //   speed:4,
-  //   skills:{
-  //     fist:2,
-  //     exp:150
-  //   }
-  // }
+  ,
+  {name:"Hellknight",
+    id:4,
+    // position:[0,7,1], // left tower
+    position:[3,16,0],
+    startPosition:[3,16,0],
+    sprite:"hellknight",
+    type:"monster",
+    health:10000,
+    // maxHealth
+    maxHealth:10000,
+    speed:3,
+    skills:{
+      fist:2,
+      exp:150
+    }
+  }
 ]
 function handler(req, res) {
   game.time = new Date();
@@ -162,7 +164,6 @@ function handler(req, res) {
     file.serve(req, res);
   }
 }
-
 // https.createServer(options,handler).listen(443,ipv4);
 http.createServer(handler).listen(80);
 console.log("serwer is running on: http://webions");

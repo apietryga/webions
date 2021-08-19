@@ -81,3 +81,18 @@ let map = {
     }
   }
 }
+
+
+/*
+  map template:
+  [
+    [0,0, // sector
+      [0, // floor [z]
+        [1,2,0],  //  elements [x, y, index, type]
+        [2,2,0],
+        [3,2,0]
+      ]
+    ]
+  ]
+
+*/
