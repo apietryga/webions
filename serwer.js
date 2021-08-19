@@ -1,6 +1,7 @@
 const fs = require('fs');
 // const https = require('https');
 const http = require('http');
+const os = require('os');
 const {URL} = require('url');
 const map = require("./json/map.json");
 const func = require("./js/functions");
@@ -165,5 +166,9 @@ function handler(req, res) {
   }
 }
 // https.createServer(options,handler).listen(443,ipv4);
-http.createServer(handler).listen(8000);
+if(os.hostname() == "Laboratorium"){
+  http.createServer(handler).listen(80);
+}else{
+  http.createServer(handler).listen(5000);
+}
 console.log("serwer is running on: http://webions");
