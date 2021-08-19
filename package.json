@@ -2,5 +2,29 @@
   "dependencies": {
     "json-stringify-pretty-compact": "^3.0.0",
     "node-static": "^0.7.11"
-  }
+  },
+  "name": "webions",
+  "version": "1.0.0",
+  "description": "Browser MMORPG game",
+  "main": "serwer.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apietryga/webions2.git"
+  },
+  "keywords": [
+    "game",
+    "browser",
+    "MMORPG"
+  ],
+  "author": "apietryga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/apietryga/webions2/issues"
+  },
+  "homepage": "https://github.com/apietryga/webions2#readme"
 }
