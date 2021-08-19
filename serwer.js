@@ -167,7 +167,7 @@ function handler(req, res) {
 }
 // https.createServer(options,handler).listen(443,ipv4);
 if(os.hostname() == "Laboratorium"){
-  http.createServer(handler).listen(80);
+  http.createServer(handler).listen(process.env.PORT || 80);
   console.log("serwer is running on: http://webions");
 }else{
   http.createServer(handler).listen(process.env.PORT || 80);
