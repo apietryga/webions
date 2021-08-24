@@ -31,6 +31,7 @@ class Creature {
   }
   update(){
     // WALKING
+    // console.log(this.walk);
     if(this.walk >= serv.time){
       // walking cyle (animation)
       this.walkFps++;

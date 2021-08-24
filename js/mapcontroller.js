@@ -2,7 +2,8 @@ let map = {
   position:[1,1,1],
   grids: [],
   load(callback){
-    console.log("map loading.")
+    // console.log("map loading.")
+    document.querySelector(".loadDetails").innerHTML = "Load map...";
     fetch("../json/map.json")
     .then(dt => dt.json())
     .then(data => {
@@ -81,7 +82,6 @@ let map = {
     }
   }
 }
-
 
 /*
   map template:

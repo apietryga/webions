@@ -37,13 +37,24 @@ class Creature {
       // player walking from pushed keys
       if(this.type == "player"){
         // get clicked key
-        const key = param.controls.split(",")[0];
+        // let key;
+        // console.log("param.controls:");
+        // console.log(param.controls);
+        // if(param.controls.split(",")){
+          // key = param.controls.split(",")[0];
+          // }
+        let key;
+        if(typeof param.controls != "undefined" && param.controls.length > 0){
+          key = param.controls[0];
+        }
+        // const key = param.controls.split[0];
         // set probably future position
+ 
         switch (key) {
-          case '39': phantomPos[0]++; break; // right key
-          case '37': phantomPos[0]--; break; // left key
-          case '38': phantomPos[1]--; break; // up key
-          case '40': phantomPos[1]++; break; // down key
+          case 39: phantomPos[0]++; break; // right key
+          case 37: phantomPos[0]--; break; // left key
+          case 38: phantomPos[1]--; break; // up key
+          case 40: phantomPos[1]++; break; // down key
         }
       }
       // monsters walking
@@ -133,8 +144,10 @@ class Creature {
       // set new position or display error
       if(isFloor){
         this.position = phantomPos;
-        const key = param.controls.split(",")[0];
-        if((this.type == "player" && ['37','38','39','40'].includes(key)) 
+        // let key;
+        // const key = param.controls.split(",")[0];
+        const key = param.controls[0];
+        if((this.type == "player" && [37,38,39,40].includes(key)) 
         || this.type == "monster"){
           // set exhoust
           this.walk = game.time.getTime() + Math.round(1000/this.speed);

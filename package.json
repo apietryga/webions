@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "json-stringify-pretty-compact": "^3.0.0",
-    "node-static": "^0.7.11"
+    "node-static": "^0.7.11",
+    "websocket": "^1.0.34"
   },
   "name": "webions",
   "version": "1.0.0",
   "description": "Browser MMORPG game",
   "main": "serwer.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node serwer.js"

@@ -7,7 +7,7 @@
     {
       "type": "pwa-node",
       "request": "launch",
-      "name": "Webions2",
+      "name": "Webions",
       "skipFiles": [
         "<node_internals>/**"
       ],

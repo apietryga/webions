@@ -20,7 +20,8 @@ function setResolution(){
   }
   gP.style.width = "100"+unit;
   gP.style.height = "100"+unit;
-  console.log("Resolution set.");
+  // console.log("Resolution set.");
+  document.querySelector(".loadDetails").innerHTML = "Setting resolution ...";
   mobileControls.validate();
 }
 function hpColor(perc){

@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="style/style.css">
   <link rel="manifest" href="json/manifest.json">
-  <title>TBWeb.</title>
+  <link rel="shortcut icon" href="img/logos/favicon.ico" type="image/x-icon">
+  <title>Webions</title>
 </head>
 <body>
+  <noscript>
+    This game will not apear without JavaScript - turn it on to play.
+  </noscript>
+  <div class="loader">
+    <img src="img/logos/logo.webp" alt="Webions Game">
+    <h1>LOADING</h1>
+    <div class="loadDetails"></div>
+  </div>
   <div class="wrapper">
     <div class="mobileControls leftPanel"></div>
     <div class="mobileControls rightPanel"></div>
@@ -78,7 +87,7 @@
       gamePlane.clear();
       map.update();     
       serv.load();
-      let player;
+      let player = false;
       for(const ac of gamePlane.creatures.list){
         if(ac.name == playerName){
           player = ac;
@@ -86,16 +95,18 @@
         }
         ac.update();
       }
-      player.update();
-      for(const f of gamePlane.floors){
-        map.draw(f);
-        for(const ac of gamePlane.creatures.list){
-          ac.draw(f);
+      if(player){
+        player.update();
+        for(const f of gamePlane.floors){
+          map.draw(f);
+          for(const ac of gamePlane.creatures.list){
+            ac.draw(f);
+          }
+          player.draw(f);
         }
-        player.draw(f);
+        for(const a of gamePlane.actions){a.update();}
+        inGameConsole.update();
       }
-      for(const a of gamePlane.actions){a.update();}
-      inGameConsole.update();
     },
     stop(){
       clearInterval(this.interval);
@@ -104,20 +115,29 @@
   }
 </script>
 
-<!--| SERWER CONNECTION |-->
+<!--| WEBSOCKET SERVER CONNECTION |-->
 <script>
-  // let allCreatures = [];
+  const ws = new WebSocket("ws://"+window.location.host+"/fetch/?name="+playerName,'echo-protocol');
   const serv = {
-    load(url = ""){
-      // send target options
-      // if(typeof player != "undefined" && player.isTarget && player.sendTarget){
-      if(typeof player != "undefined" && player.redTarget){
-        // url += "&redTarget="+player.isTarget;
-        url += "&redTarget="+player.redTarget;
+    connected:false,
+    load(){
+      // set connection
+      ws.onopen = () => {this.connected = true;}
+      ws.onclose = () => {this.connected = false;}
+      // send to server
+      if(this.connected){
+        const param = {
+          "name":playerName,
+          "controls":controls.vals
+        };
+        ws.send(JSON.stringify(param));
       }
-      // send controls
-      url += "&controls="+controls.vals;     
-      fetch(window.location.origin+"/fetch/?name="+playerName+url).then((dt) => dt.json()).then((data) => {
+      // get response
+      ws.onmessage = (msg) => {
+        // console.log(JSON.parse(msg.data));
+        const data = JSON.parse(msg.data);
+        // console.log(data.creatures[0].walk);
+        // console.log(data.game.time);
         // set game properties
         this.datetime = data.game.time;
         this.time = new Date(data.game.time).getTime();
@@ -175,24 +195,29 @@
             gamePlane.creatures.list[charId][key] = creature[key];
           }
         }
-      }).catch((error)=>{
+      }
+      // connection error
+      ws.onerror = (error) => {
         gamePlane.stop();
         // console.log("Your connection is lost, ");
         console.log(error);
-      })
+      }
     }
   }
+
 </script>
 
 <!--| PRELOAD |-->
 <script>
   // preload ;>
+  document.querySelector(".loadDetails").innerHTML = "Load sprites ...";
   gamePlane.loadSprites(()=>{
     serv.load();
-    console.log("Loaded.")
+    document.querySelector(".loadDetails").innerHTML = "Load map ...";
     map.generate(()=>{
-      console.log("Generated.")
+      document.querySelector(".loadDetails").innerHTML = "Load game plane ...";
       gamePlane.init();
+      document.querySelector(".loader").style.display = "none";
     })
   })
   // set elements resolution:
@@ -200,5 +225,12 @@
   setResolution();
   window.onresize = () =>{
     setResolution();  
+  }
+</script>
+
+<!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
+<script>
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('serviceWorker.js');
   }
 </script>
