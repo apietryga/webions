@@ -117,7 +117,9 @@
 
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script>
-  const ws = new WebSocket("ws://"+window.location.host+"/fetch/?name="+playerName,'echo-protocol');
+  let protocol = "ws:";
+  if(window.location.protocol == "https:"){protocol = "wss:"}
+  const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+playerName,'echo-protocol');
   const serv = {
     connected:false,
     load(){
