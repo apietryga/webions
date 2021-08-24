@@ -10,13 +10,13 @@ const controls = {
     if(targetKeys.includes(params[0])){  
       this.targeting(params);
     }
-
     // prepare table to send
     if(params[1] == true && this.vals.indexOf(params[0]) == -1){
-      this.vals.push(params[0]);
+      this.vals.push(params[0]*1);
     }else if(params[1] == false){
       this.vals.splice(this.vals.indexOf(params[0]),1);
     }
+   
     
   },
   targeting(param){
@@ -110,7 +110,7 @@ const mobileControls = {
     // mobileControls.leftButtons = new buttons("left");
     // mobileControls.leftButtons.build();
   },
-  build(ctrlID){
+  build(){
     // build panels
       // rightPanel
       const rightPanel = document.querySelector(".rightPanel");
