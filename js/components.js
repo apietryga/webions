@@ -170,7 +170,7 @@ class Creature {
       // DISTANCE SHOT
       if(this.type == "player"){
 
-        console.log(this.shotExhoust);      
+        // console.log(this.shotExhoust);      
       }
 
       if(this.shotExhoust > serv.time){

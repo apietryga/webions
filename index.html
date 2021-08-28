@@ -279,5 +279,7 @@
     }
 
   } 
-  dev.init();
+  if(urlParams.get("dev") == "on"){
+    dev.init();
+  }
 </script>

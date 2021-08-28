@@ -11,8 +11,8 @@ class Creature {
     // this.sprite = "male_oriental";
     // this.sprite = "citizen";
     if(this.name == "Zuzia"){
-      this.sprite = "female_oriental";
-      // this.sprite = "female_warrior";
+      // this.sprite = "female_oriental";
+      this.sprite = "female_warrior";
       // this.sprite = "femaleCitizen";
     }
     this.health = 2000;
@@ -26,7 +26,7 @@ class Creature {
     this.skills = {
       exp:1,
       fist:475,
-      dist:200
+      dist:400
     }
   }
   update(param = {name:""},game,map,func,creatures){
@@ -202,7 +202,7 @@ class Creature {
         && typeof c.shotPosition != "undefined"
         ){
           this.getHit(this.name,c.skills.dist);
-          delete c.shotPosition;
+          delete c.shotPosition;          
         }
       }
     }
@@ -255,6 +255,7 @@ class Creature {
   getHit = (from,hp) =>{
     // console.log(from+" BIJE "+this.name)
     this.health -= hp;
+    this.text = from+" Cię walnął za "+hp+" hapa"
     // FOR DEVELOP ONLY
     // if(this.health < 0.3*this.maxHealth){
     //   this.health = this.maxHealth;
