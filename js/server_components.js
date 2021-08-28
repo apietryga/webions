@@ -79,7 +79,7 @@ class Creature {
         if(walkingMode == "random") {
           r = Math.floor(Math.random() * 4);
         }
-        if (walkingMode == "follow") {
+        if(walkingMode == "follow") {
           let [monX,monY] = this.position;
           let [plaX,plaY] = playerInArea.position; 
           let posibilites = [];
@@ -114,6 +114,7 @@ class Creature {
 
       // checking if position is availble
       let isFloor = false;
+      let isStairs = false;
       // check grids
       for (let grid of map) {
         if (func.compareTables([grid[1],grid[2],grid[3]], phantomPos)) {
@@ -123,6 +124,7 @@ class Creature {
             if(this.type == "monster"){
               break;
             }
+            isStairs = true;
           }
           isFloor = true;
           break;
@@ -132,6 +134,9 @@ class Creature {
       for(const c of creatures){
         if (func.compareTables(c.position, phantomPos) && c.name != param.name && c.health > 0) {
           isFloor = false;
+          if(this.type == "player" && isStairs){
+            isFloor = true;
+          }
         }        
       }
       // set new position or display error
@@ -180,8 +185,8 @@ class Creature {
           if(c.health > 0 && this.health > 0){
             // FIST FIGHTING
             if( this.fistFighting <= game.time.getTime() &&c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
-              c.getHit(this.name,this.skills.exp*this.skills.fist);
               this.fistFighting = game.time.getTime() + 1000;
+              c.getHit(this.name,this.skills.exp*this.skills.fist);
             }
             // DISTANCE SHOT - 68 is "D" key
             if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type == "player"){
@@ -201,7 +206,7 @@ class Creature {
         if(c.shotExhoust <= game.time.getTime() 
         && typeof c.shotPosition != "undefined"
         ){
-          this.getHit(this.name,c.skills.dist);
+          this.getHit(c.name,c.skills.dist);
           delete c.shotPosition;          
         }
       }
@@ -253,13 +258,8 @@ class Creature {
     }
   }
   getHit = (from,hp) =>{
-    // console.log(from+" BIJE "+this.name)
     this.health -= hp;
     this.text = from+" Cię walnął za "+hp+" hapa"
-    // FOR DEVELOP ONLY
-    // if(this.health < 0.3*this.maxHealth){
-    //   this.health = this.maxHealth;
-    // }
   }
 }
 module.exports = Creature;
