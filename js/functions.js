@@ -73,6 +73,14 @@ function checkClick(event) {
   });
   return element;
 }
+function isSet(val){
+  let result = false;
+  if(typeof val != "undefined"){
+    // console.log();
+    result = true;
+  }
+  return result;
+}
 
 // MOBILE CONTROLS
 function absorbEvent_(event) {

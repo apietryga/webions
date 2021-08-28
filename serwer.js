@@ -87,6 +87,7 @@ const wsServer = new WebSocketServer({httpServer : server})
         }
       }
       if(!isPlayerSet){
+        // console.log(param)
         player = new Creature(param.name,creatures.length);
         creatures.push(player);
       }

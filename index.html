@@ -21,31 +21,27 @@
     <div class="mobileControls leftPanel"></div>
     <div class="mobileControls rightPanel"></div>
     <div class="gamePlane">
-
       <canvas ></canvas>  
     </div>
   </div>
-
-  <!-- DEV BUTTONS -->
-  <button onclick="gamePlane.stop()">STOP</button>
-  <button onclick="gamePlane.init()">START</button>
-
-  <script src="js/components.js"></script>
-  <script src="js/functions.js"></script>
-  <script src="js/mapcontroller.js"></script>
-  <script src="js/sprites.js"></script>
-  <script src="js/controls.js"></script>
 </body>
 </html>
+<script src="js/functions.js"></script>
+<script src="js/mapcontroller.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/controls.js"></script>
+
 <!--| GAME PROPERTIES |-->
 <script>
   const urlParams = new URLSearchParams(window.location.search);
-  let playerName = urlParams.get('player');
-  if(playerName == null){
-    playerName = "Newbie";
+  let player = {};
+  player.name = urlParams.get('player');
+  if(player.name == null){
+    player.name = "Newbie";
   }
+  player.position = [0,0,0];
+
   let inGameConsole;
-  let player;
   const gamePlane = {
     fps : 10,
     actions: [],
@@ -87,15 +83,19 @@
       gamePlane.clear();
       map.update();     
       serv.load();
-      let player = false;
+      // let player = false;
+      let playerIsSet = false;
       for(const ac of gamePlane.creatures.list){
-        if(ac.name == playerName){
+        // console.log(ac)
+        if(ac.name == player.name){
           player = ac;
+          playerIsSet = true;
           continue;
         }
         ac.update();
       }
-      if(player){
+      // console.log()
+      if(playerIsSet){
         player.update();
         for(const f of gamePlane.floors){
           map.draw(f);
@@ -107,6 +107,7 @@
         for(const a of gamePlane.actions){a.update();}
         inGameConsole.update();
       }
+      // console.log("idzie?")
     },
     stop(){
       clearInterval(this.interval);
@@ -114,32 +115,33 @@
     }
   }
 </script>
+<script src="js/components.js"></script>
 
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script>
   let protocol = "ws:";
   if(window.location.protocol == "https:"){protocol = "wss:"}
-  const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+playerName,'echo-protocol');
+  const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
   const serv = {
     connected:false,
+    param : {},
+    paramUpdate(){
+      this.param.name = player.name;
+      this.param.controls = controls.vals;
+      isSet(player.whiteTarget)?this.param.target = player.whiteTarget:'';
+      return this.param;
+    },
     load(){
       // set connection
       ws.onopen = () => {this.connected = true;}
       ws.onclose = () => {this.connected = false;}
       // send to server
       if(this.connected){
-        const param = {
-          "name":playerName,
-          "controls":controls.vals
-        };
-        ws.send(JSON.stringify(param));
+        ws.send(JSON.stringify(this.paramUpdate()));
       }
       // get response
       ws.onmessage = (msg) => {
-        // console.log(JSON.parse(msg.data));
         const data = JSON.parse(msg.data);
-        // console.log(data.creatures[0].walk);
-        // console.log(data.game.time);
         // set game properties
         this.datetime = data.game.time;
         this.time = new Date(data.game.time).getTime();
@@ -155,11 +157,11 @@
           let myChar;
           let charId;
           if(!gamePlane.creatures.names.includes(creature.name)){
-            if(creature.name == playerName){
-              player = new Creature("player",2,3,0,playerName); 
+            if(creature.name == player.name){
+              player = new Creature("player",player.position,player.name); 
               myChar = player;
             }else{
-              myChar = new Creature("enemy",creature.position[0],creature.position[1],creature.position[2],creature.name);
+              myChar = new Creature("enemy",creature.position,creature.name);
             }
             gamePlane.creatures.list.push(myChar);
             charId = gamePlane.creatures.list.length-1;
@@ -172,7 +174,7 @@
               }
             }
             // update console
-            if(creature.name == playerName && creature.text != ""){
+            if(creature.name == player.name && creature.text != ""){
               inGameConsole.text = creature.text;
               // console.log(creature.text);
             }
@@ -206,7 +208,6 @@
       }
     }
   }
-
 </script>
 
 <!--| PRELOAD |-->
@@ -235,4 +236,48 @@
   if('serviceWorker' in navigator) {
     navigator.serviceWorker.register('serviceWorker.js');
   }
+</script>
+
+<!--| DEVELOPER BUTTONS & STATS |-->
+<script>
+  const dev = {
+    init(){
+      this.makeDevButt("STOP",()=>{gamePlane.stop()});
+      this.makeDevButt("START",()=>{gamePlane.init()});
+      this.makeStatsField();
+      this.update();
+    },
+    makeDevButt(title,func){
+      const butt = document.createElement("button");
+      butt.onclick = () => { func()};
+      butt.innerHTML =  title;
+      document.body.append(butt);
+    },
+    makeStatsField(){
+      this.statsDOM = document.createElement("div");
+      this.statsDOM.innerHTML = "ELO :D"
+      this.statsDOM.style.cssText = `
+        border:2px dashed red;
+        max-width:20vw;
+        position:fixed;
+        right:0;
+        top:0;
+        padding:1%;
+      `;
+      document.body.append(this.statsDOM);
+    },
+    stats : {
+      fps: 10,
+      
+    },
+    update(){
+      this.statsDOM.innerHTML = "";
+      for(const s of Object.keys(this.stats)){
+        this.statsDOM.innerHTML += s +": "+this.stats[s]+"<br />";
+        // this.statsDOM.innerHTML = this.stats;
+      }
+    }
+
+  } 
+  dev.init();
 </script>

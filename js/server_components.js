@@ -10,7 +10,7 @@ class Creature {
     this.sprite = "male_warrior";
     // this.sprite = "male_oriental";
     // this.sprite = "citizen";
-    if(nickName.includes("Zuzia")){
+    if(this.name == "Zuzia"){
       this.sprite = "female_oriental";
       // this.sprite = "female_warrior";
       // this.sprite = "femaleCitizen";
@@ -26,6 +26,7 @@ class Creature {
     this.skills = {
       exp:1,
       fist:475,
+      dist:200
     }
   }
   update(param = {name:""},game,map,func,creatures){
@@ -37,19 +38,11 @@ class Creature {
       // player walking from pushed keys
       if(this.type == "player"){
         // get clicked key
-        // let key;
-        // console.log("param.controls:");
-        // console.log(param.controls);
-        // if(param.controls.split(",")){
-          // key = param.controls.split(",")[0];
-          // }
         let key;
         if(typeof param.controls != "undefined" && param.controls.length > 0){
           key = param.controls[0];
         }
-        // const key = param.controls.split[0];
         // set probably future position
- 
         switch (key) {
           case 39: phantomPos[0]++; break; // right key
           case 37: phantomPos[0]--; break; // left key
@@ -153,23 +146,32 @@ class Creature {
           this.walk = game.time.getTime() + Math.round(1000/this.speed);
         }
       }else if(this.type == "player"){
-        this.text = "NO FUCKING WAY.";
+        this.text = "There's no way.";
       }
     }
     // RED TARGETING [player] 
-    const key = "redTarget";
-    if(Object.keys(param).includes(key) && param.name == this.name){
-      if(param[key] != "clear"){
-        this[key] = param[key];     
-      }else{        
-        delete this[key];
+    if(this.type == "monster"&& typeof playerInArea != "undefined"&& this.health > 0.2*this.maxHealth){
+      // monster
+      this.redTarget = playerInArea.id;
+    }else if(param.controls.includes(83) && typeof param.target != "undefined"){
+      // player
+      this.redTarget = param.target;
+    }
+    // CLEAR redTarget
+    if(this.redTarget){
+      for(const c of creatures){
+        if(c.id == this.redTarget){
+          if(
+            c.position[2] != this.position[2]
+            || Math.abs(c.position[0] - this.position[0]) > 5
+            || Math.abs(c.position[1] - this.position[1]) > 5
+          ){
+              this.redTarget = false;
+              this.text = "Target lost.";
+          }
+        }
       }
     }
-    // RED TARGETING [monster]
-    if(this.type == "monster"&& typeof playerInArea != "undefined"&& this.health > 0.2*this.maxHealth){
-      // if(this.name=="Dragon"){console.log("dragonhit")}
-      this.redTarget = playerInArea.id;
-    }  
     // SHOTS
     if(this.redTarget){
       for(const c of creatures){
@@ -180,14 +182,12 @@ class Creature {
             if( this.fistFighting <= game.time.getTime() &&c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
               c.getHit(this.name,this.skills.exp*this.skills.fist);
               this.fistFighting = game.time.getTime() + 1000;
-              // console.log(this.name +" bije "+ c.name)
-              // c.text = "dostałes=s"
             }
             // DISTANCE SHOT - 68 is "D" key
             if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type == "player"){
               // set coords
               this.shotPosition = [this.position,c.position];
-              this.shotExhoust = game.time.getTime() + 1500;
+              this.shotExhoust = game.time.getTime() + 1000;
             }
           }
         }
@@ -201,7 +201,7 @@ class Creature {
         if(c.shotExhoust <= game.time.getTime() 
         && typeof c.shotPosition != "undefined"
         ){
-          this.getHit(this.name,500);
+          this.getHit(this.name,c.skills.dist);
           delete c.shotPosition;
         }
       }
@@ -222,8 +222,8 @@ class Creature {
           // clear from target list
           for(const c of creatures){
             if(c.redTarget == this.id){
-              c.redTarget = 0;
-              this.redTarget = 0
+              c.redTarget = false;
+              this.redTarget = false
             }
           }
         }

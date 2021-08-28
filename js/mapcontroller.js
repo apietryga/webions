@@ -1,6 +1,7 @@
 let map = {
   position:[1,1,1],
   grids: [],
+  hideFloor:[],
   load(callback){
     // console.log("map loading.")
     document.querySelector(".loadDetails").innerHTML = "Load map...";

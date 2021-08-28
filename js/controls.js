@@ -4,7 +4,6 @@ const controls = {
     this.vals = [];
   },
   update(params){
-    // console.log(params)
     // white target on client side (84 is t key)
     const targetKeys = [83,84];
     if(targetKeys.includes(params[0])){  
@@ -16,13 +15,17 @@ const controls = {
     }else if(params[1] == false){
       this.vals.splice(this.vals.indexOf(params[0]),1);
     }
-   
+    if(params[0] == 68 && params[1] && (!player.redTarget || (serv.time < player.shotExhoust))){
+      gamePlane.actions.push(new Action("misc",player.x,player.y,40,40,0));
+    }
+    if(params[0] == 72 && params[1] && (player.health == player.maxHealth || (serv.time < player.healthExhoust))){
+      gamePlane.actions.push(new Action("misc",player.x,player.y,40,40,0));  
+    }
     
   },
   targeting(param){
     //  TARGET LIST
     const cToTarget = [];
-    let isTarget = false;
     // cToTarget update
     for(const c of gamePlane.creatures.list){
       if(   c.name != player.name 
@@ -36,23 +39,22 @@ const controls = {
     }    
     // white targeting ( T key )
     if(param[0] == 84 && param[1] == true){
-      // clear targets here
-      for(const c of cToTarget){
-          c.whiteTarget = false;  
-      }
+      // get target index of list
       if(this.currentTarget > cToTarget.length-1){
         this.currentTarget = false;
       }else{
         this.currentTarget++;
       }
-      for(let i = 0; i < cToTarget.length; i++){
-        const c = cToTarget[i];
+      for(let i = 0; i < cToTarget.length; i++){  
         if(i == this.currentTarget-1){
-          c.whiteTarget = true;
+          player.whiteTarget = cToTarget[i].id;
+          break;
         }else{
-          c.whiteTarget = false;  
+          player.whiteTarget = false;
         }
       }
+      // console.log(player.whiteTarget);
+
     }
     // red targeting (white target + S key)
     if(param[0] == 83 && param[1] == true){
@@ -170,10 +172,10 @@ const mobileControls = {
     window.oncontextmenu = function() { return false; }
     function preventLongPressMenu(nodes) {
       for(var i=0; i<nodes.length; i++){
-         nodes[i].ontouchstart = absorbEvent_;
-         nodes[i].ontouchmove = absorbEvent_;
-         nodes[i].ontouchend = absorbEvent_;
-         nodes[i].ontouchcancel = absorbEvent_;
+        nodes[i].ontouchstart = absorbEvent_;
+        nodes[i].ontouchmove = absorbEvent_;
+        nodes[i].ontouchend = absorbEvent_;
+        nodes[i].ontouchcancel = absorbEvent_;
       }
     }
     preventLongPressMenu(document.querySelectorAll('*:not(button)'));
