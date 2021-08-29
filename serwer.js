@@ -4,7 +4,8 @@ const {URL} = require('url');
 const map = require("./json/map.json");
 const func = require("./js/functions");
 const static = require('node-static');
-const file = new(static.Server)(__dirname);
+const file = new(static.Server)("www");
+const file2 = new(static.Server)(__dirname);
 const stringify = require("json-stringify-pretty-compact");
 const WebSocketServer = require("websocket").server;
 const Creature = require("./js/server_components");
@@ -36,8 +37,21 @@ function handler(req, res) {
     res.end()
 
   }else{
-    // serve static files
-    file.serve(req, res);
+    // static www files: 
+    const www = [
+      "/",
+      "/index.html",
+      "/howtoplay.html",
+      "/players.html",
+      "/style/page.css"
+    ];
+    if(www.includes(myURL.pathname)){
+      // serve www folder
+      file.serve(req, res);
+    }else{
+      // serve main folder
+      file2.serve(req,res);
+    }
   }
 }
 const server = http.createServer(handler).listen(process.env.PORT || 80);

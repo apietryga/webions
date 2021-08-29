@@ -1,0 +1,101 @@
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  margin: 0;
+}
+
+h2 {
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
+}
+
+h4 {
+  margin: 0;
+}
+
+h5 {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #5a1b1b;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+body a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body > header > a {
+  display: flex;
+  align-items: center;
+  padding: 2%;
+  justify-content: flex-start;
+}
+
+body > header > a img {
+  height: 4em;
+  margin-right: 1em;
+}
+
+body > header > nav {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+body > header > nav a {
+  padding: 2%;
+  border: 2px dashed green;
+  flex: 1;
+  text-align: center;
+}
+
+body .wrapper {
+  padding: 2%;
+  display: flex;
+  flex: 1;
+}
+
+body .wrapper main {
+  flex: 3;
+  padding: 3%;
+}
+
+body .wrapper main form {
+  border: 5px dashed red;
+  padding: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body .wrapper main form input {
+  padding: 10px;
+}
+
+body .wrapper aside {
+  flex: 1;
+  border: 2px dashed blue;
+  display: flex;
+  flex-direction: column;
+  padding: 3%;
+}
+
+body footer {
+  background-color: #000;
+  padding: 10% 5%;
+}

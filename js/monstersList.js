@@ -16,8 +16,7 @@ const monstersList = [
       exp:1,
       dist:0
     }
-  }
-  ,
+  },
   {name:"Dragon",
     id:1,
     position:[0,7,1], // left tower
@@ -44,29 +43,28 @@ const monstersList = [
     type:"monster",
     health:15000,
     maxHealth:15000,
-    speed:6,
+    speed:3,
     skills:{
       fist:10,
       exp:15,
       dist:0
     }
-  }
-  ,
+  },
   {name:"Hellknight",
     id:4,
     // position:[0,7,1], // left tower
-    position:[3,16,0],
-    startPosition:[3,16,0],
+    position:[3,27,0],
+    startPosition:[3,27,0],
     sprite:"hellknight",
     type:"monster",
-    health:10000,
+    health:50000,
     // maxHealth
-    maxHealth:10000,
+    maxHealth:50000,
     speed:3,
     skills:{
       fist:2,
       exp:150,
-      dist:0
+      dist:200
     }
   }
 ]

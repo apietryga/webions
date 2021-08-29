@@ -168,11 +168,6 @@ class Creature {
         gamePlane.actions.push(new Action("misc",this.x,this.y,40,40,2));
       }
       // DISTANCE SHOT
-      if(this.type == "player"){
-
-        // console.log(this.shotExhoust);      
-      }
-
       if(this.shotExhoust > serv.time){
         if(isSet(this.shotBullet)){
           // get victim to set bullet end position
@@ -211,8 +206,8 @@ class Creature {
           this.startBullet = serv.time;
         }
       }else{
+        // last time
         if(typeof this.shotBullet != "undefined"){
-          // last time
           gamePlane.actions.push(new Action("misc",this.shotPosition[1][0],this.shotPosition[1][1],40,40,1));
           delete this.shotBullet;
           delete this.startBullet;          

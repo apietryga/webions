@@ -7,14 +7,17 @@ class Creature {
     this.startPosition = this.position;
     this.walk = 0;
     this.speed = 5; // grids per second
-    this.sprite = "male_warrior";
-    // this.sprite = "male_oriental";
+    // this.sprite = "male_warrior";
+    this.sprite = "male_oriental";
     // this.sprite = "citizen";
     if(this.name == "Zuzia"){
-      // this.sprite = "female_oriental";
-      this.sprite = "female_warrior";
+      this.sprite = "female_oriental";
+      // this.sprite = "female_warrior";
       // this.sprite = "femaleCitizen";
     }
+    if(this.name == "Justyna"){this.sprite = "female_warrior";}
+    if(this.name == "Kotul"){this.sprite = "male_warrior";}
+
     this.health = 2000;
     this.maxHealth = this.health;
     this.healthExhoust = 0;
@@ -40,7 +43,13 @@ class Creature {
         // get clicked key
         let key;
         if(typeof param.controls != "undefined" && param.controls.length > 0){
-          key = param.controls[0];
+          // get some of arrow key
+          for(const k of [37,39,38,40]){
+            if(param.controls.includes(k)){
+              key = k;
+              break;
+            }
+          }
         }
         // set probably future position
         switch (key) {
@@ -188,11 +197,19 @@ class Creature {
               this.fistFighting = game.time.getTime() + 1000;
               c.getHit(this.name,this.skills.exp*this.skills.fist);
             }
-            // DISTANCE SHOT - 68 is "D" key
+            // DISTANCE SHOT - 68 is "D" key [players]
             if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type == "player"){
               // set coords
               this.shotPosition = [this.position,c.position];
               this.shotExhoust = game.time.getTime() + 1000;
+              this.bulletTime = game.time.getTime()+200;
+            }
+            // DISTANCE SHOT [monsters]
+            if(this.skills.dist > 0 && this.shotExhoust <= game.time.getTime() && this.type == "monster"){
+              // set coords
+              this.shotPosition = [this.position,c.position];
+              this.shotExhoust = game.time.getTime() + 1000;
+              this.bulletTime = game.time.getTime()+200;
             }
           }
         }
@@ -203,10 +220,15 @@ class Creature {
     for(const c of creatures){
       if(c.redTarget == this.id){
         // distance shot
-        if(c.shotExhoust <= game.time.getTime() 
-        && typeof c.shotPosition != "undefined"
+        if(typeof c.shotPosition != "undefined"
+        && typeof c.bulletTime != "undefined"
+        && c.bulletTime <= game.time.getTime() 
         ){
+          // console.log(this.name + " is hited by "+from)
+
           this.getHit(c.name,c.skills.dist);
+          // c.shotExhoust = game.time.getTime() + 1000;
+          delete c.bulletTime;
           delete c.shotPosition;          
         }
       }
