@@ -5,7 +5,7 @@ let map = {
   load(callback){
     // console.log("map loading.")
     document.querySelector(".loadDetails").innerHTML = "Load map...";
-    fetch("../json/map.json")
+    fetch("../json/map.json?v=1")
     .then(dt => dt.json())
     .then(data => {
       map.template = data;
