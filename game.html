@@ -151,16 +151,35 @@
       // get response
       ws.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
-        // set game properties
+        
+        // update game properties
         this.datetime = data.game.time;
         this.time = new Date(data.game.time).getTime();
         gamePlane.fps = data.game.fps;
-        // updating names and online/offline players
+        
+        // get names of online players
+        let onlinePlayers = [];
+        for(const p of data.creatures){
+          if(p.type == "player"){
+            onlinePlayers.push(p.name);
+          }
+        }
+
+        // kick off offline players and update creature names
         for(const ac of gamePlane.creatures.list){
+          if(!onlinePlayers.includes(ac.name) && ac.type == "enemy"){
+            gamePlane.actions.push(new Action("misc",ac.position[0]+ac.x,ac.position[1]+ac.y,40,40,0));     
+            gamePlane.creatures.list.splice(gamePlane.creatures.list.indexOf(ac),1);
+            if(gamePlane.creatures.names.includes(ac.name)){
+              gamePlane.creatures.names.splice(gamePlane.creatures.names.indexOf(ac.name),1);
+            }
+            continue;
+          }
           if(!gamePlane.creatures.names.includes(ac.name)){
             gamePlane.creatures.names.push(ac.name);
           }
         }
+        
         // updating values
         for(const creature of data.creatures){
           let myChar;
@@ -170,7 +189,9 @@
               player = new Creature("player",player.position,player.name); 
               myChar = player;
             }else{
-              myChar = new Creature("enemy",creature.position,creature.name);
+              let type = "monster";
+              if(creature.type == "player"){type = "enemy";}
+              myChar = new Creature(type,creature.position,creature.name);
             }
             gamePlane.creatures.list.push(myChar);
             charId = gamePlane.creatures.list.length-1;

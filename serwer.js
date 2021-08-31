@@ -10,12 +10,9 @@ const stringify = require("json-stringify-pretty-compact");
 const WebSocketServer = require("websocket").server;
 const Creature = require("./js/server_components");
 const monstersList = require("./js/monstersList");
-const game = {
-  time : new Date(),
-  fps: 10,
-  items:[]
-}
-const creatures = [];
+const makewww = require("./www/makewww");
+const dbConnect = require("./js/dbconnect");
+const dbc = new dbConnect();
 function handler(req, res) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];
@@ -43,11 +40,24 @@ function handler(req, res) {
       "/index.html",
       "/howtoplay.html",
       "/players.html",
-      "/style/page.css"
+      "/style/page.css",
+      "/makewww",
+      "/wwwscripts.js",
+      "/img/whitetarget.gif",
+      "/img/redtarget.gif",
+      "/img/dist.gif",
+      "/img/healing.gif",
     ];
     if(www.includes(myURL.pathname)){
-      // serve www folder
-      file.serve(req, res);
+      if(myURL.pathname == "/makewww"){
+        // make www htmls
+        makewww(()=>{
+          // serve www folder
+          file.serve(req, res);
+        });
+      }else{
+        file.serve(req, res);
+      }      
     }else{
       // serve main folder
       file2.serve(req,res);
@@ -57,65 +67,71 @@ function handler(req, res) {
 const server = http.createServer(handler).listen(process.env.PORT || 80);
 console.log("serwer is running on: http://webions");
 
+// set game details
+const game = {
+  time : new Date(),
+  fps: 10,
+  items:[]
+}
+// set arr for all creatures
+const creatures = [];
+// add all monsters to creatures arr
+for(const m of monstersList){
+  const monster = new Creature(m.name,creatures.length);
+  monster.type = "monster";
+  for(const key of Object.keys(m)){
+    monster[key] = m[key];
+  }
+  creatures.push(monster);
+}
+
 // WEBSOCKET
 const wsServer = new WebSocketServer({httpServer : server})
 .on('request', (req)=>{
   const connection = req.accept('echo-protocol', req.origin);
   let newData = "ERROR 1";
-  // console.log(req)
   connection.on('message', (data) => {
     game.time = new Date();
     const param = JSON.parse(data.utf8Data);
-    // if(Object.keys(param).includes("name")){
-    if(2 == 2){
-      // manage monsters
-      for(const m of monstersList){
-        m.isset = false;
-        for(const c of creatures){
-          if(c.name == m.name && c.type == "monster"){
-            // update monster
-            m.isset = true;
-          }
-        }
-        if(!m.isset){
-          const monster = new Creature(m.name,creatures.length);
-          monster.type = "monster";
-          for(const key of Object.keys(m)){
-            monster[key] = m[key];
-          }
-          creatures.push(monster);
-        }
+    // update monsters
+    for(const c of creatures){
+      if(c.type == "monster"){
+        c.update(param,game,map,func,creatures);
       }
-      for(const c of creatures){
-        if(c.type == "monster"){
-          c.update(param,game,map,func,creatures);
-        }
+    }
+    // manage player:
+    let player;
+    let isPlayerSet = false;
+    for(const c of creatures){
+      // log out (if not download info in 1s)
+      if(typeof c.lastFrame != "undefined" 
+      && c.type == "player"
+      && game.time.getTime() - c.lastFrame > 5000){
+        creatures.splice(creatures.indexOf(c),1);
+        continue;
       }
-      // manage player:
-      let player = {};
-      let isPlayerSet = false;
-      for(const c of creatures){
-        if(c.name == param.name){
-          isPlayerSet = true;
-          player = c;
-        }
+      
+      // update player
+      if(c.name == param.name){
+        isPlayerSet = true;
+        player = c;
+        player.lastFrame = game.time.getTime();
       }
-      if(!isPlayerSet){
-        // console.log(param)
-        player = new Creature(param.name,creatures.length);
-        creatures.push(player);
-      }
-      player.text = "";
-      player.type = "player";
-      player.update(param,game,map,func,creatures);
-      // output
-      newData = {
-        game: game,
-        creatures: creatures
-      }
-      // res.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});
-      // res.write(stringify(newData,null,2),"utf-8")
-      // res.end()
+    }
+    // console.log(creatures);
+    // first login - creating player
+    if(!isPlayerSet && typeof player == "undefined"){
+      player = new Creature(param.name,creatures.length);
+      creatures.push(player);
+      player.lastFrame = game.time;
+    }
+    player.text = "";
+    player.type = "player";
+    player.update(param,game,map,func,creatures);
+    // output
+    newData = {
+      game: game,
+      creatures: creatures
     }
     connection.sendUTF(stringify(newData,null,2));
   })

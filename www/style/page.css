@@ -22,6 +22,18 @@ h5 {
   margin: 0;
 }
 
+@keyframes walk {
+  0% {
+    background-position: -18px -98px;
+  }
+  50% {
+    background-position: -98px -98px;
+  }
+  100% {
+    background-position: -178px -98px;
+  }
+}
+
 html {
   height: 100%;
 }
@@ -37,10 +49,25 @@ body {
 
 body a {
   text-decoration: none;
-  color: inherit;
+  color: #7f7ff1;
+}
+
+body > header {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+body > header::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), transparent);
 }
 
 body > header > a {
+  color: inherit;
   display: flex;
   align-items: center;
   padding: 2%;
@@ -55,47 +82,200 @@ body > header > a img {
 body > header > nav {
   display: flex;
   justify-content: space-evenly;
+  margin: 0 2%;
+  gap: 2%;
+  padding: 2%;
+  background-color: rgba(255, 255, 255, 0.096);
+  border-radius: 7px;
 }
 
 body > header > nav a {
+  color: inherit;
   padding: 2%;
-  border: 2px dashed green;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 7px;
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  position: relative;
+  box-shadow: 2px 2px 2px 2px rgba(255, 0, 0, 0.541);
+}
+
+body > header > nav a:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: 1s;
 }
 
 body .wrapper {
+  position: relative;
   padding: 2%;
   display: flex;
   flex: 1;
 }
 
 body .wrapper main {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.096);
   flex: 3;
   padding: 3%;
 }
 
 body .wrapper main form {
-  border: 5px dashed red;
-  padding: 2%;
+  background-color: rgba(255, 255, 255, 0.671);
+  color: #000;
+  box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.493);
+  border-radius: 7px;
+  padding: 5% 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
 }
 
-body .wrapper main form input {
+body .wrapper main form input[type=text] {
   padding: 10px;
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.493);
+  background-color: rgba(255, 255, 255, 0.445);
+  outline: none;
+  border: none;
+  font-size: 1.3em;
+  text-align: center;
+}
+
+body .wrapper main form input[type=submit] {
+  padding: 30px 60px;
+  border-radius: 7px;
+  border: 2px solid #fff;
+  color: #fff;
+  font-weight: bolder;
+  cursor: pointer;
+  background-color: rgba(255, 0, 0, 0.445);
+}
+
+body .wrapper main table {
+  border: 2px dashed red;
+  width: 100%;
+}
+
+body .wrapper main table > a {
+  display: table-row;
+}
+
+body .wrapper main table > a td {
+  border: 2px dashed blue;
+}
+
+body .wrapper main table tr {
+  border: 2px dashed red;
+  background-color: rgba(255, 255, 0, 0.151);
+}
+
+body .wrapper main table tr td {
+  width: 50%;
+}
+
+body .wrapper main table tr td div {
+  border: 2px dashed red;
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-position: -18px -98px;
+  animation: walk 0.4s step-start infinite;
+}
+
+body .wrapper main table tr td:nth-child(1) {
+  background-color: green;
+}
+
+body .wrapper main table tr td:nth-child(2) {
+  background-color: blue;
+}
+
+body .wrapper main table tr td.sprite {
+  background-color: yellow;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body .wrapper main h1 {
+  line-height: 0.6em;
+}
+
+body .wrapper main h1 a {
+  font-size: 0.5em;
+  color: #ababeb;
+}
+
+body .wrapper main .tos {
+  padding: 2%;
+  padding-bottom: 5%;
+}
+
+body .wrapper main .tos .H0 {
+  margin: -2em;
+}
+
+body .wrapper main .tos .H1 {
+  margin: -1em;
+}
+
+body .wrapper main .tos .H2 {
+  margin: 0em;
+}
+
+body .wrapper main .tos .H3 {
+  margin: 1em;
+}
+
+body .wrapper main .tos .H4 {
+  margin: 2em;
+}
+
+body .wrapper main .tos .H5 {
+  margin: 3em;
+}
+
+body .wrapper main .cont img {
+  width: 80%;
+  margin: 5% 10%;
+}
+
+body .wrapper main .cont h3 {
+  margin-top: 10%;
 }
 
 body .wrapper aside {
   flex: 1;
-  border: 2px dashed blue;
   display: flex;
   flex-direction: column;
   padding: 3%;
+  padding-bottom: 0;
+  position: sticky;
+  top: 0;
 }
 
 body footer {
   background-color: #000;
-  padding: 10% 5%;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+body footer a {
+  padding: 1%;
+}
+
+@media (max-width: 720px) {
+  body .wrapper {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 1000px) {
+  .wrapper {
+    width: 60%;
+    margin-left: 20%;
+  }
 }

@@ -1,0 +1,19 @@
+[
+  {
+    "name":"Zuzia",
+    "sprite": "female_oriental",
+    "skills":{
+      "exp":100,
+      "fist":10,
+      "dist":100
+    }
+  },{
+    "name":"Antek",
+    "sprite": "male_oriental",
+    "skills":{
+      "exp":100,
+      "fist":10,
+      "dist":100
+    }
+  }
+]

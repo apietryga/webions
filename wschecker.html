@@ -11,12 +11,16 @@
   <pre></pre>
 
   <script>
-    let player = {name:"Newbie"};
+    let plName = "Newbie";
+    let srh = searchToObject();
+    if(Object.keys(srh).includes("player")){
+      plName = srh.player;
+    }
     let protocol = "ws:";
     if(window.location.protocol == "https:"){protocol = "wss:"}
-    const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
+    const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+plName,'echo-protocol');
     ws.onopen = () => {
-      ws.send(JSON.stringify({"name":"Newbie","controls":[],"target":false}));
+      ws.send(JSON.stringify({"name":plName,"controls":[],"target":false}));
       ws.onmessage = (msg) => {
         console.log(JSON.parse(msg.data));
         let data = JSON.stringify(msg.data);
@@ -27,6 +31,24 @@
 
     }
 
+
+
+
+  function searchToObject() {
+    var pairs = window.location.search.substring(1).split("&"),
+      obj = {},
+      pair,
+      i;
+
+    for ( i in pairs ) {
+      if ( pairs[i] === "" ) continue;
+
+      pair = pairs[i].split("=");
+      obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+    }
+
+    return obj;
+  }
   </script>
 
 </body>
