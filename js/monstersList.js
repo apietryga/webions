@@ -1,10 +1,10 @@
 const monstersList = [
   {name:"Dragon",
     id:1,
-    position:[0,3,0],
-    startPosition:[0,3,0],
-    // position:[0,7,1], // left tower
-    // startPosition:[0,7,1],
+    // position:[0,3,0],
+    // startPosition:[0,3,0],
+    position:[0,7,1], // left tower
+    startPosition:[0,7,1],
     sprite:"dragon",
     type:"monster",
     health:1000,

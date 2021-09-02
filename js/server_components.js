@@ -4,8 +4,8 @@ class Creature {
   constructor(nickName,creaturesLength){
     this.id = creaturesLength+1; 
     this.name = nickName;
-    // this.position = [2,3,0];  // left tower down
-    this.position = [20,13,1];  // left tower down
+    this.position = [2,3,0];  // left tower down
+    // this.position = [20,13,1];  // left tower down
     // this.position = [1,5,1];  // left tower up
     this.startPosition = this.position;
     this.walk = 0;
@@ -199,7 +199,7 @@ class Creature {
             // FIST FIGHTING
             if( this.fistFighting <= game.time.getTime() &&c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
               this.fistFighting = game.time.getTime() + 1000;
-              c.getHit(this,this.skills.exp*this.skills.fist);
+              c.getHit(this,this.skills.fist);
             }
             // DISTANCE SHOT - 68 is "D" key [players]
             if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type == "player"){
