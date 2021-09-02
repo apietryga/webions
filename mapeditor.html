@@ -40,144 +40,172 @@
   </style>
 </head>
 <body>
-<script src="js/sprites.js"></script>
-<script>
-  const editor = {
-      canvas: document.createElement("canvas"),
-      map: [],
-      element: ["floors",0],
-      sprites:[],
-      reload(callback){fetch("json/map.json").then((dt)=>dt.json()).then((out)=>{
-          editor.map = out;
-      callback(out);});},
-      loadSprites(callback) {
-        let name;
-        for(const s of sprites){
-          if(s.group != "outfits" && s.group != "monsters"){
-            this.sprites[s.name] = document.createElement("img");
-            this.sprites[s.name].src = s.src;
-            if(typeof s.w != "undefined"){this.sprites[s.name].dataset.w = s.w;}
-            name = s.name;
-          }        
-        }
-        this.sprites[name].onload = () => {
-          callback();
-        }
-      },
-      init(){
-        this.canvas.width = 600;
-        this.canvas.height = 600;
-        document.body.append(this.canvas);
-        this.loadSprites((map)=>{
-          this.elemInit();
-          this.reload((map)=>{
-            this.drawMap(map);
-            this.controlInit();
-          });
-        });
-      },
-      position:[0,0,0],
-      controlInit(){
-        document.addEventListener("keydown",(e)=>{
-          switch (e.keyCode) {
-            case 37: this.position[0]--;break;          
-            case 39: this.position[0]++;break;          
-            case 38: this.position[1]--;break;          
-            case 40: this.position[1]++;break;          
-            case 32: this.push();break;          
-          }
-          this.drawMap(this.map);
-        })
-        // mouse picker
-        // document.querySelector("canvas").addEventListener("mousemove",(e)=>{
-        //   // console.log(e)
-        //   console.log("x: "+e.layerX + "/" + e.target.clientWidth + ", y: "+e.layerY +"/"+e.target.clientHeight)
-
-        //   const ctx =  this.canvas.getContext("2d");
-        //   ctx.beginPath();
-        //   ctx.strokeStyle = "#fff";
-        //   ctx.lineWidth = "5px";
-        //   ctx.rect((this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
-        //   ctx.stroke();
-
-        // })
-      },
-      drawMap(map = this.map){
-        // draw map
-        this.map = map;
-        console.log(map);
-
-        const ctx =  this.canvas.getContext("2d");
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        // for 
-        for(const g of map){
-            ctx.drawImage(this.sprites.floors,
-            g[0] * 40, 0, 40, 40,
-            ( g[1] - this.position[0] + 7)*40, (g[2] - this.position[1] + 7)*40, 40, 40);
-        }
-
-        // for maps with sectors
-        // for(const sector of map){
-        //   // console.log(sector);
-        //   console.log("sector["+sector[0]+","+sector[1]+"]:")
-        //   for(const floor of sector[2]){}
-        // }
-
-
-
-        // draw editing element
-        ctx.drawImage(this.sprites[this.element[0]],
-        this.element[1] * 40, 0, 40, 40,
-        (this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
-        ctx.beginPath();
-        ctx.strokeStyle = "#fff";
-        ctx.lineWidth = "5px";
-        ctx.rect((this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
-        ctx.stroke();
-
-        // draw current position in left down corner
-        ctx.font = "25px Arial";
-        ctx.fillText("["+this.position+"]", 0, this.canvas.height-5);
-      },
-      push(){
-        fetch("/?mapedit=true&position="+this.position+"&element="+this.element).then((dt) => dt.json()).then((e)=>{
-          this.drawMap(JSON.parse(e));
-        })
-      },
-      elemInit(){
-        // console.log(this.sprites);
-        const editPanel = document.createElement("div");
-        editPanel.className = "editPanel";
-        editPanel.innerHTML = "Floors:";
-        for(const s of Object.keys(this.sprites)){
-          const elem = document.createElement("div");
-          // console.log(this.sprites[s])
-          if(typeof this.sprites[s].dataset.w != "undefined"){
-            for(let e = 0; e < this.sprites[s].width/this.sprites[s].dataset.w;e++){
-              const opt = document.createElement("div");
-              opt.className = "opt";
-              opt.style.backgroundImage = "url("+this.sprites[s].src+")";
-              opt.style.backgroundRepeat = "no-repeat";
-              opt.style.backgroundPosition = "-"+e*this.sprites[s].dataset.w+"px 0px";
-              opt.onclick = () => {
-                this.element = [s,e];
-                this.drawMap();
-              }
-              elem.append(opt);
-              // console.log(e);
-            }
-
-          }
-          // elem.append(this.sprites[s]);
-          editPanel.append(elem);
-        
-        }
-        document.body.append(editPanel);
-        
+  <!-- CLEAR CACHE -->
+  <script>
+    let scripts =  document.getElementsByTagName('script');
+    let torefreshs = ['sprites.js'] ; // list of js to be refresh
+    let key = 1; // change this key every time you want force a refresh
+    for(let i=0;i<scripts.length;i++){ 
+      for(let j=0;j<torefreshs.length;j++){ 
+          if(scripts[i].src && (scripts[i].src.indexOf(torefreshs[j]) > -1)){
+            new_src = scripts[i].src.replace(torefreshs[j],torefreshs[j] + 'k=' + key );
+            scripts[i].src = new_src; // change src in order to refresh js
+          } 
       }
     }
-  editor.init();
-  
+  </script>
+<script src="js/sprites.js"></script>
+<script>
+const editor = {
+    canvas: document.createElement("canvas"),
+    map: [],
+    element: ["floors",0,40],
+    sprites:[],
+    reload(callback){fetch("json/map.json").then((dt)=>dt.json()).then((out)=>{
+        editor.map = out;
+    callback(out);});},
+    loadSprites(callback) {
+      let name;
+      for(const s of sprites){
+        if(s.group != "outfits" && s.group != "monsters"){
+          this.sprites[s.name] = document.createElement("img");
+          this.sprites[s.name].src = s.src;
+          if(typeof s.w != "undefined"){this.sprites[s.name].dataset.w = s.w;}
+          name = s.name;
+        }        
+      }
+      this.sprites[name].onload = () => {
+        callback();
+      }
+    },
+    init(){
+      this.canvas.width = 600;
+      this.canvas.height = 600;
+      document.body.append(this.canvas);
+      this.loadSprites((map)=>{
+        this.elemInit();
+        this.reload((map)=>{
+          this.drawMap(map);
+          this.controlInit();
+        });
+      });
+    },
+    position:[0,0,0],
+    controlInit(){
+      document.addEventListener("keydown",(e)=>{
+        // console.log(e.keyCode);
+        switch (e.keyCode) {
+          case 37: this.position[0]--;break;          
+          case 39: this.position[0]++;break;          
+          case 38: this.position[1]--;break;          
+          case 40: this.position[1]++;break;          
+          case 187: this.position[2]++;break;          
+          case 189: this.position[2]--;break;          
+          case 32: this.push();break;          
+        }
+        this.drawMap(this.map);
+      })
+      // mouse picker
+      // document.querySelector("canvas").addEventListener("mousemove",(e)=>{
+      //   // console.log(e)
+      //   console.log("x: "+e.layerX + "/" + e.target.clientWidth + ", y: "+e.layerY +"/"+e.target.clientHeight)
+
+      //   const ctx =  this.canvas.getContext("2d");
+      //   ctx.beginPath();
+      //   ctx.strokeStyle = "#fff";
+      //   ctx.lineWidth = "5px";
+      //   ctx.rect((this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
+      //   ctx.stroke();
+
+      // })
+    },
+    drawMap(map = this.map){
+      // draw map
+      this.map = map;
+      // console.log(map);
+
+      const ctx =  this.canvas.getContext("2d");
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      for(const g of map){
+        let type = "floors";
+        if(typeof g[4] != "undefined"){
+          type = g[4];
+        }
+        console.log(this.sprites[type])
+        const w = this.sprites[type].dataset.w;
+        ctx.drawImage(this.sprites[type],
+          g[0] * w, 0, w, w,
+          (g[1] - this.position[0] + 7)*40, (g[2] - this.position[1] + 7)*40, w, w);
+      }
+
+      // for maps with sectors
+      // for(const sector of map){
+      //   // console.log(sector);
+      //   console.log("sector["+sector[0]+","+sector[1]+"]:")
+      //   for(const floor of sector[2]){}
+      // }
+
+
+
+      // draw editing element
+      ctx.drawImage(this.sprites[this.element[0]],
+      this.element[1] * this.element[2], 0, this.element[2], this.element[2],
+      (this.canvas.width/2)-(this.element[2]-20), (this.canvas.height/2)-(this.element[2]-20), this.element[2], this.element[2]);
+      ctx.beginPath();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = "5px";
+      ctx.rect((this.canvas.width/2)-20, (this.canvas.height/2)-20, 40, 40);
+      ctx.stroke();
+
+      // draw current position in left down corner
+      ctx.font = "25px Arial";
+      ctx.fillText("["+this.position+"]", 0, this.canvas.height-5);
+    },
+    push(){
+      fetch("/?mapedit=true&position="+this.position+"&element="+this.element).then((dt) => dt.json()).then((e)=>{
+        this.drawMap(JSON.parse(e));
+      })
+    },
+    elemInit(){
+      // console.log(this.sprites);
+      const editPanel = document.createElement("div");
+      editPanel.className = "editPanel";
+      for(const s of Object.keys(this.sprites)){
+        const elem = document.createElement("div");
+        // console.log(this.sprites[s])
+        if(typeof this.sprites[s].dataset.w != "undefined"){
+          // console.log(this.sprites[s].width+" / "+this.sprites[s].dataset.w)
+          for(let e = 0; e < this.sprites[s].width/this.sprites[s].dataset.w;e++){
+            const opt = document.createElement("div");
+            opt.className = "opt";
+            opt.style.backgroundImage = "url("+this.sprites[s].src+")";
+            opt.style.backgroundRepeat = "no-repeat";
+            // opt.style.width = this.sprites[s].dataset.w+"!important";
+            // console.log(this.sprites[s].dataset.w);
+            opt.style.padding = (this.sprites[s].dataset.w/2)+"px";
+            opt.style.width = (this.sprites[s].dataset.w/2)+"px";
+            // opt.style.backgroundSize = "100%";
+            opt.style.backgroundPosition = "-"+e*this.sprites[s].dataset.w+"px 0px";
+            opt.onclick = () => {
+              this.element = [s,e,this.sprites[s].dataset.w];
+              this.drawMap();
+            }
+            elem.append(opt);
+            // console.log(e);
+            // console.log(e)
+          }
+
+        }
+        // elem.append(this.sprites[s]);
+        editPanel.append(elem);
+      }
+      document.body.append(editPanel);
+      
+    }
+  }
+editor.init();
+
 
 </script>
 </body>

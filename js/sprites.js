@@ -32,7 +32,8 @@ let sprites = [
     w: 40,
   },
   { name: "stairs",
-    src : "img/sprites/stairs.webp"
+    src : "img/sprites/stairs.webp",
+    w:80,
   },
   { name: "dragon",
     src : "img/sprites/web_dragon.webp",

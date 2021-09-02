@@ -5,12 +5,14 @@ let map = {
   load(callback){
     // console.log("map loading.")
     document.querySelector(".loadDetails").innerHTML = "Load map...";
-    fetch("../json/map.json?v=1")
-    .then(dt => dt.json())
-    .then(data => {
-      map.template = data;
+    let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
+    const ws = new WebSocket(protocol+"//"+window.location.host+"/get",'echo-protocol');
+    ws.onopen = (dt) =>{ws.send(JSON.stringify({"get":"map"}));}
+    ws.onmessage = (mess) => {
+      const dt = JSON.parse(mess.data);
+      map.template = dt;
       callback();
-    })
+    }
   },
   generate(callback){
     this.load(()=>{

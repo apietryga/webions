@@ -155,29 +155,57 @@ body .wrapper main form input[type=submit] {
 }
 
 body .wrapper main table {
-  border: 2px dashed red;
   width: 100%;
 }
 
-body .wrapper main table > a {
-  display: table-row;
+body .wrapper main table .listBody, body .wrapper main table .listHead {
+  color: #fff;
+  border: none;
 }
 
-body .wrapper main table > a td {
-  border: 2px dashed blue;
+body .wrapper main table .listBody td:nth-child(3), body .wrapper main table .listHead td:nth-child(3) {
+  text-align: center;
 }
 
-body .wrapper main table tr {
-  border: 2px dashed red;
+body .wrapper main table .listBody td:nth-child(2), body .wrapper main table .listBody th:nth-child(2), body .wrapper main table .listHead td:nth-child(2), body .wrapper main table .listHead th:nth-child(2) {
+  width: 100%;
+}
+
+body .wrapper main table .listBody td, body .wrapper main table .listHead td {
+  padding: 10px;
+}
+
+body .wrapper main table .listBody th, body .wrapper main table .listHead th {
+  padding: 5px 20px;
+}
+
+body .wrapper main table .listHead {
+  background-color: rgba(0, 0, 0, 0.356);
+}
+
+body .wrapper main table .listBody {
+  cursor: pointer;
+  background-color: rgba(0, 0, 255, 0.329);
+}
+
+body .wrapper main table .listBody:nth-child(even) {
+  background-color: rgba(255, 0, 0, 0.288);
+}
+
+body .wrapper main table .detailsBody, body .wrapper main table .detailsHead {
   background-color: rgba(255, 255, 0, 0.151);
 }
 
-body .wrapper main table tr td {
-  width: 50%;
+body .wrapper main table .detailsBody > td, body .wrapper main table .detailsHead > td {
+  text-align: center;
 }
 
-body .wrapper main table tr td div {
-  border: 2px dashed red;
+body .wrapper main table .detailsBody > td .spriteWrapper, body .wrapper main table .detailsHead > td .spriteWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+body .wrapper main table .detailsBody > td .spriteWrapper .sprite, body .wrapper main table .detailsHead > td .spriteWrapper .sprite {
   width: 50px;
   height: 50px;
   background-repeat: no-repeat;
@@ -185,18 +213,54 @@ body .wrapper main table tr td div {
   animation: walk 0.4s step-start infinite;
 }
 
-body .wrapper main table tr td:nth-child(1) {
-  background-color: green;
+body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table .detailsHead > td .healthBar {
+  border: 2px solid #000;
+  margin: 2%;
+  border-radius: 7px;
+  position: relative;
+  height: 25px;
 }
 
-body .wrapper main table tr td:nth-child(2) {
-  background-color: blue;
+body .wrapper main table .detailsBody > td .healthBar div, body .wrapper main table .detailsHead > td .healthBar div {
+  height: 100%;
+  border-radius: 5px;
+  position: absolute;
+  font-size: 15px;
 }
 
-body .wrapper main table tr td.sprite {
-  background-color: yellow;
-  margin-left: auto;
-  margin-right: auto;
+body .wrapper main table .detailsBody > td .healthBar div:nth-child(2), body .wrapper main table .detailsHead > td .healthBar div:nth-child(2) {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body .wrapper main table .detailsBody > td:nth-child(1), body .wrapper main table .detailsHead > td:nth-child(1) {
+  width: 30%;
+  background-color: rgba(0, 128, 0, 0.486);
+}
+
+body .wrapper main table .detailsBody > td:nth-child(2), body .wrapper main table .detailsHead > td:nth-child(2) {
+  width: 70%;
+  background-color: rgba(0, 0, 255, 0.295);
+}
+
+body .wrapper main table .detailsBody > td table, body .wrapper main table .detailsHead > td table {
+  width: 60%;
+  margin-left: 20%;
+}
+
+body .wrapper main table .detailsBody > td table td, body .wrapper main table .detailsHead > td table td {
+  width: 50%;
+  padding: 5px;
+}
+
+body .wrapper main table .detailsBody > td table td:nth-child(1), body .wrapper main table .detailsHead > td table td:nth-child(1) {
+  text-align: right;
+}
+
+body .wrapper main table .detailsBody > td table td:nth-child(2), body .wrapper main table .detailsHead > td table td:nth-child(2) {
+  background-color: rgba(0, 0, 255, 0.267);
 }
 
 body .wrapper main h1 {
@@ -261,10 +325,6 @@ body footer {
   padding: 5%;
   display: flex;
   flex-direction: column;
-}
-
-body footer a {
-  padding: 1%;
 }
 
 @media (max-width: 720px) {

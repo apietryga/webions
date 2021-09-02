@@ -25,7 +25,23 @@ function handler(req, res) {
     const mapArr = JSON.parse(mapRead);
     const paramArr = param.position.split(",");
     const paramEl = param.element.split(",");
-    mapArr.push([paramEl[1]*1,paramArr[0]*1,paramArr[1]*1,paramArr[2]*1]);
+    // console.log(param)
+    const type = param.element.split(",")[0];
+    const gridToPush = [
+      paramEl[1]*1,
+      paramArr[0]*1,
+      paramArr[1]*1,
+      paramArr[2]*1
+    ]
+    if(type != "floors"){
+      gridToPush.push(type);
+    }
+    if(type == "stairs"){
+      gridToPush.push([0,1,2]);
+    }
+
+
+    mapArr.push(gridToPush);
     const mapString = stringify(mapArr,null,2);
     fs.writeFileSync("json/map.json",mapString);
     let output = mapString;
@@ -88,51 +104,81 @@ for(const m of monstersList){
 // WEBSOCKET
 const wsServer = new WebSocketServer({httpServer : server})
 .on('request', (req)=>{
+  // console.log(req.resourceURL.pathname)
   const connection = req.accept('echo-protocol', req.origin);
   let newData = "ERROR 1";
   connection.on('message', (data) => {
-    game.time = new Date();
     const param = JSON.parse(data.utf8Data);
-    // update monsters
-    for(const c of creatures){
-      if(c.type == "monster"){
-        c.update(param,game,map,func,creatures);
+    // In game actions
+    if(Object.keys(param).includes("name")){
+      game.time = new Date();
+      // update monsters
+      for(const c of creatures){
+        if(c.type == "monster"){
+          c.update(param,game,map,func,creatures);
+        }
       }
-    }
-    // manage player:
-    let player;
-    let isPlayerSet = false;
-    for(const c of creatures){
-      // log out (if not download info in 1s)
-      if(typeof c.lastFrame != "undefined" 
-      && c.type == "player"
-      && game.time.getTime() - c.lastFrame > 5000){
-        creatures.splice(creatures.indexOf(c),1);
-        continue;
+      // manage player:
+      let player;
+      let isPlayerSet = false;
+      for(const c of creatures){
+        // log out (if not download info in 1s)
+        if(typeof c.lastFrame != "undefined" 
+        && c.type == "player"
+        && game.time.getTime() - c.lastFrame > 1000){
+          dbc.update(c);
+          creatures.splice(creatures.indexOf(c),1);
+          continue;
+        }
+        
+        // update player
+        if(c.name == param.name){
+          isPlayerSet = true;
+          player = c;
+          player.lastFrame = game.time.getTime();
+        }
+      }
+      // make online list 
+      const onlinePlayers = [];
+      for(const c of creatures){
+        if(c.type == "player"){
+          onlinePlayers.push(c.name);
+        }
       }
       
-      // update player
-      if(c.name == param.name){
-        isPlayerSet = true;
-        player = c;
-        player.lastFrame = game.time.getTime();
+      // first login - creating player or get him from base
+      // make sure, that player is not exist
+      if(!isPlayerSet && !onlinePlayers.includes(param.name)){
+        player = new Creature(param.name,creatures.length);
+        player = dbc.load(player);
+        player.lastFrame = game.time;
+        creatures.push(player);
       }
+      if(typeof player != "undefined"){
+        player.text = "";
+        player.type = "player";
+        player.update(param,game,map,func,creatures);
+      }
+      // output
+      newData = {
+        game: game,
+        creatures: creatures
+      }
+      connection.sendUTF(stringify(newData,null,2));
     }
-    // console.log(creatures);
-    // first login - creating player
-    if(!isPlayerSet && typeof player == "undefined"){
-      player = new Creature(param.name,creatures.length);
-      creatures.push(player);
-      player.lastFrame = game.time;
-    }
-    player.text = "";
-    player.type = "player";
-    player.update(param,game,map,func,creatures);
-    // output
-    newData = {
-      game: game,
-      creatures: creatures
-    }
-    connection.sendUTF(stringify(newData,null,2));
+    // Getting data
+    if(Object.keys(param).includes("get")){
+      let result = {};
+      // Get playersList
+      if(param.get == "playersList"){
+        result = dbc.loadContent();   
+        // console.log(result);
+      }
+      // Get gameMap
+      if(param.get == "map"){
+        result = map;
+      }
+      connection.sendUTF(stringify(result,null,2));
+    }    
   })
 })

@@ -8,9 +8,10 @@
   100% { background-position: -178px -98px;}
 }
 $tw:rgba(255, 255, 255, 0.096);
+$bodyBg:rgb(90, 27, 27);
 html{height:100%;}
 body{
-  background-color:rgb(90, 27, 27);
+  background-color:$bodyBg;
   color:#fff;
   margin:0;
   display:flex;
@@ -119,42 +120,84 @@ body{
       }
       // players 
       table{
-        border:2px dashed red;
         width:100%;
         // Player list
-        >a{
-          display:table-row;
-          td{
-            border:2px dashed blue;
+        .listBody,.listHead{ // tr's from lists
+          color:#fff;
+          border:none;
+          td:nth-child(3){
+            text-align:center;
+          }
+          td:nth-child(2),th:nth-child(2){
+            width:100%;
+          }
+          td{padding:10px;}
+          th{padding:5px 20px;}
+        }
+        .listHead{background-color: rgba(0, 0, 0, 0.356);}
+        .listBody{
+          cursor:pointer;
+          background-color:rgba(0, 0, 255, 0.329);
+          &:nth-child(even){
+            background-color:rgba(255, 0, 0, 0.288);
           }
         }
         // Player details
-        tr{
-          border:2px dashed red;
+        .detailsBody, .detailsHead{
           background-color:rgba(255, 255, 0, 0.151);
-          td{
-            div{
-              border:2px dashed red;
-              width:50px;
-              height:50px;
-              background-repeat:no-repeat;
-              background-position:-18px -98px;
-              animation: walk 0.4s step-start infinite;
+          >td{
+            text-align: center;
+            .spriteWrapper{
+              display:flex;
+              justify-content: center;
+              .sprite{
+                width:50px;
+                height:50px;
+                background-repeat:no-repeat;
+                background-position:-18px -98px;
+                animation: walk 0.4s step-start infinite;
+              }  
             }
-            width:50%;
-
-
+            .healthBar{
+              border:2px solid #000;
+              margin:2%;
+              border-radius: 7px;
+              position:relative;
+              height:25px;
+              div{
+                height:100%;
+                border-radius:5px;
+                position:absolute;
+                font-size:15px;
+                &:nth-child(2){ // label
+                  width:100%;
+                  display:flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+              }
+            }
             &:nth-child(1){
-              background-color:green;
+              width:30%;
+              background-color:rgba(0, 128, 0, 0.486);
             }
             &:nth-child(2){
-              background-color:blue;
+              width:70%;
+              background-color:rgba(0, 0, 255, 0.295);
             }
-
-            &.sprite{
-              background-color:yellow;
-              margin-left:auto;
-              margin-right: auto;
+            table{
+              width:60%;
+              margin-left:20%;
+              td{
+                width:50%;
+                padding:5px;
+                &:nth-child(1){
+                  text-align:right;
+                }
+                &:nth-child(2){
+                  background-color:rgba(0, 0, 255, 0.267);
+                }
+              }
             }
 
           }
@@ -201,9 +244,6 @@ body{
     padding:5%;
     display:flex;
     flex-direction: column;
-    a{
-      padding:1%;
-    }
   }
 }
 

@@ -128,8 +128,8 @@
 
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script>
-  let protocol = "ws:";
-  if(window.location.protocol == "https:"){protocol = "wss:"}
+
+  let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
   const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
   const serv = {
     connected:false,
@@ -220,6 +220,26 @@
               continue;
             }
             if(key == "health"){gamePlane.creatures.list[charId]["oldHealth"] = gamePlane.creatures.list[charId]["health"];}
+            if(key == "skills"){
+              let oldExp;
+              if(gamePlane.creatures.list[charId].type == "player"
+              && isSet(gamePlane.creatures.list[charId].skills)){
+                if(gamePlane.creatures.list[charId].skills["exp"] != creature[key]["exp"]){
+                  oldExp = gamePlane.creatures.list[charId].skills["exp"];
+                }
+              }
+              gamePlane.creatures.list[charId].skills = {};
+              for(const k of Object.keys(creature[key])){
+                if(k == "exp" && isSet(oldExp)){
+                  gamePlane.creatures.list[charId].skills["oldExp"] = oldExp;
+                }
+                gamePlane.creatures.list[charId].skills[k] = creature[key][k];
+              }
+              if(!isSet(oldExp)){
+                gamePlane.creatures.list[charId].skills["oldExp"] = gamePlane.creatures.list[charId].skills["exp"];
+              }
+              continue;
+            }
             if(key == "shotPosition"){
               gamePlane.creatures.list[charId].lastShotPosition = gamePlane.creatures.list[charId].shotPosition;
               gamePlane.creatures.list[charId].shotPosition = creature.shotPosition;

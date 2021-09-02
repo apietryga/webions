@@ -1,8 +1,11 @@
+const dbConnect = require("./dbconnect");
+const dbc = new dbConnect();
 class Creature {
   constructor(nickName,creaturesLength){
     this.id = creaturesLength+1; 
     this.name = nickName;
-    this.position = [2,3,0];  // left tower down
+    // this.position = [2,3,0];  // left tower down
+    this.position = [20,13,1];  // left tower down
     // this.position = [1,5,1];  // left tower up
     this.startPosition = this.position;
     this.walk = 0;
@@ -27,6 +30,7 @@ class Creature {
     this.fistFighting = false;
     this.restore = false;
     this.skills = {
+      level:1,
       exp:1,
       fist:475,
       dist:400
@@ -195,7 +199,7 @@ class Creature {
             // FIST FIGHTING
             if( this.fistFighting <= game.time.getTime() &&c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
               this.fistFighting = game.time.getTime() + 1000;
-              c.getHit(this.name,this.skills.exp*this.skills.fist);
+              c.getHit(this,this.skills.exp*this.skills.fist);
             }
             // DISTANCE SHOT - 68 is "D" key [players]
             if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type == "player"){
@@ -226,7 +230,7 @@ class Creature {
         ){
           // console.log(this.name + " is hited by "+from)
 
-          this.getHit(c.name,c.skills.dist);
+          this.getHit(c,c.skills.dist);
           // c.shotExhoust = game.time.getTime() + 1000;
           delete c.bulletTime;
           delete c.shotPosition;          
@@ -235,12 +239,13 @@ class Creature {
     }
     // DYING
     if(this.health <= 0 && !this.restore){
-      this.restore = game.time.getTime() + 180000;
+      // this.restore = game.time.getTime() + 180000;
+      this.restore = game.time.getTime() + 1800;
       if(this.type=="player"){
         this.restore = game.time.getTime();
       }
+      // this.text = "You are dead. Wait 30 seconds to retrive.";
 
-      this.text = "You are dead. Wait 30 seconds to retrive.";
       // DieList 
       for(const c of creatures){   
         if(c.id == this.id){
@@ -278,10 +283,29 @@ class Creature {
       }
       this.healthExhoust =  game.time.getTime() + healthValue[0];
     }
+
+    // SELF AUTO HEALING
+
+
   }
   getHit = (from,hp) =>{
     this.health -= hp;
-    this.text = from+" Cię walnął za "+hp+" hapa"
+    this.text = from.name+" Cię walnął za "+hp+" hapa";
+    // GIVE EXP TO KILLER! 
+    if(this.type == "monster" && this.health <= 0){
+      from.skills.exp += this.skills.exp;
+      from.updateSkills();
+    }
   }
+  updateSkills(){
+    // console.log(this.skills.exp);
+    const oldLvl = this.skills.level; 
+    this.skills.level = Math.ceil(Math.sqrt(this.skills.exp));
+    if(this.skills.level != oldLvl){
+      dbc.update(this);
+    }
+
+  }
+
 }
 module.exports = Creature;

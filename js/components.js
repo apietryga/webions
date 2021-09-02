@@ -163,6 +163,12 @@ class Creature {
         const hitValue = this.oldHealth - this.health;
         gamePlane.actions.push(new Action("hitText",this.position[0],this.position[1],100,200,hitValue));
       }
+      // draw exp value     
+      if(isSet(this.skills.oldExp) && this.skills.exp != this.skills.oldExp && this.type == "player"){
+        const expValue = this.skills.exp - this.skills.oldExp;
+        gamePlane.actions.push(new Action("expText",this.position[0],this.position[1],100,200,expValue));
+        this.skills.oldExp = this.skills.exp;
+      }
       // HEALING
       if(this.oldHealth < this.health){
         gamePlane.actions.push(new Action("misc",this.x,this.y,40,40,2));
@@ -314,6 +320,18 @@ class Action{  // class for hitText, Bullets,
       }else{
         ctx.fillStyle = '#0f0';
       }
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 1;
+      ctx.font = '900 12px Tahoma';
+      ctx.textAlign = "center";
+      x += 20;
+      y += 20 - (this.showFPS*2);  
+      ctx.fillText(Math.abs(this.text), x, y);
+      ctx.strokeText(Math.abs(this.text), x, y);
+    }    
+    if(this.type == "expText"){
+      // set color
+      ctx.fillStyle = '#fff';
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 1;
       ctx.font = '900 12px Tahoma';
