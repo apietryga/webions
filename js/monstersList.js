@@ -13,7 +13,7 @@ const monstersList = [
     speed:1,
     skills:{
       fist:10,
-      exp:3,
+      exp:300,
       dist:0
     }
   },

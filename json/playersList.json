@@ -10,21 +10,12 @@
   },
   {
     "name": "Antek",
-    "position": [12, 2, 0],
+    "position": [-2, 3, 1],
     "speed": 5,
     "sprite": "male_oriental",
-    "health": 1400,
+    "health": 1950,
     "maxHealth": 2000,
-    "skills": {"level": 8, "exp": 61, "fist": 475, "dist": 400}
-  },
-  {
-    "name": "Zuzia2",
-    "position": [1, 3, 0],
-    "speed": 5,
-    "sprite": "male_oriental",
-    "health": 1520,
-    "maxHealth": 2000,
-    "skills": {"level": 9, "exp": 67, "fist": 475, "dist": 400}
+    "skills": {"level": 21, "exp": 403, "fist": 475, "dist": 400}
   },
   {
     "name": "Justyna",
@@ -34,23 +25,5 @@
     "health": 1220,
     "maxHealth": 2000,
     "skills": {"level": 9, "exp": 67, "fist": 475, "dist": 400}
-  },
-  {
-    "name": "Newbie",
-    "position": [20, 13, 1],
-    "speed": 5,
-    "sprite": "male_oriental",
-    "health": 2000,
-    "maxHealth": 2000,
-    "skills": {"level": 1, "exp": 1, "fist": 475, "dist": 400}
-  },
-  {
-    "name": "Antek2",
-    "position": [21, 12, 1],
-    "speed": 5,
-    "sprite": "male_oriental",
-    "health": 2000,
-    "maxHealth": 2000,
-    "skills": {"level": 1, "exp": 1, "fist": 475, "dist": 400}
   }
 ]

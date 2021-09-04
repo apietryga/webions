@@ -152,6 +152,10 @@
       ws.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
         
+        // show dev info
+        dev.stats = data.game;
+        dev.update();
+
         // update game properties
         this.datetime = data.game.time;
         this.time = new Date(data.game.time).getTime();
@@ -323,8 +327,13 @@
     update(){
       this.statsDOM.innerHTML = "";
       for(const s of Object.keys(this.stats)){
+        if(s == "time"){
+          const t = new Date(this.stats[s]);
+          const time = t.getHours()+":"+t.getMinutes()+":"+t.getSeconds();
+          this.statsDOM.innerHTML += s +": "+time+"<br />";    
+          continue;
+        }
         this.statsDOM.innerHTML += s +": "+this.stats[s]+"<br />";
-        // this.statsDOM.innerHTML = this.stats;
       }
     }
 

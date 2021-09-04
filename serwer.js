@@ -13,6 +13,8 @@ const monstersList = require("./js/monstersList");
 const makewww = require("./www/makewww");
 const dbConnect = require("./js/dbconnect");
 const dbc = new dbConnect();
+// set game details
+const game = require("./js/gameDetails")
 function handler(req, res) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];
@@ -25,7 +27,6 @@ function handler(req, res) {
     const mapArr = JSON.parse(mapRead);
     const paramArr = param.position.split(",");
     const paramEl = param.element.split(",");
-    // console.log(param)
     const type = param.element.split(",")[0];
     const gridToPush = [
       paramEl[1]*1,
@@ -83,12 +84,6 @@ function handler(req, res) {
 const server = http.createServer(handler).listen(process.env.PORT || 80);
 console.log("serwer is running on: http://webions");
 
-// set game details
-const game = {
-  time : new Date(),
-  fps: 10,
-  items:[]
-}
 // set arr for all creatures
 const creatures = [];
 // add all monsters to creatures arr
@@ -104,7 +99,6 @@ for(const m of monstersList){
 // WEBSOCKET
 const wsServer = new WebSocketServer({httpServer : server})
 .on('request', (req)=>{
-  // console.log(req.resourceURL.pathname)
   const connection = req.accept('echo-protocol', req.origin);
   let newData = "ERROR 1";
   connection.on('message', (data) => {
@@ -150,9 +144,16 @@ const wsServer = new WebSocketServer({httpServer : server})
       // make sure, that player is not exist
       if(!isPlayerSet && !onlinePlayers.includes(param.name)){
         player = new Creature(param.name,creatures.length);
-        player = dbc.load(player);
         player.lastFrame = game.time;
-        creatures.push(player);
+        dbc.load(player,(r)=>{
+          player = r;
+          creatures.push(player);
+          newData = {
+            game: game,
+            creatures: creatures
+          }
+          connection.sendUTF(stringify(newData,null,2));
+        })
       }
       if(typeof player != "undefined"){
         player.text = "";
@@ -171,8 +172,10 @@ const wsServer = new WebSocketServer({httpServer : server})
       let result = {};
       // Get playersList
       if(param.get == "playersList"){
-        result = dbc.loadContent();   
-        // console.log(result);
+        // result = dbc.loadContent();
+        dbc.loadContent((result) => {
+          connection.sendUTF(stringify(result,null,2));
+        })
       }
       // Get gameMap
       if(param.get == "map"){

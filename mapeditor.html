@@ -40,20 +40,6 @@
   </style>
 </head>
 <body>
-  <!-- CLEAR CACHE -->
-  <script>
-    let scripts =  document.getElementsByTagName('script');
-    let torefreshs = ['sprites.js'] ; // list of js to be refresh
-    let key = 1; // change this key every time you want force a refresh
-    for(let i=0;i<scripts.length;i++){ 
-      for(let j=0;j<torefreshs.length;j++){ 
-          if(scripts[i].src && (scripts[i].src.indexOf(torefreshs[j]) > -1)){
-            new_src = scripts[i].src.replace(torefreshs[j],torefreshs[j] + 'k=' + key );
-            scripts[i].src = new_src; // change src in order to refresh js
-          } 
-      }
-    }
-  </script>
 <script src="js/sprites.js"></script>
 <script>
 const editor = {
@@ -123,7 +109,6 @@ const editor = {
       // draw map
       this.map = map;
       // console.log(map);
-
       const ctx =  this.canvas.getContext("2d");
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -132,21 +117,12 @@ const editor = {
         if(typeof g[4] != "undefined"){
           type = g[4];
         }
-        console.log(this.sprites[type])
+        // console.log(this.sprites[type])
         const w = this.sprites[type].dataset.w;
         ctx.drawImage(this.sprites[type],
           g[0] * w, 0, w, w,
-          (g[1] - this.position[0] + 7)*40, (g[2] - this.position[1] + 7)*40, w, w);
+          (g[1] - this.position[0] + 8)*40-w, (g[2] - this.position[1] + 8)*40-w, w, w);
       }
-
-      // for maps with sectors
-      // for(const sector of map){
-      //   // console.log(sector);
-      //   console.log("sector["+sector[0]+","+sector[1]+"]:")
-      //   for(const floor of sector[2]){}
-      // }
-
-
 
       // draw editing element
       ctx.drawImage(this.sprites[this.element[0]],
