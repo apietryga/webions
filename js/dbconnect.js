@@ -2,13 +2,23 @@ const fs = require('fs');
 // const os = require('os');
 const game = require('./gameDetails');
 const stringify = require("json-stringify-pretty-compact");
+const redis = require('ioredis');
 let client;
 try {
   // heroku serv
-  client = require('ioredis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
+  const redisUrl = process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL;
+  const redisDefaults = {
+    tls: {
+    // Heroku uses self-signed certificate, which will cause error in connection, unless check is disabled
+    rejectUnauthorized: false,
+    },
+  };
+  client = redis.createClient(redisUrl, redisDefaults);
+
+  // client = require('ioredis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
 } catch (error) {
   // local machine
-  console.error("IOREDIS ERR:")
+  console.log("IOREDIS ERR: AAAAAAAAAAAAAA")
   console.log(error);
   client = require('redis').createClient();
 }
