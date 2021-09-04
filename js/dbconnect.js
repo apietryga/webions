@@ -8,6 +8,7 @@ try {
   client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
 } catch (error) {
   // local machine
+  console.log(error);
   client = require('redis').createClient();
 }
 const redisJSON = {
