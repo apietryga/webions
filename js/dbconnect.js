@@ -4,7 +4,14 @@ const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
 let client;
 try {
-  client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
+  // client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
+  const redisUrl = process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL;
+  const redisDefaults = {
+    tls: {
+      rejectUnauthorized: false,
+    },
+  };
+  client = redis.createClient(redisUrl, redisDefaults);
 } catch (error) {
   client = redis.createClient();
 }
