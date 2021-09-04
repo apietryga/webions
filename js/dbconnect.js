@@ -1,17 +1,9 @@
 const fs = require('fs');
-// const os = require('os');
 const game = require('./gameDetails');
 const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
 let client;
 try {
-  // const redisUrl = process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL;
-  // const redisDefaults = {
-  //   tls: {
-  //     rejectUnauthorized: false,
-  //   },
-  // };
-  // client = redis.createClient(redisUrl, redisDefaults);
   client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
 } catch (error) {
   client = redis.createClient();
@@ -127,7 +119,9 @@ class dbConnect{
     this.loadContent((cont) => {
       const content = cont;
       if(content == 0){
-        callback(false);
+        this.update(player,()=>{
+          callback(false);
+        })
       }else{
         for(const p of content){
           if(p.name == player.name){

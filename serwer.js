@@ -106,12 +106,6 @@ const wsServer = new WebSocketServer({httpServer : server})
     // In game actions
     if(Object.keys(param).includes("name")){
       game.time = new Date();
-      // update monsters
-      for(const c of creatures){
-        if(c.type == "monster"){
-          c.update(param,game,map,func,creatures);
-        }
-      }
       // manage player:
       let player;
       let isPlayerSet = false;
@@ -124,7 +118,6 @@ const wsServer = new WebSocketServer({httpServer : server})
           creatures.splice(creatures.indexOf(c),1);
           continue;
         }
-        
         // update player
         if(c.name == param.name){
           isPlayerSet = true;
@@ -139,23 +132,19 @@ const wsServer = new WebSocketServer({httpServer : server})
           onlinePlayers.push(c.name);
         }
       }
-      
       // first login - creating player or get him from base
       // make sure, that player is not exist
       if(!isPlayerSet && !onlinePlayers.includes(param.name)){
         player = new Creature(param.name,creatures.length);
         player.lastFrame = game.time;
-        // dbc.update(player,(r)=>{
-        //   // console.log(r);
-
-        //   connection.sendUTF(stringify(newData,null,2));
-        // });
         dbc.load(player,(r)=>{
-          player = r;
-          creatures.push(player);
-          newData = {
-            game: game,
-            creatures: creatures
+          if(r){
+            player = r;
+            creatures.push(player);
+            newData = {
+              game: game,
+              creatures: creatures
+            }
           }
           connection.sendUTF(stringify(newData,null,2));
         })
@@ -164,6 +153,12 @@ const wsServer = new WebSocketServer({httpServer : server})
         player.text = "";
         player.type = "player";
         player.update(param,game,map,func,creatures);
+      }
+      // update monsters
+      for(const c of creatures){
+        if(c.type == "monster"){
+          c.update(param,game,map,func,creatures);
+        }
       }
       // output
       newData = {
