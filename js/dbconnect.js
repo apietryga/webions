@@ -1,13 +1,13 @@
 const fs = require('fs');
-const os = require('os');
+// const os = require('os');
 const game = require('./gameDetails');
 const stringify = require("json-stringify-pretty-compact");
 let client;
-if(os.hostname().indexOf("local") > -1){
-  // on server 
+try {
+  // heroku serv
   client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
-}else{
-  // on local machine
+} catch (error) {
+  // local machine
   client = require('redis').createClient();
 }
 const redisJSON = {
