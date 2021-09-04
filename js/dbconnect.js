@@ -5,9 +5,10 @@ const stringify = require("json-stringify-pretty-compact");
 let client;
 try {
   // heroku serv
-  client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
+  client = require('ioredis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
 } catch (error) {
   // local machine
+  console.error("IOREDIS ERR:")
   console.log(error);
   client = require('redis').createClient();
 }
