@@ -2,31 +2,24 @@ const fs = require('fs');
 // const os = require('os');
 const game = require('./gameDetails');
 const stringify = require("json-stringify-pretty-compact");
-const redis = require('ioredis');
+const redis = require('redis');
 let client;
 try {
-  // heroku serv
   const redisUrl = process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL;
   const redisDefaults = {
     tls: {
-    // Heroku uses self-signed certificate, which will cause error in connection, unless check is disabled
-    rejectUnauthorized: false,
+      rejectUnauthorized: false,
     },
   };
   client = redis.createClient(redisUrl, redisDefaults);
-
-  // client = require('ioredis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
 } catch (error) {
-  // local machine
-  console.log("IOREDIS ERR: AAAAAAAAAAAAAA")
-  console.log(error);
-  client = require('redis').createClient();
+  client = redis.createClient();
 }
 const redisJSON = {
   client : client,
   getAll(callback = () => {}){
     this.client.keys("*",(e,keys)=>{
-      if(keys.length == 0){callback(0)}
+      if(typeof keys == "undefined" || keys.length == 0){callback(0)}
       const json = [];
       for(const [i,k] of keys.entries()){
         this.client.get(k,(e,v)=>{
@@ -77,8 +70,8 @@ class dbConnect{
   update(player,callback){
     // updating exsists or create new one
     let playerIsSet = false;
-    // let content = this.loadContent();
     this.loadContent((content)=>{
+      content == 0?content = []:'';
       let playerIndex;
       const uKeys = [
         "name",
@@ -89,11 +82,13 @@ class dbConnect{
         "health",
         "maxHealth"
       ];
-      for(const [i,p] of content.entries()){
-        if(p.name == player.name){
-          playerIsSet = true;
-          playerIndex = i;
-        }
+      if(content.length > 0 ){
+        for(const [i,p] of content.entries()){
+          if(p.name == player.name){
+            playerIsSet = true;
+            playerIndex = i;
+          }
+        }  
       }
       if(playerIsSet){
         // update record
@@ -115,26 +110,35 @@ class dbConnect{
         content.push(nPlayer);
       }
       if(game.db == "redis"){
-        redisJSON.setMultiple(content);
+        redisJSON.setMultiple(content,()=>{
+          // callback(content);
+        });
       }
       if(game.db == "json"){
         content = stringify(content);
-        fs.writeFileSync(this.src, content, ()=>{});  
+        fs.writeFileSync(this.src, content, ()=>{
+          // callback(content);
+        });  
       }
     })
   }
   load(player,callback){
     this.loadContent((cont) => {
       const content = cont;
-      for(const p of content){
-        if(p.name == player.name){
-          for(const k of Object.keys(p)){
-            player[k] = p[k];
+      if(content == 0){
+        callback(false);
+      }else{
+        for(const p of content){
+          if(p.name == player.name){
+            for(const k of Object.keys(p)){
+              player[k] = p[k];
+            }
+            break;
           }
-          break;
         }
+        callback(player);
+  
       }
-      callback(player);
     })
   }
   loadContent(callback){
@@ -152,12 +156,12 @@ class dbConnect{
   }
   test(){
     process.on('uncaughtException',(err) => {
-      console.log(err);
-      if(typeof err == "undefined"){
+      console.log(err.stack);
+      // console.log(err.stack.length);
+      if(typeof err.stack == "undefined"){
         game.db == 'redis';
       }else{
         game.db = "json";
-        fs.writeFileSync("./json/err.json", err, ()=>{});  
       }
     })
   }

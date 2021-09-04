@@ -145,6 +145,11 @@ const wsServer = new WebSocketServer({httpServer : server})
       if(!isPlayerSet && !onlinePlayers.includes(param.name)){
         player = new Creature(param.name,creatures.length);
         player.lastFrame = game.time;
+        // dbc.update(player,(r)=>{
+        //   // console.log(r);
+
+        //   connection.sendUTF(stringify(newData,null,2));
+        // });
         dbc.load(player,(r)=>{
           player = r;
           creatures.push(player);
@@ -180,8 +185,8 @@ const wsServer = new WebSocketServer({httpServer : server})
       // Get gameMap
       if(param.get == "map"){
         result = map;
+        connection.sendUTF(stringify(result,null,2));
       }
-      connection.sendUTF(stringify(result,null,2));
     }    
   })
 })

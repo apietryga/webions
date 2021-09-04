@@ -10,12 +10,12 @@
   },
   {
     "name": "Antek",
-    "position": [-2, 3, 1],
+    "position": [-2, -1, 1],
     "speed": 5,
     "sprite": "male_oriental",
-    "health": 1950,
+    "health": 2000,
     "maxHealth": 2000,
-    "skills": {"level": 21, "exp": 403, "fist": 475, "dist": 400}
+    "skills": {"level": 25, "exp": 601, "fist": 475, "dist": 400}
   },
   {
     "name": "Justyna",
