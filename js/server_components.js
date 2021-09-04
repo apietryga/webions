@@ -43,9 +43,9 @@ class Creature {
     if(this.walk <= game.time.getTime() && this.health > 0){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];;
       // player walking from pushed keys
+      let key;
       if(this.type == "player"){
         // get clicked key
-        let key;
         if(typeof param.controls != "undefined" && param.controls.length > 0){
           // get some of arrow key
           for(const k of [37,39,38,40]){
@@ -154,11 +154,11 @@ class Creature {
       }
       // set new position or display error
       if(isFloor){
-        this.position = phantomPos;
         // let key;
         // const key = param.controls.split(",")[0];
-        const key = param.controls[0];
-        if((this.type == "player" && [37,38,39,40].includes(key)) 
+        // const key = param.controls[0];
+        this.position = phantomPos;
+        if((this.type == "player" && typeof key != "undefined") 
         || this.type == "monster"){
           // set exhoust
           this.walk = game.time.getTime() + Math.round(1000/this.speed);
@@ -239,8 +239,8 @@ class Creature {
     }
     // DYING
     if(this.health <= 0 && !this.restore){
-      // this.restore = game.time.getTime() + 180000;
-      this.restore = game.time.getTime() + 1800;
+      this.restore = game.time.getTime() + 150000;
+      // this.restore = game.time.getTime() + 1800;
       if(this.type=="player"){
         this.restore = game.time.getTime();
       }

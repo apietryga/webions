@@ -169,6 +169,13 @@ class Creature {
         gamePlane.actions.push(new Action("expText",this.position[0],this.position[1],100,200,expValue));
         this.skills.oldExp = this.skills.exp;
       }
+      // drav level promotion
+      if(isSet(this.skills.oldLvl) && this.skills.level != this.skills.oldLvl && this.type == "player"){
+        gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level));
+        this.skills.oldLvl = this.skills.level;
+      }
+      
+
       // HEALING
       if(this.oldHealth < this.health){
         gamePlane.actions.push(new Action("misc",this.x,this.y,40,40,2));
@@ -285,7 +292,7 @@ class Text {
       ctx.fillStyle = '#fff';
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 0.8;
-      ctx.font = '900 10px Tahoma';
+      ctx.font = '900 15px Tahoma';
       ctx.textAlign = "center";
       ctx.fillText(this.text, player.x, player.y + 230);
       ctx.strokeText(this.text, player.x, player.y + 230);
@@ -322,7 +329,7 @@ class Action{  // class for hitText, Bullets,
       }
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 1;
-      ctx.font = '900 12px Tahoma';
+      ctx.font = '900 15px Tahoma';
       ctx.textAlign = "center";
       x += 20;
       y += 20 - (this.showFPS*2);  
@@ -334,7 +341,7 @@ class Action{  // class for hitText, Bullets,
       ctx.fillStyle = '#fff';
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 1;
-      ctx.font = '900 12px Tahoma';
+      ctx.font = '900 15px Tahoma';
       ctx.textAlign = "center";
       x += 20;
       y += 20 - (this.showFPS*2);  
@@ -357,6 +364,19 @@ class Action{  // class for hitText, Bullets,
       if(this.text != 1){x = this.x; y = this.y;}
       ctx.drawImage(img, this.cyle*40, this.text * 40, 40, 40,
       x, y, this.w, this.h); 
+    }
+    if(this.type == "centerTxt"){
+      this.showingLength = 450/gamePlane.fps;
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 1;
+      const fontSize = 15;
+      ctx.font = '900 '+fontSize+'px Tahoma';
+      ctx.textAlign = "center";
+      x = (gamePlane.canvas.width/2);
+      y = (gamePlane.canvas.width/2);  
+      ctx.fillText("You advanced to level "+this.text+".", x, y);
+      ctx.strokeText("You advanced to level "+this.text+".", x, y);
     }
     if (this.showFPS >= this.showingLength) {
       for(const [i,h] of gamePlane.actions.entries()){

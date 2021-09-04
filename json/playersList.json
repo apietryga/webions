@@ -25,5 +25,23 @@
     "health": 1220,
     "maxHealth": 2000,
     "skills": {"level": 9, "exp": 67, "fist": 475, "dist": 400}
+  },
+  {
+    "name": "Tosiek",
+    "position": [2, 5, 1],
+    "speed": 5,
+    "sprite": "male_oriental",
+    "health": 1300,
+    "maxHealth": 2000,
+    "skills": {"level": 78, "exp": 6001, "fist": 475, "dist": 400}
+  },
+  {
+    "name": "Newbie",
+    "position": [2, 3, 0],
+    "speed": 5,
+    "sprite": "male_oriental",
+    "health": 2000,
+    "maxHealth": 2000,
+    "skills": {"level": 1, "exp": 1, "fist": 475, "dist": 400}
   }
 ]

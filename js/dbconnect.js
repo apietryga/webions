@@ -158,7 +158,7 @@ class dbConnect{
   }
   test(){
     process.on('uncaughtException',(err) => {
-      console.log(err.stack);
+      // console.log(err.stack);
       // console.log(err.stack.length);
       if(typeof err.stack == "undefined"){
         game.db == 'redis';

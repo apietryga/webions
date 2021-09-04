@@ -13,7 +13,7 @@ const monstersList = [
     speed:1,
     skills:{
       fist:10,
-      exp:300,
+      exp:10,
       dist:0
     }
   },
@@ -31,7 +31,7 @@ const monstersList = [
     speed:2.5,
     skills:{
       fist:400,
-      exp:1,
+      exp:40,
       dist:0
     }
   },
@@ -47,8 +47,8 @@ const monstersList = [
     speed:3,
     skills:{
       fist:10,
-      exp:15,
-      dist:0
+      exp:50,
+      dist:100
     }
   },
   {name:"Hellknight",
@@ -63,8 +63,8 @@ const monstersList = [
     maxHealth:50000,
     speed:3,
     skills:{
-      fist:2,
-      exp:150,
+      fist:200,
+      exp:300,
       dist:200
     }
   }

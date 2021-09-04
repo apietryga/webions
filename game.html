@@ -226,10 +226,14 @@
             if(key == "health"){gamePlane.creatures.list[charId]["oldHealth"] = gamePlane.creatures.list[charId]["health"];}
             if(key == "skills"){
               let oldExp;
+              let oldLvl;
               if(gamePlane.creatures.list[charId].type == "player"
               && isSet(gamePlane.creatures.list[charId].skills)){
                 if(gamePlane.creatures.list[charId].skills["exp"] != creature[key]["exp"]){
                   oldExp = gamePlane.creatures.list[charId].skills["exp"];
+                }
+                if(gamePlane.creatures.list[charId].skills["level"] != creature[key]["level"]){
+                  oldLvl = gamePlane.creatures.list[charId].skills["level"];                  
                 }
               }
               gamePlane.creatures.list[charId].skills = {};
@@ -237,11 +241,13 @@
                 if(k == "exp" && isSet(oldExp)){
                   gamePlane.creatures.list[charId].skills["oldExp"] = oldExp;
                 }
+                if(k == "level" && isSet(oldLvl)){
+                  gamePlane.creatures.list[charId].skills["oldLvl"] = oldLvl;
+                }
                 gamePlane.creatures.list[charId].skills[k] = creature[key][k];
               }
-              if(!isSet(oldExp)){
-                gamePlane.creatures.list[charId].skills["oldExp"] = gamePlane.creatures.list[charId].skills["exp"];
-              }
+              if(!isSet(oldExp)){gamePlane.creatures.list[charId].skills["oldExp"] = gamePlane.creatures.list[charId].skills["exp"];}
+              if(!isSet(oldLvl)){gamePlane.creatures.list[charId].skills["oldLvl"] = gamePlane.creatures.list[charId].skills["level"];}
               continue;
             }
             if(key == "shotPosition"){
@@ -311,13 +317,14 @@
       this.statsDOM = document.createElement("div");
       this.statsDOM.innerHTML = "ELO :D"
       this.statsDOM.style.cssText = `
-        border:2px dashed red;
-        max-width:20vw;
+        width:20vw;
         position:fixed;
         right:0;
         top:0;
         padding:1%;
-      `;
+        font-size:0.6em;
+        background-color:rgba(255,255,255,0.5)
+        `;
       document.body.append(this.statsDOM);
     },
     stats : {
