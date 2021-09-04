@@ -1,8 +1,17 @@
 const fs = require('fs');
+const os = require('os');
 const game = require('./gameDetails');
 const stringify = require("json-stringify-pretty-compact");
+let client;
+if(os.hostname().indexOf("local") > -1){
+  // on server 
+  client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
+}else{
+  // on local machine
+  client = require('redis').createClient();
+}
 const redisJSON = {
-  client : require('redis').createClient(process.env.REDIS_URL),
+  client : client,
   getAll(callback = () => {}){
     this.client.keys("*",(e,keys)=>{
       if(keys.length == 0){callback(0)}
@@ -41,7 +50,6 @@ const redisJSON = {
 }
 class dbConnect{
   constructor(){
-    // this.redisClient = require('redis').createClient();
     this.test();
     this.src = "./json/playersList.json";
     this.dataToSave = [
@@ -137,6 +145,7 @@ class dbConnect{
         game.db == 'redis';
       }else{
         game.db = "json";
+        fs.writeFileSync("./json/err.json", err, ()=>{});  
       }
     })
   }
