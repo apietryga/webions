@@ -311,9 +311,9 @@ class Creature {
       this.health = this.maxHealth;
       this.speed = 3 + Math.floor(this.skills.exp/100)/10;
       this.speed>10?this.speed=10:'';
-      this.fist = Math.ceil(100 + (this.skills.exp/100));
-      this.dist = Math.ceil(100 + (this.skills.exp/100));
-      this.healing = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
       dbc[this.game.db].update(this);
     }
   }

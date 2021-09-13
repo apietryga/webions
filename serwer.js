@@ -216,6 +216,15 @@ dbc.init(()=>{
           result = map;
           connection.sendUTF(stringify(result,null,2));
         }
+        // Get onlinelist
+        if(param.get == "onlineList"){
+          const onlineList = [];
+          for(const p of cm.players.list){
+            onlineList.push({"name":p.name,"skills":{"level":p.skills.level}});
+          }
+          connection.sendUTF(stringify(onlineList,null,2));
+        }
+
       }       
     })
   })

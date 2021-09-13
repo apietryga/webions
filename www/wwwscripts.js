@@ -1,6 +1,12 @@
 let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
 const ws = new WebSocket(protocol+"//"+window.location.host+"/get",'echo-protocol');
-ws.onopen = (dt) =>{ws.send(JSON.stringify({"get":"playersList"}));}
+let getWhat;
+if(Object.keys(searchToObject()).includes("online")){
+  getWhat = "onlineList";
+}else{
+  getWhat = "playersList";
+}
+ws.onopen = () =>{ws.send(JSON.stringify({"get":getWhat}));}
 ws.onmessage = (mess) => {
   const main = document.querySelector("main");
   main.innerHTML = "LOADING ... ";
@@ -14,7 +20,8 @@ ws.onmessage = (mess) => {
     main.append(table);
     if(Object.keys(params).includes("player")){ // PLAYER DETAILS
       const backer = document.createElement("a");
-      backer.href = "./players.html";
+      // backer.href = "./players.html";
+      backer.onclick = () => {window.history.back()};
       backer.innerHTML="< GO BACK";
       main.prepend(backer);
     
@@ -103,8 +110,14 @@ ws.onmessage = (mess) => {
         table.remove();
       }
 
-    }else{ // PLAYERS LIST
-      h1.innerHTML = "Players list";
+    }else{ // PLAYERS & ONLINE LIST
+      if(getWhat == "onlineList"){
+        h1.innerHTML = "Online list";
+      }else{
+        h1.innerHTML = "Players list";
+      }
+      console.log(dt);
+
       // make table header
       const tbHead = ["lp.","Player name","level"];
       const tr = document.createElement("tr");
