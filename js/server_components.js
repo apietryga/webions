@@ -314,7 +314,7 @@ class Creature {
       this.fist = Math.ceil(100 + (this.skills.exp/100));
       this.dist = Math.ceil(100 + (this.skills.exp/100));
       this.healing = Math.ceil(100 + (this.skills.exp/100));
-      dbc.update(this);
+      dbc[game.db].update(this);
     }
   }
 }

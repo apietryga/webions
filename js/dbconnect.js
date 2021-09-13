@@ -2,7 +2,6 @@ const fs = require('fs');
 const game = require('./gameDetails');
 const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
-const { on } = require('stream');
 class dbConnect{
   init(callback){
     console.log("Setting database");
@@ -40,85 +39,82 @@ class dbConnect{
     ];
     this.json.dataToSave = this.dataToSave;
     this.redis.dataToSave = this.dataToSave;
-
-    // const dbc = this;
-    // var that = this;
   }
-  update(player,callback){
-    // updating exsists or create new one
-    let playerIsSet = false;
-    this.loadContent((content)=>{
-      content == 0?content = []:'';
-      let playerIndex;
+  // update(player,callback){
+  //   // updating exsists or create new one
+  //   let playerIsSet = false;
+  //   this.loadContent((content)=>{
+  //     content == 0?content = []:'';
+  //     let playerIndex;
       
-      if(content.length > 0 ){
-        for(const [i,p] of content.entries()){
-          if(p.name == player.name){
-            playerIsSet = true;
-            playerIndex = i;
-          }
-        }  
-      }
-      if(playerIsSet){
-        // update record
-        const uPlayer = {};
-        for(const k of Object.keys(player)){
-          // if(uKeys.includes(k)){
-          if(this.dataToSave.includes(k)){
-            uPlayer[k] = player[k];
-          }
-        }
-        content[playerIndex] = uPlayer;
-      }else{
-        // create new record 
-        const nPlayer = {};
-        for(const k of Object.keys(player)){
-          if(this.dataToSave.includes(k)){
-          // if(uKeys.includes(k)){
-            nPlayer[k] = player[k];
-          }
-        }
-        content.push(nPlayer);
-      }
-      if(game.db == "redis"){
-        redisJSON.setMultiple(content,()=>{
-          // callback(content);
-        });
-      }
-      if(game.db == "json"){
-        content = stringify(content);
-        fs.writeFileSync(this.src, content, ()=>{
-          // callback(content);
-        });  
-      }
-    })
-  }
-  load(player,callback){
-    this.loadContent((cont) => {
-      const content = cont;
-      if(content == 0){
-        this.update(player,()=>{
-          callback(false);
-        })
-      }else{
-        for(const p of content){
-          if(p.name == player.name){
-            for(const k of Object.keys(p)){
-              player[k] = p[k];
-            }
-            break;
-          }
-        }
-        callback(player);
+  //     if(content.length > 0 ){
+  //       for(const [i,p] of content.entries()){
+  //         if(p.name == player.name){
+  //           playerIsSet = true;
+  //           playerIndex = i;
+  //         }
+  //       }  
+  //     }
+  //     if(playerIsSet){
+  //       // update record
+  //       const uPlayer = {};
+  //       for(const k of Object.keys(player)){
+  //         // if(uKeys.includes(k)){
+  //         if(this.dataToSave.includes(k)){
+  //           uPlayer[k] = player[k];
+  //         }
+  //       }
+  //       content[playerIndex] = uPlayer;
+  //     }else{
+  //       // create new record 
+  //       const nPlayer = {};
+  //       for(const k of Object.keys(player)){
+  //         if(this.dataToSave.includes(k)){
+  //         // if(uKeys.includes(k)){
+  //           nPlayer[k] = player[k];
+  //         }
+  //       }
+  //       content.push(nPlayer);
+  //     }
+  //     if(game.db == "redis"){
+  //       redisJSON.setMultiple(content,()=>{
+  //         // callback(content);
+  //       });
+  //     }
+  //     if(game.db == "json"){
+  //       content = stringify(content);
+  //       fs.writeFileSync(this.src, content, ()=>{
+  //         // callback(content);
+  //       });  
+  //     }
+  //   })
+  // }
+  // load(player,callback){
+  //   this.loadContent((cont) => {
+  //     const content = cont;
+  //     if(content == 0){
+  //       this.update(player,()=>{
+  //         callback(false);
+  //       })
+  //     }else{
+  //       for(const p of content){
+  //         if(p.name == player.name){
+  //           for(const k of Object.keys(p)){
+  //             player[k] = p[k];
+  //           }
+  //           break;
+  //         }
+  //       }
+  //       callback(player);
   
-      }
-    })
-  }
-  loadContent(callback){
-    this[game.db].loadAll((content) => {
-      callback(content);
-    })
-  }
+  //     }
+  //   })
+  // }
+  // loadContent(callback){
+  //   this[game.db].loadAll((content) => {
+  //     callback(content);
+  //   })
+  // }
   // db types 
   redis = {
     client: redis.createClient(
