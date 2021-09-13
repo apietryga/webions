@@ -13,10 +13,10 @@
     "position": [4, 18, 0],
     "speed": 3,
     "sprite": "male_oriental",
-    "health": 488,
+    "health": 338,
     "maxHealth": 1013,
     "skills": {"level": 8, "exp": 51, "fist": 100, "dist": 100, "healing": 100},
-    "lastFrame": 1631560532808
+    "lastFrame": 1631560670038
   },
   {
     "name": "Zuzia",

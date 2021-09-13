@@ -219,7 +219,8 @@ class dbConnect{
   }
 }
 // change storage to json on redis crash
-process.on("uncaughtException",(err)=>{
-  game.db = "json";
-})
+// process.on("uncaughtException",(err)=>{
+//   game.db = "json";
+//   console.log("Database changed to JSON.");
+// })
 module.exports = dbConnect;
