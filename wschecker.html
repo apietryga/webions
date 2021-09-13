@@ -22,11 +22,11 @@
     ws.onopen = () => {
       ws.send(JSON.stringify({"name":plName,"controls":[],"target":false}));
       ws.onmessage = (msg) => {
-        console.log(JSON.parse(msg.data));
         let data = JSON.stringify(msg.data);
         data = data.replaceAll("\\n","<br />&nbsp;");
         data = data.replaceAll("\\","");
         document.querySelector("pre").innerHTML = data;
+        ws.CLOSED;
       }
 
     }

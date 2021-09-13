@@ -14,7 +14,7 @@
   </noscript>
   <div class="loader">
     <img src="img/logos/logo.webp" alt="Webions Game">
-    <h1>LOADING</h1>
+    <h1>WEBIONS</h1>
     <div class="loadDetails"></div>
   </div>
   <div class="wrapper">
@@ -42,6 +42,35 @@
 
 <!--| GAME PROPERTIES |-->
 <script>
+  const popup = {
+    init(title = "GAME STOPPED."){
+      this.dom = document.createElement("div");
+      this.dom.style.cssText = `
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        width:100%;
+        height:100%;
+        position:fixed;
+        left:0;
+        top:0;
+        z-index:3;
+        background-color:rgba(0,0,0,0.8)
+      `;
+      this.h1 = document.createElement("h1");
+      this.h1.innerHTML = title;
+      this.button = document.createElement("button");
+      this.button.style.position = "unset";
+      this.button.style.padding = "10px 50px";
+      this.button.onclick = () => {window.location.reload();}
+      this.button.innerText = " PLAY. ";
+
+      this.dom.append(this.h1);
+      this.dom.append(this.button);
+      document.body.append(this.dom);
+    }
+  }
   const urlParams = new URLSearchParams(window.location.search);
   let player = {};
   player.name = urlParams.get('player');
@@ -57,7 +86,7 @@
     floors: [-1,0,1,2],
     creatures : {
       list: [],
-      names: []
+      ids: []
     },
     sprites: [],
     canvas : document.querySelector(".gamePlane > canvas"),
@@ -116,9 +145,10 @@
         for(const a of gamePlane.actions){a.update();}
         inGameConsole.update();
       }
-      // console.log("idzie?")
     },
-    stop(){
+    stop(title = "GAME STOPPED."){
+      // show popup
+      popup.init(title);
       clearInterval(this.interval);
       console.log("Game stopped.")
     }
@@ -130,12 +160,13 @@
 <script>
 
   let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
-  const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
+  const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
   const serv = {
     connected:false,
     param : {},
     paramUpdate(){
-      this.param.name = player.name;
+      this.param.name = urlParams.get('player');
+      this.param.id = false;
       this.param.controls = controls.vals;
       isSet(player.whiteTarget)?this.param.target = player.whiteTarget:'';
       return this.param;
@@ -146,21 +177,32 @@
       ws.onclose = () => {this.connected = false;}
       // send to server
       if(this.connected){
+        // console.log(this.param.id);
         ws.send(JSON.stringify(this.paramUpdate()));
       }
       // get response
       ws.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
-        
-        // show dev info
-        dev.stats = data.game;
-        dev.update();
-
+        // console.log(data.game.player);
         // update game properties
         this.datetime = data.game.time;
         this.time = new Date(data.game.time).getTime();
         gamePlane.fps = data.game.fps;
-        
+        // show dev info
+        dev.stats = data.game;
+        dev.stats.player = player.name;
+        dev.stats.position = player.position;
+        // dev.stats.lastFrame = player.lastFrame;
+        if(this.time - player.lastFrame > 3000){
+          gamePlane.stop("Focus bro");
+        }
+
+        dev.stats.url = urlParams.get('player');
+        dev.stats.ping = this.time - player.lastFrame;
+        // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
+        dev.update();
+
+
         // get names of online players
         let onlinePlayers = [];
         for(const p of data.creatures){
@@ -174,13 +216,13 @@
           if(!onlinePlayers.includes(ac.name) && ac.type == "enemy"){
             gamePlane.actions.push(new Action("misc",ac.position[0]+ac.x,ac.position[1]+ac.y,40,40,0));     
             gamePlane.creatures.list.splice(gamePlane.creatures.list.indexOf(ac),1);
-            if(gamePlane.creatures.names.includes(ac.name)){
-              gamePlane.creatures.names.splice(gamePlane.creatures.names.indexOf(ac.name),1);
+            if(gamePlane.creatures.ids.includes(ac.id)){
+              gamePlane.creatures.ids.splice(gamePlane.creatures.ids.indexOf(ac.id),1);
             }
             continue;
           }
-          if(!gamePlane.creatures.names.includes(ac.name)){
-            gamePlane.creatures.names.push(ac.name);
+          if(!gamePlane.creatures.ids.includes(ac.id)){
+            gamePlane.creatures.ids.push(ac.id);
           }
         }
         
@@ -188,9 +230,9 @@
         for(const creature of data.creatures){
           let myChar;
           let charId;
-          if(!gamePlane.creatures.names.includes(creature.name)){
-            if(creature.name == player.name){
-              player = new Creature("player",player.position,player.name); 
+          if(!gamePlane.creatures.ids.includes(creature.id)){
+            if(creature.name == urlParams.get('player')){
+              player = new Creature("player",player.position,urlParams.get('player')); 
               myChar = player;
             }else{
               let type = "monster";
@@ -199,10 +241,11 @@
             }
             gamePlane.creatures.list.push(myChar);
             charId = gamePlane.creatures.list.length-1;
+            // charId = myChar.id;
           }else{
             // find it in gamePlane.creatures.list
             for(const [i,pl] of gamePlane.creatures.list.entries()){
-              if(pl.name == creature.name){
+              if(pl.id == creature.id){
                 myChar = creature;
                 charId = i;
               }
@@ -259,6 +302,8 @@
             gamePlane.creatures.list[charId][key] = creature[key];
           }
         }
+      
+        // callback(data)
       }
       // connection error
       ws.onerror = (error) => {
@@ -317,19 +362,20 @@
       this.statsDOM = document.createElement("div");
       this.statsDOM.innerHTML = "ELO :D"
       this.statsDOM.style.cssText = `
-        width:20vw;
+        width:30vw;
         position:fixed;
         right:0;
         top:0;
-        padding:1%;
+        padding:2%;
         font-size:0.6em;
-        background-color:rgba(255,255,255,0.5)
+        color:#000;
+        background-color:rgba(255,255,255,0.8)
         `;
       document.body.append(this.statsDOM);
     },
     stats : {
       fps: 10,
-      
+      player: player.name
     },
     update(){
       if(typeof this.statsDOM != "undefined"){
@@ -351,3 +397,4 @@
     dev.init();
   }
 </script>
+

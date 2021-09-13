@@ -2,60 +2,32 @@ const fs = require('fs');
 const game = require('./gameDetails');
 const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
-let client;
-try {
-  // client = require('redis').createClient(process.env.REDIS_URL, { tls: {rejectUnauthorized: false}} );
-  const redisUrl = process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL;
-  const redisDefaults = {
-    tls: {
-      rejectUnauthorized: false,
-    },
-  };
-  client = redis.createClient(redisUrl, redisDefaults);
-} catch (error) {
-  client = redis.createClient();
-}
-const redisJSON = {
-  client : client,
-  getAll(callback = () => {}){
-    this.client.keys("*",(e,keys)=>{
-      if(typeof keys == "undefined" || keys.length == 0){callback(0)}
-      const json = [];
-      for(const [i,k] of keys.entries()){
-        this.client.get(k,(e,v)=>{
-          if(typeof v != "undefined"){
-            json.push(JSON.parse(v));
-          }
-          if(i == keys.length-1){
-            callback(json);
-          }
-        })
-      }
-    });
-  },
-  set(obj,callback = () => {}){
-    const key = obj.name;
-    const stringyfy = JSON.stringify(obj);
-    this.client.set(key,stringyfy,()=>{
-      callback();
-    });
-  },
-  setMultiple(json, callback = () => {}){
-    for(const [i,obj] of json.entries()){
-      this.set(obj,()=>{
-        if(i == json.length -1){callback();}
-      })
-    }    
-  },
-  get(name, callback){
-    this.client.get(name, (e,c)=>{
-      callback(JSON.parse(c));
-    })    
-  }
-}
+const { on } = require('stream');
 class dbConnect{
+  init(callback){
+    console.log("Setting database");
+    // Redis connection
+    if(typeof process.env.REDIS_URL == "string" || typeof process.env.REDIS_TLS_URL == "string"){
+      this.client = redis.createClient(process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL, {tls: {rejectUnauthorized: false,}});
+    }else{
+      this.client = redis.createClient();
+    }
+    this.client.once('error',(err)=>{
+      this.client.quit();
+      delete this.client;
+      game.db = 'json';
+    })
+    this.client.keys('*',(error)=>{
+      if(error  == null){
+        game.db = 'redis';
+        // redisJSON.client = this.client;
+      }else{
+        game.db = 'json';
+      }
+      callback();
+    })
+  }
   constructor(){
-    this.test();
     this.src = "./json/playersList.json";
     this.dataToSave = [
       "name",
@@ -64,8 +36,14 @@ class dbConnect{
       "lastFrame",
       "skills",
       "speed",
-      "sprite"
-    ]
+      "sprite",
+      "position"
+    ];
+    this.json.dataToSave = this.dataToSave;
+    this.redis.dataToSave = this.dataToSave;
+
+    // const dbc = this;
+    // var that = this;
   }
   update(player,callback){
     // updating exsists or create new one
@@ -73,15 +51,7 @@ class dbConnect{
     this.loadContent((content)=>{
       content == 0?content = []:'';
       let playerIndex;
-      const uKeys = [
-        "name",
-        "sprite",
-        "skills",
-        "position",
-        "speed",
-        "health",
-        "maxHealth"
-      ];
+      
       if(content.length > 0 ){
         for(const [i,p] of content.entries()){
           if(p.name == player.name){
@@ -94,7 +64,8 @@ class dbConnect{
         // update record
         const uPlayer = {};
         for(const k of Object.keys(player)){
-          if(uKeys.includes(k)){
+          // if(uKeys.includes(k)){
+          if(this.dataToSave.includes(k)){
             uPlayer[k] = player[k];
           }
         }
@@ -103,7 +74,8 @@ class dbConnect{
         // create new record 
         const nPlayer = {};
         for(const k of Object.keys(player)){
-          if(uKeys.includes(k)){
+          if(this.dataToSave.includes(k)){
+          // if(uKeys.includes(k)){
             nPlayer[k] = player[k];
           }
         }
@@ -156,17 +128,98 @@ class dbConnect{
       });
     }
   }
-  test(){
-    process.on('uncaughtException',(err) => {
-      // console.log(err.stack);
-      // console.log(err.stack.length);
-      if(typeof err.stack == "undefined"){
-        game.db == 'redis';
-      }else{
-        game.db = "json";
-      }
-    })
+  // db types 
+  redis = {
+    client : new redis.RedisClient,
+    loadAll(callback){
+      this.client.keys("*",(e,keys)=>{
+        if(typeof keys == "undefined" || keys.length == 0){callback(0)}
+        const json = [];
+        for(const [i,k] of keys.entries()){
+          this.client.get(k,(e,v)=>{
+            if(typeof v != "undefined"){
+              json.push(JSON.parse(v));
+            }
+            if(i == keys.length-1){
+              callback(json);
+            }
+          })
+        }
+      });
+      // callback("all");
+    },
+    load(player,callback){
+      this.client.get(player.name, (e,c)=>{
+        callback(JSON.parse(c));
+      })    
+    },
+    update(player){
+      this.client.get(player.name, (e,c)=>{
+        const stringyfy = JSON.stringify(player);
+        this.client.set(player.name,stringyfy,()=>{});
+      })
+    }
+  }
+  json = {
+    src: "./json/playersList.json",
+    loadAll(callback){
+      fs.readFile(this.src,"utf8",(e,content) => {
+        callback(JSON.parse(content));
+      })
+    },
+    load(player,callback){
+      this.playerIsSet(player.name,(p)=>{
+        callback(p[0]);
+      })
+    },
+    playerIsSet(name,callback){
+      this.loadAll((r)=>{
+        // find player by name
+        let isPlayer = false;
+        for(let p of r){
+          if(p.name == name){
+            isPlayer = p;
+            break;
+          }
+        }
+        callback([isPlayer,r]);
+      })
+    },
+    update(player){
+      this.playerIsSet(player.name,(p)=>{
+        if(typeof p[0] == "object"){
+          // update record
+          for(let [i,px] of p[1].entries()){
+            if(px.name == player.name){
+              for(const k of Object.keys(player)){
+                if(this.dataToSave.includes(k)){
+                  p[1][i][k] = player[k];
+                }
+              }
+              break;
+            }
+          }
+        }else{
+          // create new record
+          const nPlayer = {};
+          for(const k of Object.keys(player)){
+            if(this.dataToSave.includes(k)){
+              nPlayer[k] = player[k];
+            }
+          }
+          p[1].push(nPlayer);
+        }
+        this.save(p[1]);
+      })
+    },
+    save(newContent){
+      const content = stringify(newContent);
+      fs.writeFileSync(this.src, content, ()=>{});  
+    }
   }
 }
-
+// change storage to json on redis crash
+process.on("uncaughtException",(err)=>{
+  game.db = "json";
+})
 module.exports = dbConnect;

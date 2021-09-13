@@ -6,9 +6,12 @@ const controls = {
   update(params){
     // white target on client side (84 is t key)
     const targetKeys = [83,84];
-    if(targetKeys.includes(params[0])){  
-      this.targeting(params);
-    }
+      for(const pk of params){
+        if(targetKeys.includes(pk)){  
+          this.targeting(params);
+        } 
+      }
+    
     // prepare table to send
     if(params[1] == true && this.vals.indexOf(params[0]) == -1){
       this.vals.push(params[0]*1);
@@ -36,7 +39,7 @@ const controls = {
        ){
         cToTarget.push(c);
       }
-    }    
+    }   
     // white targeting ( T key )
     if(param[0] == 84 && param[1] == true){
       // get target index of list

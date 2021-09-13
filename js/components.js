@@ -68,15 +68,16 @@ class Creature {
     }
     // CLEAR WHITE TARGET
     if(this.whiteTarget){
-      let opp;
-      let isOpp = false;
+      let opp = false;
+      // let isOpp = false;
+      // console.log(gamePlane.creatures.list);
       for(const c of gamePlane.creatures.list){
         if(c.id == this.whiteTarget){
-          isOpp = true;
+          // isOpp = true;
           opp = c;
         }
       }
-      if(isOpp){
+      if(opp){
         if(this.position[2] != opp.position[2]
           || Math.abs(this.position[1] - opp.position[1]) > 5
           || Math.abs(this.position[0] - opp.position[0]) > 5
@@ -89,6 +90,9 @@ class Creature {
     }
     // DEATH
     if(this.health <= 0){
+      if(this.name == player.name){
+        gamePlane.stop("You are dead.");
+      }
       this.cyle = 0;
       this.direction = 4;
       if(player.whiteTarget == this.id){
@@ -171,7 +175,11 @@ class Creature {
       }
       // drav level promotion
       if(isSet(this.skills.oldLvl) && this.skills.level != this.skills.oldLvl && this.type == "player"){
-        gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level));
+        // console.log(this.skills.oldLvl+" / "+this.skills.level+" / "+this.lastFrame);
+        if(this.skills.oldLvl != 0){
+          gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level));
+        }
+        
         this.skills.oldLvl = this.skills.level;
       }
       
@@ -381,7 +389,7 @@ class Action{  // class for hitText, Bullets,
     if (this.showFPS >= this.showingLength) {
       for(const [i,h] of gamePlane.actions.entries()){
         if(h == this){
-          gamePlane.actions.splice(i,1);
+          gamePlane.actions.splice(gamePlane.actions.indexOf(i),1);
         }    
       }
     }

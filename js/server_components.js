@@ -4,12 +4,13 @@ class Creature {
   constructor(nickName,creaturesLength){
     this.id = creaturesLength+1; 
     this.name = nickName;
-    this.position = [2,3,0];  // left tower down
+    this.position = [10,13,0];  // left tower down
+    // this.position = [2,3,0];  // left tower down
     // this.position = [20,13,1];  // left tower down
     // this.position = [1,5,1];  // left tower up
     this.startPosition = this.position;
     this.walk = 0;
-    this.speed = 5; // grids per second
+    this.speed = 2; // grids per second
     // this.sprite = "male_warrior";
     this.sprite = "male_oriental";
     // this.sprite = "citizen";
@@ -22,21 +23,26 @@ class Creature {
     if(this.name == "Kotul"){this.sprite = "male_warrior";}
 
     this.health = 2000;
+    this.healthValue = 10;
     this.maxHealth = this.health;
     this.healthExhoust = 0;
+    this.exhoustHeal = 1000;
     this.shotExhoust = 0;
     // this.shotPosition = false;
     this.redTarget = false;
     this.fistFighting = false;
     this.restore = false;
     this.skills = {
-      level:1,
+      level:0,
       exp:1,
-      fist:475,
-      dist:400
+      fist:100,
+      dist:100,
+      healing:100,
     }
   }
-  update(param = {name:""},game,map,func,creatures){
+  update(param,game,map,func,creatures){
+    // console.log(param);
+
     // for monster walking and targeting
     let playerInArea;
     // WALKING
@@ -171,7 +177,7 @@ class Creature {
     if(this.type == "monster"&& typeof playerInArea != "undefined"&& this.health > 0.2*this.maxHealth){
       // monster
       this.redTarget = playerInArea.id;
-    }else if(param.controls.includes(83) && typeof param.target != "undefined"){
+    }else if(typeof param.controls != "undefined" && param.controls.includes(83) && typeof param.target != "undefined"){
       // player
       this.redTarget = param.target;
     }
@@ -273,15 +279,15 @@ class Creature {
       this.position = this.startPosition;
     } 
     // HEALING
-    if(param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
+    if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
-      const healthValue = [1500,300]; // [ms(exhoust),hp(value)]      
-      if(this.health + healthValue[1] > this.maxHealth){
+      const healthExhoust = 1500; // [ms(exhoust),hp(value)]      
+      if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
       }else{
-        this.health += healthValue[1];
+        this.health += this.skills.healing;
       }
-      this.healthExhoust =  game.time.getTime() + healthValue[0];
+      this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }
 
     // SELF AUTO HEALING
@@ -298,14 +304,18 @@ class Creature {
     }
   }
   updateSkills(){
-    // console.log(this.skills.exp);
     const oldLvl = this.skills.level; 
     this.skills.level = Math.ceil(Math.sqrt(this.skills.exp));
     if(this.skills.level != oldLvl){
+      this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
+      this.health = this.maxHealth;
+      this.speed = 3 + Math.floor(this.skills.exp/100)/10;
+      this.speed>10?this.speed=10:'';
+      this.fist = Math.ceil(100 + (this.skills.exp/100));
+      this.dist = Math.ceil(100 + (this.skills.exp/100));
+      this.healing = Math.ceil(100 + (this.skills.exp/100));
       dbc.update(this);
     }
-
   }
-
 }
 module.exports = Creature;

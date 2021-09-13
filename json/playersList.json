@@ -1,23 +1,5 @@
 [
   {
-    "name": "Zuzia",
-    "position": [11, 2, 0],
-    "speed": 5,
-    "sprite": "female_oriental",
-    "health": 1910,
-    "maxHealth": 2000,
-    "skills": {"level": 11, "exp": 106, "fist": 10, "dist": 100}
-  },
-  {
-    "name": "Antek",
-    "position": [-2, -1, 1],
-    "speed": 5,
-    "sprite": "male_oriental",
-    "health": 2000,
-    "maxHealth": 2000,
-    "skills": {"level": 25, "exp": 601, "fist": 475, "dist": 400}
-  },
-  {
     "name": "Justyna",
     "position": [8, 10, 0],
     "speed": 5,
@@ -28,20 +10,22 @@
   },
   {
     "name": "Tosiek",
-    "position": [2, 5, 1],
-    "speed": 5,
+    "position": [10, 13, 0],
+    "speed": 3,
     "sprite": "male_oriental",
-    "health": 1300,
-    "maxHealth": 2000,
-    "skills": {"level": 78, "exp": 6001, "fist": 475, "dist": 400}
+    "health": 1013,
+    "maxHealth": 1013,
+    "skills": {"level": 8, "exp": 51, "fist": 100, "dist": 100, "healing": 100},
+    "lastFrame": 1631560307408
   },
   {
-    "name": "Newbie",
-    "position": [2, 3, 0],
-    "speed": 5,
-    "sprite": "male_oriental",
-    "health": 2000,
-    "maxHealth": 2000,
-    "skills": {"level": 1, "exp": 1, "fist": 475, "dist": 400}
+    "name": "Zuzia",
+    "position": [6, 11, 0],
+    "speed": 3,
+    "sprite": "female_oriental",
+    "health": 782,
+    "maxHealth": 1007,
+    "skills": {"level": 6, "exp": 26, "fist": 100, "dist": 100, "healing": 100},
+    "lastFrame": 1631560299361
   }
 ]
