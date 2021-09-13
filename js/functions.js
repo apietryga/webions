@@ -84,13 +84,13 @@ function isSet(val){
 
 // MOBILE CONTROLS
 function absorbEvent_(event) {
-  var e = event || window.event;
-  e.preventDefault && e.preventDefault();
-  e.stopPropagation && e.stopPropagation();
-  e.cancelBubble = true;
-  e.returnValue = false;
+  // var e = event || window.event;
+  // e.preventDefault && e.preventDefault();
+  // e.stopPropagation && e.stopPropagation();
+  // e.cancelBubble = true;
+  // e.returnValue = false;
   return false;
 }
 function initPreventing() {
-  preventLongPressMenu(document);
+  // preventLongPressMenu(document);
 }

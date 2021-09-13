@@ -177,8 +177,13 @@ const mobileControls = {
       for(var i=0; i<nodes.length; i++){
         nodes[i].ontouchstart = absorbEvent_;
         nodes[i].ontouchmove = absorbEvent_;
-        nodes[i].ontouchend = absorbEvent_;
+        // nodes[i].ontouchend = absorbEvent_;
         nodes[i].ontouchcancel = absorbEvent_;
+
+        // nodes[i].ontouchstart = () => {};
+        // nodes[i].ontouchmove = absorbEvent_;
+        // nodes[i].ontouchend = absorbEvent_;
+        // nodes[i].ontouchcancel = absorbEvent_;
       }
     }
     preventLongPressMenu(document.querySelectorAll('*:not(button)'));

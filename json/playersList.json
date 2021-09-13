@@ -10,7 +10,7 @@
   },
   {
     "name": "Tosiek",
-    "position": [7, 7, 0],
+    "position": [10, 13, 0],
     "speed": 3.1,
     "sprite": "male_oriental",
     "health": 1026,
@@ -22,7 +22,7 @@
       "dist": 100,
       "healing": 100
     },
-    "lastFrame": 1631561513947
+    "lastFrame": 1631562431631
   },
   {
     "name": "Zuzia",
