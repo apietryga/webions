@@ -20,7 +20,6 @@ class dbConnect{
     this.client.keys('*',(error)=>{
       if(error  == null){
         game.db = 'redis';
-        // redisJSON.client = this.client;
       }else{
         game.db = 'json';
       }
@@ -116,17 +115,9 @@ class dbConnect{
     })
   }
   loadContent(callback){
-    if(game.db == "json"){
-      // return fs.readFileSync(this.src, "utf8",(e,content) => {})
-      fs.readFile(this.src,"utf8",(e,content) => {
-        callback(JSON.parse(content));
-      })
-    }
-    if(game.db == "redis"){
-      redisJSON.getAll((c) => {
-        callback(c);
-      });
-    }
+    this[game.db].loadAll((content) => {
+      callback(content);
+    })
   }
   // db types 
   redis = {
