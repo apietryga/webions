@@ -42,7 +42,7 @@ class Creature {
   }
   update(param,game,map,func,creatures){
     // console.log(param);
-
+    this.game = game;
     // for monster walking and targeting
     let playerInArea;
     // WALKING
@@ -300,7 +300,7 @@ class Creature {
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
       from.skills.exp += this.skills.exp;
-      from.updateSkills();
+      from.updateSkills(game);
     }
   }
   updateSkills(){
@@ -314,7 +314,7 @@ class Creature {
       this.fist = Math.ceil(100 + (this.skills.exp/100));
       this.dist = Math.ceil(100 + (this.skills.exp/100));
       this.healing = Math.ceil(100 + (this.skills.exp/100));
-      dbc[game.db].update(this);
+      dbc[this.game.db].update(this);
     }
   }
 }
