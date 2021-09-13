@@ -90,9 +90,6 @@ class Creature {
     }
     // DEATH
     if(this.health <= 0){
-      if(this.name == player.name){
-        gamePlane.stop("You are dead.");
-      }
       this.cyle = 0;
       this.direction = 4;
       if(player.whiteTarget == this.id){
@@ -102,6 +99,9 @@ class Creature {
       controls.currentTarget = false;
       controls.targeting('clear');
       controls.whiteTarget = false;
+      if(this.name == player.name){
+        gamePlane.stop("You are dead.");
+      }
     }
     if(this.type != "player" && typeof player.position != null){
       this.x = (this.position[0] - player.position[0] + 5) * 40;

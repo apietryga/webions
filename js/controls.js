@@ -175,10 +175,14 @@ const mobileControls = {
     window.oncontextmenu = function() { return false; }
     function preventLongPressMenu(nodes) {
       for(var i=0; i<nodes.length; i++){
-        nodes[i].ontouchstart = absorbEvent_;
-        nodes[i].ontouchmove = absorbEvent_;
+        // nodes[i].ontouchstart = absorbEvent_;        
+        // nodes[i].ontouchmove = absorbEvent_;
         // nodes[i].ontouchend = absorbEvent_;
-        nodes[i].ontouchcancel = absorbEvent_;
+        // nodes[i].ontouchcancel = absorbEvent_;
+        nodes[i].addEventListener("touchstart",absorbEvent_);
+        nodes[i].addEventListener("touchmove",absorbEvent_);
+        nodes[i].addEventListener("touchend",absorbEvent_);
+        nodes[i].addEventListener("touchcancel",absorbEvent_);
 
         // nodes[i].ontouchstart = () => {};
         // nodes[i].ontouchmove = absorbEvent_;
