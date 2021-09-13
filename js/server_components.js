@@ -300,7 +300,7 @@ class Creature {
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
       from.skills.exp += this.skills.exp;
-      from.updateSkills(game);
+      from.updateSkills();
     }
   }
   updateSkills(){
