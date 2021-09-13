@@ -193,7 +193,7 @@
         dev.stats.player = player.name;
         dev.stats.position = player.position;
         // dev.stats.lastFrame = player.lastFrame;
-        if(this.time - player.lastFrame > 3000){
+        if(this.time - player.lastFrame > 10000){
           gamePlane.stop("Focus bro");
         }
 

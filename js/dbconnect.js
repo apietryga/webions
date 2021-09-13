@@ -130,7 +130,6 @@ class dbConnect{
   }
   // db types 
   redis = {
-    // client : new redis.RedisClient(),
     client: redis.createClient(
       process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL,
       {tls:{rejectUnauthorized: false}}
@@ -223,8 +222,8 @@ class dbConnect{
   }
 }
 // change storage to json on redis crash
-// process.on("uncaughtException",(err)=>{
-//   game.db = "json";
-//   console.log("Database changed to JSON.");
-// })
+process.on("uncaughtException",(err)=>{
+  game.db = "json";
+  console.log("Database changed to JSON.");
+})
 module.exports = dbConnect;

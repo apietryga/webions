@@ -10,13 +10,19 @@
   },
   {
     "name": "Tosiek",
-    "position": [4, 18, 0],
-    "speed": 3,
+    "position": [7, 7, 0],
+    "speed": 3.1,
     "sprite": "male_oriental",
-    "health": 338,
-    "maxHealth": 1013,
-    "skills": {"level": 8, "exp": 51, "fist": 100, "dist": 100, "healing": 100},
-    "lastFrame": 1631560670038
+    "health": 1026,
+    "maxHealth": 1026,
+    "skills": {
+      "level": 11,
+      "exp": 101,
+      "fist": 100,
+      "dist": 100,
+      "healing": 100
+    },
+    "lastFrame": 1631561513947
   },
   {
     "name": "Zuzia",
