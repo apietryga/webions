@@ -7,6 +7,74 @@ this.compareTables = (a,b) =>{
   }
   return result;
 }
+this.indexOfArr = (parent,arr) => {
+  let isThis = true;
+  for(const [i,p] of parent.entries()){
+    isThis = true;
+    for(const [l,s] of p.entries()){
+      if(s != arr[l]){isThis = false;}
+    }
+    if(isThis){return i;}
+  }
+  if(!isThis){return -1;}
+}
+this.equalArr = (arr) => {
+  let newArr = [];
+  for(a = 0; a < arr.length; a++){
+    newArr[a] = arr[a];
+  }
+  return newArr;
+}
+this.includesArr = (searchThis,inThis) => {
+  let result = false;
+  for(iT of inThis){
+    for(x = 0; x < iT.length; x++){
+      if(iT[0] == searchThis[0] 
+      && iT[1] == searchThis[1] 
+      && iT[2] == searchThis[2]){
+        result = true;
+      } 
+    }
+  }
+ return result; 
+}
+
+this.setRoute = (sPos,fPos,map,creatures = []) => {
+  const posibleRoutes = [[[sPos[0],sPos[1]]]];
+  let routeFinded = false;
+  for(const route of posibleRoutes){
+    const lastG = this.equalArr(route[route.length-1]);lastG.push(sPos[2]);  
+    // GET POSSIBLE GRIDS AROUND
+    const gridsAround = [];
+    for(let d = 0; d < 4; d++){
+      let [pX,pY] = lastG;
+      if(d == 0){pX++;}if(d == 1){pX--;}if(d == 2){pY++;}if(d == 3){pY--;}
+      for(const g of map.getGrid([pX,pY,sPos[2]])){
+        if((g[4] == "floors" || g[4] == "halffloors") && !this.includesArr([pX,pY],gridsAround)){
+          // check if someone stay there
+          for(c of creatures){if(!func.compareTables(c.position,[pX,pY,sPos[2]])){
+            gridsAround.push([pX,pY]);
+          }}
+        }
+      }
+    }    
+    // SET POSSIBLE ROUTES    
+    const clearRoute = []; // route with one step.
+    for(const [l,g] of gridsAround.entries()){ // i - index of grid in step
+      clearRoute[l] = this.equalArr(route);
+      clearRoute[l].push(g);
+      posibleRoutes.push(clearRoute[l]);
+      if(Math.abs(g[0] - fPos[0]) < 2 && Math.abs(g[1] - fPos[1]) < 2){
+        routeFinded = clearRoute[l]; break;
+      }
+    }
+    // GO OUT, WHEN FIND ROUTE OR IT TAKES TOO LONG
+    if(routeFinded || posibleRoutes.length > 200){break;}
+  }
+  if(routeFinded){routeFinded.shift();}
+  return routeFinded;
+}
+
 
 function everyInterval(n){
   if((gamePlane.frameNo/n) % 1 == 0){return true;}
@@ -29,26 +97,6 @@ function hpColor(perc){
   let red = 255-green;
   if(perc < 5){red = 0;}
   return "rgb("+red+","+green+",0)";  
-}
-function equalArr(arr){
-  let newArr = [];
-  for(a = 0; a < arr.length; a++){
-    newArr[a] = arr[a];
-  }
-  return newArr;
-}
-function includesArr(searchThis,inThis){
-  let result = false;
-  for(iT of inThis){
-    for(x = 0; x < iT.length; x++){
-      if(iT[0] == searchThis[0] 
-      && iT[1] == searchThis[1] 
-      && iT[2] == searchThis[2]){
-        result = true;
-      } 
-    }
-  }
- return result; 
 }
 function checkClick(event) {
   let clickX = event.layerX;

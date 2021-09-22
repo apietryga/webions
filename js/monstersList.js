@@ -1,4 +1,5 @@
 const monstersList = [
+  // default
   {name:"Dragon",
     sprite:"dragon",
     health:1000,
@@ -29,16 +30,48 @@ const monstersList = [
       dist:0
     }
   },
-  {name:"Hellknight",
-    sprite:"hellknight",
-    health:5000,
-    speed:1,
+  {name:"Orange Wizard",
+    sprite:"orangeWizard",
+    health:1500,
+    speed:3,
     skills:{
-      fist:200,
-      exp:300,
-      dist:200
+      fist:500,
+      exp:50,
+      dist:0
     }
-  }
+  },
+
+  // leauge 
+  {name:"Touret",
+    sprite:"tourets",
+    health:5000,
+    speed:0,
+    skills:{
+      fist:300,
+      exp:300,
+      dist:500
+    }
+  },
+  {name:"Inhibitor",
+    sprite:"tourets",
+    health:5000,
+    speed:0,
+    skills:{
+      fist:600,
+      exp:600,
+      dist:1000
+    }
+  },
+  {name:"Nexus",
+    sprite:"tourets",
+    health:5000,
+    speed:0,
+    skills:{
+      fist:1200,
+      exp:1200,
+      dist:1500
+    }
+  },
   
 ]
 

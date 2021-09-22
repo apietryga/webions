@@ -39,14 +39,13 @@ const controls = {
        ){
         cToTarget.push(c);
       }
-    }   
+    }
     // white targeting ( T key )
     if(param[0] == 84 && param[1] == true){
       // get target index of list
-      if(this.currentTarget > cToTarget.length-1){
+      this.currentTarget++;
+      if(this.currentTarget > cToTarget.length){
         this.currentTarget = false;
-      }else{
-        this.currentTarget++;
       }
       for(let i = 0; i < cToTarget.length; i++){  
         if(i == this.currentTarget-1){
@@ -172,25 +171,21 @@ const mobileControls = {
         }
   },
   preventZoom: () => {
-    window.oncontextmenu = function() { return false; }
-    function preventLongPressMenu(nodes) {
-      for(var i=0; i<nodes.length; i++){
-        // nodes[i].ontouchstart = absorbEvent_;        
-        // nodes[i].ontouchmove = absorbEvent_;
-        // nodes[i].ontouchend = absorbEvent_;
-        // nodes[i].ontouchcancel = absorbEvent_;
-        nodes[i].addEventListener("touchstart",absorbEvent_);
-        nodes[i].addEventListener("touchmove",absorbEvent_);
-        nodes[i].addEventListener("touchend",absorbEvent_);
-        nodes[i].addEventListener("touchcancel",absorbEvent_);
+    // window.oncontextmenu = function() { return false; }
+    // function preventLongPressMenu(nodes) {
+    //   for(var i=0; i<nodes.length; i++){
+    //     // nodes[i].ontouchstart = absorbEvent_;        
+    //     // nodes[i].ontouchmove = absorbEvent_;
+    //     // nodes[i].ontouchend = absorbEvent_;
+    //     // nodes[i].ontouchcancel = absorbEvent_;
 
-        // nodes[i].ontouchstart = () => {};
-        // nodes[i].ontouchmove = absorbEvent_;
-        // nodes[i].ontouchend = absorbEvent_;
-        // nodes[i].ontouchcancel = absorbEvent_;
-      }
-    }
-    preventLongPressMenu(document.querySelectorAll('*:not(button)'));
+    //     nodes[i].addEventListener("touchstart",absorbEvent_);
+    //     nodes[i].addEventListener("touchmove",absorbEvent_);
+    //     nodes[i].addEventListener("touchend",absorbEvent_);
+    //     nodes[i].addEventListener("touchcancel",absorbEvent_);
+    //   }
+    // }
+    // preventLongPressMenu(document.querySelectorAll('*:not(button,.mobileControls)'));
   
   }
 }

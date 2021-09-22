@@ -1,15 +1,16 @@
 const dbConnect = require("./dbconnect");
 const dbc = new dbConnect();
+const Map = require("./map");
+const map = new Map();
+const func = require("./functions");
 class Creature {
   constructor(nickName,creaturesLength){
     this.id = creaturesLength+1; 
     this.name = nickName;
-    this.position = [10,13,0];  // left tower down
-    // this.position = [2,3,0];  // left tower down
-    // this.position = [20,13,1];  // left tower down
-    // this.position = [1,5,1];  // left tower up
+    // this.position = [-1,-5,1]; // for newmap
+    this.position = [0,0,0];
     this.startPosition = this.position;
-    this.walk = 0;
+    this.walk = false;
     this.speed = 2; // grids per second
     // this.sprite = "male_warrior";
     this.sprite = "male_oriental";
@@ -28,9 +29,8 @@ class Creature {
     this.healthExhoust = 0;
     this.exhoustHeal = 1000;
     this.shotExhoust = 0;
-    // this.shotPosition = false;
     this.redTarget = false;
-    this.fistFighting = false;
+    this.fistExhoust = false;
     this.restore = false;
     this.skills = {
       level:0,
@@ -40,13 +40,26 @@ class Creature {
       healing:100,
     }
   }
-  update(param,game,map,func,creatures){
-    // console.log(param);
+  update(param,game,creatures){
+    // console.log(param)
     this.game = game;
-    // for monster walking and targeting
+    // set playerinArea (4 monster walking and targeting)
     let playerInArea;
+    if(this.type == "monster"){
+      for(const c of creatures){
+        if(c.type == "player"){
+          // add z position
+          if(Math.abs(this.position[0] - c.position[0]) < 6 
+            && Math.abs(this.position[1] - c.position[1]) < 6
+            && this.position[2] == c.position[2]){
+            // isPlayerNear = true;
+            playerInArea = c;
+          }
+        }
+      }  
+    }
     // WALKING
-    if(this.walk <= game.time.getTime() && this.health > 0){
+    if(this.walk <= game.time.getTime() && this.health > 0 && this.speed > 0){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];;
       // player walking from pushed keys
       let key;
@@ -77,7 +90,6 @@ class Creature {
         creatures.sort().reverse();
         for(const c of creatures){
           if(c.type == "player"){
-            // add z position
             if(Math.abs(phantomPos[0] - c.position[0]) < 6 
               && Math.abs(phantomPos[1] - c.position[1]) < 6
               && phantomPos[2] == c.position[2]){
@@ -98,19 +110,14 @@ class Creature {
         if(walkingMode == "random") {
           r = Math.floor(Math.random() * 4);
         }
-        if(walkingMode == "follow") {
-          let [monX,monY] = this.position;
-          let [plaX,plaY] = playerInArea.position; 
-          let posibilites = [];
-          if(monX > plaX){posibilites.push(3);}
-          if(monX < plaX){posibilites.push(1);}
-          if(monY < plaY){posibilites.push(2);}
-          if(monY > plaY){posibilites.push(0);}      
-          let posibilitesId = Math.round(Math.random()*(posibilites.length-1));
-          r = posibilites[posibilitesId];
-          // set it done
-          if(posibilites.length == 1 && (Math.abs(monX-plaX) == 1 || Math.abs(monY-plaY) == 1)){
-            r = -1;
+        if(walkingMode == "follow"){
+
+          // old follow => then | those func ... :D 
+
+          const routeFinded = func.setRoute(this.position,playerInArea.position,map);
+          if(routeFinded){
+            phantomPos[0] = routeFinded[0][0];
+            phantomPos[1] = routeFinded[0][1];  
           }
         }
         if(walkingMode == "escape"){
@@ -134,20 +141,23 @@ class Creature {
       // checking if position is availble
       let isFloor = false;
       let isStairs = false;
+      
       // check grids
-      for (let grid of map) {
-        if (func.compareTables([grid[1],grid[2],grid[3]], phantomPos)) {
-          if (typeof grid[4] != "undefined" && grid[4] == "stairs") {
-            // STAIRS / TELEPORTS ETC.
-            phantomPos = grid[5];
-            if(this.type == "monster"){
-              break;
-            }
-            isStairs = true;
+      const avalibleGrids = ["floors","halffloors","stairs"];
+      const checkGrids = map.getGrid(phantomPos);
+      for(const checkGrid of checkGrids){
+        if(checkGrid){
+          if(avalibleGrids.includes(checkGrid[4])){
+            isFloor = true;
           }
-          isFloor = true;
-          break;
-        }        
+          if(checkGrid[4] == "stairs"){
+            if(this.type == "monster"){isFloor = false;}
+            if(this.type == "player"){
+              isStairs = true;
+              phantomPos = checkGrid[5];
+            }
+          }
+        }
       }
       // check monsters and players
       for(const c of creatures){
@@ -160,12 +170,9 @@ class Creature {
       }
       // set new position or display error
       if(isFloor){
-        // let key;
-        // const key = param.controls.split(",")[0];
-        // const key = param.controls[0];
-        this.position = phantomPos;
         if((this.type == "player" && typeof key != "undefined") 
-        || this.type == "monster"){
+        || (this.type == "monster" && !func.compareTables(this.position,phantomPos)) ){
+          this.position = phantomPos;
           // set exhoust
           this.walk = game.time.getTime() + Math.round(1000/this.speed);
         }
@@ -173,11 +180,13 @@ class Creature {
         this.text = "There's no way.";
       }
     }
-    // RED TARGETING [player] 
-    if(this.type == "monster"&& typeof playerInArea != "undefined"&& this.health > 0.2*this.maxHealth){
+    // RED TARGETING [monsters] 
+    if(this.type == "monster" && typeof playerInArea != "undefined"){
       // monster
       this.redTarget = playerInArea.id;
-    }else if(typeof param.controls != "undefined" && param.controls.includes(83) && typeof param.target != "undefined"){
+    }
+    // RED TARGETING [player] 
+    if(typeof param.controls != "undefined" && param.controls.includes(83) && typeof param.target != "undefined"){
       // player
       this.redTarget = param.target;
     }
@@ -196,62 +205,18 @@ class Creature {
         }
       }
     }
-    // SHOTS
-    if(this.redTarget){
-      for(const c of creatures){
-        // attack
-        if(c.id == this.redTarget && this.id != c.id){
-          if(c.health > 0 && this.health > 0){
-            // FIST FIGHTING
-            if( this.fistFighting <= game.time.getTime() &&c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
-              this.fistFighting = game.time.getTime() + 1000;
-              c.getHit(this,this.skills.fist);
-            }
-            // DISTANCE SHOT - 68 is "D" key [players]
-            if(param.controls.includes(68) && this.shotExhoust <= game.time.getTime() && this.type == "player"){
-              // set coords
-              this.shotPosition = [this.position,c.position];
-              this.shotExhoust = game.time.getTime() + 1000;
-              this.bulletTime = game.time.getTime()+200;
-            }
-            // DISTANCE SHOT [monsters]
-            if(this.skills.dist > 0 && this.shotExhoust <= game.time.getTime() && this.type == "monster"){
-              // set coords
-              this.shotPosition = [this.position,c.position];
-              this.shotExhoust = game.time.getTime() + 1000;
-              this.bulletTime = game.time.getTime()+200;
-            }
-          }
-        }
-        
-      }
-    }
-    // GET HITTING
-    for(const c of creatures){
-      if(c.redTarget == this.id){
-        // distance shot
-        if(typeof c.shotPosition != "undefined"
-        && typeof c.bulletTime != "undefined"
-        && c.bulletTime <= game.time.getTime() 
-        ){
-          // console.log(this.name + " is hited by "+from)
-
-          this.getHit(c,c.skills.dist);
-          // c.shotExhoust = game.time.getTime() + 1000;
-          delete c.bulletTime;
-          delete c.shotPosition;          
-        }
-      }
-    }
     // DYING
     if(this.health <= 0 && !this.restore){
-      this.restore = game.time.getTime() + 150000;
-      // this.restore = game.time.getTime() + 1800;
-      if(this.type=="player"){
-        this.restore = game.time.getTime();
+      // for monsters
+      if(this.type == "monster"){
+        // this.restore = game.time.getTime() + 150000;
+        this.restore = game.time.getTime() + 500;
       }
-      // this.text = "You are dead. Wait 30 seconds to retrive.";
+      if(this.name == param.name){
+        game.dead = true;
+      }
 
+      
       // DieList 
       for(const c of creatures){   
         if(c.id == this.id){
@@ -268,13 +233,13 @@ class Creature {
       }
 
     }
-    // RESTORING
+    // RESTORING [monster]
     if(this.restore && game.time.getTime() >= this.restore){
       this.health = this.maxHealth;
       // this.cyle = 0;
       // this.direction = 1;
-      delete this.cyle;
-      delete this.direction;
+      this.cyle = this.defaultCyle;
+      this.direction = this.defaultDirection;
       this.restore = false;
       this.position = this.startPosition;
     } 
@@ -289,14 +254,76 @@ class Creature {
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }
-
     // SELF AUTO HEALING
+    // code here ;>
 
-
+    // SHOTS
+    if(this.redTarget){
+      for(const c of creatures){
+        // attack
+        if(c.id == this.redTarget && this.id != c.id && c.health > 0 && this.health > 0){
+          // FIST FIGHTING
+          if( this.fistExhoust <= game.time.getTime() && c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
+            this.fistExhoust = game.time.getTime() + 1000;
+            c.getHit(this);
+          }
+          // DISTANCE SHOT - 68 is "D" key [players]
+          if(typeof param.controls != "undefined" && this.shotExhoust <= game.time.getTime() && ((this.type == "player" && param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
+            // check bulletTrace
+            const traces = {x : [], y : []};
+            // X POSITION
+            const xTrace = [];
+            const mX = (c.position[0]>this.position[0]) ? 1 : -1;
+            for(let i = 0; i <= Math.abs(c.position[0]-this.position[0]); i++){
+              const currX = this.position[0] + (i*mX);
+              xTrace.push(currX);
+              traces.x.push(currX);
+            }
+            // Y POSITION
+            const yTrace = [];
+            const mY = (c.position[1]>this.position[1]) ? 1 : -1;
+            for(let i = 0; i <= Math.abs(c.position[1]-this.position[1]); i++){
+              const currY = this.position[1] + (i*mY);
+              yTrace.push(currY);
+              traces.y.push(currY);
+            }
+            // COMBINE TRACES
+            const trace = [];
+            const lT = (traces.x.length > traces.y.length)?'x':'y'; //longer trace
+            const sT = (traces.x.length <= traces.y.length)?'x':'y'; // shorter trace
+            for(let li = 0; li < traces[lT].length; li++){
+              const si = Math.floor(li*(traces[sT].length/traces[lT].length));
+              if(lT == "x"){
+                trace.push([traces[lT][li], traces[sT][si]])
+              }else{
+                trace.push([traces[sT][si],traces[lT][li]])
+              }
+            }
+            // CHECK GRIDS
+            let isWall = false;
+            for(const p of trace){
+              for(const g of map.getGrid([p[0],p[1],this.position[2]])){
+                if(g[4] == "walls"){
+                  isWall = true;
+                  break;
+                }  
+              }
+            }
+            // SHOT IF THERE'S NO WALL
+            if(!isWall){
+              this.shotTarget = c.id;
+              this.shotExhoust = game.time.getTime() + 1500;
+              this.bulletOnTarget = game.time.getTime()+300;
+              setTimeout(() => { c.getHit(this,'dist'); }, 300);
+            }
+          }
+        }
+      }
+    }
   }
-  getHit = (from,hp) =>{
-    this.health -= hp;
-    this.text = from.name+" Cię walnął za "+hp+" hapa";
+  getHit = (from,type = 'fist') =>{
+    this.health -= from.skills[type];
+    this.text = from.name+" Cię walnął za "+from.skills[type]+" hapa";
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
       from.skills.exp += this.skills.exp;
@@ -307,13 +334,13 @@ class Creature {
     const oldLvl = this.skills.level; 
     this.skills.level = Math.ceil(Math.sqrt(this.skills.exp));
     if(this.skills.level != oldLvl){
-      this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
-      this.health = this.maxHealth;
-      this.speed = 3 + Math.floor(this.skills.exp/100)/10;
-      this.speed>10?this.speed=10:'';
-      this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
-      this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
-      this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
+      // this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
+      // this.health = this.maxHealth;
+      // this.speed = 3 + Math.floor(this.skills.exp/100)/10;
+      // this.speed>10?this.speed=10:'';
+      // this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
+      // this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
+      // this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
       dbc[this.game.db].update(this);
     }
   }

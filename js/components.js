@@ -1,5 +1,6 @@
 class Creature {
-  constructor(type,[x, y, z], pName){
+  constructor(type,[x, y, z], pName,id){
+    this.id = id;
     this.type = type;
     this.cyle = 0;
     this.name = pName;
@@ -20,8 +21,6 @@ class Creature {
     this.oldPos =  equalArr(this.position);
     this.walkFps = 0;
     this.bulletCyle = 0;
-    this.health = 1000;
-    this.maxHealth = 1000;
     this.targetlist = [];
     this.currentTarget = false;
     this.sendTarget = false;
@@ -62,7 +61,9 @@ class Creature {
         }
       }
     }else{
-      this.cyle = 0;
+      if(this.sprite != "tourets"){
+        this.cyle = 0;
+      }
       this.walkFps = 0;
       this.position = this.newPos;
     }
@@ -83,156 +84,173 @@ class Creature {
           || Math.abs(this.position[0] - opp.position[0]) > 5
         ){
           this.whiteTarget = false;
-          controls.currentTarget = false;  
+          // controls.currentTarget = false;
           this.redTarget = "clear";        
         }
       }
     }
     // DEATH
     if(this.health <= 0){
-      this.cyle = 0;
+      if(this.sprite!= "tourets"){
+        this.cyle = 0;
+      }
       this.direction = 4;
       if(player.whiteTarget == this.id){
         player.whiteTarget = false;
       }
       this.redTarget = false;
-      controls.currentTarget = false;
+      // controls.currentTarget = false;
       controls.targeting('clear');
       controls.whiteTarget = false;
-      if(this.name == player.name){
-        gamePlane.stop("You are dead.");
+      // if(this.name == player.name){
+      //   gamePlane.stop("You are dead.");
+      // }
+    }
+    // SET VISIBLE FLOORING
+    if(this.type == "player"){
+      // if is nothing above player
+      if(this.position[2] < 0){
+        map.visibleFloor = this.position[2];
+      }else if(map.getGrid([this.newPos[0]-1,this.newPos[1]-1,this.newPos[2]+1])[0]){
+        map.visibleFloor = this.position[2];
+      }else{
+        map.visibleFloor = map.maxFloor;
       }
     }
+    // SET OTHER CREATURES DEPENDS OF PLAYER POSITION
     if(this.type != "player" && typeof player.position != null){
       this.x = (this.position[0] - player.position[0] + 5) * 40;
       this.y = (this.position[1] - player.position[1] + 5) * 40;  
     }
   }
-  draw(zIndex = 0){
-    // DRAW BY ZINDEX
-    if(zIndex == this.position[2] && player.hideFloor != zIndex){
-      let ctx = gamePlane.context;
-      // draw target
-      if( !map.hideFloor.includes(this.zIndex)){  
-          // whiteTarget
-          if(player.whiteTarget == this.id){
-            ctx.beginPath();
-            ctx.fillStyle = "white";
-            ctx.strokeStyle = 'white';
-
-            ctx.lineWidth = 3;
-            ctx.rect(this.x+3, this.y+3, this.width-6, this.height-6);
-            ctx.stroke();
-        }
-        // console.log(player.redTarget)
-        if(this.id == player.redTarget & this.health > 0){
-          ctx.beginPath();
-          ctx.fillStyle = "red";
-          ctx.strokeStyle = 'red';
-          ctx.lineWidth = 3;
-          ctx.rect(this.x, this.y, this.width, this.height);
-          ctx.stroke();  
-        }
-      }
-      // draw sprite
-      let img = gamePlane.sprites[this.sprite];
+  draw(){
+    let ctx = gamePlane.context;
+    // draw half of whiteTarget
+    if(player.whiteTarget == this.id){
+      ctx.beginPath();
+      ctx.fillStyle = "white";
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3;
+      ctx.moveTo(this.x +3,this.y + 37);
+      ctx.lineTo(this.x +3, this.y);
+      ctx.lineTo(this.x +38, this.y);
+      ctx.stroke();
+    }
+    // draw fist half of redTarget
+    if(this.id == player.redTarget & this.health > 0){
+      ctx.beginPath();
+      ctx.fillStyle = "red";
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 3;
+      ctx.moveTo(this.x,this.y + 41.5);
+      ctx.lineTo(this.x, this.y-3);
+      ctx.lineTo(this.x +41.5, this.y-3);
+      ctx.stroke();  
+    }
+    // draw sprite
+    if(this.position[2] <= map.visibleFloor || map.visibleFloor == 'all'){
+      let img = map.sprites[this.sprite];
       ctx.drawImage(
         img, this.cyle * img.width/3, this.direction * img.width/3, img.width/3, img.height/5,
         this.x - 40, this.y-40, 100, 100
       );
-      // draw name and health bar
-      if(this.health > 0 && this.position[2] == player.position[2]){
-        let maxBarWidth = 28;
-        let barWidth = (maxBarWidth * this.health) / this.maxHealth;
-        let percHealth = (100 * this.health) / this.maxHealth;
-        ctx.fillStyle = hpColor(percHealth);
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 1;
-        ctx.font = '900 10px Tahoma';
-        ctx.textAlign = "center";
-        // console.log(this.name+" : "+this.y);
-        ctx.fillText(this.name, this.x + 5, this.y - 22);
-        ctx.strokeText(this.name, this.x + 5, this.y - 22);
-        ctx.beginPath();
-        ctx.rect(this.x - 11, this.y - 18, 30, 5);
-        ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
-        ctx.stroke();
-      }
-      // stand up after retrive
-      if(this.oldHealth <= 0 && this.health > 0){
-        this.direction = 1;
-      }
-      // draw hits and healing value
-      if(this.oldHealth != this.health){
-        const hitValue = this.oldHealth - this.health;
-        gamePlane.actions.push(new Action("hitText",this.position[0],this.position[1],100,200,hitValue));
-      }
-      // draw exp value     
-      if(isSet(this.skills.oldExp) && this.skills.exp != this.skills.oldExp && this.type == "player"){
-        const expValue = this.skills.exp - this.skills.oldExp;
-        gamePlane.actions.push(new Action("expText",this.position[0],this.position[1],100,200,expValue));
-        this.skills.oldExp = this.skills.exp;
-      }
-      // drav level promotion
-      if(isSet(this.skills.oldLvl) && this.skills.level != this.skills.oldLvl && this.type == "player"){
-        // console.log(this.skills.oldLvl+" / "+this.skills.level+" / "+this.lastFrame);
-        if(this.skills.oldLvl != 0){
-          gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level));
-        }
-        
-        this.skills.oldLvl = this.skills.level;
+    }
+    // draw second half of whiteTarget
+    if(player.whiteTarget == this.id){
+      ctx.beginPath();
+      ctx.fillStyle = "white";
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3;
+      ctx.moveTo(this.x + 1.5 ,this.y + 37);
+      ctx.lineTo(this.x + 37, this.y +37);
+      ctx.lineTo(this.x + 37, this.y);
+      ctx.stroke();
+    }  
+    // draw second half of redTarget
+    if(this.id == player.redTarget & this.health > 0){
+      ctx.beginPath();
+      ctx.fillStyle = "red";
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 3;
+      ctx.moveTo(this.x  ,this.y + 40);
+      ctx.lineTo(this.x + 40, this.y + 40);
+      ctx.lineTo(this.x + 40, this.y -1);
+      ctx.stroke();  
+    }
+    // draw name and health bar
+    if(this.health > 0 && this.position[2] == player.position[2]){
+      let maxBarWidth = 28;
+      let barWidth = (maxBarWidth * this.health) / this.maxHealth;
+      let percHealth = (100 * this.health) / this.maxHealth;
+      ctx.fillStyle = hpColor(percHealth);
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.font = '900 10px Tahoma';
+      ctx.textAlign = "center";
+      // console.log(this.name+" : "+this.y);
+      ctx.fillText(this.name, this.x + 5, this.y - 22);
+      ctx.strokeText(this.name, this.x + 5, this.y - 22);
+      ctx.beginPath();
+      ctx.rect(this.x - 11, this.y - 18, 30, 5);
+      ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
+      ctx.stroke();
+    }
+    // stand up after retrive
+    if(this.oldHealth <= 0 && this.health > 0){
+      this.direction = 1;
+    }
+    // draw hits and healing value
+    if(isSet(this.oldHealth) && this.oldHealth != this.health){
+      const hitValue = this.oldHealth - this.health;
+      gamePlane.actions.push(new Action("hitText",this.position[0],this.position[1],100,200,hitValue));
+    }
+    // draw exp value     
+    if(isSet(this.skills) && isSet(this.skills.oldExp) && this.skills.exp != this.skills.oldExp && this.type == "player"){
+      const expValue = this.skills.exp - this.skills.oldExp;
+      gamePlane.actions.push(new Action("expText",this.position[0],this.position[1],100,200,expValue));
+      this.skills.oldExp = this.skills.exp;
+    }
+    // drav level promotion
+    if(isSet(this.skills) &&isSet(this.skills.oldLvl) && this.skills.level != this.skills.oldLvl && this.type == "player"){
+      // console.log(this.skills.oldLvl+" / "+this.skills.level+" / "+this.lastFrame);
+      if(this.skills.oldLvl != 0){
+        gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level));
       }
       
-
-      // HEALING
-      if(this.oldHealth < this.health){
-        gamePlane.actions.push(new Action("misc",this.x,this.y,40,40,2));
-      }
-      // DISTANCE SHOT
-      if(this.shotExhoust > serv.time){
-        if(isSet(this.shotBullet)){
-          // get victim to set bullet end position
-          let victim = false;
-          for(const c of gamePlane.creatures.list){
-            if(c.id == this.redTarget){
-              victim = c;
-            }
+      this.skills.oldLvl = this.skills.level;
+    }
+    // HEALING
+    if(this.oldHealth < this.health){
+      gamePlane.actions.push(new Action("misc",this.x,this.y,40,40,2));
+    }
+    // DISTANCE SHOT
+    if(this.bulletOnTarget >= serv.time){
+      if(isSet(this.shotBullet)){
+        // get victim to set bullet end position
+        for(const c of gamePlane.creatures.list){
+          if(c.id == this.shotTarget){
+            this.shotVictim = c;
           }
-          
-          const bulletTime = this.shotExhoust - this.startBullet;
-          const currentTime = this.shotExhoust - serv.time;
-          // X POS
-          const sX = this.shotPosition[0][0]; // start position
-          let eX; // end position
-          victim?eX=victim.position[0]:eX=this.shotPosition[1][0];
-
-          const piece = 100 - Math.round((currentTime*100)/bulletTime);
-          const dX = Math.abs(eX - sX); // distance X
-          const bX =  ((dX*piece) / 100); // bullet x
-          eX<sX?this.shotBullet.x=sX-bX:this.shotBullet.x=sX+bX;
-          // Y POS
-          const sY = this.shotPosition[0][1]; // start position
-          // const eY = this.shotPosition[1][1]; // end position
-          let eY; // end position
-          victim?eY=victim.position[1]:eY=this.shotPosition[1][1];
-
-          const dY = Math.abs(eY - sY); // distance X
-          const bY =  ((dY*piece) / 100); // bullet x
-          eY<sY?this.shotBullet.y=sY-bY:this.shotBullet.y=sY+bY;
-          // console.log("sX:"+sX+", eX:"+eX+", dX:"+dX +", bX:"+bX +", piece:"+piece+", sB:"+this.shotBullet.x);
-          this.shotBullet.update();
-        }else{
-          // first time
-          this.shotBullet = new Action("bullet",this.position[0],this.position[1],10,10,1);
-          this.startBullet = serv.time;
         }
+        const piece = 100 - Math.round(((this.bulletOnTarget - serv.time)*100)/(this.bulletOnTarget - this.startBullet));
+        // X POS
+        const pX = ((Math.abs(this.shotVictim.position[0] - this.position[0])*piece) / 100);
+        this.shotVictim.position[0]<this.position[0]?this.shotBullet.x=this.position[0]-pX:this.shotBullet.x=this.position[0]+pX;
+        // Y POS
+        const pY = ((Math.abs(this.shotVictim.position[1] - this.position[1])*piece) / 100);
+        this.shotVictim.position[1]<this.position[1]?this.shotBullet.y=this.position[1]-pY:this.shotBullet.y=this.position[1]+pY;
+        this.shotBullet.update();
       }else{
-        // last time
-        if(typeof this.shotBullet != "undefined"){
-          gamePlane.actions.push(new Action("misc",this.shotPosition[1][0],this.shotPosition[1][1],40,40,1));
-          delete this.shotBullet;
-          delete this.startBullet;          
-        }
+        // first time
+        this.shotBullet = new Action("bullet",this.position[0],this.position[1],10,10,1);
+        this.startBullet = serv.time;
+      }
+    }else{
+      // last bullet
+      if(typeof this.shotBullet != "undefined" && typeof this.shotVictim != "undefined"){
+        gamePlane.actions.push(new Action("misc",this.shotVictim.position[0],this.shotVictim.position[1],40,40,1));
+        delete this.shotBullet;
+        delete this.startBullet;
       }
     }
   }
@@ -260,18 +278,20 @@ class Grid {
       this.y = (this.position[1] - player.position[1] + 5) * this.height;
     }
   }
-  draw = () => {
-    let ctx = gamePlane.context;
-    if (this.type == "floor") {
-      var img = gamePlane.sprites.floors;
-      ctx.drawImage(img, this.texture * 40, 0, 40, 40,
-        this.x, this.y, 40, 40);
-    }
-    // console.log("ee?")
-    if (this.type == "stairs") {
-      var img = gamePlane.sprites.stairs;
-      ctx.drawImage(img, this.texture * 80, 0, 80, 80,
-        this.x - 40, this.y - 40, 80, 80);
+  draw = (plr = {}) => {
+    // for compatibility with mapeditor && gamePlane
+    let phantomPlayer = (typeof player === 'undefined')?plr:player; 
+
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");    
+    // const ctx = gamePlane.ctx;
+
+    const w = (typeof map.sprites[this.type] != "undefined")?map.sprites[this.type].dataset.w:40;
+    // const w = 40;
+    if(this.type != 'delete'){
+      ctx.drawImage(map.sprites[this.type],
+      this.texture * w, 0, w, w,
+      (this.position[0] - phantomPlayer.position[0] + 6)*40-w, (this.position[1] - phantomPlayer.position[1] + 6)*40-w, w, w);
     }
     if (this.checked) {
       ctx.fillStyle = "rgba(255,0,0,0.3)";
@@ -358,7 +378,7 @@ class Action{  // class for hitText, Bullets,
     }
     if(this.type == "bullet"){
       // draw bullet
-      var img = gamePlane.sprites.actions;
+      var img = map.sprites.actions;
       ctx.drawImage(img, 3*40, this.text * 40, 40, 40,
       x, y, 40, 40);
       // ctx.beginPath();
@@ -367,7 +387,7 @@ class Action{  // class for hitText, Bullets,
       // ctx.stroke();
     }
     if(this.type == "misc"){
-      var img = gamePlane.sprites.actions;
+      var img = map.sprites.actions;
       this.cyle = Math.round(this.showFPS);
       if(this.text != 1){x = this.x; y = this.y;}
       ctx.drawImage(img, this.cyle*40, this.text * 40, 40, 40,

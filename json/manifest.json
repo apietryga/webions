@@ -1,11 +1,16 @@
 {
   "name": "Webions",
   "short_name": "Webions",
-  "background_color": "#000",
+  "background_color": "grey",
   "description": "Webions game",
   "author": "Antek Pietryga",
   "display": "standalone",
   "icons": [
+    {
+      "src": "/img/logos/logo_512.webp",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
     {
       "src": "/img/logos/192.webp",
       "type": "image/webp",

@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="style/game.css">
-  <link rel="manifest" href="json/manifest.json">
-  <link rel="shortcut icon" href="img/logos/favicon.ico" type="image/x-icon">
-  <title>Webions</title>
-</head>
-<body>
-  <noscript>
-    This game will not apear without JavaScript - turn it on to play.
-  </noscript>
-  <div class="loader">
-    <img src="img/logos/logo.webp" alt="Webions Game">
-    <h1>WEBIONS</h1>
-    <div class="loadDetails"></div>
-  </div>
-  <div class="wrapper">
-    <div class="mobileControls leftPanel"></div>
-    <div class="mobileControls rightPanel"></div>
-    <div class="gamePlane">
-      <canvas ></canvas>  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style/game.css">
+    <link rel="manifest" href="json/manifest.json">
+    <link rel="shortcut icon" href="img/logos/favicon.ico" type="image/x-icon">
+    <title>Webions</title>
+  </head>
+  <body>
+    <noscript>
+      This game will not apear without JavaScript - turn it on to play.
+    </noscript>
+    <div class="loader">
+      <img src="img/logos/logo.webp" alt="Webions Game">
+      <h1>WEBIONS</h1>
+      <div class="loadDetails"></div>
     </div>
-  </div>
-</body>
+    <div class="wrapper">
+      <div class="mobileControls leftPanel"></div>
+      <div class="mobileControls rightPanel"></div>
+      <div class="gamePlane">
+        <canvas ></canvas>  
+      </div>
+    </div>
+  </body>
 </html>
 <!--| CLEAR OLD CACHE |-->
 <script>
@@ -34,15 +34,14 @@
   // });
   // })
 </script>
-
 <script src="js/functions.js"></script>
-<script src="js/mapcontroller.js"></script>
 <script src="js/sprites.js"></script>
+<script src="js/map.js"></script>
+<script>const map = new Map();</script>
 <script src="js/controls.js"></script>
-
-<!--| GAME PROPERTIES |-->
+<!-- POPUP -->
 <script>
-  const popup = {
+    const popup = {
     init(title = "GAME STOPPED."){
       this.dom = document.createElement("div");
       this.dom.style.cssText = `
@@ -56,8 +55,8 @@
         left:0;
         top:0;
         z-index:3;
-        background-color:rgba(0,0,0,0.8)
-      `;
+        `;
+        // background-color:rgba(0,0,0,0.8)
       this.h1 = document.createElement("h1");
       this.h1.innerHTML = title;
       this.button = document.createElement("button");
@@ -71,6 +70,9 @@
       document.body.append(this.dom);
     }
   }
+</script>
+<!-- PLAYER INIT SETTINGS -->
+<script>
   const urlParams = new URLSearchParams(window.location.search);
   let player = {};
   player.name = urlParams.get('player');
@@ -78,12 +80,14 @@
     player.name = "Newbie";
   }
   player.position = [0,0,0];
-
+</script>
+<!--| GAMEPLANE PROPERTIES |-->
+<script>
+  // player.update = () => {}
   let inGameConsole;
   const gamePlane = {
     fps : 10,
     actions: [],
-    floors: [-1,0,1,2],
     creatures : {
       list: [],
       ids: []
@@ -93,54 +97,61 @@
     init () {
       this.canvas.width = 440;
       this.canvas.height = this.canvas.width;
-      this.gridSize = 40;
+      this.gridSize = this.canvas.width/11;
       this.context = this.canvas.getContext("2d");
       inGameConsole = new Text();
       this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
       controls.init();
       window.addEventListener('keydown', function (e) {
         controls.update([e.keyCode,true]);
-        // gamePlane.key = e.keyCode;
       })
       window.addEventListener('keyup', function (e) {
         controls.update([e.keyCode,false])
-        // gamePlane.key = false;
       })
     },
-    clear() {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    },
-    loadSprites(callback) {
-      for(const s of sprites){
-          this.sprites[s.name] = document.createElement("img");
-          this.sprites[s.name].src = s.src;
-      }
-      callback();
-    },
     updategamePlane() {
-      gamePlane.clear();
-      map.update();     
+      gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
       serv.load();
-      // let player = false;
-      let playerIsSet = false;
-      for(const ac of gamePlane.creatures.list){
-        // console.log(ac)
-        if(ac.name == player.name){
-          player = ac;
-          playerIsSet = true;
-          continue;
-        }
-        ac.update();
-      }
-      // console.log()
-      if(playerIsSet){
+      if(player.type == "player"){ // on serv load player
         player.update();
-        for(const f of gamePlane.floors){
-          map.draw(f);
-          for(const ac of gamePlane.creatures.list){
-            ac.draw(f);
+        map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
+        const drawStack = [];
+        // update grids
+        for(const g of map.grids){
+          g.update();
+          drawStack.push(g);
+        }
+        // update creatures
+        for(const c of gamePlane.creatures.list){
+          if(c.id != player.id){c.update();}
+          drawStack.push(c);
+        }
+        // sort it in order of rendering.
+        drawStack.sort((a,b)=>{
+          if(a.position[2] < b.position[2]){
+            return -1;
+          }else if(a.position[2] == b.position[2]){
+            // floors always down.
+            if(a.type == "floors"){return -1;}
+            // dead body down.
+            if(typeof a.health != "undefined" && a.health <= 0 
+            && typeof b.health != "undefined"){return -1;}
+
+            if(a.type != "floors" && b.type != "floors"){
+              if(a.position[1] < b.position[1]){return -1;}
+              if(a.position[0] < b.position[0]){return 1;}
+            }
+
+
           }
-          player.draw(f);
+
+          // stairs and walls 
+
+        })
+        // console.log(drawStack);
+        // draw all in order
+        for(const e of drawStack){
+          e.draw();
         }
         for(const a of gamePlane.actions){a.update();}
         inGameConsole.update();
@@ -155,13 +166,14 @@
   }
 </script>
 <script src="js/components.js"></script>
-
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script>
-
-  let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
-  const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
   const serv = {
+    init(){
+      (window.location.protocol == "https:")?this.protocol = "wss:":this.protocol = "ws:";
+      this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
+      this.ws.onopen = () => {this.connected = true;console.log("WS open.");}
+    },
     connected:false,
     param : {},
     paramUpdate(){
@@ -173,36 +185,30 @@
     },
     load(){
       // set connection
-      ws.onopen = () => {this.connected = true;}
-      ws.onclose = () => {this.connected = false;}
+      this.ws.onclose = () => {
+        this.connected = false;console.log("WS closed.");
+        let newURL = window.location.origin+"/offline.html?reason=servErr&back=";
+        newURL += encodeURIComponent(window.location.href);
+        // console.log(newURL)
+        window.location.replace(newURL);
+      }
       // send to server
       if(this.connected){
         // console.log(this.param.id);
-        ws.send(JSON.stringify(this.paramUpdate()));
+        this.ws.send(JSON.stringify(this.paramUpdate()));
       }
       // get response
-      ws.onmessage = (msg) => {
+      this.ws.onmessage = (msg) => {
         const data = JSON.parse(msg.data);
-        // console.log(data.game.player);
-        // update game properties
-        this.datetime = data.game.time;
-        this.time = new Date(data.game.time).getTime();
-        gamePlane.fps = data.game.fps;
-        // show dev info
-        dev.stats = data.game;
-        dev.stats.player = player.name;
-        dev.stats.position = player.position;
-        // dev.stats.lastFrame = player.lastFrame;
-        if(this.time - player.lastFrame > 10000){
-          gamePlane.stop("Focus bro");
+        // player died
+        if(typeof data.game.dead != "undefined"){
+          gamePlane.stop("You are dead.");
         }
 
-        dev.stats.url = urlParams.get('player');
-        dev.stats.ping = this.time - player.lastFrame;
-        // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
-        dev.update();
-
-
+        // update game properties
+        this.datetime = data.game.time;
+        this.time = new Date(this.datetime).getTime();
+        gamePlane.fps = data.game.fps;
         // get names of online players
         let onlinePlayers = [];
         for(const p of data.creatures){
@@ -293,33 +299,198 @@
               if(!isSet(oldLvl)){gamePlane.creatures.list[charId].skills["oldLvl"] = gamePlane.creatures.list[charId].skills["level"];}
               continue;
             }
-            if(key == "shotPosition"){
-              gamePlane.creatures.list[charId].lastShotPosition = gamePlane.creatures.list[charId].shotPosition;
-              gamePlane.creatures.list[charId].shotPosition = creature.shotPosition;
-              continue;
-            }
+            // if(key == "shotPosition"){
+            //   gamePlane.creatures.list[charId].lastShotPosition = gamePlane.creatures.list[charId].shotPosition;
+            //   gamePlane.creatures.list[charId].shotPosition = creature.shotPosition;
+            //   continue;
+            // }
             if(key == "type"){continue;}
             gamePlane.creatures.list[charId][key] = creature[key];
           }
         }
+
+        // show dev info
+        // dev.stats = data.game;
+        dev.stats.time = serv.time;
+        dev.stats.player = player.name;
+        dev.stats.health = player.health;
+        dev.stats.position = player.position;
+        dev.stats.grids = map.grids.length;
+        dev.stats.url = urlParams.get('player');
+        dev.stats.ping = this.time - player.lastFrame;
+        dev.stats.cpu = data.game.cpu;
+        // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
+        dev.update();
+        
+        /* 
+        new version
+        // console.log("get.");
+        const data = JSON.parse(msg.data);
+        this.datetime = data.game.time;
+        this.time = new Date(data.game.time).getTime();
+        gamePlane.fps = data.game.fps;
+        
+        
+
+        // get names of online players for kicking offlines
+        let onlinePlayers = [];
+        for(const p of data.creatures){
+          if(p.type == "player"){
+            onlinePlayers.push(p.name);
+          }
+        }
+        // kick off offline players and update creature names
+        for(const ac of gamePlane.creatures.list){
+          if(!onlinePlayers.includes(ac.name) && ac.type == "enemy"){
+            gamePlane.actions.push(new Action("misc",ac.position[0]+ac.x,ac.position[1]+ac.y,40,40,0));     
+            gamePlane.creatures.list.splice(gamePlane.creatures.list.indexOf(ac),1);
+            if(gamePlane.creatures.ids.includes(ac.id)){
+              gamePlane.creatures.ids.splice(gamePlane.creatures.ids.indexOf(ac.id),1);
+            }
+            continue;
+          }
+          if(!gamePlane.creatures.ids.includes(ac.id)){
+            gamePlane.creatures.ids.push(ac.id);
+          }
+        }
+        
+        // updating values
+        for(const creature of data.creatures){
+          let isOnList = false;
+          for(const cfromList of gamePlane.creatures.list){
+            if(cfromList.id == creature.id){
+              isOnList = true;
+              // console.log(cfromList.name);
+              // update values
+              for(const key of Object.keys(creature)){
+                if(key == "position"){
+                  if(!compareTables(cfromList["newPos"],creature[key])){
+                    cfromList["oldPos"] = cfromList["newPos"];
+                    cfromList["newPos"] = creature[key];
+                    cfromList["walkingStart"] = serv.time;
+                    // gamePlane.creatures.list[charId]["oldPos"] = gamePlane.creatures.list[charId]["newPos"];
+                    // gamePlane.creatures.list[charId]["newPos"] = creature[key];
+                    // gamePlane.creatures.list[charId]["walkingStart"] = serv.time;
+                  }
+                  continue;
+                }
+                if(key == "health"){
+                  cfromList["oldHealth"] = cfromList["health"];
+                  // gamePlane.creatures.list[charId]["oldHealth"] = gamePlane.creatures.list[charId]["health"];
+                }
+                // probably problematically
+                // if(key == "skills"){
+                //   let oldExp;
+                //   let oldLvl;
+                //   if(cfromList["type"] == "player"
+                //   && isSet(cfromList["skills"])){
+                //     if(cfromList.skills["exp"] != creature[key]["exp"]){
+                //       oldExp = cfromList.skills["exp"];
+                //     }
+                //     if(cfromList.skills["level"] != creature[key]["level"]){
+                //       oldLvl = cfromList.skills["level"];
+                //     }
+                //   }
+                  
+                //   cfromList.skills = {};
+                //   for(const k of Object.keys(creature[key])){
+                //     if(k == "exp" && isSet(oldExp)){
+                //       cfromList.skills["oldExp"] = oldExp;
+                //     }
+                //     if(k == "level" && isSet(oldLvl)){
+                //       cfromList.skills["oldExp"] = oldExp;
+                //     }
+                //     cfromList.skills[k] = creature[key][k];
+                //   }
+                //   if(!isSet(oldExp)){cfromList.skills["oldExp"] = cfromList.skills["exp"]}
+                //   if(!isSet(oldLvl)){cfromList.skills["oldLvl"] = cfromList.skills["level"]}
+                // }               
+                
+                if(key == "shotPosition"){
+                  cfromList["lastShotPosition"] = cfromList["shotPosition"];
+                  cfromList["shotPosition"] = creature.shotPosition;
+                  // gamePlane.creatures.list[charId].lastShotPosition = gamePlane.creatures.list[charId].shotPosition;
+                  // gamePlane.creatures.list[charId].shotPosition = creature.shotPosition;
+                  continue;
+                }
+                if(key == "type"){continue;}
+                cfromList[key] = creature[key];
+              }
+              // console.log(cfromList);
+            }
+            // console.log(cfromList.id);
+            // console.log(data.game.player);
+            if(cfromList.id == data.game.player){
+                player = cfromList;
+
+                // console.log(player);
+              }
+
+          }
+          if(!isOnList){
+            gamePlane.creatures.list.push(new Creature(creature.type,creature.position,creature.name,creature.id));
+          }
+
+
+
+
+          // end of new way
+
+
+          // let charId; 
+          // if(!gamePlane.creatures.ids.includes(creature.id)){
+          //   let newChar;
+          //   // if not exsists - create it. 
+          //   if(creature.id == data.game.player){
+          //     player = new Creature("player",player.position,urlParams.get('player')); 
+          //     newChar = player;
+          //   }else{
+          //     let type;(creature.type == "player")?type = "enemy":type = "monster";
+          //     newChar = new Creature(type,creature.position,creature.name);
+          //   }
+          //   gamePlane.creatures.list.push(newChar);
+          // }else{
+          //   // find it in gamePlane.creatures.list
+          //   // for(const [i,pl] of gamePlane.creatures.list.entries()){
+          //   //   if(pl.id == creature.id){
+          //   //     myChar = creature;
+          //   //     // charId = i;
+          //   //   }
+          //   // }
+          //   // update console
+          //   if(creature.id == data.game.player && creature.text != ""){
+          //     inGameConsole.text = creature.text;
+          //   }
+          // }
+        }
       
         // callback(data)
+
+        // must be on the end.
+        dev.stats = data.game;
+        dev.stats.player = player.name;
+        dev.stats.position = player.position;
+        dev.stats.grids = map.grids.length;
+        dev.stats.url = urlParams.get('player');
+        dev.stats.ping = this.time - player.lastFrame;
+        // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
+        dev.update(); // */
       }
       // connection error
-      ws.onerror = (error) => {
+      this.ws.onerror = (error) => {
         gamePlane.stop();
         // console.log("Your connection is lost, ");
         console.log(error);
       }
     }
   }
+  serv.init();
 </script>
-
 <!--| PRELOAD |-->
 <script>
   // preload ;>
   document.querySelector(".loadDetails").innerHTML = "Load sprites ...";
-  gamePlane.loadSprites(()=>{
+  map.loadSprites(()=>{
     serv.load();
     document.querySelector(".loadDetails").innerHTML = "Load map ...";
     map.generate(()=>{
@@ -335,20 +506,25 @@
     setResolution();  
   }
 </script>
-
 <!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
 <script>
   if('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('serviceWorker.js');
+    // serviceWorkerRegistration.update();
+    navigator.serviceWorker.register('serviceWorker.js'
+    , {scope: 'serviceWorker'}).then(function(registration) {
+      registration.update();
+    });
   }
+  
 </script>
-
 <!--| DEVELOPER BUTTONS & STATS |-->
 <script>
   const dev = {
+    buttonIndex : 0,
     init(){
       this.makeDevButt("STOP",()=>{gamePlane.stop()});
-      this.makeDevButt("START",()=>{gamePlane.init()});
+      this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
+      // this.makeDevButt("START",()=>{gamePlane.init()});
       this.makeStatsField();
       this.update();
     },
@@ -356,7 +532,10 @@
       const butt = document.createElement("button");
       butt.onclick = () => { func()};
       butt.innerHTML =  title;
+      butt.style.zIndex = 4;
       document.body.append(butt);
+      butt.style.marginTop = ((butt.clientHeight+10)*this.buttonIndex)+ "px";
+      this.buttonIndex++;
     },
     makeStatsField(){
       this.statsDOM = document.createElement("div");
@@ -391,10 +570,8 @@
         }
       }
     }
-
   } 
   if(urlParams.get("dev") == "on"){
     dev.init();
   }
 </script>
-

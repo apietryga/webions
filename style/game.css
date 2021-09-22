@@ -50,10 +50,6 @@ body button {
   align-items: center;
 }
 
-body button:nth-child(even) {
-  top: 50px;
-}
-
 body .wrapper {
   position: fixed;
   left: 0;

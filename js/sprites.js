@@ -31,16 +31,28 @@ let sprites = [
     src : "img/sprites/floors.webp",
     w: 40,
   },
+  { name: "nofloors",
+    src : "img/sprites/nofloors.webp",
+    w: 40,
+  },
+  { name: "halffloors",
+    src : "img/sprites/halffloors.webp",
+    w: 40,
+  },
   { name: "stairs",
     src : "img/sprites/stairs.webp",
+    w:80,
+  },
+  { name: "walls",
+    src : "img/sprites/walls.webp",
     w:80,
   },
   { name: "dragon",
     src : "img/sprites/web_dragon.webp",
     group : "monsters"
   },
-  { name: "hellknight",
-    src : "img/sprites/hellknight.webp",
+  { name: "orangeWizard",
+    src : "img/sprites/orange_wizard.webp",
     group : "monsters"
   },
   { name: "cyclops",
@@ -49,5 +61,8 @@ let sprites = [
   },
   { name: "actions",
     src : "img/sprites/actions.webp"
+  },
+  { name: "tourets",
+    src : "img/sprites/tourets.webp"
   }
 ]

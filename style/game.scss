@@ -42,9 +42,6 @@ body{
     display:flex;
     justify-content: center;
     align-items: center;
-    &:nth-child(even){
-      top:50px;
-    }
   }
   .wrapper{
     position:fixed;

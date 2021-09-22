@@ -7,16 +7,16 @@ class dbConnect{
     console.log("Setting database");
     // Redis connection
     if(typeof process.env.REDIS_URL == "string" || typeof process.env.REDIS_TLS_URL == "string"){
-      this.client = redis.createClient(process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL, {tls: {rejectUnauthorized: false,}});
+      this.redis.client = redis.createClient(process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL, {tls: {rejectUnauthorized: false,}});
     }else{
-      this.client = redis.createClient();
+      this.redis.client = redis.createClient();
     }
-    this.client.once('error',(err)=>{
-      this.client.quit();
-      delete this.client;
+    this.redis.client.on('error',(err)=>{
+      this.redis.client.quit();
+      delete this.redis.client;
       game.db = 'json';
     })
-    this.client.keys('*',(error)=>{
+    this.redis.client.keys('*',(error)=>{
       if(error  == null){
         game.db = 'redis';
       }else{
@@ -40,87 +40,12 @@ class dbConnect{
     this.json.dataToSave = this.dataToSave;
     this.redis.dataToSave = this.dataToSave;
   }
-  // update(player,callback){
-  //   // updating exsists or create new one
-  //   let playerIsSet = false;
-  //   this.loadContent((content)=>{
-  //     content == 0?content = []:'';
-  //     let playerIndex;
-      
-  //     if(content.length > 0 ){
-  //       for(const [i,p] of content.entries()){
-  //         if(p.name == player.name){
-  //           playerIsSet = true;
-  //           playerIndex = i;
-  //         }
-  //       }  
-  //     }
-  //     if(playerIsSet){
-  //       // update record
-  //       const uPlayer = {};
-  //       for(const k of Object.keys(player)){
-  //         // if(uKeys.includes(k)){
-  //         if(this.dataToSave.includes(k)){
-  //           uPlayer[k] = player[k];
-  //         }
-  //       }
-  //       content[playerIndex] = uPlayer;
-  //     }else{
-  //       // create new record 
-  //       const nPlayer = {};
-  //       for(const k of Object.keys(player)){
-  //         if(this.dataToSave.includes(k)){
-  //         // if(uKeys.includes(k)){
-  //           nPlayer[k] = player[k];
-  //         }
-  //       }
-  //       content.push(nPlayer);
-  //     }
-  //     if(game.db == "redis"){
-  //       redisJSON.setMultiple(content,()=>{
-  //         // callback(content);
-  //       });
-  //     }
-  //     if(game.db == "json"){
-  //       content = stringify(content);
-  //       fs.writeFileSync(this.src, content, ()=>{
-  //         // callback(content);
-  //       });  
-  //     }
-  //   })
-  // }
-  // load(player,callback){
-  //   this.loadContent((cont) => {
-  //     const content = cont;
-  //     if(content == 0){
-  //       this.update(player,()=>{
-  //         callback(false);
-  //       })
-  //     }else{
-  //       for(const p of content){
-  //         if(p.name == player.name){
-  //           for(const k of Object.keys(p)){
-  //             player[k] = p[k];
-  //           }
-  //           break;
-  //         }
-  //       }
-  //       callback(player);
-  
-  //     }
-  //   })
-  // }
-  // loadContent(callback){
-  //   this[game.db].loadAll((content) => {
-  //     callback(content);
-  //   })
-  // }
   // db types 
   redis = {
-    client: redis.createClient(
-      process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL,
-      {tls:{rejectUnauthorized: false}}
-    ),
+    // client: redis.createClient(
+    //   process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL,
+    //   {tls:{rejectUnauthorized: false}}
+    // ),
     loadAll(callback){
       this.client.keys("*",(e,keys)=>{
         if(typeof keys == "undefined" || keys.length == 0){callback(0)}
@@ -208,9 +133,4 @@ class dbConnect{
     }
   }
 }
-// change storage to json on redis crash
-// process.on("uncaughtException",(err)=>{
-//   game.db = "json";
-//   console.log("Database changed to JSON.");
-// })
 module.exports = dbConnect;
