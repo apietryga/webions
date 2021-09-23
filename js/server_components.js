@@ -352,13 +352,13 @@ class Creature {
     const oldLvl = this.skills.level; 
     this.skills.level = Math.ceil(Math.sqrt(this.skills.exp));
     if(this.skills.level != oldLvl){
-      // this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
-      // this.health = this.maxHealth;
-      // this.speed = 3 + Math.floor(this.skills.exp/100)/10;
-      // this.speed>10?this.speed=10:'';
-      // this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
-      // this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
-      // this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
+      this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
+      this.health = this.maxHealth;
+      this.speed = 3 + Math.floor(this.skills.exp/100)/10;
+      this.speed>10?this.speed=10:'';
+      this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
       dbc[this.game.db].update(this);
     }
   }
