@@ -13,7 +13,7 @@ const controls = {
     }
     // prepare table to send
     if(params[1] == true && !this.vals.includes(params[0])){
-      this.vals.push(params[0]);
+      this.vals.push(params[0]*1);
     }else{
       this.vals.splice(this.vals.indexOf(params[0]),1);
     }
