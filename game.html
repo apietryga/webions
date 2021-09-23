@@ -98,7 +98,8 @@
       this.canvas.width = 440;
       this.canvas.height = this.canvas.width;
       controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
-      this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
+      // this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
+      this.canvas.addEventListener("click", (e) => {controls.planeClicking.get(e)});
       this.gridSize = this.canvas.width/11;
       this.context = this.canvas.getContext("2d");
       inGameConsole = new Text();
