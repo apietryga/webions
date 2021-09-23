@@ -76,6 +76,7 @@ const controls = {
       this.g = g;
     },
     get(e){
+      if(isSet(player)){
       // GET X Y pos.
       const x = Math.floor(e.offsetX/this.g)+player.newPos[0]-5;
       const y = Math.floor(e.offsetY/this.g)+player.newPos[1]-5;
@@ -107,6 +108,8 @@ const controls = {
             this.route.push([x,y]);
           }
         }
+      }
+
       }
     },
     followRoute (){
