@@ -69,10 +69,12 @@ class dbConnect{
       })    
     },
     update(player){
-      this.client.get(player.name, (e,c)=>{
-        const stringyfy = JSON.stringify(player);
-        this.client.set(player.name,stringyfy,()=>{});
-      })
+      if(typeof this.client != "undefined"){
+        this.client.get(player.name, (e,c)=>{
+          const stringyfy = JSON.stringify(player);
+          this.client.set(player.name,stringyfy,()=>{});
+        })  
+      }
     }
   }
   json = {
