@@ -188,6 +188,7 @@
       return this.param;
     },
     load(){
+      // console.log(controls.vals);
       // set connection
       this.ws.onclose = () => {
         this.connected = false;console.log("WS closed.");

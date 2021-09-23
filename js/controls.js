@@ -12,7 +12,8 @@ const controls = {
       } 
     }
     // prepare table to send
-    if(params[1] == true && !this.vals.includes(params[0])){
+    if(params[1] == true && !this.vals.includes(params[0]*1)){
+      console.log(params);
       this.vals.push(params[0]*1);
     }else{
       this.vals.splice(this.vals.indexOf(params[0]),1);
@@ -201,6 +202,7 @@ const mobileControls = {
           singleField.addEventListener("touchstart",(e) => {
             controls.update([e.target.dataset.keyCode,true]);
           })
+
           singleField.addEventListener("touchend",(e) => {
             controls.update([e.target.dataset.keyCode,false]);
           })
@@ -211,34 +213,34 @@ const mobileControls = {
       // leftPanel
       const leftPanel = document.querySelector(".leftPanel");
       leftPanel.innerHTML = "";
-        const buttons = [
-          ["T",84],
-          [" ",0],
-          ["S",83],
-          [" ",0],
-          ["D",68],
-          [" ",0],
-          ["H",72],
-          [" ",0],
-          [" ",0]
-        ];
-        // console.log(buttons);
-        for(const b of buttons){
-          const butt = document.createElement("div");
-          if(b[0] != " "){
-            butt.className = 'arrow';
-          }
-
-          butt.innerText = b[0];
-          butt.dataset.keyCode = b[1];
-          butt.addEventListener("touchstart",(e) => {
-            controls.update([e.target.dataset.keyCode*1,true]);
-          })
-          butt.addEventListener("touchend",(e) => {
-            controls.update([e.target.dataset.keyCode*1,false]);
-          })
-          leftPanel.append(butt);
+      const buttons = [
+        ["T",84],
+        [" ",0],
+        ["S",83],
+        [" ",0],
+        ["D",68],
+        [" ",0],
+        ["H",72],
+        [" ",0],
+        [" ",0]
+      ];
+      // console.log(buttons);
+      for(const b of buttons){
+        const butt = document.createElement("div");
+        if(b[0] != " "){
+          butt.className = 'arrow';
         }
+
+        butt.innerText = b[0];
+        butt.dataset.keyCode = b[1];
+        butt.addEventListener("touchstart",(e) => {
+          controls.update([e.target.dataset.keyCode*1,true]);
+        })
+        butt.addEventListener("touchend",(e) => {
+          controls.update([e.target.dataset.keyCode*1,false]);
+        })
+        leftPanel.append(butt);
+      }
   },
   preventZoom: () => {
     // window.oncontextmenu = function() { return false; }
