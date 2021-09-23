@@ -36,8 +36,8 @@ const monstersList = [
     speed:3,
     skills:{
       fist:500,
-      exp:50,
-      dist:0
+      exp:70,
+      dist:400
     }
   },
   {name:"Maggot",
@@ -45,8 +45,8 @@ const monstersList = [
     health:500,
     speed:2,
     skills:{
-      fist:100,
-      exp:20,
+      fist:200,
+      exp:30,
       dist:0
     }
   },

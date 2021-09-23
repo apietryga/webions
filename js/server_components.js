@@ -201,12 +201,10 @@ class Creature {
     }
     // RED TARGETING [monsters] 
     if(this.type == "monster" && typeof playerInArea != "undefined"){
-      // monster
       this.redTarget = playerInArea.id;
     }
     // RED TARGETING [player]
-    if(func.isSet(param.controls) && func.isSet(param.target)){
-      // player
+    if(this.type == "player" && func.isSet(param.controls) && func.isSet(param.target)){
       this.redTarget = param.target;
     }
     // CLEAR redTarget
