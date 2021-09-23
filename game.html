@@ -97,6 +97,8 @@
     init () {
       this.canvas.width = 440;
       this.canvas.height = this.canvas.width;
+      controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
+      this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
       this.gridSize = this.canvas.width/11;
       this.context = this.canvas.getContext("2d");
       inGameConsole = new Text();
@@ -179,8 +181,10 @@
     paramUpdate(){
       this.param.name = urlParams.get('player');
       this.param.id = false;
+      controls.planeClicking.followRoute();
       this.param.controls = controls.vals;
-      isSet(player.whiteTarget)?this.param.target = player.whiteTarget:'';
+      isSet(player.redTarget)?this.param.target = player.redTarget:'';
+      // console.log(controls.vals);
       return this.param;
     },
     load(){
@@ -511,9 +515,10 @@
   if('serviceWorker' in navigator) {
     // serviceWorkerRegistration.update();
     navigator.serviceWorker.register('serviceWorker.js'
-    , {scope: 'serviceWorker'}).then(function(registration) {
-      registration.update();
-    });
+    // , {scope: 'serviceWorker'}).then(function(registration) {
+    //   registration.update();
+    // }
+    );
   }
   
 </script>
@@ -548,7 +553,8 @@
         padding:2%;
         font-size:0.6em;
         color:#000;
-        background-color:rgba(255,255,255,0.8)
+        background-color:rgba(255,255,255,0.8);
+        z-index:4;
         `;
       document.body.append(this.statsDOM);
     },

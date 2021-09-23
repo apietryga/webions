@@ -6,16 +6,15 @@ const controls = {
   update(params){
     // white target on client side (84 is t key)
     const targetKeys = [83,84];
-      for(const pk of params){
-        if(targetKeys.includes(pk)){  
-          this.targeting(params);
-        } 
-      }
-    
+    for(const pk of params){
+      if(targetKeys.includes(pk)){  
+        this.targeting(params);
+      } 
+    }
     // prepare table to send
-    if(params[1] == true && this.vals.indexOf(params[0]) == -1){
-      this.vals.push(params[0]*1);
-    }else if(params[1] == false){
+    if(params[1] == true && !this.vals.includes(params[0])){
+      this.vals.push(params[0]);
+    }else{
       this.vals.splice(this.vals.indexOf(params[0]),1);
     }
     if(params[0] == 68 && params[1] && (!player.redTarget || (serv.time < player.shotExhoust))){
@@ -23,8 +22,7 @@ const controls = {
     }
     if(params[0] == 72 && params[1] && (player.health == player.maxHealth || (serv.time < player.healthExhoust))){
       gamePlane.actions.push(new Action("misc",player.x,player.y,40,40,0));  
-    }
-    
+    }    
   },
   targeting(param){
     //  TARGET LIST
@@ -55,11 +53,10 @@ const controls = {
           player.whiteTarget = false;
         }
       }
-      // console.log(player.whiteTarget);
 
     }
     // red targeting (white target + S key)
-    if(param[0] == 83 && param[1] == true){
+    if(param[0] == 83 && param[1] == true &&(isSet(player.whiteTarget) && player.whiteTarget)){
       if(this.currentTarget && typeof player.redTarget != "undefined"){
         if(player.redTarget == cToTarget[this.currentTarget-1].id){
           player.redTarget = "clear";
@@ -69,6 +66,76 @@ const controls = {
       }else{
         player.redTarget = "clear";
       }
+    }
+  },
+  planeClicking: {
+    route : [],
+    init(w,h,g){
+      this.width = w;
+      this.height = h;
+      this.g = g;
+    },
+    get(e){
+      // GET X Y pos.
+      const x = Math.floor(e.offsetX/this.g)+player.newPos[0]-5;
+      const y = Math.floor(e.offsetY/this.g)+player.newPos[1]-5;
+      // TARGET CLICKING
+      let isCreature = false;
+      for(const c of gamePlane.creatures.list){
+        if(c.newPos[0] == x && c.newPos[1] == y & c.newPos[2] == player.newPos[2]){
+          isCreature = true;
+          // player.whiteTarget = c.id;
+          player.redTarget = c.id;
+        }
+      }
+      // WALKING CLICKING
+      if(!isCreature){
+        let isFloor = false;
+        let isWall = false;
+        for(const g of map.getGrid([x,y,player.newPos[2]])){
+          if(map.avalibleGrids.includes(g[4])){
+            isFloor = true;
+          }
+          if(map.notAvalibleGrids.includes(g[4])){
+            isWall = true;
+          }
+        }
+        // if click is focused on floor - try set route to it.
+        if(!isWall && isFloor){
+          this.route = setRoute(player.newPos,[x,y,player.newPos[2]],map,gamePlane.creatures.list,5000);
+          if(this.route.length > 0){
+            this.route.push([x,y]);
+          }
+        }
+      }
+    },
+    followRoute (){
+      if(isSet(this.k)){
+        controls.vals.splice(controls.vals.indexOf(this.k),1);
+      }
+      if(isSet(player.newPos) && this.route.length > 0){
+        [oX,oY] = player.newPos;
+        [nX,nY] = this.route[0];
+        if( oX == nX && oY == nY ){
+          this.route.shift();
+        }
+          // console.log(this.route);
+          
+  
+          // set key 
+          if(oX > nX){this.k = 37;}
+          if(oX < nX){this.k = 39;}
+          if(oY > nY){this.k = 38;}
+          if(oY < nY){this.k = 40;}
+          // if(isSet(this.routeKey)){
+            controls.vals.push(this.k);      
+          // }
+      }else{
+        if(isSet(this.k)){
+          delete this.k;
+        }
+      }
+     
     }
   },
 }

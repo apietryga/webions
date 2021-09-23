@@ -23,7 +23,7 @@ let sprites = [
     src : "img/sprites/mmage.webp",
     group : "monsters"
   },
-  { name: "femaleCitizen",
+  { name: "female_citizen",
     src : "img/sprites/female_citizen.webp",
     group : "monsters"
   },
@@ -53,6 +53,10 @@ let sprites = [
   },
   { name: "orangeWizard",
     src : "img/sprites/orange_wizard.webp",
+    group : "monsters"
+  },
+  { name: "maggot",
+    src : "img/sprites/maggot.webp",
     group : "monsters"
   },
   { name: "cyclops",

@@ -10,19 +10,19 @@
   },
   {
     "name": "Tosiek",
-    "position": [-1, 2, 0],
+    "position": [-1, -6, 1],
     "speed": 10,
     "sprite": "male_oriental",
-    "health": 236402,
+    "health": 258902,
     "maxHealth": 264402,
     "skills": {
-      "level": 1038,
-      "exp": 1076830,
+      "level": 1046,
+      "exp": 1092790,
       "fist": 1000,
       "dist": 800,
       "healing": 10637
     },
-    "lastFrame": 1632304424967
+    "lastFrame": 1632392319989
   },
   {
     "name": "Zuzia",
@@ -42,7 +42,7 @@
     "health": 1013,
     "maxHealth": 1013,
     "skills": {"level": 8, "exp": 51, "fist": 101, "dist": 101, "healing": 101},
-    "lastFrame": 1632166673977
+    "lastFrame": 1632307623518
   },
   {
     "name": "Tosiek3",
@@ -101,13 +101,33 @@
     "lastFrame": 1632083356807
   },
   {
-    "name": null,
-    "position": [0, 2, 0],
+    "name": "Tosiek8",
+    "position": [-9, 8, 0],
+    "speed": 5,
+    "sprite": "male_oriental",
+    "health": 4400,
+    "maxHealth": 20000,
+    "skills": {"level": 8, "exp": 51, "fist": 100, "dist": 100, "healing": 100},
+    "lastFrame": 1632311632642
+  },
+  {
+    "name": "Tosiek11",
+    "position": [-2, 0, 0],
     "speed": 2,
     "sprite": "male_oriental",
     "health": 2000,
     "maxHealth": 2000,
     "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
-    "lastFrame": 1632054073723
+    "lastFrame": 1632311645658
+  },
+  {
+    "name": "Maja",
+    "position": [0, 0, 0],
+    "speed": 2,
+    "sprite": "female_citizen",
+    "health": 2000,
+    "maxHealth": 2000,
+    "skills": {"level": 7, "exp": 41, "fist": 100, "dist": 100, "healing": 100},
+    "lastFrame": 1632317434001
   }
 ]

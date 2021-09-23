@@ -38,8 +38,7 @@ this.includesArr = (searchThis,inThis) => {
   }
  return result; 
 }
-
-this.setRoute = (sPos,fPos,map,creatures = []) => {
+this.setRoute = (sPos,fPos,map,creatures = [],possibilities = 200) => {
   const posibleRoutes = [[[sPos[0],sPos[1]]]];
   let routeFinded = false;
   for(const route of posibleRoutes){
@@ -49,13 +48,23 @@ this.setRoute = (sPos,fPos,map,creatures = []) => {
     for(let d = 0; d < 4; d++){
       let [pX,pY] = lastG;
       if(d == 0){pX++;}if(d == 1){pX--;}if(d == 2){pY++;}if(d == 3){pY--;}
+      let isFloor = false;
+      let isWall = false;
+      let someBodyIsThere = false;
       for(const g of map.getGrid([pX,pY,sPos[2]])){
-        if((g[4] == "floors" || g[4] == "halffloors") && !this.includesArr([pX,pY],gridsAround)){
+        if((map.avalibleGrids.includes(g[4])) && !this.includesArr([pX,pY],gridsAround)){
           // check if someone stay there
-          for(c of creatures){if(!func.compareTables(c.position,[pX,pY,sPos[2]])){
-            gridsAround.push([pX,pY]);
+          isFloor = true;
+          for(const c of creatures){if(this.compareTables(c.position,[pX,pY,sPos[2]]) && c.health > 0){
+            someBodyIsThere = true;
           }}
         }
+        if(map.notAvalibleGrids.includes(g[4])){
+          isWall = true;
+        }
+      }
+      if(!someBodyIsThere && isFloor && !isWall){
+        gridsAround.push([pX,pY]);
       }
     }    
     // SET POSSIBLE ROUTES    
@@ -69,12 +78,19 @@ this.setRoute = (sPos,fPos,map,creatures = []) => {
       }
     }
     // GO OUT, WHEN FIND ROUTE OR IT TAKES TOO LONG
-    if(routeFinded || posibleRoutes.length > 200){break;}
+    if(routeFinded || posibleRoutes.length > possibilities){break;}
   }
   if(routeFinded){routeFinded.shift();}
   return routeFinded;
 }
-
+this.isSet = (val) => {
+  let result = false;
+  if(typeof val != "undefined"){
+    // console.log();
+    result = true;
+  }
+  return result;
+}
 
 function everyInterval(n){
   if((gamePlane.frameNo/n) % 1 == 0){return true;}
@@ -121,14 +137,7 @@ function checkClick(event) {
   });
   return element;
 }
-function isSet(val){
-  let result = false;
-  if(typeof val != "undefined"){
-    // console.log();
-    result = true;
-  }
-  return result;
-}
+
 
 // MOBILE CONTROLS
 function absorbEvent_(event) {

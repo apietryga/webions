@@ -84,11 +84,12 @@ const cm = { // creatures managment
     for(const c of this.allMonsters){
       if(Math.abs( c.position[0] - player.position[0] ) < 7
       && Math.abs( c.position[1] - player.position[1] ) < 7){
-        c.update(param,game,this.monstersInArea.concat(this.players.list));
         this.monstersInArea.push(c);
       }
     }
-
+    for(const c of this.monstersInArea){
+      c.update(param,game,this.monstersInArea.concat(this.players.list));
+    }
   },
   init(){
     this.loadMonsters();
@@ -117,10 +118,18 @@ const cm = { // creatures managment
   },
   players: {
     list:[],
+    inArea:[],
     inLoading:[],
     update(param,callback){
+      // TO DO MAKE inArea PLAYERS LIST!
       // check if player is on the list.
       let isPlayer = false;
+      // for(const c of this.list){
+      //   if(Math.abs( c.position[0] - player.position[0] ) < 7
+      //   && Math.abs( c.position[1] - player.position[1] ) < 7){
+      //     this.inArea.push(c);
+      //   }
+      // }
       for(const p of this.list){
         // update player is exists
         if(p.name == param.name){

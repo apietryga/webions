@@ -32,11 +32,21 @@ const monstersList = [
   },
   {name:"Orange Wizard",
     sprite:"orangeWizard",
-    health:1500,
+    health:1700,
     speed:3,
     skills:{
       fist:500,
       exp:50,
+      dist:0
+    }
+  },
+  {name:"Maggot",
+    sprite:"maggot",
+    health:500,
+    speed:2,
+    skills:{
+      fist:100,
+      exp:20,
       dist:0
     }
   },

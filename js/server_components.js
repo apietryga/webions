@@ -20,6 +20,7 @@ class Creature {
       // this.sprite = "female_warrior";
       // this.sprite = "femaleCitizen";
     }
+    if(this.name == "Maja"){this.sprite = "female_citizen";}
     if(this.name == "Justyna"){this.sprite = "female_warrior";}
     if(this.name == "Kotul"){this.sprite = "male_warrior";}
 
@@ -41,7 +42,6 @@ class Creature {
     }
   }
   update(param,game,creatures){
-    // console.log(param)
     this.game = game;
     // set playerinArea (4 monster walking and targeting)
     let playerInArea;
@@ -62,8 +62,7 @@ class Creature {
     if(this.walk <= game.time.getTime() && this.health > 0 && this.speed > 0){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];;
       // player walking from pushed keys
-      let key;
-      if(this.type == "player"){
+      let key;if(this.type == "player"){
         // get clicked key
         if(typeof param.controls != "undefined" && param.controls.length > 0){
           // get some of arrow key
@@ -107,17 +106,16 @@ class Creature {
         }
         // move monster
         let r;  // direction of move
-        if(walkingMode == "random") {
-          r = Math.floor(Math.random() * 4);
-        }
         if(walkingMode == "follow"){
-
-          // old follow => then | those func ... :D 
-
-          const routeFinded = func.setRoute(this.position,playerInArea.position,map);
-          if(routeFinded){
-            phantomPos[0] = routeFinded[0][0];
-            phantomPos[1] = routeFinded[0][1];  
+          if(Math.abs(this.position[0] - playerInArea.position[0]) > 1
+          || Math.abs(this.position[1] - playerInArea.position[1]) > 1){
+            const routeFinded = func.setRoute(this.position,playerInArea.position,map,creatures);
+            if(routeFinded){
+              phantomPos[0] = routeFinded[0][0];
+              phantomPos[1] = routeFinded[0][1];  
+            }else{
+              walkingMode = "random";
+            }
           }
         }
         if(walkingMode == "escape"){
@@ -130,6 +128,14 @@ class Creature {
           if(monY <= plaY){posibilites.push(0);}      
           let posibilitesId = Math.round(Math.random()*(posibilites.length-1));
           r = posibilites[posibilitesId];
+
+          if(this.escapeStuck){
+            walkingMode = "random";
+          }
+          this.escapeStuck = true;
+        }
+        if(walkingMode == "random") {
+          r = Math.floor(Math.random() * 4);
         }
         if (r == 0) {phantomPos[1]--;} // up
         if (r == 1) {phantomPos[0]++;} // right
@@ -141,14 +147,25 @@ class Creature {
       // checking if position is availble
       let isFloor = false;
       let isStairs = false;
-      
+      let isWall = false;
       // check grids
-      const avalibleGrids = ["floors","halffloors","stairs"];
+      const avalibleGrids = (map.avalibleGrids);
+      const notAvalibleGrids = map.notAvalibleGrids;
+      if(this.type == "player" && !avalibleGrids.includes("stairs")){
+        avalibleGrids.push("stairs");
+        notAvalibleGrids.splice(notAvalibleGrids.indexOf("stairs"),1);
+      }else if(this.type != "player" && avalibleGrids.includes("stairs")){
+        notAvalibleGrids.push("stairs");
+        avalibleGrids.splice(avalibleGrids.indexOf("stairs"),1);
+      }
       const checkGrids = map.getGrid(phantomPos);
       for(const checkGrid of checkGrids){
         if(checkGrid){
           if(avalibleGrids.includes(checkGrid[4])){
             isFloor = true;
+          }
+          if(notAvalibleGrids.includes(checkGrid[4])){
+            isWall = true;
           }
           if(checkGrid[4] == "stairs"){
             if(this.type == "monster"){isFloor = false;}
@@ -159,9 +176,10 @@ class Creature {
           }
         }
       }
+      if(isWall){isFloor = false;}
       // check monsters and players
       for(const c of creatures){
-        if (func.compareTables(c.position, phantomPos) && c.name != param.name && c.health > 0) {
+        if (func.compareTables(c.position, phantomPos) && c.health > 0) {
           isFloor = false;
           if(this.type == "player" && isStairs){
             isFloor = true;
@@ -174,6 +192,7 @@ class Creature {
         || (this.type == "monster" && !func.compareTables(this.position,phantomPos)) ){
           this.position = phantomPos;
           // set exhoust
+          delete this.escapeStuck;
           this.walk = game.time.getTime() + Math.round(1000/this.speed);
         }
       }else if(this.type == "player"){
@@ -185,8 +204,8 @@ class Creature {
       // monster
       this.redTarget = playerInArea.id;
     }
-    // RED TARGETING [player] 
-    if(typeof param.controls != "undefined" && param.controls.includes(83) && typeof param.target != "undefined"){
+    // RED TARGETING [player]
+    if(func.isSet(param.controls) && func.isSet(param.target)){
       // player
       this.redTarget = param.target;
     }
@@ -209,8 +228,8 @@ class Creature {
     if(this.health <= 0 && !this.restore){
       // for monsters
       if(this.type == "monster"){
-        // this.restore = game.time.getTime() + 150000;
-        this.restore = game.time.getTime() + 500;
+        this.restore = game.time.getTime() + 150000;
+        // this.restore = game.time.getTime() + 500;
       }
       if(this.name == param.name){
         game.dead = true;
@@ -255,7 +274,7 @@ class Creature {
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }
     // SELF AUTO HEALING
-    // code here ;>
+    // TODO - SELF AUTO HEALING!
 
     // SHOTS
     if(this.redTarget){
@@ -326,6 +345,7 @@ class Creature {
     this.text = from.name+" Cię walnął za "+from.skills[type]+" hapa";
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
+      // from.target = false;
       from.skills.exp += this.skills.exp;
       from.updateSkills();
     }

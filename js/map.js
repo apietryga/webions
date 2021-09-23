@@ -18,8 +18,10 @@ let fs,func,stringify;
 if(typeof window == "undefined"){fs = require("fs");func = require("./functions");stringify = require("json-stringify-pretty-compact");}
 class Map{
   constructor(){
-    // this.path = "./json/newmap.json";
-    this.path = "./json/testmap.json";
+    this.path = "./json/newmap.json";
+    // this.path = "./json/testmap.json";
+    this.avalibleGrids = ['floors','halffloors'];
+    this.notAvalibleGrids = ['walls','stairs'];
     this.template = [];
     this.grids = [];
     this.sprites = [];
