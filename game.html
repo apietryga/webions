@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="style/game.css">
     <link rel="manifest" href="json/manifest.json">
     <link rel="shortcut icon" href="img/logos/favicon.ico" type="image/x-icon">
@@ -62,7 +62,8 @@
       this.button = document.createElement("button");
       this.button.style.position = "unset";
       this.button.style.padding = "10px 50px";
-      this.button.onclick = () => {window.location.reload();}
+      // this.button.onclick = () => {window.location.reload();}
+      this.button.addEventListener(mobileControls.ev,() => {window.location.reload()});
       this.button.innerText = " PLAY. ";
 
       this.dom.append(this.h1);
@@ -98,13 +99,14 @@
       this.canvas.width = 440;
       this.canvas.height = this.canvas.width;
       controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
-      // this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
-      this.canvas.addEventListener("click", (e) => {controls.planeClicking.get(e)});
+      
       this.gridSize = this.canvas.width/11;
       this.context = this.canvas.getContext("2d");
       inGameConsole = new Text();
       this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
       controls.init();
+      // this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
+      this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
       window.addEventListener('keydown', function (e) {
         controls.update([e.keyCode,true]);
       })
@@ -507,7 +509,6 @@
     })
   })
   // set elements resolution:
-  mobileControls.preventZoom();
   setResolution();
   window.onresize = () =>{
     setResolution();  
@@ -538,7 +539,8 @@
     },
     makeDevButt(title,func){
       const butt = document.createElement("button");
-      butt.onclick = () => { func()};
+      // butt.onclick = () => { func()};
+      butt.addEventListener(mobileControls.ev,func);
       butt.innerHTML =  title;
       butt.style.zIndex = 4;
       document.body.append(butt);

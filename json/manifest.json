@@ -1,5 +1,6 @@
 {
   "name": "Webions",
+  "start_url": "/",
   "short_name": "Webions",
   "background_color": "grey",
   "description": "Webions game",
@@ -7,14 +8,9 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "/img/logos/logo_512.webp",
+      "src": "/img/logos/logo_512.png",
       "type": "image/png",
       "sizes": "512x512"
-    },
-    {
-      "src": "/img/logos/192.webp",
-      "type": "image/webp",
-      "sizes": "192x192"
     }
   ],
   "content_scripts": [

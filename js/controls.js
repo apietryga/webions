@@ -78,39 +78,48 @@ const controls = {
     },
     get(e){
       if(isSet(player)){
-      // GET X Y pos.
-      const x = Math.floor(e.offsetX/this.g)+player.newPos[0]-5;
-      const y = Math.floor(e.offsetY/this.g)+player.newPos[1]-5;
-      // TARGET CLICKING
-      let isCreature = false;
-      for(const c of gamePlane.creatures.list){
-        if(c.newPos[0] == x && c.newPos[1] == y & c.newPos[2] == player.newPos[2]){
-          isCreature = true;
-          // player.whiteTarget = c.id;
-          player.redTarget = c.id;
+        let ox,oy;
+        if(isSet(e.offsetX)){
+          const g = e.target.clientWidth/11;
+          ox = Math.floor((e.clientX - e.target.offsetLeft)/g);
+          oy = Math.floor((e.clientY - e.target.offsetTop)/g);
+        }else{
+          // CHECKIT !!! 
+          const g = e.touches[0].target.clientWidth/11;
+          ox = Math.floor((e.touches[0].clientX - e.touches[0].target.offsetLeft)/g);
+          oy = Math.floor((e.touches[0].clientY - e.touches[0].target.offsetTop)/g);
         }
-      }
-      // WALKING CLICKING
-      if(!isCreature){
-        let isFloor = false;
-        let isWall = false;
-        for(const g of map.getGrid([x,y,player.newPos[2]])){
-          if(map.avalibleGrids.includes(g[4])){
-            isFloor = true;
-          }
-          if(map.notAvalibleGrids.includes(g[4])){
-            isWall = true;
+        // GET X Y pos.
+        const x = ox+player.newPos[0]-5;
+        const y = oy+player.newPos[1]-5;
+        // TARGET CLICKING
+        let isCreature = false;
+        for(const c of gamePlane.creatures.list){
+          if(c.newPos[0] == x && c.newPos[1] == y & c.newPos[2] == player.newPos[2]){
+            isCreature = true;
+            player.redTarget = c.id;
           }
         }
-        // if click is focused on floor - try set route to it.
-        if(!isWall && isFloor){
-          this.route = setRoute(player.newPos,[x,y,player.newPos[2]],map,gamePlane.creatures.list,5000);
-          if(this.route.length > 0){
-            this.route.push([x,y]);
+        // WALKING CLICKING
+        if(!isCreature){
+          let isFloor = false;
+          let isWall = false;
+          for(const g of map.getGrid([x,y,player.newPos[2]])){
+            if(map.avalibleGrids.includes(g[4])){
+              isFloor = true;
+            }
+            if(map.notAvalibleGrids.includes(g[4])){
+              isWall = true;
+            }
+          }
+          // if click is focused on floor - try set route to it.
+          if(!isWall && isFloor){
+            this.route = setRoute(player.newPos,[x,y,player.newPos[2]],map,gamePlane.creatures.list,5000);
+            if(this.route.length > 0){
+              this.route.push([x,y]);
+            }
           }
         }
-      }
-
       }
     },
     followRoute (){
@@ -144,19 +153,22 @@ const controls = {
   },
 }
 const mobileControls = {
-  validate : () => {
+  ev: 'click',
+  validate(){
     let panel = document.querySelectorAll(".mobileControls");
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       console.log("Detect mobile device, setting controls.");
       panel[0].style.display = "flex";
       panel[1].style.display = "flex";
-      mobileControls.set();
+      this.set();
+      this.preventZoom();
+      this.ev = 'touchstart';
     }else{
       panel[0].style.display = "none";
       panel[1].style.display = "none";
     }
   },
-  set: () => {
+  set(){
     // resolution - window width & height
     let panelWidth; 
     let wW = document.body.offsetWidth;
@@ -177,13 +189,7 @@ const mobileControls = {
         p.style.height = panelWidth;
       }
     }
-    // mobileControls.rightButtons = new buttons("right");
-    // mobileControls.rightButtons.build();
-
-    mobileControls.build("rightPanel");
-
-    // mobileControls.leftButtons = new buttons("left");
-    // mobileControls.leftButtons.build();
+    this.build();
   },
   build(){
     // build panels
@@ -242,22 +248,30 @@ const mobileControls = {
         leftPanel.append(butt);
       }
   },
-  preventZoom: () => {
+  allowClick : ["BUTTON","CANVAS","arrow","gamePlane"],
+  preventZoom(){
     window.oncontextmenu = function() { return false; }
-    function preventLongPressMenu(nodes) {
-      for(var i=0; i<nodes.length; i++){
-        // nodes[i].ontouchstart = absorbEvent_;        
-        // nodes[i].ontouchmove = absorbEvent_;
-        // nodes[i].ontouchend = absorbEvent_;
-        // nodes[i].ontouchcancel = absorbEvent_;
-
-        nodes[i].addEventListener("touchstart",absorbEvent_);
-        nodes[i].addEventListener("touchmove",absorbEvent_);
-        nodes[i].addEventListener("touchend",absorbEvent_);
-        nodes[i].addEventListener("touchcancel",absorbEvent_);
+    for(const n of document.querySelectorAll('*')){
+      if(!mobileControls.allowClick.includes(n.tagName || n.className)){
+        // console.log(n.tagName+" | "+n.className);
+        n.addEventListener("touchstart",(e)=>{
+          if(this.iOS()){e.preventDefault();}
+          e.stopPropagation && e.stopPropagation();
+          e.cancelBubble = true;
+        },{passive:false});
       }
-    }
-    preventLongPressMenu(document.querySelectorAll('*:not(button,.mobileControls)'));
-  
+    }   
+  },
+  iOS(){
+    return [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod'
+    ].includes(navigator.platform)
+    // iPad on iOS 13 detection
+    || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   }
 }

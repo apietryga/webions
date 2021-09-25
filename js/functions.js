@@ -137,17 +137,3 @@ function checkClick(event) {
   });
   return element;
 }
-
-
-// MOBILE CONTROLS
-function absorbEvent_(event) {
-  var e = event || window.event;
-  e.preventDefault && e.preventDefault();
-  e.stopPropagation && e.stopPropagation();
-  e.cancelBubble = true;
-  e.returnValue = false;
-  return false;
-}
-function initPreventing() {
-  preventLongPressMenu(document);
-}
