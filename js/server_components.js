@@ -225,39 +225,25 @@ class Creature {
             || Math.abs(c.position[0] - this.position[0]) > 5
             || Math.abs(c.position[1] - this.position[1]) > 5
           ){
-              this.redTarget = false;
-              this.text = "Target lost.";
+            this.redTarget = false;
+            this.text = "Target lost.";
           }
         }
       }
     }
     // DYING
     if(this.health <= 0 && !this.restore){
+      this.direction = 4;
+      this.cyle = 0;
       // for monsters
       if(this.type == "monster"){
         this.restore = game.time.getTime() + 150000;
         // this.restore = game.time.getTime() + 500;
       }
       if(this.name == param.name){
+        this.direction = 4;
         game.dead = true;
       }
-
-      
-      // DieList 
-      for(const c of creatures){   
-        if(c.id == this.id){
-          this.direction = 4;
-          this.cyle = 0;
-          // clear from target list
-          for(const c of creatures){
-            if(c.redTarget == this.id){
-              c.redTarget = false;
-              this.redTarget = false
-            }
-          }
-        }
-      }
-
     }
     // RESTORING [monster]
     if(this.restore && game.time.getTime() >= this.restore){
@@ -348,7 +334,13 @@ class Creature {
     }
   }
   getHit = (from,type = 'fist') =>{
-    this.health -= from.skills[type];
+    if(this.health < from.skills[type]){
+      this.health = 0;
+    }else{
+      this.health -= from.skills[type];
+    }
+
+
     this.text = from.name+" Cię walnął za "+from.skills[type]+" hapa";
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){

@@ -2,12 +2,12 @@ const monstersList = [
   // default
   {name:"Dragon",
     sprite:"dragon",
-    health:1000,
+    health:1200,
     speed:2,
     skills:{
       fist:400,
       exp:10,
-      dist:0
+      dist:100
     }
   },
   {name:"Mage",
@@ -22,10 +22,10 @@ const monstersList = [
   },
   {name:"Cyclops",
     sprite:"cyclops",
-    health:1500,
-    speed:1.5,
+    health:750,
+    speed:2.5,
     skills:{
-      fist:500,
+      fist:250,
       exp:50,
       dist:0
     }
@@ -63,7 +63,7 @@ const monstersList = [
   {name:"Wasp",
     sprite:"wasp",
     health:250,
-    speed:2.5,
+    speed:1.5,
     skills:{
       fist:50,
       exp:10,
