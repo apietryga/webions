@@ -11,6 +11,7 @@ class Creature {
     this.position = [0,0,0];
     this.startPosition = this.position;
     this.walk = false;
+
     this.speed = 2; // grids per second
     // this.sprite = "male_warrior";
     this.sprite = "male_oriental";
@@ -23,7 +24,7 @@ class Creature {
     if(this.name == "Maja"){this.sprite = "female_citizen";}
     if(this.name == "Justyna"){this.sprite = "female_warrior";}
     if(this.name == "Kotul"){this.sprite = "male_warrior";}
-
+    this.direction = 1;
     this.health = 2000;
     this.healthValue = 10;
     this.maxHealth = this.health;
@@ -75,10 +76,10 @@ class Creature {
         }
         // set probably future position
         switch (key) {
-          case 39: phantomPos[0]++; break; // right key
-          case 37: phantomPos[0]--; break; // left key
-          case 38: phantomPos[1]--; break; // up key
-          case 40: phantomPos[1]++; break; // down key
+          case 39: phantomPos[0]++;this.direction = 2; break; // right key
+          case 37: phantomPos[0]--;this.direction = 3; break; // left key
+          case 38: phantomPos[1]--;this.direction = 0; break; // up key
+          case 40: phantomPos[1]++;this.direction = 1; break; // down key
         }
       }
       // monsters walking
@@ -142,6 +143,13 @@ class Creature {
         if (r == 2) {phantomPos[1]++;} // down
         if (r == 3) {phantomPos[0]--;} // left
         // r == -1 -> stop, but wait this time
+        // setting monster direction
+        if(phantomPos[0] > this.position[0]){this.direction = 2;}        
+        if(phantomPos[0] < this.position[0]){this.direction = 3;}        
+        if(phantomPos[1] > this.position[1]){this.direction = 1;}        
+        if(phantomPos[1] < this.position[1]){this.direction = 0;}        
+
+
       }
 
       // checking if position is availble
@@ -254,9 +262,9 @@ class Creature {
     if(this.restore && game.time.getTime() >= this.restore){
       this.health = this.maxHealth;
       // this.cyle = 0;
-      // this.direction = 1;
+      this.direction = 1;
       this.cyle = this.defaultCyle;
-      this.direction = this.defaultDirection;
+      // this.direction = this.defaultDirection;
       this.restore = false;
       this.position = this.startPosition;
     } 

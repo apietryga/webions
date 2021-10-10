@@ -15,7 +15,7 @@ class Creature {
       this.x = 200;
       this.y = 200;
     }
-    this.direction = 1;
+    // this.direction = 1;
     this.position = [x, y, z]; //x y z
     this.newPos =  equalArr(this.position);
     this.oldPos =  equalArr(this.position);
@@ -41,7 +41,7 @@ class Creature {
         this.cyle = ((this.cyle)%2)+1;
       }
       // set position
-      const directions = [[3, 2],[0,1]];
+      // const directions = [[3, 2],[0,1]];
       const walkTime = this.walk - this.walkingStart;
       const timeLeft = walkTime - (serv.time - this.walkingStart);
       const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
@@ -53,10 +53,10 @@ class Creature {
         if(this.newPos[l[0]] == this.oldPos[l[0]] ){
           if(this.newPos[l[1]] > this.oldPos[l[1]]){
             this.position[l[1]] = this.oldPos[l[1]] + piece;
-            this.direction = directions[l[1]][1];
+            // this.direction = directions[l[1]][1];
           }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
             this.position[l[1]] = this.oldPos[l[1]] - piece;
-            this.direction = directions[l[1]][0];
+            // this.direction = directions[l[1]][0];
           }
         }
       }
@@ -196,9 +196,9 @@ class Creature {
       ctx.stroke();
     }
     // stand up after retrive
-    if(this.oldHealth <= 0 && this.health > 0){
-      this.direction = 1;
-    }
+    // if(this.oldHealth <= 0 && this.health > 0){
+    //   this.direction = 1;
+    // }
     // draw hits and healing value
     if(isSet(this.oldHealth) && this.oldHealth != this.health){
       const hitValue = this.oldHealth - this.health;

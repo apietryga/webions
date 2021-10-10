@@ -74,8 +74,8 @@ const cm = { // creatures managment
       for(const k of Object.keys(m)){
         monster[k] = m[k];
       }
-      monster.defaultCyle = monster.cyle;
-      monster.defaultDirection = monster.direction;
+      // monster.defaultCyle = monster.cyle;
+      // monster.defaultDirection = monster.direction;
       monster.startPosition = m.position;
       monster.type = "monster";
       for(const sm of monstersList){ // single monster
