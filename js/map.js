@@ -37,7 +37,6 @@ class Map{
     }else{
     // server side
       this.loadServ();
-
     }
   }
   loadServ(){
@@ -153,16 +152,16 @@ class Map{
     const paramv = param.value;
     // find field and delete it if isset (if element is not transparent).
     const issetGrid = this.getGrid([paramv[1],paramv[2],paramv[0]],"4editor")[0];
-    if((paramv[4] != "halffloors"||paramv[4] != "walls") && issetGrid){
-      for(const m of mapArr){
-        if(func.compareTables(m.sector,pushSector)){
-          const floor = Object.keys(m.floors[paramv[0]]);
-          m.floors[paramv[0]][floor].splice(func.indexOfArr(m.floors[paramv[0]][floor],issetGrid),1);
-          break;
-        }
-      }
+    // if((paramv[4] != "halffloors"||paramv[4] != "walls") && issetGrid){
+    //   for(const m of mapArr){
+    //     if(func.compareTables(m.sector,pushSector)){
+    //       const floor = Object.keys(m.floors[paramv[0]]);
+    //       m.floors[paramv[0]][floor].splice(func.indexOfArr(m.floors[paramv[0]][floor],issetGrid),1);
+    //       break;
+    //     }
+    //   }
           
-    } 
+    // } 
     if(paramv[4] != 'delete'){
       // adding elements
       // param.value = [z , x , y , sprite, type]

@@ -77,6 +77,7 @@
 <!--| GAMEPLANE PROPERTIES |-->
 <script src="js/client/gameplane.js?v={{version}}"></script>
 <script src="js/client/components.js?v={{version}}"></script>
+<script src="js/client/menus.js?v={{version}}"></script>
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script src="js/client/websocket.js?v={{version}}"></script>
 <!--| PRELOAD |-->
@@ -102,11 +103,11 @@
 <script>
   if('serviceWorker' in navigator) {
     // serviceWorkerRegistration.update();
-    navigator.serviceWorker.register('serviceWorker.js');
+    navigator.serviceWorker.register('serviceWorker.js'
     // , {scope: 'serviceWorker'}).then(function(registration) {
     //   registration.update();
     // }
-    // );
+    );
   }
   
 </script>
@@ -117,7 +118,6 @@
     init(){
       this.makeDevButt("STOP",()=>{gamePlane.stop()});
       this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
-      // this.makeDevButt("START",()=>{gamePlane.init()});
       this.makeStatsField();
       this.update();
     },

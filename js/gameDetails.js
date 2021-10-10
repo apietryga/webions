@@ -3,7 +3,7 @@ const game = {
   version : 0.1,
   fps: 10,
   db:"redis",
-  lastUpdate: 1632395620865,
+  lastUpdate: 1633895983384,
   devMode: true,
 }
 module.exports = game;

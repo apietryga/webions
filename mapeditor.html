@@ -85,7 +85,7 @@
 <script src="js/sprites.js"></script>
 <script src="./js/functions.js"></script>
 <script src="./js/map.js"></script>
-<script src="./js/components.js"></script>
+<script src="./js/client/components.js"></script>
 <script>
   // make it editable
   const map = new Map();
@@ -119,6 +119,7 @@
     position:[0,0,0],
     controlInit(){
       document.addEventListener("keydown",(e)=>{
+        // console.log(e.keyCode);
         switch (e.keyCode) {
           case 37: this.position[0]--;break;          
           case 39: this.position[0]++;break;          
@@ -126,7 +127,7 @@
           case 40: this.position[1]++;break;          
           case 187: this.position[2]++;break;          
           case 189: this.position[2]--;break;          
-          case 32: this.push();break;          
+          case 68||32: this.push();break;          
         }
         this.drawMap();
       })
@@ -367,7 +368,7 @@
       },
       editPanel:{
         dom: document.createElement("div"),
-        elemToShow: ['floors','halffloors','nofloors','stairs','walls'],
+        elemToShow: ['floors','halffloors','nofloors','stairs','walls','doors','windows'],
         init(){
           this.dom.className = "editPanel";
           this.elements();

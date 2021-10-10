@@ -103,7 +103,9 @@
         },
         checkWhatsOn(){
           for(const [key,value] of this.params.entries()){
-            this.cases[key](value);
+            if(['reason','back'].includes(key)){
+              this.cases[key](value);
+            }
           }
         },
         pushH3(v,color = "#fff"){

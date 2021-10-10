@@ -1,8 +1,5 @@
 const fs = require('fs');
 const http = require('http');
-// const express = require('express');
-// const app = express();
-// const app = express();
 const {URL} = require('url');
 const Map = require("./js/map");
 const map = new Map();
@@ -213,7 +210,7 @@ dbc.init(()=>{
   // app.listen(process.env.PORT || 80,()=>{})
   console.log("serwer is running on: http://webions");
   // WEBSOCKET
-  const wsServer = new WebSocketServer({httpServer : server})
+  new WebSocketServer({httpServer : server})
   // const wsServer = new WebSocketServer({httpServer : app})
   .on('request', (req)=>{
     const connection = req.accept('echo-protocol', req.origin);

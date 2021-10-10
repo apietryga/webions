@@ -8,7 +8,8 @@ class Creature {
     this.id = creaturesLength+1; 
     this.name = nickName;
     // this.position = [-1,-5,1]; // for newmap
-    this.position = [0,0,0];
+    // this.position = [0,0,0];
+    this.position = [34,-10,0];
     this.startPosition = this.position;
     this.walk = false;
 

@@ -50,6 +50,26 @@ const monstersList = [
       dist:0
     }
   },
+  {name:"Cat",
+    sprite:"cat",
+    health:500,
+    speed:1.5,
+    skills:{
+      fist:0,
+      exp:1,
+      dist:0
+    }
+  },
+  {name:"Wasp",
+    sprite:"wasp",
+    health:250,
+    speed:2.5,
+    skills:{
+      fist:50,
+      exp:10,
+      dist:0
+    }
+  },
 
   // leauge 
   {name:"Touret",

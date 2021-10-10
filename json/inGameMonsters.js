@@ -7,7 +7,21 @@ this.data = [
   // {"name":"Mage","position":[3,10,0]},
   // {"name":"Cyclops","position":[-3,9,2]},
 
+  // CITY
+  {"name":"Cat","position":[24,-5,0]},
+  {"name":"Cat","position":[40,6,0]},
+  
 
+  // RIGHT OF CITY
+  {"name":"Wasp","position":[65,-27,1]},
+  {"name":"Wasp","position":[55,-19,1]},
+  {"name":"Wasp","position":[54,-10,1]},
+  {"name":"Wasp","position":[70,8,1]},
+
+
+
+
+  // LEFT OF LEAUGE
   {"name":"Orange Wizard","position":[-73,11,3]},
   {"name":"Orange Wizard","position":[-69,11,3]},
   {"name":"Orange Wizard","position":[-75,12,2]},

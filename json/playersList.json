@@ -10,19 +10,19 @@
   },
   {
     "name": "Tosiek",
-    "position": [-38, -17, -1],
+    "position": [50, -5, 0],
     "speed": 10,
     "sprite": "male_oriental",
-    "health": 239065,
+    "health": 273093,
     "maxHealth": 275593,
     "skills": {
       "level": 1049,
-      "exp": 1098990,
+      "exp": 1099192,
       "fist": 11084,
       "dist": 11084,
       "healing": 11084
     },
-    "lastFrame": 1633876468296
+    "lastFrame": 1633900479702
   },
   {
     "name": "Zuzia",
@@ -42,7 +42,7 @@
     "health": 1013,
     "maxHealth": 1013,
     "skills": {"level": 8, "exp": 51, "fist": 101, "dist": 101, "healing": 101},
-    "lastFrame": 1633876442073
+    "lastFrame": 1633886596519
   },
   {
     "name": "Tosiek3",
@@ -52,7 +52,7 @@
     "health": 2000,
     "maxHealth": 2000,
     "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
-    "lastFrame": 1632304088854
+    "lastFrame": 1633886470710
   },
   {
     "name": "Tosiek5",
