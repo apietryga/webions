@@ -1,5 +1,8 @@
 const fs = require('fs');
 const http = require('http');
+// const express = require('express');
+// const app = express();
+// const app = express();
 const {URL} = require('url');
 const Map = require("./js/map");
 const map = new Map();
@@ -22,7 +25,7 @@ function handler(req, res) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];
   const myURL = new URL(href+url);
-  const search = myURL.search;
+  // const search = myURL.search;
   // static www files: 
   const www = [
     "/",
@@ -48,8 +51,16 @@ function handler(req, res) {
       file.serve(req, res);
     }      
   }else{
-    // serve main folder
-    file2.serve(req,res);
+    if(myURL.pathname == "/game.html"){
+      fs.readFile("./game.html","utf8",(e,content) => {
+        content = content.split('{{version}}').join(game.version);
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(content);
+      })
+    }else{
+      // serve main folder
+      file2.serve(req,res);
+    }
   }
 }
 
@@ -199,9 +210,11 @@ cm.init();
 dbc.init(()=>{
   console.log("Database set: "+game.db);
   const server = http.createServer(handler).listen(process.env.PORT || 80);
+  // app.listen(process.env.PORT || 80,()=>{})
   console.log("serwer is running on: http://webions");
   // WEBSOCKET
   const wsServer = new WebSocketServer({httpServer : server})
+  // const wsServer = new WebSocketServer({httpServer : app})
   .on('request', (req)=>{
     const connection = req.accept('echo-protocol', req.origin);
     connection.on('message', (data) => {
