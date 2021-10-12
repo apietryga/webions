@@ -106,13 +106,35 @@ class Creature {
       //   gamePlane.stop("You are dead.");
       // }
     }
-    // SET VISIBLE FLOORING
+    // SET VISIBLE FLOOR
     if(this.type == "player"){
-      // if is nothing above player
+      // check windows around
+      let isWindow = false;
+      const z = player.newPos[2];
+      const checkIfWindows = [
+        [player.newPos[0],player.newPos[1]-1],
+        [player.newPos[0],player.newPos[1]+1],
+        [player.newPos[0]-1,player.newPos[1]],
+        [player.newPos[0]+1,player.newPos[1]]
+      ];
+      for(const ch of checkIfWindows){
+        for(const g of map.getGrid([ch[0],ch[1],z])){
+          if(g[4] == "windows"){
+            isWindow = true;
+          }
+        }  
+      }
+
+
+      // if player is under ground
       if(this.position[2] < 0){
-        map.visibleFloor = this.position[2];
+        map.visibleFloor = z;
+      // if is nothing above player
       }else if(map.getGrid([this.newPos[0]-1,this.newPos[1]-1,this.newPos[2]+1])[0]){
-        map.visibleFloor = this.position[2];
+        map.visibleFloor = z;
+      // if player is near window
+      }else if(isWindow){
+        map.visibleFloor = z;
       }else{
         map.visibleFloor = map.maxFloor;
       }

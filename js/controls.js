@@ -4,6 +4,9 @@ const controls = {
     this.vals = [];
   },
   update(params){
+    // abort route when do something 
+    this.planeClicking.route = [];
+
     // white target on client side (84 is t key)
     const targetKeys = [83,84];
     for(const pk of params){
@@ -100,8 +103,17 @@ const controls = {
             player.redTarget = c.id;
           }
         }
+        // ACTION CLICKING
+        let isAction = false;
+        for(const g of map.getGrid([x,y,player.newPos[2]])){
+          if(g[5] == "startleauge"){
+            isAction = true;
+            console.log("STARTUJEMY LIGĘ!");
+          }
+        }
+
         // WALKING CLICKING
-        if(!isCreature){
+        if(!isCreature && !isAction){
           let isFloor = false;
           let isWall = false;
           for(const g of map.getGrid([x,y,player.newPos[2]])){

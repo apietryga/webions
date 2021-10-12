@@ -21,7 +21,7 @@ class Map{
     this.path = "./json/newmap.json";
     // this.path = "./json/testmap.json";
     this.avalibleGrids = ['floors','halffloors'];
-    this.notAvalibleGrids = ['walls','stairs'];
+    this.notAvalibleGrids = ['walls','stairs','windows'];
     this.template = [];
     this.grids = [];
     this.sprites = [];

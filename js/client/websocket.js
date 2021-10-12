@@ -153,6 +153,7 @@ const serv = {
       dev.stats.url = urlParams.get('player');
       dev.stats.ping = this.time - player.lastFrame;
       dev.stats.cpu = data.game.cpu;
+      dev.stats.redTarget = player.redTarget;
       // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
       dev.update();
       

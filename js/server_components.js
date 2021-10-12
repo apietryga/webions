@@ -61,7 +61,8 @@ class Creature {
       }  
     }
     // WALKING
-    if(this.walk <= game.time.getTime() && this.health > 0 && this.speed > 0){
+    if(
+      this.walk <= game.time.getTime() && this.health > 0 && this.speed > 0){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];;
       // player walking from pushed keys
       let key;if(this.type == "player"){
@@ -157,11 +158,13 @@ class Creature {
       let isFloor = false;
       let isStairs = false;
       let isWall = false;
+      let doorAvalible = true;
       // check grids
       const avalibleGrids = (map.avalibleGrids);
       const notAvalibleGrids = map.notAvalibleGrids;
       if(this.type == "player" && !avalibleGrids.includes("stairs")){
         avalibleGrids.push("stairs");
+        avalibleGrids.push("actionfloors");
         notAvalibleGrids.splice(notAvalibleGrids.indexOf("stairs"),1);
       }else if(this.type != "player" && avalibleGrids.includes("stairs")){
         notAvalibleGrids.push("stairs");
@@ -183,9 +186,20 @@ class Creature {
               phantomPos = checkGrid[5];
             }
           }
+          if(checkGrid[4] == "doors"){
+            if(this.type == "monster"){isFloor = false;}
+            if(this.type == "player"){
+              
+              doorAvalible = false;
+              this.text = "You can't walk throught this doors.";
+              console.log(checkGrid);
+              // isWall = true;
+            }
+          }
         }
       }
       if(isWall){isFloor = false;}
+      if(!doorAvalible){isFloor = false;}
       // check monsters and players
       for(const c of creatures){
         if (func.compareTables(c.position, phantomPos) && c.health > 0) {
@@ -204,8 +218,11 @@ class Creature {
           delete this.escapeStuck;
           this.walk = game.time.getTime() + Math.round(1000/this.speed);
         }
-      }else if(this.type == "player"){
-        this.text = "There's no way.";
+      }else if(
+        this.type == "player" 
+        && typeof key != "undefined"
+        && doorAvalible){
+          this.text = "There's no way.";
       }
     }
     // RED TARGETING [monsters] 
