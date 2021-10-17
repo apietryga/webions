@@ -4,7 +4,7 @@ const {URL} = require('url');
 const Map = require("./js/map");
 const map = new Map();
 const os = require("os");
-// const func = require("./js/functions");
+const func = require("./js/functions");
 const static = require('node-static');
 const file = new(static.Server)("www");
 const file2 = new(static.Server)(__dirname);
@@ -17,14 +17,11 @@ const dbConnect = require("./js/dbconnect");
 const dbc = new dbConnect();
 const inGameMonsters = require("./json/inGameMonsters.js").data;
 const game = require("./js/gameDetails");
-
 function handler(req, res) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];
   const myURL = new URL(href+url);
-  // const search = myURL.search;
-  // static www files: 
-  const www = [
+  const www = [   // static www files: 
     "/",
     "/index.html",
     "/howtoplay.html",
@@ -48,7 +45,66 @@ function handler(req, res) {
       file.serve(req, res);
     }      
   }else{
-    if(myURL.pathname == "/game.html"){
+    // account page
+    if(myURL.pathname == "/account.html"){
+      const vals = {
+        message:"",
+        action:"",
+        nick:""
+      }
+      let body = '';req.on("data",(chunk)=>{body += chunk;console.log("POBRANO:"+chunk)});
+      const processRequest = (callback) => {
+        const data = (body == '')?{type:"LOGIN"}:JSON.parse('{"' + decodeURI(body).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace(/\s/g,'') + '"}');
+        if(data.type == "LOGIN"){
+          // search player in db
+          if(func.isSet(data.nick)){
+            dbc[game.db].load({name:data.nick},(dbres)=>{
+              // if player isset
+              if(dbres){
+                console.log(dbres);
+                if(func.isSet(dbres.password)){
+                  // message = "";
+                  // check pass
+                }else{
+                  vals.action = "register";
+                  vals.nick = data.nick;
+                  vals.message = "<b style='color:green'>Seems that you have no acc details.<br />Set it up.</b>";
+                }
+              }else{
+                // vals.action = "register";
+                vals.nick = data.nick;
+                vals.message = "<b style='color:red'>Player "+data.nick+" not exsists, but you can create it:</b>";
+              }
+  
+              callback();
+            })  
+  
+          }else{
+            console.log("DEFAULT LOGIN")
+            callback();
+          }
+        }else if(data.type == "REGISTER"){
+          console.log("REJESTROWANIE");
+          vals.action = "result";
+          vals.message = "You logged in. or not xD."
+          callback();
+        }      
+      }
+
+      // serve content with message
+      const serveChangedContent = () => {
+        fs.readFile("./account.html","utf8",(e,content) => {
+          for(const v of Object.keys(vals)){
+            content = content.split('{{'+v+'}}').join(vals[v]);
+          }
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(content);
+        })  
+      }
+      req.on("end", ()=>{processRequest(serveChangedContent)});
+    }
+    // game page
+    else if(myURL.pathname == "/game.html"){
       fs.readFile("./game.html","utf8",(e,content) => {
         content = content.split('{{version}}').join(game.version);
         res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -60,7 +116,6 @@ function handler(req, res) {
     }
   }
 }
-
 const cm = { // creatures managment
   allMonsters: [],
   // monsters: [],
@@ -201,9 +256,7 @@ const cm = { // creatures managment
 
   }
 }
-
-let param;
-cm.init();
+let param;cm.init();
 dbc.init(()=>{
   console.log("Database set: "+game.db);
   const server = http.createServer(handler).listen(process.env.PORT || 80);

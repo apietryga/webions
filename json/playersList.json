@@ -10,19 +10,19 @@
   },
   {
     "name": "Tosiek",
-    "position": [35, -3, 0],
+    "position": [13, -5, 0],
     "speed": 10,
     "sprite": "male_oriental",
-    "health": 275593,
+    "health": 275493,
     "maxHealth": 275593,
     "skills": {
       "level": 1049,
-      "exp": 1099996,
+      "exp": 1100021,
       "fist": 11084,
       "dist": 11084,
       "healing": 11084
     },
-    "lastFrame": 1634079625729
+    "lastFrame": 1634470549647
   },
   {
     "name": "Zuzia",
@@ -36,13 +36,13 @@
   },
   {
     "name": "Tosiek2",
-    "position": [35, -11, 0],
+    "position": [15, -5, 0],
     "speed": 3,
     "sprite": "male_oriental",
     "health": 1013,
     "maxHealth": 1013,
-    "skills": {"level": 8, "exp": 51, "fist": 101, "dist": 101, "healing": 101},
-    "lastFrame": 1633904676257
+    "skills": {"level": 8, "exp": 52, "fist": 101, "dist": 101, "healing": 101},
+    "lastFrame": 1634420549659
   },
   {
     "name": "Tosiek3",
@@ -129,5 +129,47 @@
     "maxHealth": 2000,
     "skills": {"level": 7, "exp": 41, "fist": 100, "dist": 100, "healing": 100},
     "lastFrame": 1632317434001
+  },
+  {
+    "id": 29,
+    "name": "JanCio",
+    "position": [-1, -5, 1],
+    "startPosition": [0, 0, 0],
+    "walk": 1634414529371,
+    "speed": 5,
+    "sprite": "male_oriental",
+    "direction": 1,
+    "health": 1900,
+    "healthValue": 10,
+    "maxHealth": 2000,
+    "healthExhoust": 1634468676148,
+    "exhoustHeal": 1000,
+    "shotExhoust": 1632917814977,
+    "redTarget": false,
+    "fistExhoust": 1634414527253,
+    "restore": false,
+    "skills": {
+      "level": 201,
+      "exp": 40211,
+      "fist": 475,
+      "dist": 400,
+      "healing": 100
+    },
+    "type": "player",
+    "lastFrame": 1634470235235,
+    "text": "",
+    "game": {
+      "time": "2021-10-17T11:04:50.826Z",
+      "version": 0.1,
+      "fps": 10,
+      "db": "redis",
+      "lastUpdate": 1633895983384,
+      "devMode": true,
+      "cpu": "99%",
+      "player": 29
+    },
+    "shotTarget": 9,
+    "bulletOnTarget": 1632917813777,
+    "cyle": 0
   }
 ]

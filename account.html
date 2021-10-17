@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEBIONS LOGIN.</title>
+  <link rel="stylesheet" href="style/game.css">
+</head>
+<body class="loginPage">
+  <main>
+    <noscript>
+      You need enable javascript to make this page work.
+    </noscript>
+    <div class="message">{{message}}</div>
+    <form id="login" action="account.html" method="post">
+      <div class="nick">
+        <b>Nick:</b>
+        <input type="text" name="nick">
+      </div>
+      <div class="pass">
+        <b>Pass:</b>
+        <input type="password" name="password">
+      </div>
+      <input type="submit" value="LOGIN" name="type">  
+      <div class="additional">
+        <a href="?action=forgot">Forgot</a>
+        <a href="?action=register">Register</a>
+      </div>
+  
+    </form>
+    <form id="register" action="account.html" method="post">
+      <div class="nick">
+        <b>Nick:</b>
+        <input type="text">
+      </div>
+      <div class="pass">
+        <b>Pass:</b>
+        <input type="password">
+      </div>
+      <div class="pass">
+        <b>Email:</b>
+        <input type="text">
+      </div>
+      <div class="pass">
+        <b>Sex:</b>
+        <div class="sex">
+          <legend>
+            <input type="radio" name="sex" value="male" id="male">
+            <label for="male">male</label>
+          </legend>
+          <legend>
+            <input type="radio" name="sex" value="female" id="female">  
+            <label for="female">female</label>
+          </legend>
+        </div>
+      </div>
+      <input type="submit" value="REGISTER" name="type">
+
+    </form>
+    <form id="forgot" action="account.html" method="post">
+      <div class="email">
+        <b>Nick:</b>
+        <input type="text">
+      </div>
+      <input type="submit" value="REMIND" name="type">
+    </form>
+    <form id="newpass" action="account.html" method="post">
+      <div class="pass">
+        <b>New&nbsp;pass:</b>
+        <input type="password">
+      </div>
+      <input type="submit" value="CHANGE" name="type">
+
+    </form>
+    <form id="result" action="game.html" method="get">
+      result page      
+    </form>
+  </main>
+  <script>
+    // FORM PICKER [from URL]
+    let isForm = false;
+    let urlVals;    
+    if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){
+      urlVals = "{{action}}";
+    }else{
+      urlVals = window.location.search.split("=");
+    }
+    // const urlVals = window.location.search.split("=");
+    
+    for(const f of document.querySelectorAll("form")){
+      if(urlVals.includes(f.id)){
+        f.style.display = "flex";
+        isForm = true;
+      }
+    }
+    if(!isForm){
+      document.querySelector("#login").style.display = "flex";
+    }
+    // MESSAGE DISPLAYER
+    const message = document.querySelector(".message");
+    if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == ""){
+      console.log("{{message}}")
+      message.style.display = "none";
+    }
+    if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){
+      for(const nickField of document.querySelectorAll(".nick > input")){
+        nickField.value = "{{nick}}";
+      }
+      console.log("{{nick}}");
+    }
+
+
+  </script>
+
+
+
+<!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
+<script>
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('serviceWorker.js'
+    );
+  }  
+</script>
+</body>
+</html>

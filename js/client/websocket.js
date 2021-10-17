@@ -144,6 +144,7 @@ const serv = {
 
       // show dev info
       // dev.stats = data.game;
+      dev.stats.fps = dev.counterFPS+"/"+data.game.fps;
       dev.stats.time = serv.time;
       dev.stats.db = data.game.db;
       dev.stats.player = player.name;

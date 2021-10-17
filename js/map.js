@@ -98,6 +98,12 @@ class Map{
                 // in order : sprite, x, y, z, type
                 grid = [oneGrid[2],oneGrid[0],oneGrid[1],floor[0],oneGrid[3]];
                 if(typeof oneGrid[4] != "undefined"){grid.push(oneGrid[4])}
+                if(oneGrid[4] == "doors"){
+                  console.log(oneGrid);
+                }
+
+                if(typeof oneGrid[5] != "undefined"){grid.push(oneGrid[5]);console.log(oneGrid[5])}
+                
                 // return grid;
                 resultArr.push(grid);
               }

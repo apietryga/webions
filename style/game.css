@@ -15,7 +15,7 @@
 body {
   color: #fff;
   font-size: 20px;
-  background-color: rgba(0, 0, 0, 0.863);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 body noscript {
@@ -159,4 +159,80 @@ body .wrapper .leftPanel {
     height: 90vh;
     width: 90vh;
   }
+}
+
+.loginPage {
+  height: 100vh;
+  padding: 10%;
+  font-size: 0.9em;
+}
+
+.loginPage a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.loginPage main {
+  border: 2px dashed yellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.loginPage main > * {
+  width: 50%;
+  border: 2px dashed red;
+  padding: 5%;
+}
+
+.loginPage main form {
+  display: none;
+  flex-direction: column;
+}
+
+.loginPage main form div {
+  display: flex;
+  justify-content: space-between;
+  margin: 1px;
+  padding: 5px 10px;
+  gap: 5px;
+}
+
+.loginPage main form div > * {
+  width: 50%;
+}
+
+.loginPage main form div > b {
+  text-align: right;
+}
+
+.loginPage main form div:not(.additional) {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.loginPage main form div .sex {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.loginPage main form div .sex legend {
+  padding: 0;
+  width: 100%;
+  display: flex;
+}
+
+.loginPage main form div .sex legend input {
+  margin: auto 0;
+}
+
+.loginPage main form div .sex legend label {
+  width: 100%;
+}
+
+.loginPage main .message {
+  text-align: center;
 }

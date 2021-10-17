@@ -82,7 +82,8 @@
 <body>
 </body>
 </html>
-<script src="js/sprites.js"></script>
+<script src="./js/gameDetails.js?v={{version}}"></script>
+<script src="./js/sprites.js"></script>
 <script src="./js/functions.js"></script>
 <script src="./js/map.js"></script>
 <script src="./js/client/components.js"></script>
@@ -150,14 +151,23 @@
           ctx.fillStyle = "rgba(255,0,0,0.2)";
           ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
         }
-        g.draw({position:
-          [
-            this.position[0]-5,
-            this.position[1]-5,
-            this.position[2],
-          ]
-          // position:this.position
-        });
+        g.draw(
+          {
+            position:
+            [
+              this.position[0]-5,
+              this.position[1]-5,
+              this.position[2],
+            ],
+            // position:this.position
+            newPos:
+            [
+              this.position[0]-5,
+              this.position[1]-5,
+              this.position[2],
+            ]
+          }
+        );
       }
 
 

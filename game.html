@@ -26,6 +26,7 @@
     </div>
   </body>
 </html>
+<script src="js/gameDetails.js?v={{version}}"></script>
 <script src="js/functions.js?v={{version}}"></script>
 <script src="js/sprites.js?v={{version}}"></script>
 <script src="js/map.js?v={{version}}"></script>
@@ -133,7 +134,7 @@
     },
     makeStatsField(){
       this.statsDOM = document.createElement("div");
-      this.statsDOM.innerHTML = "ELO :D"
+      this.statsDOM.innerHTML = "DEV STATS."
       this.statsDOM.style.cssText = `
         width:30vw;
         position:fixed;
@@ -148,10 +149,22 @@
       document.body.append(this.statsDOM);
     },
     stats : {
-      fps: 10,
       player: player.name
     },
+    oldSec : 0,
+    currFPS : 0,
+    counterFPS : 0,
     update(){
+      // count fps
+      const sec = new Date().getSeconds();
+      if(this.oldSec == sec){
+        // counter
+        this.currFPS++;
+      }else{
+        this.counterFPS = this.currFPS;
+        this.currFPS = 0;
+        this.oldSec = sec;
+      }
       if(typeof this.statsDOM != "undefined"){
         this.statsDOM.innerHTML = "";
         for(const s of Object.keys(this.stats)){

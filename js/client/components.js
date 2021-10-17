@@ -287,6 +287,7 @@ class Grid {
     this.height = 40;
     this.zIndex = t[3];
     this.checked = false;
+    this.cyle = 0;
     if (typeof t[5] != "undefined") {this.attr = t[5][2];}
     this.passThrough = true;
     if (t[4] != "floor") { this.passThrough = false; }
@@ -303,16 +304,20 @@ class Grid {
   draw = (plr = {}) => {
     // for compatibility with mapeditor && gamePlane
     let phantomPlayer = (typeof player === 'undefined')?plr:player; 
-
     const canvas = document.querySelector("canvas");
-    const ctx = canvas.getContext("2d");    
+    const ctx = canvas.getContext("2d");
+
     // const ctx = gamePlane.ctx;
 
     const w = (typeof map.sprites[this.type] != "undefined")?map.sprites[this.type].dataset.w:40;
     // const w = 40;
+    if(this.type == 'doors' && compareTables(this.position,phantomPlayer.newPos)){
+      this.cyle = 1;
+    }
+
     if(this.type != 'delete'){
       ctx.drawImage(map.sprites[this.type],
-      this.texture * w, 0, w, w,
+      this.texture * w, this.cyle*w, w, w,
       (this.position[0] - phantomPlayer.position[0] + 6)*40-w, (this.position[1] - phantomPlayer.position[1] + 6)*40-w, w, w);
     }
     if (this.checked) {

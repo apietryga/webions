@@ -187,13 +187,30 @@ class Creature {
             }
           }
           if(checkGrid[4] == "doors"){
+            doorAvalible = false;
             if(this.type == "monster"){isFloor = false;}
-            if(this.type == "player"){
-              
-              doorAvalible = false;
-              this.text = "You can't walk throught this doors.";
-              console.log(checkGrid);
-              // isWall = true;
+            if(this.type == "player" && func.isSet(checkGrid[5])){
+              // cases when player can pass through
+              // level gate
+              if(Object.keys(checkGrid[5]).includes("level")){
+                if(this.skills.level >= checkGrid[5].level){
+                  doorAvalible = true;
+                }else{
+                  this.text = "You need "+checkGrid[5].level+" level to open this doors.";
+                }
+              }
+              // property gate
+              if(Object.keys(checkGrid[5]).includes("property")){
+                if(!isNaN(checkGrid[5].property)){
+                  this.text = "This house costs "+checkGrid[5].property+" gold.";
+                }else{
+                  if(checkGrid[5].property == this.name){
+                    doorAvalible = true;
+                  }else{
+                    this.text = checkGrid[5].property+" is the owner of this house";
+                  }
+                }
+              }              
             }
           }
         }
@@ -275,13 +292,15 @@ class Creature {
     // HEALING
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
-      const healthExhoust = 1500; // [ms(exhoust),hp(value)]      
+      // const healthExhoust = 1500; // [ms(exhoust),hp(value)]      
       if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
       }else{
+        if(!func.isSet(this.skills.healing)){this.skills.healing = 100;}
         this.health += this.skills.healing;
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
+      console.log(this.health);
     }
     // SELF AUTO HEALING
     // TODO - SELF AUTO HEALING!
@@ -292,7 +311,7 @@ class Creature {
         // attack
         if(c.id == this.redTarget && this.id != c.id && c.health > 0 && this.health > 0){
           // FIST FIGHTING
-          if( this.fistExhoust <= game.time.getTime() && c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
+          if(this.skills.fist > 0 && this.fistExhoust <= game.time.getTime() && c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
             this.fistExhoust = game.time.getTime() + 1000;
             c.getHit(this);
           }

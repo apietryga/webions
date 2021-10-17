@@ -1,6 +1,7 @@
+// const game = require("../gameDetails");
 let inGameConsole;
 const gamePlane = {
-  fps : 10,
+  fps : game.fps+2,
   actions: [],
   creatures : {
     list: [],
@@ -49,18 +50,18 @@ const gamePlane = {
         if(a.position[2] < b.position[2]){
           return -1;
         }else if(a.position[2] == b.position[2]){
+          // doors always up
+          if(b.type == "doors"){return -1;}
           // floors always down.
           if(a.type == "floors"){return -1;}
           // dead body down.
           if(typeof a.health != "undefined" && a.health <= 0 
           && typeof b.health != "undefined"){return -1;}
-
+          // right and bottom down.
           if(a.type != "floors" && b.type != "floors"){
             if(a.position[1] < b.position[1]){return -1;}
             if(a.position[0] < b.position[0]){return 1;}
           }
-
-
         }
 
         // stairs and walls 

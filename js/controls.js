@@ -1,3 +1,8 @@
+/* TODO:
+  - on click button, wait for update and then 
+  make avalible "false" option (clear after update).
+
+// */
 const controls = {
   currentTarget : false,
   init(){
