@@ -1,3 +1,4 @@
+let bcrypt;if(typeof window == "undefined"){bcrypt = require('bcrypt');}
 this.compareTables = (a,b) =>{
   let result = true;
   for(i = 0; i < a.length; i++){    
@@ -91,6 +92,26 @@ this.isSet = (val) => {
   }
   return result;
 }
+this.cryptPassword = function(password, callback) {
+  bcrypt.genSalt(10, function(err, salt) {
+   if (err) 
+     return callback(err);
+
+   bcrypt.hash(password, salt, function(err, hash) {
+     return callback(err, hash);
+   });
+ });
+};
+this.comparePassword = function(plainPass, hashword, callback) {
+  bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {   
+      return err == null ?
+          callback(null, isPasswordMatch) :
+          callback(err);
+  });
+};
+
+
+
 
 function everyInterval(n){
   if((gamePlane.frameNo/n) % 1 == 0){return true;}

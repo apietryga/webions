@@ -1,6 +1,6 @@
 const game = {
   time : new Date(),
-  version : 0.1,
+  version : 0.2,
   fps: 15,
   db:"redis",
   lastUpdate: 1633895983384,

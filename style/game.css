@@ -173,7 +173,10 @@ body .wrapper .leftPanel {
 }
 
 .loginPage main {
-  border: 2px dashed yellow;
+  background-image: url("../img/logos/logo.webp");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -183,7 +186,7 @@ body .wrapper .leftPanel {
 
 .loginPage main > * {
   width: 50%;
-  border: 2px dashed red;
+  background-color: rgba(0, 0, 0, 0.6);
   padding: 5%;
 }
 
@@ -201,7 +204,7 @@ body .wrapper .leftPanel {
 }
 
 .loginPage main form div > * {
-  width: 50%;
+  width: 100%;
 }
 
 .loginPage main form div > b {
@@ -235,4 +238,11 @@ body .wrapper .leftPanel {
 
 .loginPage main .message {
   text-align: center;
+  padding-bottom: 0;
+}
+
+.loginPage main .additional {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0;
 }

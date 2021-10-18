@@ -35,7 +35,10 @@ class dbConnect{
       "skills",
       "speed",
       "sprite",
-      "position"
+      "position",
+      "password",
+      "email",
+      "sex"
     ];
     this.json.dataToSave = this.dataToSave;
     this.redis.dataToSave = this.dataToSave;
@@ -103,6 +106,7 @@ class dbConnect{
       })
     },
     update(player){
+      console.log(player);
       this.playerIsSet(player.name,(p)=>{
         if(typeof p[0] == "object"){
           // update record

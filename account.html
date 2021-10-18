@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WEBIONS LOGIN.</title>
+  <title>Webions account</title>
+  <link rel="shortcut icon" href="img/logos/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style/game.css">
+  <script src="./js/functions.js"></script>
 </head>
 <body class="loginPage">
   <main>
@@ -15,35 +17,24 @@
     <div class="message">{{message}}</div>
     <form id="login" action="account.html" method="post">
       <div class="nick">
-        <b>Nick:</b>
-        <input type="text" name="nick">
+        <input type="text" name="nick" placeholder="nick">
       </div>
       <div class="pass">
-        <b>Pass:</b>
-        <input type="password" name="password">
+        <input type="password" name="password" placeholder="password">
       </div>
       <input type="submit" value="LOGIN" name="type">  
-      <div class="additional">
-        <a href="?action=forgot">Forgot</a>
-        <a href="?action=register">Register</a>
-      </div>
-  
     </form>
     <form id="register" action="account.html" method="post">
       <div class="nick">
-        <b>Nick:</b>
-        <input type="text">
+        <input type="text" placeholder="nick" name="nick">
       </div>
       <div class="pass">
-        <b>Pass:</b>
-        <input type="password">
+        <input type="password" name="password" placeholder="password">
       </div>
       <div class="pass">
-        <b>Email:</b>
-        <input type="text">
+        <input type="text" placeholder="email" name="email">
       </div>
       <div class="pass">
-        <b>Sex:</b>
         <div class="sex">
           <legend>
             <input type="radio" name="sex" value="male" id="male">
@@ -56,61 +47,129 @@
         </div>
       </div>
       <input type="submit" value="REGISTER" name="type">
-
     </form>
     <form id="forgot" action="account.html" method="post">
       <div class="email">
-        <b>Nick:</b>
-        <input type="text">
+        <input type="text" placeholder="nick" name="nick">
       </div>
       <input type="submit" value="REMIND" name="type">
     </form>
     <form id="newpass" action="account.html" method="post">
       <div class="pass">
-        <b>New&nbsp;pass:</b>
-        <input type="password">
+        <input type="password" placeholder="new&nbsp;password">
       </div>
       <input type="submit" value="CHANGE" name="type">
-
     </form>
     <form id="result" action="game.html" method="get">
-      result page      
+      {{message}}
     </form>
+    <div class="additional">
+      <a href="?action=login">Login</a>
+      <a href="?action=forgot">Forgot</a>
+      <a href="?action=register">Register</a>
+    </div>
   </main>
   <script>
-    // FORM PICKER [from URL]
-    let isForm = false;
-    let urlVals;    
-    if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){
-      urlVals = "{{action}}";
-    }else{
-      urlVals = window.location.search.split("=");
-    }
-    // const urlVals = window.location.search.split("=");
-    
-    for(const f of document.querySelectorAll("form")){
-      if(urlVals.includes(f.id)){
-        f.style.display = "flex";
-        isForm = true;
+    const acc = {
+      urlVals:'login',
+      init(){
+        this.formPicker();
+        this.messDisplayer();
+        for(const submit of document.querySelectorAll("input[type=submit]")){
+          submit.addEventListener("click",this.formValidator);
+        }
+      },
+      formPicker(){
+        // FORM PICKER [from URL]
+        let isForm = false;
+        // let urlVals;    
+        if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){
+          this.urlVals = "{{action}}";
+          console.log("{{action}}")
+        }else{
+          this.urlVals = window.location.search.split("=");
+        }
+        for(const f of document.querySelectorAll("form")){
+          if(this.urlVals.includes(f.id)){
+            f.style.display = "flex";
+            isForm = true;
+          }
+        }
+        if(!isForm){
+          document.querySelector("#login").style.display = "flex";
+        }
+      },
+      messDisplayer(){
+        // MESSAGE DISPLAYER
+        const message = document.querySelector(".message");
+        console.log(this.urlVals)
+        if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" ){
+          message.style.display = "none";
+        }
+        if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){
+          for(const nickField of document.querySelectorAll(".nick > input")){
+            nickField.value = "{{nick}}";
+          }
+        }
+      },
+      formValidator(e){
+        // FORM VALIDATOR
+        // let valid = true;
+        let valid = true;
+        let isRadio = false;
+        let message = "";
+        let radioValue;
+        // get current form
+        for(const form of document.querySelectorAll("form")){
+          if(form.style.display == "flex"){
+            // get all inputs
+            for(const input of form.querySelectorAll("input")){
+              input.style.border = "none";
+              input.style.outline = "none";
+              if(["text","password"].includes(input.type)){
+                if(input.value == ""){
+                  valid = false;
+                  message = "Fill up all fields.";
+                  input.style.border = "2px solid red";
+                }
+              }
+              if(input.name == "email"){
+                // console.log(input)
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if(!re.test(String(input.value).toLowerCase())){
+                  valid = false;
+                  message = "Re-type your real email adress. It'll be helpful when you forget your pass.";
+                  input.style.border = "2px solid red";
+                  console.log("none...");
+                }
+              }
+              if(input.type == "radio"){
+                isRadio = true;
+                if(input.checked == true){
+                  radioValue = input.value;
+                }
+              }
+            }
+            // check radio input
+            for(const input of form.querySelectorAll("input")){
+              if(input.type == "radio" && !isSet(radioValue) && isRadio){
+                input.style.outline = "2px solid red";
+                valid = false;
+              }
+            }
+          }
+        }
+        if(message != ""){
+          const messField = document.querySelector(".message");
+          messField.innerHTML = "<b style='color:red;'>"+message+"</b>";
+          messField.style.display = "flex";
+        }
+        if(!valid){
+          e.preventDefault();
+        }
       }
     }
-    if(!isForm){
-      document.querySelector("#login").style.display = "flex";
-    }
-    // MESSAGE DISPLAYER
-    const message = document.querySelector(".message");
-    if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == ""){
-      console.log("{{message}}")
-      message.style.display = "none";
-    }
-    if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){
-      for(const nickField of document.querySelectorAll(".nick > input")){
-        nickField.value = "{{nick}}";
-      }
-      console.log("{{nick}}");
-    }
-
-
+    acc.init();
   </script>
 
 

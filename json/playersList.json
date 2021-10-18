@@ -22,7 +22,10 @@
       "dist": 11084,
       "healing": 11084
     },
-    "lastFrame": 1634470549647
+    "lastFrame": 1634470549647,
+    "password": "$2b$10$Pb88Ndcyk2fIP9cDUaxbj.u0UTiw9VZCSxn8E307sf8cpgSi0rmDC",
+    "email": "antek.pietryga@gmail.com",
+    "sex": "male"
   },
   {
     "name": "Zuzia",
@@ -171,5 +174,29 @@
     "shotTarget": 9,
     "bulletOnTarget": 1632917813777,
     "cyle": 0
+  },
+  {
+    "name": "Zapad",
+    "position": [34, -10, 0],
+    "speed": 2,
+    "sprite": "male_oriental",
+    "health": 2000,
+    "maxHealth": 2000,
+    "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
+    "password": "$2b$10$MEAXMf/y/ENvN/goShXLReyte2tTk4lCXMa9/87mUqKKFclqsxkEK",
+    "email": "asd@asd.pl",
+    "sex": "female"
+  },
+  {
+    "name": "Zygmunt",
+    "position": [34, -10, 0],
+    "speed": 2,
+    "sprite": "male_oriental",
+    "health": 2000,
+    "maxHealth": 2000,
+    "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
+    "password": "$2b$10$mxRdDlYcNA7UfVcs6J.KSO86dx4b2LENcKe5uROPDtFFtQ1CyhnQq",
+    "email": "adsad@asd.com",
+    "sex": "male"
   }
 ]
