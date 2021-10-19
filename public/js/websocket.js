@@ -1,14 +1,15 @@
 const serv = {
   init(){
     (window.location.protocol == "https:")?this.protocol = "wss:":this.protocol = "ws:";
-    this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
+    // this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
+    this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
     this.ws.onopen = () => {this.connected = true;console.log("WS open.");}
   },
   connected:false,
   param : {},
   paramUpdate(){
-    this.param.name = urlParams.get('player');
-    this.param.id = false;
+    this.param.name = player.name;
+    // this.param.id = false;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
     isSet(player.redTarget)?this.param.target = player.redTarget:'';
@@ -27,7 +28,6 @@ const serv = {
     }
     // send to server
     if(this.connected){
-      // console.log(this.param.id);
       this.ws.send(JSON.stringify(this.paramUpdate()));
     }
     // get response
@@ -70,8 +70,8 @@ const serv = {
         let myChar;
         let charId;
         if(!gamePlane.creatures.ids.includes(creature.id)){
-          if(creature.name == urlParams.get('player')){
-            player = new Creature("player",player.position,urlParams.get('player')); 
+          if(creature.name == player.name){
+            player = new Creature("player",player.position,player.name); 
             myChar = player;
           }else{
             let type = "monster";
@@ -80,7 +80,6 @@ const serv = {
           }
           gamePlane.creatures.list.push(myChar);
           charId = gamePlane.creatures.list.length-1;
-          // charId = myChar.id;
         }else{
           // find it in gamePlane.creatures.list
           for(const [i,pl] of gamePlane.creatures.list.entries()){
@@ -151,7 +150,7 @@ const serv = {
       dev.stats.health = player.health;
       dev.stats.position = player.position;
       dev.stats.grids = map.grids.length;
-      dev.stats.url = urlParams.get('player');
+      // dev.stats.url = urlParams.get('player');
       dev.stats.ping = this.time - player.lastFrame;
       dev.stats.cpu = data.game.cpu;
       dev.stats.redTarget = player.redTarget;

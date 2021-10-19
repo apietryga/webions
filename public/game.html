@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -15,6 +15,9 @@
     <div class="loader">
       <img src="img/logos/logo.webp" alt="Webions Game">
       <h1>WEBIONS</h1>
+      <div class="loadProgress">
+        <div class="progressBar"></div>
+      </div>
       <div class="loadDetails"></div>
     </div>
     <div class="wrapper">
@@ -24,6 +27,9 @@
         <canvas ></canvas>  
       </div>
     </div>
+    <a href="account.html?action=logout" 
+    style='position:fixed;right:0;bottom:0;color:#fff;'
+    >LOGOUT</a>
   </body>
 </html>
 <script src="js/gameDetails.js?v={{version}}"></script>
@@ -67,32 +73,42 @@
 </script>
 <!-- PLAYER INIT SETTINGS -->
 <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  let player = {};
-  player.name = urlParams.get('player');
-  if(player.name == null){
-    player.name = "Newbie";
-  }
-  player.position = [0,0,0];
+  let player = {
+    name : "{{nick}}",
+    position :[0,0,0]
+  };
 </script>
 <!--| GAMEPLANE PROPERTIES |-->
-<script src="js/client/gameplane.js?v={{version}}"></script>
-<script src="js/client/components.js?v={{version}}"></script>
-<script src="js/client/menus.js?v={{version}}"></script>
+<script src="js/gameplane.js?v={{version}}"></script>
+<script src="js/components.js?v={{version}}"></script>
+<script src="js/menus.js?v={{version}}"></script>
 <!--| WEBSOCKET SERVER CONNECTION |-->
-<script src="js/client/websocket.js?v={{version}}"></script>
+<script src="js/websocket.js?v={{version}}"></script>
 <!--| PRELOAD |-->
 <script>
   // preload ;>
-  document.querySelector(".loadDetails").innerHTML = "Load sprites ...";
+  const load = {
+    details(text){
+      document.querySelector(".loadDetails").innerHTML = text;
+    },
+    progress(percent){
+      document.querySelector(".progressBar").style.width = percent+"%";
+    },
+    both(text,percent){
+      this.details(text);
+      this.progress(percent);
+    }
+  }
+  load.both("Load sprites",10);
   map.loadSprites(()=>{
+    load.both("Load serwer info",50);
     serv.load();
-    document.querySelector(".loadDetails").innerHTML = "Load map ...";
-    map.generate(()=>{
-      document.querySelector(".loadDetails").innerHTML = "Load game plane ...";
-      gamePlane.init();
-      document.querySelector(".loader").style.display = "none";
-    })
+    load.both("Loading map",70);
+      map.generate(()=>{
+        load.both("Loading Game Plane",90);
+        gamePlane.init();
+        document.querySelector(".loader").style.display = "none";
+      })
   })
   // set elements resolution:
   setResolution();
@@ -178,8 +194,10 @@
         }
       }
     }
-  } 
-  if(urlParams.get("dev") == "on"){
+  }
+    // const urlParams = new URLSearchParams(window.location.search);
+
+  if(new URLSearchParams(window.location.search).get("dev") == "on"){
     dev.init();
   }
 </script>

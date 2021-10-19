@@ -1,8 +1,8 @@
 const dbConnect = require("./dbconnect");
 const dbc = new dbConnect();
-const Map = require("./map");
+const Map = require("../public/js/map");
 const map = new Map();
-const func = require("./functions");
+const func = require("../public/js/functions");
 class Creature {
   constructor(nickName,creaturesLength){
     this.id = creaturesLength+1; 
@@ -300,7 +300,7 @@ class Creature {
         this.health += this.skills.healing;
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
-      console.log(this.health);
+      // console.log(this.health);
     }
     // SELF AUTO HEALING
     // TODO - SELF AUTO HEALING!

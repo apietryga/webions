@@ -10,42 +10,54 @@
   },
   {
     "name": "Tosiek",
-    "position": [13, -5, 0],
+    "position": [34, -11, 0],
     "speed": 10,
     "sprite": "male_oriental",
-    "health": 275493,
-    "maxHealth": 275593,
+    "health": 267431,
+    "maxHealth": 276631,
     "skills": {
-      "level": 1049,
-      "exp": 1100021,
-      "fist": 11084,
-      "dist": 11084,
-      "healing": 11084
+      "level": 1051,
+      "exp": 1103469,
+      "fist": 11126,
+      "dist": 11126,
+      "healing": 11126
     },
-    "lastFrame": 1634470549647,
-    "password": "$2b$10$Pb88Ndcyk2fIP9cDUaxbj.u0UTiw9VZCSxn8E307sf8cpgSi0rmDC",
+    "lastFrame": 1634685174070,
     "email": "antek.pietryga@gmail.com",
-    "sex": "male"
+    "sex": "male",
+    "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2"
   },
   {
     "name": "Zuzia",
-    "position": [-50, 16, 0],
-    "speed": 3,
+    "position": [34, -10, 0],
+    "speed": 10,
     "sprite": "female_oriental",
-    "health": 705,
-    "maxHealth": 1007,
-    "skills": {"level": 6, "exp": 26, "fist": 100, "dist": 100, "healing": 100},
-    "lastFrame": 1632166697856
+    "health": 275541,
+    "maxHealth": 276639,
+    "skills": {
+      "level": 1051,
+      "exp": 1103135,
+      "fist": 11126,
+      "dist": 11126,
+      "healing": 11126
+    },
+    "lastFrame": 1634672825663,
+    "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
+    "email": "pietryga.zuzia@gmail.com",
+    "sex": "female"
   },
   {
     "name": "Tosiek2",
-    "position": [15, -5, 0],
+    "position": [33, -9, 0],
     "speed": 3,
     "sprite": "male_oriental",
     "health": 1013,
     "maxHealth": 1013,
-    "skills": {"level": 8, "exp": 52, "fist": 101, "dist": 101, "healing": 101},
-    "lastFrame": 1634420549659
+    "skills": {"level": 8, "exp": 53, "fist": 101, "dist": 101, "healing": 101},
+    "lastFrame": 1634681819140,
+    "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
+    "email": "a@a.pl",
+    "sex": "female"
   },
   {
     "name": "Tosiek3",
@@ -198,5 +210,43 @@
     "password": "$2b$10$mxRdDlYcNA7UfVcs6J.KSO86dx4b2LENcKe5uROPDtFFtQ1CyhnQq",
     "email": "adsad@asd.com",
     "sex": "male"
+  },
+  {
+    "name": "Abdul",
+    "position": [34, -10, 0],
+    "speed": 2,
+    "sprite": "male_oriental",
+    "health": 2000,
+    "maxHealth": 2000,
+    "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
+    "password": "$2b$10$0vrpAbiif31OiC7dUBZEYeKsjjOiAPQt60RSt.IJqaXqP5C.GgoPi",
+    "email": "a@a.pl",
+    "sex": "male"
+  },
+  {
+    "name": null,
+    "position": [34, -10, 0],
+    "speed": 3.3,
+    "sprite": "male_oriental",
+    "health": 1091,
+    "maxHealth": 1091,
+    "skills": {
+      "level": 20,
+      "exp": 392,
+      "fist": 104,
+      "dist": 104,
+      "healing": 104
+    },
+    "lastFrame": 1634676846165
+  },
+  {
+    "name": "",
+    "position": [34, -10, 0],
+    "speed": 2,
+    "sprite": "male_oriental",
+    "health": 2000,
+    "maxHealth": 2000,
+    "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
+    "lastFrame": 1634681441063
   }
 ]

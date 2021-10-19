@@ -7,7 +7,7 @@
   <title>Webions account</title>
   <link rel="shortcut icon" href="img/logos/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style/game.css">
-  <script src="./js/functions.js"></script>
+  <script src="../js/functions.js"></script>
 </head>
 <body class="loginPage">
   <main>
@@ -55,18 +55,23 @@
       <input type="submit" value="REMIND" name="type">
     </form>
     <form id="newpass" action="account.html" method="post">
+      <input type="hidden" name="passToken">
       <div class="pass">
-        <input type="password" placeholder="new&nbsp;password">
+        <input type="password" placeholder="new&nbsp;password" name="newpass">
       </div>
       <input type="submit" value="CHANGE" name="type">
     </form>
-    <form id="result" action="game.html" method="get">
+    <form id="result" action="account.html" method="get">
       {{message}}
+    </form>
+    <form id="logout" action="account.html" method="get">
+      <input type="hidden" name="logout" value="true">
     </form>
     <div class="additional">
       <a href="?action=login">Login</a>
       <a href="?action=forgot">Forgot</a>
       <a href="?action=register">Register</a>
+      <a href="/">Home</a>
     </div>
   </main>
   <script>
@@ -83,11 +88,24 @@
         // FORM PICKER [from URL]
         let isForm = false;
         // let urlVals;    
+        if("{{action}}" == "game"){
+          document.cookie = "token={{message}}";
+          window.location.replace("game.html");
+        }
+        if("{{action}}" == "logout"){
+          for(const cookie of document.cookie.split(";")){
+            const c = cookie.split("=");
+            if(c[0] == "token"){
+              document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+          }
+          window.location.replace("/account.html?action=login");
+
+        }
         if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){
           this.urlVals = "{{action}}";
-          console.log("{{action}}")
         }else{
-          this.urlVals = window.location.search.split("=");
+          this.urlVals = window.location.search.split(/=|&/);
         }
         for(const f of document.querySelectorAll("form")){
           if(this.urlVals.includes(f.id)){
@@ -102,8 +120,7 @@
       messDisplayer(){
         // MESSAGE DISPLAYER
         const message = document.querySelector(".message");
-        console.log(this.urlVals)
-        if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" ){
+        if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){
           message.style.display = "none";
         }
         if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){
@@ -114,9 +131,9 @@
       },
       formValidator(e){
         // FORM VALIDATOR
-        // let valid = true;
         let valid = true;
         let isRadio = false;
+        // let action = false;
         let message = "";
         let radioValue;
         // get current form
@@ -149,6 +166,9 @@
                   radioValue = input.value;
                 }
               }
+              if(input.name == "passToken"){
+                input.value = window.location.search.split("passToken=")[1];
+              }
             }
             // check radio input
             for(const input of form.querySelectorAll("input")){
@@ -171,9 +191,6 @@
     }
     acc.init();
   </script>
-
-
-
 <!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
 <script>
   if('serviceWorker' in navigator) {

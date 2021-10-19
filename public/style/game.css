@@ -40,13 +40,35 @@ body .loader {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #353535;
+  background-color: #181818;
   z-index: 2;
+}
+
+body .loader h1 {
+  margin-bottom: 0;
 }
 
 body .loader img {
   max-width: 50%;
   max-height: 50%;
+}
+
+body .loader .loadProgress {
+  border: 1px solid #fff;
+  border-radius: 3px;
+  width: 70%;
+  height: 14px;
+}
+
+body .loader .loadProgress .progressBar {
+  background-color: #912020;
+  width: 0;
+  height: 100%;
+}
+
+body .loader .loadDetails {
+  width: 70%;
+  font-size: 0.75em;
 }
 
 body button {
@@ -243,6 +265,8 @@ body .wrapper .leftPanel {
 
 .loginPage main .additional {
   display: flex;
+  flex-direction: column;
+  gap: 5px;
   justify-content: space-between;
   padding-top: 0;
 }

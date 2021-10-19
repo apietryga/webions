@@ -1,7 +1,7 @@
 // const game = require("../gameDetails");
 let inGameConsole;
 const gamePlane = {
-  fps : game.fps+2,
+  fps : game.fps,
   actions: [],
   creatures : {
     list: [],

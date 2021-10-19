@@ -1,4 +1,3 @@
-main.innerHTML = "LOADING ... ";
 let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
 const ws = new WebSocket(protocol+"//"+window.location.host+"/get",'echo-protocol');
 let getWhat;
@@ -10,6 +9,7 @@ if(Object.keys(searchToObject()).includes("online")){
 ws.onopen = () =>{ws.send(JSON.stringify({"get":getWhat}));}
 ws.onmessage = (mess) => {
   const main = document.querySelector("main");
+  main.innerHTML = "LOADING ... ";
   const dt = JSON.parse(mess.data);
   if(typeof dt.length != "undefined"){
     const params = searchToObject();
@@ -116,7 +116,6 @@ ws.onmessage = (mess) => {
       }else{
         h1.innerHTML = "Players list";
       }
-      console.log(dt);
 
       // make table header
       const tbHead = ["lp.","Player name","level"];

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = "./www/";
+const path = "./public/";
 const makewww = (callback) => {
   fs.readFile(path+'template.html', "utf8",( e , template) => {
     fs.readFile(path+'contents.html', "utf8",( e , content) => {
