@@ -1,4 +1,3 @@
-// const game = require("../gameDetails");
 let inGameConsole;
 const gamePlane = {
   fps : game.fps,
@@ -21,17 +20,13 @@ const gamePlane = {
     controls.init();
     // this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
-    window.addEventListener('keydown', function (e) {
-      controls.update([e.keyCode,true]);
-    })
-    window.addEventListener('keyup', function (e) {
-      controls.update([e.keyCode,false])
-    })
+   
   },
   updategamePlane() {
     gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
     serv.load();
     if(player.type == "player"){ // on serv load player
+      document.querySelector(".loader").style.display = "none";
       player.update();
       map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
       const drawStack = [];

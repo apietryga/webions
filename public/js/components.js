@@ -19,7 +19,6 @@ class Creature {
     this.position = [x, y, z]; //x y z
     this.newPos =  equalArr(this.position);
     this.oldPos =  equalArr(this.position);
-    this.walkFps = 0;
     this.bulletCyle = 0;
     this.targetlist = [];
     this.currentTarget = false;
@@ -31,19 +30,11 @@ class Creature {
   update(){
     // WALKING
     if(this.walk >= serv.time){
-      // walking cyle (animation)
-      this.walkFps++;
-      let cPC = 0; // change per cyle 
-      if(this.speed <= 1){cPC = 3;}
-      if(this.speed > 1 && this.speed < 3){cPC = 2;}
-      if(this.speed >= 3){cPC = 1;}
-      if((this.walkFps) % cPC == 0){
-        this.cyle = ((this.cyle)%2)+1;
-      }
-      // set position
-      // const directions = [[3, 2],[0,1]];
       const walkTime = this.walk - this.walkingStart;
       const timeLeft = walkTime - (serv.time - this.walkingStart);
+      // walking cyle (animation)
+      timeLeft > walkTime/2?this.cyle = 2:this.cyle = 1;
+      // set position
       const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
       this.position = equalArr(this.oldPos);
       for(let l of [[0,1],[1,0]]){
@@ -53,10 +44,8 @@ class Creature {
         if(this.newPos[l[0]] == this.oldPos[l[0]] ){
           if(this.newPos[l[1]] > this.oldPos[l[1]]){
             this.position[l[1]] = this.oldPos[l[1]] + piece;
-            // this.direction = directions[l[1]][1];
           }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
             this.position[l[1]] = this.oldPos[l[1]] - piece;
-            // this.direction = directions[l[1]][0];
           }
         }
       }
@@ -64,7 +53,6 @@ class Creature {
       if(this.sprite != "tourets"){
         this.cyle = 0;
       }
-      this.walkFps = 0;
       this.position = this.newPos;
     }
     // CLEAR WHITE TARGET

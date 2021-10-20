@@ -107,7 +107,6 @@
       map.generate(()=>{
         load.both("Loading Game Plane",90);
         gamePlane.init();
-        document.querySelector(".loader").style.display = "none";
       })
   })
   // set elements resolution:
@@ -197,7 +196,8 @@
   }
     // const urlParams = new URLSearchParams(window.location.search);
 
-  if(new URLSearchParams(window.location.search).get("dev") == "on"){
+  if(new URLSearchParams(window.location.search).get("dev") == "on" || game.dev == true){
     dev.init();
+    document.cookie = "token=123"
   }
 </script>

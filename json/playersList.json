@@ -10,19 +10,19 @@
   },
   {
     "name": "Tosiek",
-    "position": [34, -11, 0],
+    "position": [-51, 13, -1],
     "speed": 10,
     "sprite": "male_oriental",
-    "health": 267431,
-    "maxHealth": 276631,
+    "health": 276967,
+    "maxHealth": 277167,
     "skills": {
-      "level": 1051,
-      "exp": 1103469,
-      "fist": 11126,
-      "dist": 11126,
-      "healing": 11126
+      "level": 1052,
+      "exp": 1104767,
+      "fist": 11147,
+      "dist": 11147,
+      "healing": 11147
     },
-    "lastFrame": 1634685174070,
+    "lastFrame": 1634736981035,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2"
@@ -48,13 +48,13 @@
   },
   {
     "name": "Tosiek2",
-    "position": [33, -9, 0],
+    "position": [19, -5, 0],
     "speed": 3,
     "sprite": "male_oriental",
-    "health": 1013,
-    "maxHealth": 1013,
-    "skills": {"level": 8, "exp": 53, "fist": 101, "dist": 101, "healing": 101},
-    "lastFrame": 1634681819140,
+    "health": 917,
+    "maxHealth": 1017,
+    "skills": {"level": 9, "exp": 76, "fist": 101, "dist": 101, "healing": 101},
+    "lastFrame": 1634736331085,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female"
@@ -248,5 +248,18 @@
     "maxHealth": 2000,
     "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
     "lastFrame": 1634681441063
+  },
+  {
+    "name": "t",
+    "position": [35, -4, 0],
+    "speed": 2,
+    "sprite": "male_oriental",
+    "health": 2000,
+    "maxHealth": 2000,
+    "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
+    "password": "$2b$10$GhHkh3U3afbLzAWq6kksKOcViy2I4NG31tFqr46shxQgO/kl99LRC",
+    "email": "a@a.pl",
+    "sex": "female",
+    "lastFrame": 1634689974329
   }
 ]

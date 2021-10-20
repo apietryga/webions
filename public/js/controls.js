@@ -1,17 +1,21 @@
-/* TODO:
-  - on click button, wait for update and then 
-  make avalible "false" option (clear after update).
-
-// */
 const controls = {
   currentTarget : false,
+  vals: [],
   init(){
-    this.vals = [];
+    window.addEventListener('keydown', (e) => {controls.update([e.keyCode,true]);})
+    window.addEventListener('keyup',  (e) => {controls.update([e.keyCode,false]);})
+  },
+  falseQuene:[],
+  falseQueneCall(){
+    // console.log(this.vals);
+    for(const f of this.falseQuene){
+      this.vals.splice(this.vals.indexOf(f),1);
+      this.falseQuene.splice(this.falseQuene.indexOf(f),1);
+    }
   },
   update(params){
     // abort route when do something 
     this.planeClicking.route = [];
-
     // white target on client side (84 is t key)
     const targetKeys = [83,84];
     for(const pk of params){
@@ -19,19 +23,40 @@ const controls = {
         this.targeting(params);
       } 
     }
-    // prepare table to send
-    if(params[1] == true && !this.vals.includes(params[0]*1)){
+  // CLICKING
+    // click on
+    if(params[1] && !this.vals.includes(params[0]*1)){
       // console.log(params);
       this.vals.push(params[0]*1);
-    }else{
-      this.vals.splice(this.vals.indexOf(params[0]),1);
     }
+    // release
+    if(!params[1] && !this.falseQuene.includes(params[0]*1)){
+      this.falseQuene.push(params[0]*1);
+    }
+
+  // KEYS ANIMATIONS:
+    let action = false;
+    // distance shot
     if(params[0] == 68 && params[1] && (!player.redTarget || (serv.time < player.shotExhoust))){
-      gamePlane.actions.push(new Action("misc",player.x,player.y,40,40,0));
+      action = new Action("misc",player.x,player.y,40,40,0);
     }
+    // health
     if(params[0] == 72 && params[1] && (player.health == player.maxHealth || (serv.time < player.healthExhoust))){
-      gamePlane.actions.push(new Action("misc",player.x,player.y,40,40,0));  
+      action = new Action("misc",player.x,player.y,40,40,0);
     }    
+    if(action){
+      let pushIt = true;
+      for(const gpa of gamePlane.actions){
+        if( gpa.type == action.type 
+        &&  gpa.x == action.x 
+        ){
+          pushIt = false;
+        }
+      }
+      if(pushIt){
+        gamePlane.actions.push(action);
+      }
+    }
   },
   targeting(param){
     //  TARGET LIST
@@ -85,6 +110,7 @@ const controls = {
       this.g = g;
     },
     get(e){
+      console.log("e?")
       if(isSet(player)){
         let ox,oy;
         if(isSet(e.offsetX)){

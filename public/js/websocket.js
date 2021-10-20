@@ -16,8 +16,8 @@ const serv = {
     // console.log(controls.vals);
     return this.param;
   },
+  // every frame load:
   load(){
-    // console.log(controls.vals);
     // set connection
     this.ws.onclose = () => {
       this.connected = false;console.log("WS closed.");
@@ -29,6 +29,7 @@ const serv = {
     // send to server
     if(this.connected){
       this.ws.send(JSON.stringify(this.paramUpdate()));
+      controls.falseQueneCall();
     }
     // get response
     this.ws.onmessage = (msg) => {

@@ -5,7 +5,7 @@ const static = require('node-static');
 const file = new(static.Server)("public");
 const makewww = require("../public/makewww");
 const dbConnect = require("./dbconnect");
-const dbc = new dbConnect();
+const dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
 const  {CourierClient} = require("@trycourier/courier");
 const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5R6HYK6W"});  
@@ -54,6 +54,11 @@ const log = {
     }
   }
 }
+if(game.dev == true){
+  log.ged.push({nick:"Tosiek",token:"123"})
+}
+
+
 function public(req, res) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];
@@ -177,7 +182,8 @@ function public(req, res) {
                 data: {
                   passToken: "https://webions.herokuapp.com/account.html?action=newpass&passToken="+passTokens.generate(data.nick).passToken
                 }
-              }).then(()=>{
+              })
+              .then(()=>{
                 vals.action = "result";
                 vals.message = "<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.</b>";
                 callback();
@@ -254,4 +260,5 @@ function public(req, res) {
     file.serve(req,res);
   }
 }
+
 module.exports = public; 

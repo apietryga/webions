@@ -1,10 +1,9 @@
 const game = {
   time : new Date(),
-  version : 0.2,
-  fps: 15,
+  version : 0.21,
+  fps: 16,
   db:"redis",
   lastUpdate: 1633895983384,
-  devMode: true,
+  dev: false,
 }
-// module.exports = game;
 if(typeof window == "undefined"){module.exports = game;}

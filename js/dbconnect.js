@@ -45,10 +45,6 @@ class dbConnect{
   }
   // db types 
   redis = {
-    // client: redis.createClient(
-    //   process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL,
-    //   {tls:{rejectUnauthorized: false}}
-    // ),
     loadAll(callback){
       this.client.keys("*",(e,keys)=>{
         if(typeof keys == "undefined" || keys.length == 0){callback(0)}
