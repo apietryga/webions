@@ -36,6 +36,7 @@ class Creature {
     }
   }
   update(param,game,creatures){
+    // broken sprites fixing
     if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
     // SPRITE CHANGER
     if(func.isSet(param.outfit) && this.type == "player"){
@@ -239,7 +240,6 @@ class Creature {
           this.text = "There's no way.";
       }  
     }
-
     // RED TARGETING [monsters] 
     if(this.type == "monster" && typeof playerInArea != "undefined"){
       this.redTarget = playerInArea.id;
@@ -291,10 +291,20 @@ class Creature {
       this.restore = false;
       this.position = this.startPosition;
     } 
-    // HEALING
+    // HEALING [player]
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
       // const healthExhoust = 1500; // [ms(exhoust),hp(value)]      
+      if(this.health + this.skills.healing > this.maxHealth){
+        this.health = this.maxHealth;
+      }else{
+        if(!func.isSet(this.skills.healing)){this.skills.healing = 100;}
+        this.health += this.skills.healing;
+      }
+      this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
+    }
+    // healing [monster]
+    if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.healthExhoust <= game.time.getTime() && this.health > 0){
       if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
       }else{

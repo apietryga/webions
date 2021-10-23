@@ -10,19 +10,19 @@
   },
   {
     "name": "Tosiek",
-    "position": [78, 11, 1],
+    "position": [95, -6, 1],
     "speed": 10,
     "sprite": "male_citizen",
-    "health": 259527,
+    "health": 258977,
     "maxHealth": 277677,
     "skills": {
       "level": 1053,
-      "exp": 1107814,
+      "exp": 1107844,
       "fist": 11168,
       "dist": 11168,
       "healing": 11168
     },
-    "lastFrame": 1635018330943,
+    "lastFrame": 1635019872661,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",

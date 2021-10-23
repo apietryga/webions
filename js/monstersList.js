@@ -2,12 +2,13 @@ const monstersList = [
   // default
   {name:"Dragon",
     sprite:"dragon",
-    health:1200,
+    health:1800,
     speed:2,
     skills:{
       fist:400,
-      exp:10,
-      dist:100
+      exp:100,
+      dist:150,
+      healing:200
     }
   },
   {name:"Mage",
@@ -27,7 +28,8 @@ const monstersList = [
     skills:{
       fist:250,
       exp:50,
-      dist:0
+      dist:0,
+      healing:50
     }
   },
   {name:"Orange Wizard",
@@ -35,19 +37,21 @@ const monstersList = [
     health:1700,
     speed:3,
     skills:{
-      fist:500,
+      fist:100,
       exp:70,
-      dist:400
+      dist:450,
+      healing:100
     }
   },
   {name:"Maggot",
     sprite:"maggot",
-    health:500,
+    health:700,
     speed:2,
     skills:{
       fist:200,
       exp:30,
-      dist:0
+      dist:0,
+      healing:50
     }
   },
   {name:"Cat",
