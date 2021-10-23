@@ -21,11 +21,19 @@ const controls = {
     for(const pk of params){
       if(targetKeys.includes(pk)){  
         this.targeting(params);
+        break;
       } 
     }
+    // ACTIONS
+    const actions = ['outfit'];
+    if(actions.includes(params[0])){
+      this.outfit =  params[1];
+    }
+
   // CLICKING
     // click on
-    if(params[1] && !this.vals.includes(params[0]*1)){
+    if(params[1] == true && !this.vals.includes(params[0]*1)){
+      // console.log(params)
       // console.log(params);
       this.vals.push(params[0]*1);
     }

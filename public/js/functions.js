@@ -110,24 +110,57 @@ this.comparePassword = function(plainPass, hashword, callback) {
   });
 };
 
-
-
-
+function recolorImage(img, fresh = {head:[50,50,50],chest:[50,50,50],legs:[50,50,50],foots:[50,50,50]}){
+  if(!isSet(img)){return 0;}
+  const c = document.createElement('canvas');
+  const ctx = c.getContext("2d");
+  const w = img.width;
+  const h = img.height;
+  c.width = w;
+  c.height = h;
+  ctx.drawImage(img, 0, 0, w, h);
+  const imageData = ctx.getImageData(0, 0, w, h);
+  const base = {
+    head : [255,255,0],
+    chest : [255,0,0],
+    legs : [0,255,0],
+    foots : [0,0,255]
+  }
+  for(let i=0; i < imageData.data.length; i += 4){
+    for(const b of Object.keys(base)){
+      if(
+        imageData.data[i]   == base[b][0] &&
+        imageData.data[i+1] == base[b][1] &&
+        imageData.data[i+2] == base[b][2]
+     ){
+       imageData.data[i]  = fresh[b][0];
+       imageData.data[i+1]= fresh[b][1];
+       imageData.data[i+2]= fresh[b][2];
+     }
+    }
+  }
+  ctx.putImageData(imageData,0,0);
+  let result = document.createElement("img");
+  result.src = c.toDataURL('image/png');
+  return result;
+}
 function everyInterval(n){
   if((gamePlane.frameNo/n) % 1 == 0){return true;}
   return false;
 }
 function setResolution(){
-  let gP = document.querySelector(".gamePlane");
+  document.querySelector(".loadDetails").innerHTML = "Setting resolution ...";
+  let gP = document.querySelector(".gamePlaneCanvas");
   let unit = "vh";
   if(window.innerHeight > window.innerWidth){
     unit = "vw";
   }
-  gP.style.width = "100"+unit;
+  gP.style.maxwidth = "100"+unit;
   gP.style.height = "100"+unit;
-  // console.log("Resolution set.");
-  document.querySelector(".loadDetails").innerHTML = "Setting resolution ...";
+  
+  document.querySelector(".loadDetails").innerHTML = "Setting controls ...";
   mobileControls.validate();
+  menus.init();
 }
 function hpColor(perc){
   let green = Math.round((255*perc)/100);
@@ -157,4 +190,7 @@ function checkClick(event) {
     }
   });
   return element;
+}
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }

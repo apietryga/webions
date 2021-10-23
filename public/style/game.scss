@@ -60,11 +60,18 @@ body{
 
   }
   button{
-    padding:2%;
-    width:50px;
-    height:15px;
-    font-size:10px;
-    position:fixed;
+    background-color:#404040;
+    color:#AEAEAC;
+    // padding:5px;
+    border:2px solid;
+    border-color:#757575 #323232 #323232 #757575;
+    cursor:pointer; 
+    // margin:0 3px;
+    // padding:2%;
+    // width:50px;
+    // height:15px;
+    // font-size:10px;
+    // position:fixed;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -90,7 +97,7 @@ body{
       display:flex;
       justify-content: center;
       align-items: center;
-      canvas{
+      .gamePlaneCanvas{
         border:2px dashed rgb(83, 83, 69);
       }
     }
@@ -155,7 +162,7 @@ body{
         width:100%!important;
         position:fixed;
         left:0;
-        canvas{
+        .gamePlaneCanvas{
           height:90vh;
           width:90vh;
         }

@@ -24,12 +24,9 @@
       <div class="mobileControls leftPanel"></div>
       <div class="mobileControls rightPanel"></div>
       <div class="gamePlane">
-        <canvas ></canvas>  
+        <canvas class="gamePlaneCanvas"></canvas>  
       </div>
     </div>
-    <a href="account.html?action=logout" 
-    style='position:fixed;right:0;bottom:0;color:#fff;'
-    >LOGOUT</a>
   </body>
 </html>
 <script src="js/gameDetails.js?v={{version}}"></script>
@@ -81,7 +78,6 @@
 <!--| GAMEPLANE PROPERTIES |-->
 <script src="js/gameplane.js?v={{version}}"></script>
 <script src="js/components.js?v={{version}}"></script>
-<script src="js/menus.js?v={{version}}"></script>
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script src="js/websocket.js?v={{version}}"></script>
 <!--| PRELOAD |-->
@@ -102,17 +98,22 @@
   load.both("Load sprites",10);
   map.loadSprites(()=>{
     load.both("Load serwer info",50);
-    serv.load();
-    load.both("Loading map",70);
+    serv.load(()=>{
+      load.both("Loading map",70);
       map.generate(()=>{
         load.both("Loading Game Plane",90);
         gamePlane.init();
+        setResolution();
+        document.querySelector(".loader").style.display = "none";
       })
-  })
+    })
+  });
   // set elements resolution:
-  setResolution();
+  // menus.init();
+  // menus['outfit'].init();        
+
   window.onresize = () =>{
-    setResolution();  
+    setResolution();
   }
 </script>
 <!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
@@ -127,6 +128,7 @@
   }
   
 </script>
+<script src="js/menus.js?v={{version}}"></script>
 <!--| DEVELOPER BUTTONS & STATS |-->
 <script>
   const dev = {
@@ -141,6 +143,9 @@
       const butt = document.createElement("button");
       // butt.onclick = () => { func()};
       butt.addEventListener(mobileControls.ev,func);
+      butt.style.cssText = `
+        position:fixed;
+      `;
       butt.innerHTML =  title;
       butt.style.zIndex = 4;
       document.body.append(butt);
@@ -153,8 +158,8 @@
       this.statsDOM.style.cssText = `
         width:30vw;
         position:fixed;
-        right:0;
-        top:0;
+        left:0;
+        bottom:0;
         padding:2%;
         font-size:0.6em;
         color:#000;
@@ -194,8 +199,6 @@
       }
     }
   }
-    // const urlParams = new URLSearchParams(window.location.search);
-
   if(new URLSearchParams(window.location.search).get("dev") == "on" || game.dev == true){
     dev.init();
     document.cookie = "token=123"

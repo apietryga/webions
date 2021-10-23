@@ -3,6 +3,15 @@ const dbc = new dbConnect();
 const Map = require("../public/js/map");
 const map = new Map();
 const func = require("../public/js/functions");
+
+const allowedSprites = [
+  "male_citizen",
+  "female_citizen",
+  "male_wizard",
+  "female_wizard"
+];
+
+
 class Creature {
   constructor(nickName,creaturesLength){
     this.id = creaturesLength+1; 
@@ -42,9 +51,31 @@ class Creature {
       dist:100,
       healing:100,
     }
+    this.colors = {
+      head: [240, 169, 98],
+      chest: [240, 98, 98],
+      legs: [155, 155, 155],
+      foots: [13, 13, 13]
+    }
   }
   update(param,game,creatures){
-    // this.game = game;
+
+
+    // update sprite (if is not allowed)
+    if(!allowedSprites.includes(this.sprite) && this.type == "player"){
+      this.sprite = this.sex+"_citizen";
+    }
+
+    // SPRITE CHANGER
+    if(func.isSet(param.outfit) && this.type == "player"){
+      // console.log(param.outfit);
+      this.sprite = param.outfit.sprite;
+      this.colors = param.outfit.colors;
+      this.outfitUpdate = true;
+    }else{
+      delete this.outfitUpdate;
+    }
+
     // set playerinArea (4 monster walking and targeting)
     let playerInArea;
     if(this.type == "monster"){

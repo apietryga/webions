@@ -42,7 +42,7 @@ this.data = [
   {"name":"Orange Wizard","position":[-66,12,2]},
   {"name":"Orange Wizard","position":[-66,16,1]},
   {"name":"Orange Wizard","position":[-74,12,1]},
-  {"name":"Orange Wizard","position":[-70,9,0]},
+  // {"name":"Orange Wizard","position":[-70,9,0]},
   {"name":"Orange Wizard","position":[-73,17,0]},
 
   {"name":"Maggot","position":[-11,2,-1]},

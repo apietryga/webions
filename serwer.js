@@ -52,7 +52,7 @@ const cm = { // creatures managment
   },
   update(param,callback){
     this.players.update(param,(player)=>{
-    this.monstersUpdate(player);
+      this.monstersUpdate(player);
       game.player = player.id;
       if(typeof player.text == "undefined"){delete player.text;}
       const newData = {
@@ -67,7 +67,7 @@ const cm = { // creatures managment
         player.health = player.maxHealth;
         player.cyle = 0;
         player.direction = 1;
-        this.players.kick(player);        
+        this.players.kick(player);   
       }
       player.text = "";
     })
@@ -102,7 +102,8 @@ const cm = { // creatures managment
         this.inLoading.push(param.name);
         //  make new unique id
         const ids = [];
-        for(let plr of this.list.concat(cm.allMonsters)){ids.push(plr.id);}
+        for(const creat of this.list.concat(cm.allMonsters)){ids.push(creat.id);}
+        console.log(ids)
         let newID = 1;
         while(ids.includes(newID)){newID++;}
         

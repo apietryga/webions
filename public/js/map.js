@@ -141,6 +141,11 @@ class Map{
       this.sprites[s.name].src = s.src;
       if(typeof s.w != "undefined"){this.sprites[s.name].dataset.w = s.w;}
       this.sprites[s.name].onload = () => {
+        // if(s.name == "male_oriental"){
+          // console.log("MALE ORIENTAL");
+          // console.log(this.sprites[s.name]);
+          // this.sprites[s.name] = recolorImage(this.sprites[s.name],255,255,255,0,0,0);
+        // }
         loadQuene.splice(loadQuene.indexOf(s.name),1);
         if(loadQuene.length == 0){
           callback();

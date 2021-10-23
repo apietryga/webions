@@ -20,13 +20,10 @@ const gamePlane = {
     controls.init();
     // this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
-   
   },
   updategamePlane() {
-    gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
-    serv.load();
-    if(player.type == "player"){ // on serv load player
-      document.querySelector(".loader").style.display = "none";
+    serv.load(()=>{
+      gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
       player.update();
       map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
       const drawStack = [];
@@ -62,14 +59,13 @@ const gamePlane = {
         // stairs and walls 
 
       })
-      // console.log(drawStack);
       // draw all in order
       for(const e of drawStack){
         e.draw();
       }
       for(const a of gamePlane.actions){a.update();}
       inGameConsole.update();
-    }
+    });
   },
   stop(title = "GAME STOPPED."){
     // show popup

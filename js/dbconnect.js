@@ -38,7 +38,8 @@ class dbConnect{
       "position",
       "password",
       "email",
-      "sex"
+      "sex",
+      "colors"
     ];
     this.json.dataToSave = this.dataToSave;
     this.redis.dataToSave = this.dataToSave;

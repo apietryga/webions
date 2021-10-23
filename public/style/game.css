@@ -72,11 +72,11 @@ body .loader .loadDetails {
 }
 
 body button {
-  padding: 2%;
-  width: 50px;
-  height: 15px;
-  font-size: 10px;
-  position: fixed;
+  background-color: #404040;
+  color: #AEAEAC;
+  border: 2px solid;
+  border-color: #757575 #323232 #323232 #757575;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,7 +107,7 @@ body .wrapper .gamePlane {
   align-items: center;
 }
 
-body .wrapper .gamePlane canvas {
+body .wrapper .gamePlane .gamePlaneCanvas {
   border: 2px dashed #535345;
 }
 
@@ -177,7 +177,7 @@ body .wrapper .leftPanel {
     position: fixed;
     left: 0;
   }
-  body .wrapper .gamePlane canvas {
+  body .wrapper .gamePlane .gamePlaneCanvas {
     height: 90vh;
     width: 90vh;
   }

@@ -2,7 +2,7 @@
   {
     "name": "Justyna",
     "position": [8, 10, 0],
-    "speed": 5,
+    "speed": 1,
     "sprite": "female_warrior",
     "health": 1220,
     "maxHealth": 2000,
@@ -10,64 +10,91 @@
   },
   {
     "name": "Tosiek",
-    "position": [-51, 13, -1],
+    "position": [35, -10, 0],
     "speed": 10,
-    "sprite": "male_oriental",
-    "health": 276967,
-    "maxHealth": 277167,
+    "sprite": "male_wizard",
+    "health": 275927,
+    "maxHealth": 277677,
     "skills": {
-      "level": 1052,
-      "exp": 1104767,
-      "fist": 11147,
-      "dist": 11147,
-      "healing": 11147
+      "level": 1053,
+      "exp": 1106882,
+      "fist": 11168,
+      "dist": 11168,
+      "healing": 11168
     },
-    "lastFrame": 1634736981035,
+    "lastFrame": 1635008003475,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2"
+    "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
+    "colors": {
+      "head": [70, 70, 70],
+      "chest": [240, 240, 70],
+      "legs": [183, 240, 183],
+      "foots": [240, 155, 240]
+    }
   },
   {
     "name": "Zuzia",
     "position": [34, -10, 0],
     "speed": 10,
-    "sprite": "female_oriental",
-    "health": 275541,
+    "sprite": "female_wizard",
+    "health": 71933,
     "maxHealth": 276639,
     "skills": {
       "level": 1051,
-      "exp": 1103135,
+      "exp": 1103655,
       "fist": 11126,
       "dist": 11126,
       "healing": 11126
     },
-    "lastFrame": 1634672825663,
+    "lastFrame": 1635008647171,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
-    "sex": "female"
+    "sex": "female",
+    "colors": {
+      "head": [42, 42, 42],
+      "chest": [240, 155, 240],
+      "legs": [240, 42, 240],
+      "foots": [212, 212, 212]
+    }
   },
   {
     "name": "Tosiek2",
-    "position": [19, -5, 0],
+    "position": [35, -9, 0],
     "speed": 3,
-    "sprite": "male_oriental",
-    "health": 917,
+    "sprite": "male_citizen",
+    "health": 1017,
     "maxHealth": 1017,
-    "skills": {"level": 9, "exp": 76, "fist": 101, "dist": 101, "healing": 101},
-    "lastFrame": 1634736331085,
+    "skills": {"level": 9, "exp": 77, "fist": 101, "dist": 101, "healing": 101},
+    "lastFrame": 1635008638920,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
-    "sex": "female"
+    "sex": "female",
+    "colors": {
+      "head": [13, 13, 240],
+      "chest": [240, 127, 183],
+      "legs": [240, 13, 240],
+      "foots": [0, 255, 0]
+    }
   },
   {
     "name": "Tosiek3",
-    "position": [0, 0, 0],
+    "position": [34, -11, 0],
     "speed": 2,
-    "sprite": "male_oriental",
+    "sprite": "male_citizen",
     "health": 2000,
     "maxHealth": 2000,
     "skills": {"level": 0, "exp": 1, "fist": 100, "dist": 100, "healing": 100},
-    "lastFrame": 1633886470710
+    "lastFrame": 1634997526705,
+    "password": "$2b$10$mY.GHe1ZUua0X/SYGKX26uCyman.CXOP5.8.RgRF4BXjoBZjWevXu",
+    "email": "a@a.pl",
+    "sex": "male",
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    }
   },
   {
     "name": "Tosiek5",
@@ -101,19 +128,28 @@
   },
   {
     "name": "Tosiek4",
-    "position": [0, 9, 2],
+    "position": [35, -8, 0],
     "speed": 3.1,
-    "sprite": "male_oriental",
-    "health": 644,
+    "sprite": "female_wizard",
+    "health": 1044,
     "maxHealth": 1044,
     "skills": {
       "level": 14,
-      "exp": 176,
+      "exp": 186,
       "fist": 102,
       "dist": 102,
       "healing": 102
     },
-    "lastFrame": 1632083356807
+    "lastFrame": 1634997671861,
+    "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
+    "email": "a@ad.pl",
+    "sex": "female",
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    }
   },
   {
     "name": "Tosiek8",

@@ -1,30 +1,38 @@
 let sprites = [
+  { name: "male_citizen",
+    src : "img/sprites/outfits/male_citizen.webp?v="+game.version,
+    group : "outfits"
+  },
+  { name: "female_citizen",
+    src : "img/sprites/outfits/female_citizen.webp?v="+game.version,
+    group : "outfits"
+  },
+  { name: "male_wizard",
+    src : "img/sprites/outfits/male_wizard.webp?v="+game.version,
+    group : "outfits"
+  },
+  { name: "female_wizard",
+    src : "img/sprites/outfits/female_wizard.webp?v="+game.version,
+    group : "outfits"
+  },
   { name: "female_oriental",
     src : "img/sprites/female_oriental.webp?v="+game.version,
-    group : "outfits"
+    // group : "outfits"
   },
   { name: "male_oriental",
     src : "img/sprites/male_oriental.webp?v="+game.version,
-    group : "outfits"
+    // group : "outfits"
   },
   { name: "female_warrior",
     src : "img/sprites/female_warrior.webp?v="+game.version,
-    group : "outfits"
+    // group : "outfits"
   },
   { name: "male_warrior",
     src : "img/sprites/male_warrior.webp?v="+game.version,
-    group : "outfits"
-  },
-  { name: "citizen",
-    src : "img/sprites/web_citizen.webp?v="+game.version,
-    group : "outfits"
+    // group : "outfits"
   },
   { name: "mmage",
     src : "img/sprites/mmage.webp?v="+game.version,
-    group : "monsters"
-  },
-  { name: "female_citizen",
-    src : "img/sprites/female_citizen.webp?v="+game.version,
     group : "monsters"
   },
   { name: "floors",

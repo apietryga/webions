@@ -6,7 +6,7 @@ class Creature {
     this.name = pName;
     this.width = 40;
     this.height = 40;
-    this.sprite = "citizen"; 
+    // this.sprite = "citizen"; 
     this.hideFloor = "none";
     this.x = x ;
     this.y = y ;
@@ -134,6 +134,19 @@ class Creature {
     }
   }
   draw(){
+    // SPRITE LOAD & UPDATE
+    if(["player","enemy"].includes(this.type) && (!isSet(this.img) || isSet(this.outfitUpdate) )){
+      if(isSet(this.outfitUpdate)){
+        delete this.outfitUpdate;
+      }
+      this.img = map.sprites[this.sprite];
+      const recolor = recolorImage(this.img,this.colors);
+      recolor.onload = () =>{
+        this.img = recolor;
+      }
+    }
+
+
     let ctx = gamePlane.context;
     // draw half of whiteTarget
     if(player.whiteTarget == this.id){
@@ -159,11 +172,25 @@ class Creature {
     }
     // draw sprite
     if(this.position[2] <= map.visibleFloor || map.visibleFloor == 'all'){
-      let img = map.sprites[this.sprite];
-      ctx.drawImage(
-        img, this.cyle * img.width/3, this.direction * img.width/3, img.width/3, img.height/5,
-        this.x - 40, this.y-40, 100, 100
-      );
+      if(["player","enemy"].includes(this.type)){
+        // draw colors masks
+        const cw = this.img.width/6;
+        ctx.drawImage(
+          this.img, (this.cyle+3) * cw, this.direction * cw, cw, this.img.height/5,
+          this.x - 40, this.y-40, 100, 100
+        );
+        // draw else elements xD
+        ctx.drawImage(
+          this.img, this.cyle * cw, this.direction * cw, cw, this.img.height/5,
+          this.x - 40, this.y-40, 100, 100
+        );
+      }else{
+        const img = map.sprites[this.sprite];
+        ctx.drawImage(
+          img, this.cyle * img.width/3, this.direction * img.width/3, img.width/3, img.height/5,
+          this.x - 40, this.y-40, 100, 100
+        );
+      }
     }
     // draw second half of whiteTarget
     if(player.whiteTarget == this.id){
@@ -205,10 +232,6 @@ class Creature {
       ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
       ctx.stroke();
     }
-    // stand up after retrive
-    // if(this.oldHealth <= 0 && this.health > 0){
-    //   this.direction = 1;
-    // }
     // draw hits and healing value
     if(isSet(this.oldHealth) && this.oldHealth != this.health){
       const hitValue = this.oldHealth - this.health;
@@ -226,10 +249,9 @@ class Creature {
       if(this.skills.oldLvl != 0){
         gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level));
       }
-      
       this.skills.oldLvl = this.skills.level;
     }
-    // HEALING
+    // HEALING amount
     if(this.oldHealth < this.health){
       gamePlane.actions.push(new Action("misc",this.x,this.y,40,40,2));
     }
