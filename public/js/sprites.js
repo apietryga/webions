@@ -16,20 +16,20 @@ let sprites = [
     group : "outfits"
   },
   { name: "female_oriental",
-    src : "img/sprites/female_oriental.webp?v="+game.version,
-    // group : "outfits"
+    src : "img/sprites/outfits/female_oriental.webp?v="+game.version,
+    group : "outfits"
   },
   { name: "male_oriental",
-    src : "img/sprites/male_oriental.webp?v="+game.version,
-    // group : "outfits"
+    src : "img/sprites/outfits/male_oriental.webp?v="+game.version,
+    group : "outfits"
   },
   { name: "female_warrior",
-    src : "img/sprites/female_warrior.webp?v="+game.version,
-    // group : "outfits"
+    src : "img/sprites/outfits/female_warrior.webp?v="+game.version,
+    group : "outfits"
   },
   { name: "male_warrior",
-    src : "img/sprites/male_warrior.webp?v="+game.version,
-    // group : "outfits"
+    src : "img/sprites/outfits/male_warrior.webp?v="+game.version,
+    group : "outfits"
   },
   { name: "mmage",
     src : "img/sprites/mmage.webp?v="+game.version,

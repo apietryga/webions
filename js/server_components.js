@@ -3,37 +3,14 @@ const dbc = new dbConnect();
 const Map = require("../public/js/map");
 const map = new Map();
 const func = require("../public/js/functions");
-
-const allowedSprites = [
-  "male_citizen",
-  "female_citizen",
-  "male_wizard",
-  "female_wizard"
-];
-
-
 class Creature {
   constructor(nickName,creaturesLength){
     this.id = creaturesLength+1; 
     this.name = nickName;
-    // this.position = [-1,-5,1]; // for newmap
-    // this.position = [0,0,0];
     this.position = [34,-10,0];
     this.startPosition = this.position;
     this.walk = false;
-
     this.speed = 2; // grids per second
-    // this.sprite = "male_warrior";
-    this.sprite = "male_oriental";
-    // this.sprite = "citizen";
-    if(this.name == "Zuzia"){
-      this.sprite = "female_oriental";
-      // this.sprite = "female_warrior";
-      // this.sprite = "femaleCitizen";
-    }
-    if(this.name == "Maja"){this.sprite = "female_citizen";}
-    if(this.name == "Justyna"){this.sprite = "female_warrior";}
-    if(this.name == "Kotul"){this.sprite = "male_warrior";}
     this.direction = 1;
     this.health = 2000;
     this.healthValue = 10;
@@ -59,13 +36,7 @@ class Creature {
     }
   }
   update(param,game,creatures){
-
-
-    // update sprite (if is not allowed)
-    if(!allowedSprites.includes(this.sprite) && this.type == "player"){
-      this.sprite = this.sex+"_citizen";
-    }
-
+    if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
     // SPRITE CHANGER
     if(func.isSet(param.outfit) && this.type == "player"){
       // console.log(param.outfit);
@@ -277,8 +248,12 @@ class Creature {
       this.redTarget = playerInArea.id;
     }
     // RED TARGETING [player]
-    if(this.type == "player" && func.isSet(param.controls) && func.isSet(param.target)){
-      this.redTarget = param.target;
+    if(this.type == "player" && func.isSet(param.target)){
+      if(param.target == "clear"){
+        this.redTarget = false;
+      }else{
+        this.redTarget = param.target;
+      }
     }
     // CLEAR redTarget
     if(this.redTarget){
