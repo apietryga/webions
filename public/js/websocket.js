@@ -28,7 +28,6 @@ const serv = {
       controls.falseQueneCall();
       if(isSet(this.param.outfit)){delete this.param.outfit;}
       if(isSet(this.param.target)){delete this.param.target;}
-
       const res = (msg,callback) => { // get response
         const data = JSON.parse(msg.data);
         // player died

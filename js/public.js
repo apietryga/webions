@@ -57,8 +57,6 @@ const log = {
 if(game.dev == true){
   log.ged.push({nick:"Tosiek",token:"123"})
 }
-
-
 function public(req, res) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];

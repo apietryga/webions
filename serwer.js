@@ -101,12 +101,8 @@ const cm = { // creatures managment
       if(isPlayer == false && !this.inLoading.includes(param.name)){
         this.inLoading.push(param.name);
         //  make new unique id
-        const ids = [];
-        for(const creat of this.list.concat(cm.allMonsters)){ids.push(creat.id);}
-        console.log(ids)
-        let newID = 1;
-        while(ids.includes(newID)){newID++;}
-        console.log("not included:"+newID)
+        const ids = [];for(const creat of this.list.concat(cm.allMonsters)){ids.push(creat.id);}
+        let newID = 1; while(ids.includes(newID)){newID++;}
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1);
         dbc[game.db].load(newPlayer,(res)=>{
@@ -138,16 +134,13 @@ const cm = { // creatures managment
           && new Date().getTime() - isPlayer.lastFrame > 1000
           && this.list.includes(isPlayer)){
             cm.players.kick(isPlayer)
-            // dbc[game.db].update(isPlayer);
-            // this.list.splice(this.list.indexOf(isPlayer),1);
         }
-      }, 1500);
+      }, 1000);
     },
     kick(player){
       this.list.splice(this.list.indexOf(player),1);
       dbc[game.db].update(player);
     }
-
   }
 }
 let param;cm.init();

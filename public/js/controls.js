@@ -100,13 +100,15 @@ const controls = {
     // red targeting (white target + S key)
     if(param[0] == 83 && param[1] == true &&(isSet(player.whiteTarget) && player.whiteTarget)){
       if(this.currentTarget && typeof player.redTarget != "undefined"){
-        if(player.redTarget == cToTarget[this.currentTarget-1].id){
+        if(player.redTarget == cToTarget[this.currentTarget-1].id && cToTarget[this.currentTarget-1].health > 0){
           player.redTarget = "clear";
+          console.log("cleear1")
         }else{
           player.redTarget = cToTarget[this.currentTarget-1].id;
         }
       }else{
         player.redTarget = "clear";
+        console.log("cleear2")
       }
     }
   },
