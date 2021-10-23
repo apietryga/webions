@@ -27,10 +27,30 @@ const menus = {
         right:0;
         top:0;
       `;
-      const logout = document.createElement("button");
-      logout.innerHTML = "LOGOUT";
-      logout.onclick = () => { window.location.replace("/account.html?action=logout"); }
-      this.div.append(logout);
+      const butts = [
+        {
+          type: "button",
+          text: "LOGOUT",
+          func: () => {window.location.replace("/account.html?action=logout")}
+        },
+        {
+          type: "button",
+          text: "STOP",
+          func: () => {gamePlane.stop();}
+        }
+      ]
+      for(const b of butts){
+        const e = document.createElement(b.type);
+        e.innerHTML = b.text;
+        e.onclick = () => { b.func() }
+        this.div.append(e);
+      }
+      // const logout = document.createElement("button");
+      // logout.innerHTML = "LOGOUT";
+      // logout.onclick = () => { }
+
+
+      // this.div.append(logout);
     },
     resize(){
 

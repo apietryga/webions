@@ -106,7 +106,7 @@ const cm = { // creatures managment
         console.log(ids)
         let newID = 1;
         while(ids.includes(newID)){newID++;}
-        
+        console.log("not included:"+newID)
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1);
         dbc[game.db].load(newPlayer,(res)=>{
@@ -122,7 +122,7 @@ const cm = { // creatures managment
 
           }else{
             // create record
-            dbc[game.db].update(newPlayer);
+            // dbc[game.db].update(newPlayer);
           }
           newPlayer.type = "player";
           newPlayer.lastFrame = game.time.getTime();

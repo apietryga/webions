@@ -71,7 +71,15 @@ class dbConnect{
     update(player){
       if(typeof this.client != "undefined"){
         this.client.get(player.name, (e,c)=>{
-          const stringyfy = JSON.stringify(player);
+          // filter vals
+          const valToStore = {};
+          for(const key of Object.keys(player)){
+            if(this.dataToSave.includes(key)){
+              valToStore[key] = player[key];
+            }
+          }
+          // save filtered vals
+          const stringyfy = JSON.stringify(valToStore);
           this.client.set(player.name,stringyfy,()=>{});
         })  
       }

@@ -10,9 +10,9 @@
   },
   {
     "name": "Tosiek",
-    "position": [35, -10, 0],
+    "position": [39, -4, 0],
     "speed": 10,
-    "sprite": "male_wizard",
+    "sprite": "male_citizen",
     "health": 275927,
     "maxHealth": 277677,
     "skills": {
@@ -22,7 +22,7 @@
       "dist": 11168,
       "healing": 11168
     },
-    "lastFrame": 1635008003475,
+    "lastFrame": 1635010844337,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -35,10 +35,10 @@
   },
   {
     "name": "Zuzia",
-    "position": [34, -10, 0],
+    "position": [52, -5, 0],
     "speed": 10,
     "sprite": "female_wizard",
-    "health": 71933,
+    "health": 276389,
     "maxHealth": 276639,
     "skills": {
       "level": 1051,
@@ -47,7 +47,7 @@
       "dist": 11126,
       "healing": 11126
     },
-    "lastFrame": 1635008647171,
+    "lastFrame": 1635010769916,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -60,13 +60,13 @@
   },
   {
     "name": "Tosiek2",
-    "position": [35, -9, 0],
+    "position": [34, -10, 0],
     "speed": 3,
     "sprite": "male_citizen",
     "health": 1017,
     "maxHealth": 1017,
     "skills": {"level": 9, "exp": 77, "fist": 101, "dist": 101, "healing": 101},
-    "lastFrame": 1635008638920,
+    "lastFrame": 1635009521654,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
