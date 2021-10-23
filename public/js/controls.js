@@ -7,7 +7,6 @@ const controls = {
   },
   falseQuene:[],
   falseQueneCall(){
-    // console.log(this.vals);
     for(const f of this.falseQuene){
       this.vals.splice(this.vals.indexOf(f),1);
       this.falseQuene.splice(this.falseQuene.indexOf(f),1);
@@ -21,7 +20,6 @@ const controls = {
     for(const pk of params){
       if(targetKeys.includes(pk)){  
         this.targeting(params);
-        break;
       } 
     }
     // ACTIONS
@@ -33,8 +31,6 @@ const controls = {
   // CLICKING
     // click on
     if(params[1] == true && !this.vals.includes(params[0]*1)){
-      // console.log(params)
-      // console.log(params);
       this.vals.push(params[0]*1);
     }
     // release
@@ -85,7 +81,7 @@ const controls = {
       // get target index of list
       this.currentTarget++;
       if(this.currentTarget > cToTarget.length){
-        this.currentTarget = false;
+        this.currentTarget = 1;
       }
       for(let i = 0; i < cToTarget.length; i++){  
         if(i == this.currentTarget-1){
@@ -95,16 +91,14 @@ const controls = {
           player.whiteTarget = false;
         }
       }
-
     }
     // red targeting (white target + S key)
     if(param[0] == 83 && param[1] == true &&(isSet(player.whiteTarget) && player.whiteTarget)){
       if(this.currentTarget && typeof player.redTarget != "undefined"){
         if(player.redTarget == cToTarget[this.currentTarget-1].id && cToTarget[this.currentTarget-1].health > 0){
-          player.redTarget = "clear";
+          player.setRedTarget = "clear";
         }else{
-          player.redTarget = cToTarget[this.currentTarget-1].id;
-          console.log("set1")
+          player.setRedTarget = cToTarget[this.currentTarget-1].id;
         }
       }else{
         player.redTarget = "clear";
@@ -119,7 +113,6 @@ const controls = {
       this.g = g;
     },
     get(e){
-      console.log("e?")
       if(isSet(player)){
         let ox,oy;
         if(isSet(e.offsetX)){
@@ -138,10 +131,13 @@ const controls = {
         // TARGET CLICKING
         let isCreature = false;
         for(const c of gamePlane.creatures.list){
-          if(c.newPos[0] == x && c.newPos[1] == y & c.newPos[2] == player.newPos[2]){
+          if(
+            ((c.newPos[0] == x && c.newPos[1] == y)
+            ||(c.oldPos[0] == x && c.oldPos[1] == y))
+            &&c.newPos[2] == player.newPos[2]
+            ){
             isCreature = true;
-            player.redTarget = c.id;
-            console.log("set2")
+            player.setRedTarget = c.id;
           }
         }
         // ACTION CLICKING
@@ -185,9 +181,7 @@ const controls = {
         if( oX == nX && oY == nY ){
           this.route.shift();
         }
-          // console.log(this.route);
           
-  
           // set key 
           if(oX > nX){this.k = 37;}
           if(oX < nX){this.k = 39;}
@@ -210,7 +204,7 @@ const mobileControls = {
   validate(){
     let panel = document.querySelectorAll(".mobileControls");
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-      console.log("Detect mobile device, setting controls.");
+      console.log("Detected mobile device, setting controls.");
       panel[0].style.display = "flex";
       panel[1].style.display = "flex";
       this.set();
@@ -283,7 +277,6 @@ const mobileControls = {
         [" ",0],
         [" ",0]
       ];
-      // console.log(buttons);
       for(const b of buttons){
         const butt = document.createElement("div");
         if(b[0] != " "){
@@ -306,7 +299,6 @@ const mobileControls = {
     window.oncontextmenu = function() { return false; }
     for(const n of document.querySelectorAll('*')){
       if(!mobileControls.allowClick.includes(n.tagName || n.className)){
-        // console.log(n.tagName+" | "+n.className);
         n.addEventListener("touchstart",(e)=>{
           if(this.iOS()){e.preventDefault();}
           e.stopPropagation && e.stopPropagation();

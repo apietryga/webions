@@ -85,10 +85,11 @@ class Creature {
       this.direction = 4;
       if(player.whiteTarget == this.id){
         player.whiteTarget = false;
-      }
+        // controls.targeting('clear');
+    }
       this.redTarget = false;
       // controls.currentTarget = false;
-      controls.targeting('clear');
+      // controls.targeting('clear');
       controls.whiteTarget = false;
       // if(this.name == player.name){
       //   gamePlane.stop("You are dead.");

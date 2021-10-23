@@ -11,7 +11,8 @@ const serv = {
     this.param.name = player.name;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
-    if(player.redTarget){this.param.target = player.redTarget;delete player.redTarget;console.log("set3");};
+    if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
+    // if(player.redTarget){this.param.target = player.redTarget;delete player.redTarget;console.log("set3");};
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     return this.param;
   },

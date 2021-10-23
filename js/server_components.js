@@ -39,7 +39,6 @@ class Creature {
     if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
     // SPRITE CHANGER
     if(func.isSet(param.outfit) && this.type == "player"){
-      // console.log(param.outfit);
       this.sprite = param.outfit.sprite;
       this.colors = param.outfit.colors;
       this.outfitUpdate = true;
@@ -235,8 +234,6 @@ class Creature {
           // set exhoust
           this.walk = game.time.getTime() + Math.round(1000/this.speed);
           this.position = phantomPos;
-          // console.log(game.time.getTime());
-          // console.log("________")
         }
       }else if(this.type == "player" && typeof key != "undefined" && doorAvalible){
           this.text = "There's no way.";
@@ -252,7 +249,6 @@ class Creature {
       if(param.target == "clear"){
         this.redTarget = false;
       }else{
-        console.log("set1")
         this.redTarget = param.target;
       }
     }
@@ -306,7 +302,6 @@ class Creature {
         this.health += this.skills.healing;
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
-      // console.log(this.health);
     }
     // SELF AUTO HEALING
     // TODO - SELF AUTO HEALING!
