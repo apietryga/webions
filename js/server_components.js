@@ -251,8 +251,8 @@ class Creature {
     if(this.type == "player" && func.isSet(param.target)){
       if(param.target == "clear"){
         this.redTarget = false;
-        console.log("clear1")
       }else{
+        console.log("set1")
         this.redTarget = param.target;
       }
     }
@@ -266,7 +266,6 @@ class Creature {
             || Math.abs(c.position[1] - this.position[1]) > 5
           ){
             this.redTarget = false;
-            console.log("clear2")
             this.text = "Target lost.";
           }
         }
@@ -381,14 +380,12 @@ class Creature {
     if(this.health <= from.skills[type]){
       this.health = 0;
       from.redTarget = false;
-      console.log("clear3")
     }else{
       this.health -= from.skills[type];
     }
     this.text = from.name+" Cię walnął za "+from.skills[type]+" hapa";
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
-      // from.target = false;
       from.skills.exp += this.skills.exp;
       from.updateSkills(game);
     }

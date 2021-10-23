@@ -102,13 +102,12 @@ const controls = {
       if(this.currentTarget && typeof player.redTarget != "undefined"){
         if(player.redTarget == cToTarget[this.currentTarget-1].id && cToTarget[this.currentTarget-1].health > 0){
           player.redTarget = "clear";
-          console.log("cleear1")
         }else{
           player.redTarget = cToTarget[this.currentTarget-1].id;
+          console.log("set1")
         }
       }else{
         player.redTarget = "clear";
-        console.log("cleear2")
       }
     }
   },
@@ -142,6 +141,7 @@ const controls = {
           if(c.newPos[0] == x && c.newPos[1] == y & c.newPos[2] == player.newPos[2]){
             isCreature = true;
             player.redTarget = c.id;
+            console.log("set2")
           }
         }
         // ACTION CLICKING
