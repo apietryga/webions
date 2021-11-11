@@ -25,8 +25,9 @@ class Map{
     this.template = [];
     this.grids = [];
     this.sprites = [];
-    this.maxFloor = 4;
-    this.visibleFloor = this.maxFloor;
+    this.maxFloor = 0;
+    this.minFloor = 0;
+    this.visibleFloor = 0;
     if(typeof window != "undefined"){
     // client side
       let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
@@ -39,9 +40,20 @@ class Map{
       this.loadServ();
     }
   }
+  setMinMaxFloor(){
+    for(const sector of this.template){
+      for(const floors of sector.floors){
+        const floor = Object.keys(floors)[0];
+        if(floor*1 > this.maxFloor){this.maxFloor = floor*1;}
+        if(floor*1 < this.minFloor){this.minFloor = floor*1;}
+      }
+    }
+    this.visibleFloor = this.maxFloor;
+  }
   loadServ(){
     const c = fs.readFileSync(this.path);
     this.template = JSON.parse(c);
+    this.setMinMaxFloor();
   }
   load(callback){
     this.loadSprites(()=>{
@@ -51,6 +63,7 @@ class Map{
       this.ws.onmessage = (mess) => {
         const dt = JSON.parse(mess.data);
         this.template = dt;
+        this.setMinMaxFloor();
         callback(dt);
       }
     });

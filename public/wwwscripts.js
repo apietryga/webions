@@ -24,7 +24,8 @@ ws.onmessage = (mess) => {
       backer.onclick = () => {window.history.back()};
       backer.innerHTML="< GO BACK";
       main.prepend(backer);
-    
+      
+      // get player
       let player = false;
       for(const plr of dt){
         if(plr.name == params.player){
@@ -38,7 +39,8 @@ ws.onmessage = (mess) => {
           "speed",
           "sprite",
           "health",
-          "skills"
+          "skills",
+          "lastDeaths"
         ];
         const data = [];
         for(const s of Object.keys(player)){
@@ -51,13 +53,28 @@ ws.onmessage = (mess) => {
             td1.innerHTML = s;
             if(s == "sprite"){
               order = 2;
-              const spriteWrapper = document.createElement("div");
-              spriteWrapper.className = "spriteWrapper";
-              const sprite = document.createElement("div");
-              sprite.className = "sprite";
-              sprite.style.backgroundImage = "url(../img/sprites/"+player.sprite+".webp)";
-              spriteWrapper.append(sprite);
-              td2.append(spriteWrapper);
+              const canvasSprite = document.createElement("canvas");
+              canvasSprite.width = 40;canvasSprite.height = 40;
+              const ctx = canvasSprite.getContext("2d");
+              let img = new Image();
+              img.src = "../img/sprites/outfits/"+player.sprite+".webp";
+              img.onload = () => {
+                const recolor = recolorImage(img,player.colors);
+                recolor.onload = () =>{
+                  img = recolor;
+                  console.log("LOADED!")
+                  // draw else elements xD
+                  ctx.drawImage(
+                    img, 260, 100, 80, 80,
+                    0, 0, 80, 80
+                  );
+                  ctx.drawImage(
+                    img, 20, 100, 80, 80,
+                    1, 1, 80, 80
+                  );
+                }
+              }
+              td2.append(canvasSprite);
             }else if(s == "health"){
               order = 1;
               const healthBar = document.createElement("div");
@@ -90,6 +107,26 @@ ws.onmessage = (mess) => {
             }else if(s == "speed"){
               player.skills.speed = player[s];
               continue;
+            }else if(s == "lastDeaths"){
+              order = 5;
+              for(const death of player.lastDeaths){
+                const row = document.createElement("tr");
+                const tdx1 = document.createElement("td");
+                const when = death.when.split(/[T,.]+/);
+                tdx1.innerHTML = when[0]+" "+when[1];
+                const tdx2 = document.createElement("td");
+                tdx2.innerHTML += "Killed by ";     
+                if(death.whoType == "player"){
+                  tdx2.innerHTML += "<a href='/players.html?player="+death.who+"'>"+death.who+"</a>";
+                }else{
+                  tdx2.innerHTML += death.who;
+                }
+                tdx2.innerHTML += " on level "+death.level+".";     
+                row.append(tdx1);
+                row.append(tdx2);
+                td2.append(row);
+              }
+              player.skills.speed = player[s];
             }else{
               order = 3;
               td2.innerHTML = player[s];
@@ -110,6 +147,41 @@ ws.onmessage = (mess) => {
         table.remove();
       }
 
+    }else if(Object.keys(params).includes("lastdeaths")){ // PLAYERS & ONLINE LIST
+      h1.innerHTML = "Last Deaths";
+      // GET ALL DEATHS
+      const allDeaths = [];
+      for(const player of dt){
+        if(typeof player.lastDeaths != "undefined" && player.lastDeaths.length > 0){
+          for(const death of player.lastDeaths){
+            death.player = player.name;
+            allDeaths.push(death);
+          }
+        }
+      }
+      // sort it here
+      allDeaths.sort((a,b)=>{
+        if(new Date(a.when).getTime() > new Date(b.when).getTime() ){return -1;}
+      })
+      // display 
+      for(const death of allDeaths){
+        const row = document.createElement("tr");
+        const td1 = document.createElement("td");
+        const when = death.when.split(/[T,.]+/);
+        td1.innerHTML = when[0]+" "+when[1];
+        const td2 = document.createElement("td");
+        td2.innerHTML = "<a href='/players.html?player="+death.player+"'>"+death.player+"</a>";
+        td2.innerHTML += " was killed by ";     
+        if(death.whoType == "player"){
+          td2.innerHTML += "<a href='/players.html?player="+death.who+"'>"+death.who+"</a>";
+        }else{
+          td2.innerHTML += death.who;
+        }
+        td2.innerHTML += " on level "+death.level+".";     
+        row.append(td1);
+        row.append(td2);
+        table.append(row);
+      }
     }else{ // PLAYERS & ONLINE LIST
       if(getWhat == "onlineList"){
         h1.innerHTML = "Online list";

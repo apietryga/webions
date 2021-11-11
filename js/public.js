@@ -9,7 +9,7 @@ const dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
 const  {CourierClient} = require("@trycourier/courier");
 const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5R6HYK6W"});  
-const Creature = require("./server_components");
+const [Creature,Items] = require("./server_components");
 const passTokens = {
   vals : [],
   generate(pName){
@@ -35,6 +35,28 @@ const passTokens = {
     return valid;
   }
 }
+const bcrypt = require('bcrypt');
+password = {
+  cryptPassword : (password, callback) => {
+    bcrypt.genSalt(10, function(err, salt) {
+     if (err) 
+       return callback(err);
+  
+     bcrypt.hash(password, salt, function(err, hash) {
+       return callback(err, hash);
+     });
+   });
+  },
+  comparePassword : (plainPass, hashword, callback) => {
+    bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {   
+        return err == null ?
+            callback(null, isPasswordMatch) :
+            callback(err);
+    });
+  }
+}
+
+
 const log = {
   ged : [],
   in(nick){
@@ -96,7 +118,7 @@ function public(req, res) {
             // if player is set in db
               if(func.isSet(dbres.password)){
               // if player is complete registered.
-                func.comparePassword(data.password,dbres.password,(e,h)=>{
+                password.comparePassword(data.password,dbres.password,(e,h)=>{
                   if(h){
                     // path = "./public/game.html"
                     vals.action = "game";
@@ -139,7 +161,7 @@ function public(req, res) {
               callback();                
             }else{
               // CRYPT PASSWORD
-              func.cryptPassword(data.password,(e,h)=>{
+              password.cryptPassword(data.password,(e,h)=>{
                 dbres.password = h;
                 dbres.email = data.email.replace("%40","@");
                 dbres.sex = data.sex;
@@ -153,8 +175,8 @@ function public(req, res) {
             }
           }else{
           // making new player
-            const newPlayer = new Creature(data.nick,0);
-            func.cryptPassword(data.password,(e,h)=>{
+            const newPlayer = new Creature(data.nick);
+            password.cryptPassword(data.password,(e,h)=>{
               newPlayer.password = h;
               newPlayer.email = data.email.replace("%40","@");
               newPlayer.sex = data.sex;
@@ -209,7 +231,7 @@ function public(req, res) {
             // get player from base
             dbc[game.db].load({name:pName},(dbres)=>{
               // CRYPT PASSWORD
-              func.cryptPassword(data.newpass,(e,h)=>{
+              password.cryptPassword(data.newpass,(e,h)=>{
                 dbres.password = h;
                 dbc[game.db].update(dbres)
                 vals.action = "login";
@@ -229,7 +251,7 @@ function public(req, res) {
   }else if(myURL.pathname == "/game.html"){     // game page
     if(func.isSet(req.headers.cookie)){
       let player = false;
-      for(const cookie of req.headers.cookie.split(";")){
+      for(const cookie of req.headers.cookie.split("; ")){
         const [key,value] = cookie.split("=");
         if(key == "token"){
           for(const logged of log.ged){
@@ -237,6 +259,9 @@ function public(req, res) {
               player = logged.nick;
             }
           }          
+          if(game.dev && !player){
+            player = "Tosiek"
+          }
         } 
       }
       if(player){

@@ -1,5 +1,62 @@
-const monstersList = [
+const monstersTypes = [
+  // npc's
+  {
+    name:"Slepo Oma",
+    sprite:"oma",
+    health:100,
+    type:"npc",
+    speed:1.3,
+    skills:{
+      fist:0,
+      exp:-50,
+      dist:0,
+      healing:20
+    },
+    onWalk:()=>{
+      // menus.console("Walk on");
+      return says = "Elo"
+    },
+    dialog:(npc,player) => {
+      if(player.says == "hi"){
+        if(player.quests.includes("simpleBoots")){
+          npc.says = "I have no more quests."
+        }else{
+          npc.says = "Hi "+player.name+"! \n I have a quest for you! \n Are you interested in?"; 
+        }
+      }
+      if(player.says == "quest"){
+        npc.says = "JA, HAHA QUEST?";
+      }
+    }
+  },
+  {name:"Training Man",
+  type:"npc",
+  sprite:"trainingMan",
+  health:10000000,
+  speed:0,
+  skills:{
+    fist:10,
+    exp:1,
+    dist:0,
+    healing:1000
+  }
+},
+
+
+
   // default
+  
+  {name:"Minotaur",
+    sprite:"minotaur",
+    health:3000,
+    speed:7,
+    skills:{
+      fist:500,
+      exp:500,
+      dist:550,
+      healing:500
+    }
+  },
   {name:"Dragon",
     sprite:"dragon",
     health:1800,
@@ -109,4 +166,4 @@ const monstersList = [
   
 ]
 
-module.exports = monstersList;
+module.exports = monstersTypes;

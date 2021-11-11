@@ -7,6 +7,7 @@ class Creature {
     this.width = 40;
     this.height = 40;
     // this.sprite = "citizen"; 
+    // this.img = map.sprites[this.sprite];
     this.hideFloor = "none";
     this.x = x ;
     this.y = y ;
@@ -28,6 +29,76 @@ class Creature {
     this.fistExhoust = 15;
   }
   update(){
+    // ITEMS UPDATE
+    if(this.type == "player"){
+      // MENUS EQ UPDATE
+      for(let key of Object.keys(this.eq)){
+        if(key == ""){
+          console.log("OTHER!")
+        }
+        // eq prewiev update
+      
+        const field = document.querySelector("."+key);
+        if(this.eq[key] && field != null){
+          if(field.innerHTML == "" || field.innerHTML == "&nbsp;"){
+            field.innerHTML = "";
+            const newItem = new Item(this.eq[key]);
+            field.append(newItem.toDOM());
+          }
+        }else if(field != null){
+          field.innerHTML = "";
+        }
+      
+        // Backpack preview update
+        // const square = document.querySelectorAll(".backpack .row >div");
+        // if(key == "bp"){
+        //   if(player.eq.bp){
+        //     if(player.eq.bp.in && player.eq.bp.in.length > 0){
+        //       // console.log(player.eq.bp.in.length)
+        //       for(const [i,sq] of square.entries()){
+        //         // sq.innerHTML = "";
+        //         if(typeof player.eq.bp.in[i] != "undefined"
+        //         && sq.innerHTML == ""){
+        //           sq.append(this.toDOM(new Item(player.eq.bp.in[i])))
+        //         }else{
+        //           if(player.eq.bp.in.length < i){
+        //             sq.innerHTML = "";
+        //           }
+        //         }
+        //       }
+        //       // for(const [i,inItem] of player.eq.bp.in.entries()){
+        //         // clear square
+        //         // square[i].innerHTML = "";
+        //         // if(square[i].innerHTML == ""){
+        //           // add item to square
+        //           // square[i].append(this.toDOM(new Item(inItem)));
+        //         // }else{
+        //           // square[i].innerHTML = "";
+        //         // }
+        //       // }
+        //     }else{
+        //       // clear bp
+        //       for(const s of square){s.innerHTML = "";}
+        //     }
+        //   }else{
+        //       // clear bp
+        //       for(const s of square){s.innerHTML = "";}
+        //   }
+        // } 
+
+      }
+    }
+    // SPRITE LOAD & UPDATE
+    if(["player","enemy","npc"].includes(this.type) && (!isSet(this.img) || isSet(this.outfitUpdate) )){
+      if(isSet(this.outfitUpdate)){
+        delete this.outfitUpdate;
+      }
+      this.img = map.sprites[this.sprite];
+      const recolor = recolorImage(this.img,this.colors);
+      recolor.onload = () =>{
+        this.img = recolor;
+      }
+    }
     // WALKING
     if(this.walk >= serv.time){
       const walkTime = this.walk - this.walkingStart;
@@ -113,14 +184,15 @@ class Creature {
           }
         }  
       }
-
-
       // if player is under ground
       if(this.position[2] < 0){
         map.visibleFloor = z;
-      // if is nothing above player
-      }else if(map.getGrid([this.newPos[0]-1,this.newPos[1]-1,this.newPos[2]+1])[0]){
+      // if is something above player [level up]
+      }else if(map.getGrid([this.newPos[0],this.newPos[1],this.newPos[2]+1])[0]){
         map.visibleFloor = z;
+      // if is something above player [2 level up]
+      }else if(map.getGrid([this.newPos[0],this.newPos[1],this.newPos[2]+2])[0]){
+        map.visibleFloor = z+1;
       // if player is near window
       }else if(isWindow){
         map.visibleFloor = z;
@@ -135,20 +207,17 @@ class Creature {
     }
   }
   draw(){
-    // SPRITE LOAD & UPDATE
-    if(["player","enemy"].includes(this.type) && (!isSet(this.img) || isSet(this.outfitUpdate) )){
-      if(isSet(this.outfitUpdate)){
-        delete this.outfitUpdate;
-      }
-      this.img = map.sprites[this.sprite];
-      const recolor = recolorImage(this.img,this.colors);
-      recolor.onload = () =>{
-        this.img = recolor;
-      }
-    }
-
-
     let ctx = gamePlane.context;
+    // draw sayin in console and canvas
+    if(isSet(this.says)){
+      if(this.type == "player" || this.type  == "enemy"){
+        menus.console.log(this.name+"["+this.skills.level+"]: "+this.says);
+      }else if(this.type == "npc"){
+        menus.console.log(this.name+": "+this.says);
+      }
+      gamePlane.actions.push(new Action("says",this.position[0],this.position[1],100,200,[this.name,this.says],900));
+      delete this.says;
+    }
     // draw half of whiteTarget
     if(player.whiteTarget == this.id){
       ctx.beginPath();
@@ -220,12 +289,20 @@ class Creature {
       let maxBarWidth = 28;
       let barWidth = (maxBarWidth * this.health) / this.maxHealth;
       let percHealth = (100 * this.health) / this.maxHealth;
+      // menus health bar update
+      if(this.type == "player"){
+        const healthBar = document.querySelector(".healthBar");
+        if(healthBar != null && healthBar.style.display != "none"){
+          healthBar.querySelector("div").style.width = percHealth+"%";
+          healthBar.querySelector("div").style.backgroundColor = hpColor(percHealth>75?75:percHealth);
+          healthBar.querySelector("label").innerHTML = this.health+"/"+this.maxHealth;
+        }
+      }
       ctx.fillStyle = hpColor(percHealth);
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 1;
       ctx.font = '900 10px Tahoma';
       ctx.textAlign = "center";
-      // console.log(this.name+" : "+this.y);
       ctx.fillText(this.name, this.x + 5, this.y - 22);
       ctx.strokeText(this.name, this.x + 5, this.y - 22);
       ctx.beginPath();
@@ -315,6 +392,7 @@ class Grid {
   draw = (plr = {}) => {
     // for compatibility with mapeditor && gamePlane
     let phantomPlayer = (typeof player === 'undefined')?plr:player; 
+    
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -370,7 +448,7 @@ class Text {
   }
 }
 class Action{  // class for hitText, Bullets,
-  constructor(type,x,y,w,h,text){
+  constructor(type,x,y,w,h,text,length = 150){
     this.type = type;
     this.x = x;
     this.y = y;
@@ -378,7 +456,7 @@ class Action{  // class for hitText, Bullets,
     this.w = w;
     this.text = text;
     this.showFPS = 0;
-    this.showingLength = 150/gamePlane.fps;
+    this.showingLength = Math.floor(length/gamePlane.fps);
     this.position = [this.x,this.y];
   }
   update(){
@@ -386,6 +464,21 @@ class Action{  // class for hitText, Bullets,
     let ctx = gamePlane.context;
     let x = ((this.x - player.position[0] + 5) * 40);    
     let y = ((this.y - player.position[1] + 5) * 40);     
+    if(this.type == "says"){
+      // set color
+      ctx.fillStyle = '#ff0';
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 1;
+      ctx.font = '900 15px Tahoma';
+      ctx.textAlign = "center";
+      const lineHeight = 15;
+      y = y-20;
+      const text = this.text[0]+" says: \n"+this.text[1];
+      for(const [i,line] of text.split("\n").entries()){
+        ctx.fillText(line, x, y + (i*lineHeight));
+        ctx.strokeText(line, x, y + (i*lineHeight));
+      }
+    }
     if(this.type == "hitText"){
       // set color
       if(this.text > 0){
@@ -450,6 +543,72 @@ class Action{  // class for hitText, Bullets,
           gamePlane.actions.splice(gamePlane.actions.indexOf(i),1);
         }    
       }
+    }
+  }
+}
+
+class Item{
+  constructor(obj){
+    // MAKE ITEM FROM OBJ
+    this.type = "item";
+    for(const key of Object.keys(obj)){
+      this[key] = obj[key];
+    }
+    // console.log(this)
+    // this.addEventListener(mobileControls.ev,()=>{
+    //   console.log(this)
+    // })
+  }
+  toDOM(){
+    const item = this;
+    const sq = document.createElement("canvas");
+    for(const k of Object.keys(item)){
+      sq[k] = item[k];
+    }
+    sq.className = "itemDOM";
+    sq.id = item.id;
+    const img = map.sprites[item.sprite];
+    sq.width = img.height;
+    sq.height = img.height;
+    const ctx = sq.getContext("2d");
+    ctx.drawImage(img, 
+      item.spriteNr * img.height, 0, img.height, img.height,
+      0, 0, img.height, img.height
+    );
+    sq.onclick = () => {
+      // console.log("click")
+      if(sq.classList.contains("picked")){
+        sq.classList.remove("picked");
+        menus.mainMenu.twiceClick(item,sq.parentElement);
+      }else{
+        // clear picked class
+        for(const p of document.querySelectorAll(".picked")){
+          // if(p.classList.includes("picked")){
+            // console.log(p);
+          // }
+          p.classList.remove("picked");
+        }
+        sq.classList.add("picked");
+      }
+    }
+    return sq;
+  }
+  update(){
+    // console.log("update...")
+  }
+  draw(){
+     // CANVAS ITEM
+     if(isSet(this.position) && this.position[2] <= map.visibleFloor){
+      const ctx = gamePlane.context;
+      const img = map.sprites[this.sprite];
+      // console.log(img);
+      // console.log(this.sprite)
+      let w = img.height;
+      let x = ((this.position[0] - player.position[0] + 5) * 40 - w)+40;    
+      let y = ((this.position[1] - player.position[1] + 5) * 40 - w)+40;     
+      ctx.drawImage(img, this.spriteNr * img.height, 0, img.height, img.height,
+        x, y, w, w
+      );
     }
   }
 }

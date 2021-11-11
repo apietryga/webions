@@ -26,6 +26,11 @@
         data = data.replaceAll("\\n","<br />&nbsp;");
         data = data.replaceAll("\\","");
         document.querySelector("pre").innerHTML = data;
+        // console show
+        for(const key of Object.keys(JSON.parse(msg.data))){
+          console.log(key+":");
+          console.log(JSON.parse(msg.data)[key]);
+        }
         ws.CLOSED;
       }
 

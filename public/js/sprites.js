@@ -1,4 +1,10 @@
 let sprites = [
+  { name: "items",
+    src : "img/sprites/items.webp?v="+game.version,
+  },
+  { name: "coins",
+    src : "img/sprites/coins.webp?v="+game.version,
+  },
   { name: "male_citizen",
     src : "img/sprites/outfits/male_citizen.webp?v="+game.version,
     group : "outfits"
@@ -6,6 +12,10 @@ let sprites = [
   { name: "female_citizen",
     src : "img/sprites/outfits/female_citizen.webp?v="+game.version,
     group : "outfits"
+  },
+  { name: "oma",
+    src : "img/sprites/oma.webp?v="+game.version,
+    group : "npc"
   },
   { name: "male_wizard",
     src : "img/sprites/outfits/male_wizard.webp?v="+game.version,
@@ -60,7 +70,7 @@ let sprites = [
     w:80,
   },
   { name: "actionfloors",
-    src : "img/sprites/action_floors.webp?v="+game.version,
+    src : "img/sprites/actions/action_floors.webp?v="+game.version,
     w:40,
   },
   { name: "windows",
@@ -69,6 +79,10 @@ let sprites = [
   },
   { name: "dragon",
     src : "img/sprites/web_dragon.webp?v="+game.version,
+    group : "monsters"
+  },
+  { name: "minotaur",
+    src : "img/sprites/minotaur.webp?v="+game.version,
     group : "monsters"
   },
   { name: "wasp",
@@ -83,6 +97,10 @@ let sprites = [
     src : "img/sprites/orange_wizard.webp?v="+game.version,
     group : "monsters"
   },
+  { name: "trainingMan",
+    src : "img/sprites/training_man.webp?v="+game.version,
+    group : "monsters"
+  },
   { name: "maggot",
     src : "img/sprites/maggot.webp?v="+game.version,
     group : "monsters"
@@ -92,7 +110,10 @@ let sprites = [
     group : "monsters"
   },
   { name: "actions",
-    src : "img/sprites/actions.webp?v="+game.version
+    src : "img/sprites/actions/actions.webp?v="+game.version
+  },
+  { name: "action_items",
+    src : "img/sprites/actions/action_items.webp?v="+game.version
   },
   { name: "tourets",
     src : "img/sprites/tourets.webp?v="+game.version

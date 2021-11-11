@@ -2,61 +2,281 @@ const menus = {
   gamePlane : document.querySelector(".gamePlane"),
   menus : [
     "outfit",
-    "mainButtons"
+    "mainMenu",
+    "console"
   ],
   buttons:[],
   init(){
     // CREATING VISIBLE BUTTONS TO OPEN MENUS
-    for(const m of this.menus){
-      if(document.querySelector("."+m) == null){
-        this.buttons[m] = document.createElement("div");
-        this.buttons[m].className = m;
-        this.gamePlane.append(this.buttons[m]);
-        this[m].div = this.buttons[m]; 
-        this[m].init(this.buttons[m]);  
-      }
-      this[m].resize();
-    }
-    // console.log(this)
+    // for(const m of this.menus){
+    //   if(document.querySelector("."+m) == null){
+    //     this.buttons[m] = document.createElement("div");
+    //     this.buttons[m].className = m;
+    //     this[m].div = this.buttons[m]; 
+    //     this[m].init(this.buttons[m]);  
+    //   }
+    //   this[m].resize();
+    // }
+    
+    // initialize menus
+    for(const menu of this.menus){this[menu].init();}
   },
-  mainButtons:{
-    init(){
-      // console.log(this.div.style.position = "fixed");
-      this.div.style.cssText = `
-        position:fixed;
-        right:0;
-        top:0;
-      `;
-      const butts = [
-        {
+  resize(){
+    this.mainMenu.resize();
+  },
+  mainMenu:{
+    parent: document.querySelector(".mainMenu"),
+    doms : [
+      [{ title: "PAUSE GAME",
+          innerHTML: "PG",
           type: "button",
-          text: "LOGOUT",
-          func: () => {window.location.replace("/account.html?action=logout")}
+          onclick: () => {gamePlane.stop();}
         },
-        {
+        { title: "MAIN PAGE",
+          innerHTML: "MP",
           type: "button",
-          text: "STOP",
-          func: () => {gamePlane.stop();}
+          onclick: () => {window.location.replace("/")}
+        },
+        { title: "LOGOUT",
+          innerHTML: "LO",
+          type: "button",
+          onclick: () => {window.location.replace("/account.html?action=logout")}
         }
+      ],
+      [{ title:"HEALTH BAR",
+          type:"div",
+          className:"healthBar",
+          innerHTML: "<div class='progressBar'></div><label>NaN</label>",
+        }
+      ],
+      [{title:"EQUIPMENT",
+        type:"div",
+        className: "eq",
+        innerHTML : `
+          <div class='title'>Equipment</div>
+          <div class='row'>
+            <div class="nc"></div>
+            <div class="hd">&nbsp;</div>
+            <div class="bp"></div>
+          </div>
+          <div class='row'>
+            <div class="lh"></div>
+            <div class="ch">&nbsp;</div>
+            <div class="rh"></div>
+          </div>
+          <div class='row'>
+            <div class="lg">&nbsp;</div>
+          </div>
+          <div class='row'>
+            <div class="ft">&nbsp;</div>
+          </div>
+         `
+        }
+      ],
+      [{title:"SKILLS",
+        type:"div",
+        className: "skills",
+        innerHTML : `
+          <div class='title'>Skills</div>
+          <div class='displaySkills'>
+          </div>
+        `
+       }
       ]
-      for(const b of butts){
-        const e = document.createElement(b.type);
-        e.innerHTML = b.text;
-        e.onclick = () => { b.func() }
-        this.div.append(e);
+    ],
+    init(){
+      this.build("PAUSE GAME");
+      this.build("HEALTH BAR");
+      this.build("EQUIPMENT");
+      this.build("SKILLS");
+    },
+    opened:[],
+    build(menuName,options = {}){
+      this.opened.push([menuName,options])
+      // build it
+      for(const key of Object.keys(options)){
+        this[key] = options[key];
       }
-      // const logout = document.createElement("button");
-      // logout.innerHTML = "LOGOUT";
-      // logout.onclick = () => { }
+      this.menuName = menuName;
+      this.dom = document.createElement("div");
+      // build bp with items
+      if(menuName == "BACKPACK" && isSet(options.cap)){
+        this.dom.className = "backpack";
+        const title = document.createElement("div");
+        title.innerHTML = "Backpack";
+        title.className = "title";
+        this.dom.append(title);
+        const row = document.createElement("div");
+        row.className = "row";
+        // FIND BP ITEMS by position:
+        let field = player;
+        for(const nest of this.position.split(">")){
+          field = field[nest];
+        }
+
+        // CREATE ITEMS INSIDE BACKPACK
+        const inItems = [];
+        if(!isSet(field.in) ){
+          field.in = player.eq.bp
+        }else{
+          for(const inItem of field.in){
+            inItems.push(new Item(inItem));
+          }
+        }
 
 
-      // this.div.append(logout);
+        // MAKE SQUARES AND FILL IT BY ITEMS
+        for(let i = 0; i < options.cap; i++){
+          const sq = document.createElement("div");
+          row.append(sq);    
+          // FILL SQUARES BY ITEMS
+          if(isSet(inItems[i])){
+            // console.log(inItems[i])
+            sq.append(inItems[i].toDOM());
+          }
+        }
+        this.dom.append(row);
+      }
+      for(const [i,row] of this.doms.entries()){
+        // BUILD FROM TEMPLATE
+        if(this.menuName == row[0].title){
+          this.dom.className = "menuItem"+i;
+          for(const b of row){
+            const e = document.createElement(b.type);
+            for(const key of Object.keys(b)){
+              // exceptions
+              if(!["type"].includes(key)){
+                e[key] = b[key];
+              }
+            }
+            this.dom.append(e);
+          }
+        }
+      }
+      // MAKE COLLAPSING TITLE
+      const title = this.dom.querySelector(".title");
+      if(title != null){
+        const collapseButton = document.createElement("div");
+        collapseButton.innerHTML = "&bigtriangleup;"
+        title.onclick = () => {
+          if(collapseButton.parentElement.parentElement.classList.contains("collapsed")){
+            collapseButton.parentElement.parentElement.classList.remove("collapsed");
+            collapseButton.innerHTML = "&bigtriangleup;"
+          }else{
+            collapseButton.parentElement.parentElement.classList.add("collapsed");
+            collapseButton.innerHTML = "&bigtriangledown;"
+          }
+        }
+        title.append(collapseButton)
+        const x = document.createElement("div");
+        if(this.menuName == "BACKPACK"){
+          x.innerHTML = "x";
+          title.append(x);
+          x.onclick = () => {this.close(this.dom,this.menuName)};
+        }
+      }
+      this.parent.append(this.dom);
+    },
+    close(DOM,menuName){
+      DOM.remove();
+      for(const openField of this.opened){
+        if(openField[0] == menuName){
+          this.opened.splice(this.opened.indexOf(openField),1);
+        }
+      }
+    },
+    update(){
+      // SKILLS UPDATE
+      const notShowing = ["oldExp","oldLvl"];
+      let refreshSkills = false;
+      if(isSet(this.skills)){
+        for(const key of Object.keys(player.skills)){
+          if(this.skills[key] != player.skills[key] && !notShowing.includes(key)){
+            this.skills[key] = player.skills[key];
+            refreshSkills = true;
+            // skillsToRefresh.push(key);
+          }
+        }
+      }else{
+        if(isSet(player.skills)){
+          this.skills = player.skills;
+          refreshSkills = true;  
+        }
+      }
+      const result = document.querySelector(".displaySkills");
+      if(refreshSkills && result != null){
+        result.innerHTML = "";
+        for(const key of Object.keys(this.skills)){
+          if(notShowing.includes(key)){continue;}
+          // console.log(skill);
+          const row = document.createElement("div");
+          row.innerHTML = "<div>"+key+"<div>"
+          row.innerHTML += "<div>"+this.skills[key]+"<div>"
+          result.append(row);
+          if(key == "level"){
+            // const startThisLevel = (this.skills.level-1)*(this.skills.level-1);
+            const startThisLevel = Math.pow((this.skills.level-1),3);
+            // const expToLvl = this.skills.level*this.skills.level;
+            const expToLvl = Math.pow((this.skills.level),3);
+            const progressBar = document.createElement("div");
+            progressBar.className = "progressBar";
+            progressBar.title = "You need "+(expToLvl-this.skills.exp)+" exp to gain level";
+            const percent = Math.round(((this.skills.exp-startThisLevel)*100)/(expToLvl-startThisLevel));
+            progressBar.innerHTML = "<div class='progress' style='width:"+percent+"%;'></div>";
+            progressBar.innerHTML += "<div>"+this.skills.exp+"/"+expToLvl+"</div>";
+            result.append(progressBar);
+          }
+        }
+      } 
+    },
+    twiceClick(item,parent){
+      if(item.name == 'backpack'){
+        const itemOptions = {cap:item.cap}
+        // console.log(parent)
+        // check it position
+        if(parent.className == "bp"){
+          itemOptions.position = "eq>bp";
+        }else{
+          console.log(parent);
+          itemOptions.position = "eq>bp>bp[1]";
+        }
+        // check if bp is open now
+        let isOpen = false;
+        for(const openField of this.opened){
+          // close if opened
+          if(openField[1].position == itemOptions.position){
+            this.close(this.dom,this.menuName);
+            isOpen = true;
+          }
+        }
+        // open it, if it's not opened yet
+        if(!isOpen){
+          this.build("BACKPACK",itemOptions);
+        }
+      }
+      this.resize();
     },
     resize(){
-
+      // eq
+      const squares = this.parent.querySelectorAll(".eq > .row > div");
+      for(const square of squares){
+        square.style.width = square.offsetHeight+"px";
+        square.style.height = square.offsetHeight+"px";
+      }
+      // bp squares
+      const bpRow = this.parent.querySelectorAll(".backpack > .row");
+      for(const row of bpRow){
+        const sqs = row.querySelectorAll("div");
+        for(const sq of sqs){
+          // 12 is border + margin
+          sq.style.width = Math.floor((row.offsetWidth-12)/4)+"px";
+          sq.style.height = Math.floor((row.offsetWidth-12)/4)+"px";
+        }
+      }
     }
   },
   outfit:{
+    div:document.createElement("div"),
     init(){
       const butt = document.createElement("button");
       butt.innerHTML = "&blacktriangleright;";
@@ -100,7 +320,6 @@ const menus = {
     build(){
       const container = document.createElement("div");
       container.className = "outFitContainter";
-
       container.style.cssText = `
         position:absolute;
         width:${Math.round(gamePlane.canvas.offsetWidth*0.8)}px;
@@ -395,5 +614,34 @@ const menus = {
         document.querySelector(".outFitContainter").remove();
       }
     }
+  },
+  console:{
+    parent: document.querySelector(".gameAndConsole"),
+    init(){
+      this.dom = document.createElement("div");
+      this.dom.className = "console";
+      this.messages = document.createElement("div");
+      this.messages.className = "messages";
+      // this.messages.innerHTML = "<span style='color:#0f0;'>Welcome in Webions v"+game.version+"</span>";
+      this.log("Welcome in Webions v"+game.version,{color:"#0f0"})
+      this.dom.innerHTML = `<input class='messagesInput'>`;
+      this.dom.prepend(this.messages);
+      this.parent.append(this.dom);
+    },
+    log(message,params = {}){
+      let styles = "";
+      for(const key of Object.keys(params)){
+        if(key == "color"){styles += key+":"+params[key]+";"}
+      }
+      const time = ("0" + new Date().getHours()).slice(-2)+":"+("0" + new Date().getMinutes()).slice(-2);
+      this.messages.innerHTML += "<span style='"+styles+"'>"+time+" "+message+"</span>";
+      this.messages.scrollTop = this.messages.scrollHeight;
+    },
+    resize(){
+
+    }
+  },
+  update(){
+    this.mainMenu.update();
   }
 }

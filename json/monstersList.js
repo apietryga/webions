@@ -1,12 +1,20 @@
 this.data = [
-  // NEWMAP
-  // {"name":"Dragon","position":[0,7,1]},
-  // {"name":"Mage","position":[-1,10,0]},
-  // {"name":"Mage","position":[3,10,0]},
+  // npc's
+  {"name":"Slepo Oma", "position":[35, -9,-1]},
 
+  // TEMPLE
+  {"name":"Cat","position":[35,-9,1]},
   // CITY
   {"name":"Cat","position":[24,-5,0]},
   {"name":"Cat","position":[40,6,0]},
+  // DEPO
+  {"name":"Training Man","position":[42,-1,-1]},
+  {"name":"Training Man","position":[46,-1,-1]},
+  {"name":"Training Man","position":[50,-1,-1]},
+
+  // TOP OF THE CITY
+  {"name":"Minotaur","position":[41,-17,0]},
+
 
   // RIGHT OF CITY
   {"name":"Wasp","position":[65,-27,1]},

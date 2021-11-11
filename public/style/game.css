@@ -12,6 +12,30 @@
   touch-action: none;
 }
 
+body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .mainMenu {
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  padding: 2px;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+body ::-webkit-scrollbar-thumb {
+  border: 2px solid;
+  border-color: #737373 #444444 #444444 #737373;
+  padding: 2px;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+body ::-webkit-scrollbar {
+  width: 10px;
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 body {
   color: #fff;
   font-size: 20px;
@@ -83,55 +107,271 @@ body button {
 }
 
 body .wrapper {
+  flex-wrap: wrap;
   position: fixed;
   left: 0;
   top: 0;
-  display: grid;
-  align-items: end;
-  justify-items: center;
-  grid-template-areas: "gp gp" "lp rp";
+  display: flex;
+  align-items: space-between;
+  justify-content: space-between;
+  padding: 2px;
   height: 100%;
   width: 100%;
-  flex-wrap: wrap;
-  align-items: flex-end;
 }
 
-body .wrapper .gamePlane {
-  background-color: rgba(0, 0, 0, 0.2);
-  grid-area: gp;
-  order: 1;
-  flex: 1;
+body .wrapper .gameAndConsole {
+  min-width: 50%;
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+}
+
+body .wrapper .gameAndConsole .gamePlane {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  padding: 2px;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+body .wrapper .gameAndConsole .gamePlane .gamePlaneCanvas {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+body .wrapper .gameAndConsole .handler {
+  background-color: #2f2f2f;
+  height: 5px;
+  padding: 0;
+  cursor: ns-resize;
+  flex: 0 0 auto;
+}
+
+body .wrapper .gameAndConsole .console {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+body .wrapper .gameAndConsole .console .messages {
+  user-select: text;
+  position: absolute;
   width: 100%;
+  top: 0;
+  left: 0;
+  height: calc(100% - 28px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.6em;
+  line-height: 120%;
+  font-weight: bold;
+  color: #bbc412;
+  background-color: #474747;
+}
+
+body .wrapper .gameAndConsole .console .messages * {
+  user-select: text;
+}
+
+body .wrapper .gameAndConsole .console .messagesInput {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 100%;
+  outline: 0;
+  height: 20px;
+  background-color: #363636;
+}
+
+body .wrapper .gameAndConsole .console .messagesInput:active {
+  outline: 0;
+}
+
+body .wrapper .mainMenu {
+  overflow-y: auto;
+  min-width: 30%;
+  max-height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+body .wrapper .mainMenu .collapsed div {
+  display: none !important;
+}
+
+body .wrapper .mainMenu .collapsed .title {
+  display: flex !important;
+}
+
+body .wrapper .mainMenu .collapsed .title div {
+  display: block !important;
+}
+
+body .wrapper .mainMenu .menuItem0 {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+}
+
+body .wrapper .mainMenu .menuItem0 button {
+  flex: 1;
+}
+
+body .wrapper .mainMenu div .healthBar {
+  color: #fff;
+  border: 2px solid #fff;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  background-color: #222;
+  height: 20px;
+}
+
+body .wrapper .mainMenu div .healthBar .progressBar {
+  height: 100%;
+  background-color: green;
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-body .wrapper .gamePlane .gamePlaneCanvas {
-  border: 2px dashed #535345;
+body .wrapper .mainMenu div .healthBar label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body .wrapper .mainMenu .title {
+  width: 100%;
+  background-color: #2f2f2f;
+  font-size: 0.5em;
+  padding: 3px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+}
+
+body .wrapper .mainMenu .title div:nth-child(1) {
+  text-align: right;
+  flex: 1;
+}
+
+body .wrapper .mainMenu > div > div {
+  width: 100%;
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  background-color: #5a5a5a;
+}
+
+body .wrapper .mainMenu .row {
+  display: flex;
+  justify-content: center;
+}
+
+body .wrapper .mainMenu .row > div {
+  margin: 1px;
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  width: 25%;
+  min-width: 30px;
+  min-height: 30px;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+body .wrapper .mainMenu .row > div:hover {
+  border: 2px solid #fff;
+}
+
+body .wrapper .mainMenu .row > div div, body .wrapper .mainMenu .row > div canvas {
+  width: 100%;
+  height: 100%;
+}
+
+body .wrapper .mainMenu .row .picked {
+  border: 2px solid green;
+}
+
+body .wrapper .mainMenu .backpack .row {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 auto;
+}
+
+body .wrapper .mainMenu .backpack .row div {
+  min-width: 30px;
+}
+
+body .wrapper .mainMenu .skills > div:not(.title) {
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  padding: 3px;
+  font-size: 0.6em;
+}
+
+body .wrapper .mainMenu .skills .displaySkills {
+  display: flex;
+  flex-direction: column;
+}
+
+body .wrapper .mainMenu .skills .displaySkills > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+body .wrapper .mainMenu .skills .displaySkills .progressBar {
+  border: 1px solid #131212;
+  border-radius: 7px;
+  background-color: #312e2e;
+  position: relative;
+}
+
+body .wrapper .mainMenu .skills .displaySkills .progressBar > div {
+  z-index: 1;
+  text-align: center;
+  width: 100%;
+  font-size: 0.7em;
+}
+
+body .wrapper .mainMenu .skills .displaySkills .progressBar .progress {
+  border-radius: 7px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: red;
+  height: 100%;
 }
 
 body .wrapper .mobileControls {
+  min-width: 30%;
+  bottom: 0;
   z-index: 2;
   border: 10px dashed rgba(0, 0, 0, 0.692);
   background-color: rgba(255, 255, 255, 0.425);
   margin: 2px;
   border-radius: 50%;
-  width: 47vw;
-  height: 47vw;
-  right: 0;
-  bottom: 0;
   display: none;
   flex-wrap: wrap;
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  /* Safari */
-  /* Konqueror HTML */
-  /* Old versions of Firefox */
-  /* Internet Explorer/Edge */
-  user-select: none;
-  /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 body .wrapper .mobileControls div {
@@ -149,38 +389,11 @@ body .wrapper .mobileControls .arrow {
 }
 
 body .wrapper .rightPanel {
-  order: 3;
-  grid-area: rp;
+  right: 0;
 }
 
 body .wrapper .leftPanel {
-  grid-area: lp;
   left: 0;
-  order: 2;
-}
-
-@media (orientation: landscape) {
-  body .wrapper {
-    flex-wrap: wrap;
-    grid-template-areas: "lp gp rp";
-  }
-  body .wrapper .mobileControls {
-    width: 25vw;
-    height: 25vw;
-    position: absolute;
-  }
-  body .wrapper .gamePlane {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100% !important;
-    position: fixed;
-    left: 0;
-  }
-  body .wrapper .gamePlane .gamePlaneCanvas {
-    height: 90vh;
-    width: 90vh;
-  }
 }
 
 .loginPage {

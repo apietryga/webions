@@ -1,0 +1,58 @@
+@media(orientation:portrait){
+  $buttonSize:48vw;
+  .gameAndConsole{
+    .gamePlane{
+      position:absolute;
+      width:100%;
+      height:calc(100% - (2*#{$buttonSize}))!important;
+      left:0;
+      top:$buttonSize;
+    }
+  }
+  .mainMenu,.console{
+    // height:calc(100% - 48vw);
+    position:absolute!important;
+    top:0;
+    height:$buttonSize;
+    width:50%;
+    max-height:$buttonSize;
+    &.mainMenu{
+      right:0;
+    }
+  }
+  .mobileControls{
+    position:absolute;
+    bottom:0;
+    width:$buttonSize;
+    height:$buttonSize;
+  }
+}
+@media(orientation:landscape){
+  $buttonSize:40vh;
+  .console,.mainMenu{
+    flex:unset!important;
+    min-width:$buttonSize!important;
+    width:$buttonSize;
+    height:calc(100% - #{$buttonSize});
+  }
+  .gameAndConsole{
+    // position:absolu
+    max-height: 100%;
+    flex-direction: row-reverse!important;
+    flex:unset!important;
+    width:calc(100% - #{$buttonSize});
+    .gamePlane{
+      // width:calc(100% - 2*(#{$buttonSize}))
+      width:100%;
+      height:100%!important;
+    }
+  }
+  .mobileControls{
+    position:absolute;
+    margin-top:-$buttonSize!important;
+    width:$buttonSize;
+    height:$buttonSize;
+    min-width:$buttonSize!important;
+  }
+
+}

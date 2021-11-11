@@ -2,11 +2,16 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="style/game.css">
-    <link rel="manifest" href="json/manifest.json">
-    <link rel="shortcut icon" href="img/logos/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="style/game.css?v={{version}}">
+    <link id="mobileCSS" rel="stylesheet" href="style/mobile.css?v={{version}}">
+    <link rel="shortcut icon" href="img/logos/favicon.ico?v={{version}}" type="image/x-icon">
     <title>Webions</title>
+    <link rel="manifest" href="json/manifest.json">
+    <link rel="apple-touch-icon" href="img/logos/logo_512.png">
+    <link rel="apple-touch-startup-image" href="img/logos/logo_512.png">
+    <meta name="apple-mobile-web-app-title" content="Webions">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   </head>
   <body>
     <noscript>
@@ -21,11 +26,15 @@
       <div class="loadDetails"></div>
     </div>
     <div class="wrapper">
+      <div class="gameAndConsole">
+        <div class="gamePlane">
+          <canvas class="gamePlaneCanvas"></canvas>  
+        </div>
+        <div class="handler"></div>
+      </div>
+      <div class="mainMenu"></div>
       <div class="mobileControls leftPanel"></div>
       <div class="mobileControls rightPanel"></div>
-      <div class="gamePlane">
-        <canvas class="gamePlaneCanvas"></canvas>  
-      </div>
     </div>
   </body>
 </html>
@@ -35,6 +44,39 @@
 <script src="js/map.js?v={{version}}"></script>
 <script>const map = new Map();</script>
 <script src="js/controls.js?v={{version}}"></script>
+<!-- RESIZE GAMEPLANE -->
+<script>
+  const handler = document.querySelector('.handler');
+  const wrapper = handler.closest('.gameAndConsole');
+  const boxA = wrapper.querySelector('.gamePlane');
+  let isHandlerDragging = false;
+  document.addEventListener('mousedown', function(e) {
+    if (e.target === handler) {
+      isHandlerDragging = true;
+    }
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!isHandlerDragging) {
+      return false;
+    }
+    const containerOffsetTop = wrapper.offsetTop;
+    const pointerRelativeYpos = e.clientY - containerOffsetTop;
+    // Arbitrary minimum width set on box A, otherwise its inner content will collapse to width of 0
+    var boxAminHeight = 60;
+    // Resize box A
+    // * 8px is the left/right spacing between .handler and its inner pseudo-element
+    // * Set flex-grow to 0 to prevent it from growing
+    boxA.style.height = (Math.max(boxAminHeight, pointerRelativeYpos - 8)) + 'px';
+    boxA.style.flexGrow = 0;
+    setResolution()
+  });
+
+  document.addEventListener('mouseup', function(e) {
+    // Turn off dragging flag when user mouse is up
+    isHandlerDragging = false;
+  });
+</script>
+
 <!-- POPUP -->
 <script>
     const popup = {
@@ -51,19 +93,36 @@
         left:0;
         top:0;
         z-index:3;
-        `;
-        // background-color:rgba(0,0,0,0.8)
+        font-size:0.8em;
+      `;
+      this.container = document.createElement("div");
+      this.container.style.cssText = `
+        border:2px dashed red;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        font-size:0.5em;
+        padding:10px 20px;
+        border:3px solid #2F2F2F;
+        border-top:20px solid #2F2F2F;
+        background-color:#5A5A5A;
+        color:#AEAEAC;
+        
+      `;
       this.h1 = document.createElement("h1");
       this.h1.innerHTML = title;
       this.button = document.createElement("button");
       this.button.style.position = "unset";
       this.button.style.padding = "10px 50px";
-      // this.button.onclick = () => {window.location.reload();}
       this.button.addEventListener(mobileControls.ev,() => {window.location.reload()});
       this.button.innerText = " PLAY. ";
 
-      this.dom.append(this.h1);
-      this.dom.append(this.button);
+      this.dom.append(this.container);
+      
+      this.container.append(this.h1);
+      this.container.append(this.button);
+
       document.body.append(this.dom);
     }
   }
@@ -97,6 +156,7 @@
   }
   load.both("Load sprites",10);
   map.loadSprites(()=>{
+    menus.init();
     load.both("Load serwer info",50);
     serv.load(()=>{
       load.both("Loading map",70);
@@ -109,9 +169,7 @@
     })
   });
   // set elements resolution:
-  // menus.init();
-  // menus['outfit'].init();        
-
+  
   window.onresize = () =>{
     setResolution();
   }
@@ -134,8 +192,8 @@
   const dev = {
     buttonIndex : 0,
     init(){
-      this.makeDevButt("STOP",()=>{gamePlane.stop()});
-      this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
+      // this.makeDevButt("STOP",()=>{gamePlane.stop()});
+      // this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
       this.makeStatsField();
       this.update();
     },
@@ -199,7 +257,7 @@
       }
     }
   }
-  if(new URLSearchParams(window.location.search).get("dev") == "on" || game.dev == true){
+  if(new URLSearchParams(window.location.search).get("dev") == "on"){
     dev.init();
     document.cookie = "token=123"
   }

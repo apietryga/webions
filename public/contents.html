@@ -9,7 +9,7 @@
   </p>
   <form action="account.html">
     <h2>Wanna play?</h2>
-    <input type="submit" value="SIGN IN">
+    <input type="submit" value="PLAY!">
     <p>
       <a href="/account.html?action=register">Sign up</a> if u're here for first time<br />
     </p>
@@ -28,6 +28,7 @@
 <main>
   <noscript>You must turn on javaScript to see this page.</noscript>
 </main>
+<script src="./js/functions.js" defer></script>
 <script src="./wwwscripts.js" defer></script>
 <!-- about -->
 <main>
@@ -35,8 +36,8 @@
   <h3>Firstly, big five to <a href="https://github.com/peonso" target="_blank">PEONSO</a>, cos i've get sprites from <a href="https://github.com/peonso/opentibia_sprite_pack" target="_blank">here</a></h3>
   <p>
     To play webions, in every case - go to 
-    <a href="./">home page</a>, and fill input with your nick
-    then click "Play!" button.
+    <a href="./">home page</a>, and click "PLAY".<br />
+    Then create simple acc and have fun!
   </p>
   <h2>Table of contents</h2>
   <noscript>
@@ -96,6 +97,30 @@
     <img src="./img/healing.gif" alt="Healing in Webions">
     If you click heal to quick once again - you will see grey dust - You are exhousted.
 
+    <br /><br /><br />
+
+    <h2 id="Scripting">Scripting</h2>
+    <p>
+      You can help your player grow by using scripts.<br />
+      To use it open development tools (CTRL + SHIFT + J) or (F12)<br />
+      Next, go to "Console" and use this scripts: <br />
+      <pre>
+        // Auto shot on target:
+        controls.update([68,true]);
+
+        // Turn off:
+        controls.update([68,false]);
+
+
+        // Auto healing:
+        controls.update([72,true]);
+        
+        // Turn off:
+        controls.update([72,false]);
+      </pre>
+      
+
+    </p>  
   </div>
   <script>
     // Making TOS

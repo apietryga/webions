@@ -5,25 +5,28 @@ const map = new Map();
 const os = require("os");
 const stringify = require("json-stringify-pretty-compact");
 const WebSocketServer = require("websocket").server;
-const Creature = require("./js/server_components");
-const monstersList = require("./js/monstersList");
+const [Creature,Item] = require("./js/server_components");
+const monstersTypes = require("./js/monstersTypes");
 const dbConnect = require("./js/dbconnect");
 const dbc = new dbConnect();
-const inGameMonsters = require("./json/inGameMonsters.js").data;
+const inGameMonsters = require("./json/monstersList").data;
 const game = require("./public/js/gameDetails");
 const public = require("./js/public");
+const itemsList = require("./json/itemsList").list;
+const func = require("./public/js/functions");
+
 const cm = { // creatures managment
   allMonsters: [],
   monstersInArea: [],
   loadMonsters(){
     for(const m of inGameMonsters){
-      const monster = new Creature(m.name,this.allMonsters.length);
+      const monster = new Creature(m.name,this.allMonsters.length,"monster");
       for(const k of Object.keys(m)){
         monster[k] = m[k];
       }
       monster.startPosition = m.position;
       monster.type = "monster";
-      for(const sm of monstersList){ // single monster
+      for(const sm of monstersTypes){ // single monster
         if(sm.name == m.name){
           for(const md of Object.keys(sm)){ // monster details
             monster[md] = sm[md];
@@ -44,7 +47,7 @@ const cm = { // creatures managment
       }
     }
     for(const c of this.monstersInArea){
-      c.update(param,game,this.monstersInArea.concat(this.players.list));
+      c.update(param,game,this.monstersInArea.concat(this.players.list),im);
     }
   },
   init(){
@@ -55,11 +58,30 @@ const cm = { // creatures managment
       this.monstersUpdate(player);
       game.player = player.id;
       if(typeof player.text == "undefined"){delete player.text;}
+      // filter data
+      const disallowKeys = [
+        "startPosition",
+        "speed",
+        "email",
+        "sex",
+        "password",
+        "lastDeaths"
+      ];
+      const filteredCreatures = [];
+      for(const creature of this.players.list.concat(this.monstersInArea)){
+        const filteredCreature = {};
+        for(const key of Object.keys(creature)){
+          if(!disallowKeys.includes(key)){
+            filteredCreature[key] = creature[key];
+          }
+        }
+        filteredCreatures.push(filteredCreature);
+      }
       const newData = {
         game: game,
-        creatures: this.players.list.concat(this.monstersInArea)
+        creatures: filteredCreatures
       }
-      callback(newData);
+      callback(newData,player);
       // retrive died player
       if(typeof game.dead != "undefined"){
         delete game.dead;
@@ -91,7 +113,7 @@ const cm = { // creatures managment
         if(p.name == param.name){
           isPlayer = p;
           isPlayer.lastFrame = game.time.getTime();
-          isPlayer.update(param,game,cm.monstersInArea.concat(this.list));
+          isPlayer.update(param,game,cm.monstersInArea.concat(this.list),im);
           callback(isPlayer);
           break;
         }
@@ -104,7 +126,7 @@ const cm = { // creatures managment
         const ids = [];for(const creat of this.list.concat(cm.allMonsters)){ids.push(creat.id);}
         let newID = 1; while(ids.includes(newID)){newID++;}
         // get info from srv;
-        const newPlayer = new Creature(param.name,newID-1);
+        const newPlayer = new Creature(param.name,newID-1,"player");
         dbc[game.db].load(newPlayer,(res)=>{
           if(res){
             // merge it with newPlayer
@@ -143,7 +165,29 @@ const cm = { // creatures managment
     }
   }
 }
-let param;cm.init();
+const im = { // items management
+  allItems:[],
+  itemsInArea:[],
+  init(){
+    // get static items
+    for(const item of itemsList){
+        this.allItems.push(new Item(item));
+    }
+  },
+  update(newData,player,callback){
+    this.itemsInArea = [];
+    for(const item of this.allItems){
+      if(Math.abs(player.position[0] - item.position[0]) <= 6
+        && Math.abs(player.position[1] - item.position[1])<= 6 
+      ){
+        this.itemsInArea.push(new Item(item));
+      }
+    }
+    newData.items = this.itemsInArea;
+    callback(newData);
+  }
+}
+let param;cm.init();im.init();
 dbc.init(()=>{
   console.log("Database set: "+game.db);
   const server = http.createServer(public).listen(process.env.PORT || 80);
@@ -158,8 +202,10 @@ dbc.init(()=>{
       if(Object.keys(param).includes("name")){
         game.time = new Date();
         game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%";
-        cm.update(param,(newData)=>{
-          connection.sendUTF(stringify(newData,null,2));
+        cm.update(param,(newData,player)=>{
+          im.update(newData,player,(newData)=>{
+            connection.sendUTF(stringify(newData,null,2));
+          })
         })
       }
       // Getting data

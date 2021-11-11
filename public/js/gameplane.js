@@ -2,27 +2,28 @@ let inGameConsole;
 const gamePlane = {
   fps : game.fps,
   actions: [],
+  items:[],
   creatures : {
     list: [],
     ids: []
   },
-  sprites: [],
-  canvas : document.querySelector(".gamePlane > canvas"),
+  // sprites: [],
+  canvas : document.querySelector(".gamePlaneCanvas"),
   init () {
     this.canvas.width = 440;
     this.canvas.height = this.canvas.width;
-    controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
-    
     this.gridSize = this.canvas.width/11;
     this.context = this.canvas.getContext("2d");
+
     inGameConsole = new Text();
     this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
-    // this.canvas.onclick = (e) => {controls.planeClicking.get(e)};
+    controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
   },
   updategamePlane() {
     serv.load(()=>{
+      menus.update();
       gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
       player.update();
       map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
@@ -37,8 +38,13 @@ const gamePlane = {
         if(c.id != player.id){c.update();}
         drawStack.push(c);
       }
+      // update items
+      for(const i of gamePlane.items){i.update();drawStack.push(i);}
       // sort it in order of rendering.
       drawStack.sort((a,b)=>{
+        // items down to player
+        if(b.type == "player" && a.type == "item"){return -1;}
+          
         if(a.position[2] < b.position[2]){
           return -1;
         }else if(a.position[2] == b.position[2]){

@@ -1,4 +1,3 @@
-let bcrypt;if(typeof window == "undefined"){bcrypt = require('bcrypt');}
 this.compareTables = (a,b) =>{
   let result = true;
   for(i = 0; i < a.length; i++){    
@@ -92,23 +91,6 @@ this.isSet = (val) => {
   }
   return result;
 }
-this.cryptPassword = function(password, callback) {
-  bcrypt.genSalt(10, function(err, salt) {
-   if (err) 
-     return callback(err);
-
-   bcrypt.hash(password, salt, function(err, hash) {
-     return callback(err, hash);
-   });
- });
-};
-this.comparePassword = function(plainPass, hashword, callback) {
-  bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {   
-      return err == null ?
-          callback(null, isPasswordMatch) :
-          callback(err);
-  });
-};
 
 function recolorImage(img, fresh = {head:[50,50,50],chest:[50,50,50],legs:[50,50,50],foots:[50,50,50]}){
   if(!isSet(img)){return 0;}
@@ -149,18 +131,8 @@ function everyInterval(n){
   return false;
 }
 function setResolution(){
-  document.querySelector(".loadDetails").innerHTML = "Setting resolution ...";
-  let gP = document.querySelector(".gamePlaneCanvas");
-  let unit = "vh";
-  if(window.innerHeight > window.innerWidth){
-    unit = "vw";
-  }
-  gP.style.maxwidth = "100"+unit;
-  gP.style.height = "100"+unit;
-  
-  document.querySelector(".loadDetails").innerHTML = "Setting controls ...";
-  mobileControls.validate();
-  menus.init();
+  mobileControls.validate();  
+  menus.resize();
 }
 function hpColor(perc){
   let green = Math.round((255*perc)/100);

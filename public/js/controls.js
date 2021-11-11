@@ -2,6 +2,7 @@ const controls = {
   currentTarget : false,
   vals: [],
   init(){
+    this.writingNow = false;
     window.addEventListener('keydown', (e) => {controls.update([e.keyCode,true]);})
     window.addEventListener('keyup',  (e) => {controls.update([e.keyCode,false]);})
   },
@@ -13,6 +14,25 @@ const controls = {
     }
   },
   update(params){
+    // WRITING MESSAGE [13] is enter
+    if(params[0] == 13 && !params[1] && this.vals.includes(13)){
+      // if()
+      const input = document.querySelector(".messagesInput");
+      const isFocused = (document.activeElement === input);
+      if(isFocused){
+        input.blur();
+        this.writingNow = false;
+        if(input.value != ""){
+          player.says = input.value;
+        }
+        input.value = "";
+      }else{
+        this.writingNow = true;
+        input.focus();
+      }
+    }
+    if(this.writingNow){return 0;}
+
     // abort route when do something 
     this.planeClicking.route = [];
     // white target on client side (84 is t key)
@@ -113,60 +133,92 @@ const controls = {
       this.g = g;
     },
     get(e){
-      if(isSet(player)){
-        let ox,oy;
-        if(isSet(e.offsetX)){
-          const g = e.target.clientWidth/11;
-          ox = Math.floor((e.clientX - e.target.offsetLeft)/g);
-          oy = Math.floor((e.clientY - e.target.offsetTop)/g);
+      let ox,oy;
+      if(isSet(e.offsetX)){
+        const g = e.target.clientWidth/11;
+        ox = Math.floor((e.clientX - e.target.offsetLeft)/g);
+        oy = Math.floor((e.clientY - e.target.offsetTop)/g);
+      }else{
+        // CHECKIT !!! 
+        const g = e.touches[0].target.clientWidth/11;
+        ox = Math.floor((e.touches[0].clientX - e.touches[0].target.offsetLeft)/g);
+        oy = Math.floor((e.touches[0].clientY - e.touches[0].target.offsetTop)/g);
+      }
+      // GET X Y pos.
+      const x = ox+player.newPos[0]-5;
+      const y = oy+player.newPos[1]-5;
+      // ITEM CLICKING
+      let isAction = false;
+      // drop item
+      const picked = document.querySelector(".mainMenu .picked");
+      if(picked != null){
+        isAction = true;
+        player.itemAction = {}
+        for(const key of Object.keys(picked)){
+          player.itemAction[key] = picked[key];
+        }
+        player.itemAction.position = [x,y,player.position[2]];
+        player.itemAction.actionType = "drop";
+        // player.itemAction.id = picked.id;
+        player.itemAction.visibleFloor = map.visibleFloor;
+        if(picked.parentElement.className == ""){
+        //   // player.itemAction.field = document.querySelector(".backpack .row > div")
+          // player.itemAction.field = ".backpack in"
         }else{
-          // CHECKIT !!! 
-          const g = e.touches[0].target.clientWidth/11;
-          ox = Math.floor((e.touches[0].clientX - e.touches[0].target.offsetLeft)/g);
-          oy = Math.floor((e.touches[0].clientY - e.touches[0].target.offsetTop)/g);
+          player.itemAction.field = picked.parentElement.className;
         }
-        // GET X Y pos.
-        const x = ox+player.newPos[0]-5;
-        const y = oy+player.newPos[1]-5;
-        // TARGET CLICKING
-        let isCreature = false;
-        for(const c of gamePlane.creatures.list){
-          if(
-            ((c.newPos[0] == x && c.newPos[1] == y)
-            ||(c.oldPos[0] == x && c.oldPos[1] == y))
-            &&c.newPos[2] == player.newPos[2]
-            ){
-            isCreature = true;
-            player.setRedTarget = c.id;
+      }else{
+        // pick up item
+        for(const item of gamePlane.items){
+          // detect click on item
+          if(compareTables(item.position,[x,y,player.position[2]])){
+            // check if player stand next to item & if item is pickable
+            if(Math.abs(item.position[0] - player.position[0]) < 2 && Math.abs(item.position[1] - player.position[1]) < 2 && item.pickable ){
+              // console.log(item);
+              player.itemAction = item;
+              player.itemAction.actionType = "pickUp";
+              isAction = true;
+            }
           }
         }
-        // ACTION CLICKING
-        let isAction = false;
-        for(const g of map.getGrid([x,y,player.newPos[2]])){
-          if(g[5] == "startleauge"){
-            isAction = true;
-            console.log("STARTUJEMY LIGĘ!");
-          }
-        }
+      }
 
-        // WALKING CLICKING
-        if(!isCreature && !isAction){
-          let isFloor = false;
-          let isWall = false;
-          for(const g of map.getGrid([x,y,player.newPos[2]])){
-            if(map.avalibleGrids.includes(g[4])){
-              isFloor = true;
-            }
-            if(map.notAvalibleGrids.includes(g[4])){
-              isWall = true;
-            }
+      // TARGET CLICKING
+      let isCreature = false;
+      for(const c of gamePlane.creatures.list){
+        if(c.id != player.id&&
+          ((c.newPos[0] == x && c.newPos[1] == y)
+          ||(c.oldPos[0] == x && c.oldPos[1] == y))
+          &&c.newPos[2] == player.newPos[2]
+          ){
+          isCreature = true;
+          player.setRedTarget = c.id;
+        }
+      }
+      // ACTION CLICKING
+      for(const g of map.getGrid([x,y,player.newPos[2]])){
+        if(g[5] == "startleauge"){
+          isAction = true;
+          console.log("STARTUJEMY LIGĘ!");
+        }
+      }
+      // WALKING CLICKING
+      if(!isCreature && !isAction){
+        let isFloor = false;
+        let isWall = false;
+        for(const g of map.getGrid([x,y,player.newPos[2]])){
+          if(map.avalibleGrids.includes(g[4])){
+            isFloor = true;
           }
-          // if click is focused on floor - try set route to it.
-          if(!isWall && isFloor){
-            this.route = setRoute(player.newPos,[x,y,player.newPos[2]],map,gamePlane.creatures.list,5000);
-            if(this.route.length > 0){
-              this.route.push([x,y]);
-            }
+          if(map.notAvalibleGrids.includes(g[4])){
+            isWall = true;
+          }
+        }
+        // if click is focused on floor - try set route to it.
+        if(!isWall && isFloor){
+          this.route = setRoute(player.newPos,[x,y,player.newPos[2]],map,gamePlane.creatures.list,5000);
+          if(this.route.length > 0){
+            this.route.push([x,y]);
           }
         }
       }
@@ -201,16 +253,23 @@ const controls = {
 }
 const mobileControls = {
   ev: 'click',
+  css: document.querySelector("#mobileCSS"),
   validate(){
     let panel = document.querySelectorAll(".mobileControls");
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       console.log("Detected mobile device, setting controls.");
+      
       panel[0].style.display = "flex";
       panel[1].style.display = "flex";
       this.set();
       this.preventZoom();
       this.ev = 'touchstart';
+      this.css.disabled = false;
     }else{
+      this.css.disabled = true;
+      // if(this.css.parentNode != null){
+      //   this.css.parentNode.removeChild(this.css);
+      // }
       panel[0].style.display = "none";
       panel[1].style.display = "none";
     }
@@ -294,7 +353,7 @@ const mobileControls = {
         leftPanel.append(butt);
       }
   },
-  allowClick : ["BUTTON","CANVAS","arrow","gamePlane"],
+  allowClick : ["BUTTON","CANVAS","arrow","gamePlaneCanvas"],
   preventZoom(){
     window.oncontextmenu = function() { return false; }
     for(const n of document.querySelectorAll('*')){

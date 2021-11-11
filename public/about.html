@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webions Game</title>
+    <title>Webions</title>
     <link rel="shortcut icon" href="../img/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./style/page.css">
     <meta name="google-site-verification" content="hntgAqdbXzNcBY02LAfBw-qPdejtMqYa75hPCQdBres" />
+    <link rel="manifest" href="json/manifest.json">
+    <link rel="apple-touch-icon" href="img/logos/logo_512.png">
+    <link rel="apple-touch-startup-image" href="img/logos/logo_512.png">
+    <meta name="apple-mobile-web-app-title" content="Webions">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
   </head>
   <body>
   <header>
@@ -29,8 +35,8 @@
   <h3>Firstly, big five to <a href="https://github.com/peonso" target="_blank">PEONSO</a>, cos i've get sprites from <a href="https://github.com/peonso/opentibia_sprite_pack" target="_blank">here</a></h3>
   <p>
     To play webions, in every case - go to 
-    <a href="./">home page</a>, and fill input with your nick
-    then click "Play!" button.
+    <a href="./">home page</a>, and click "PLAY".<br />
+    Then create simple acc and have fun!
   </p>
   <h2>Table of contents</h2>
   <noscript>
@@ -90,6 +96,30 @@
     <img src="./img/healing.gif" alt="Healing in Webions">
     If you click heal to quick once again - you will see grey dust - You are exhousted.
 
+    <br /><br /><br />
+
+    <h2 id="Scripting">Scripting</h2>
+    <p>
+      You can help your player grow by using scripts.<br />
+      To use it open development tools (CTRL + SHIFT + J) or (F12)<br />
+      Next, go to "Console" and use this scripts: <br />
+      <pre>
+        // Auto shot on target:
+        controls.update([68,true]);
+
+        // Turn off:
+        controls.update([68,false]);
+
+
+        // Auto healing:
+        controls.update([72,true]);
+        
+        // Turn off:
+        controls.update([72,false]);
+      </pre>
+      
+
+    </p>  
   </div>
   <script>
     // Making TOS
@@ -108,8 +138,7 @@
 
     <aside>
       <a href="/players.html?online=true">Online list</a>
-      <a href="#">Stats</a>
-      <a href="#">Last deaths</a>
+      <a href="/players.html?lastdeaths=true">Last deaths</a>
     </aside>
     </div>
   <footer>
@@ -121,3 +150,30 @@
   </footer>
   </body>
 </html>
+<!-- COOKIES POLICY-->
+<script>
+  console.log(document.cookie);
+  console.log("e?")
+  if(!document.cookie.split("; ").includes("popup=false")){
+    const popup = document.createElement("div");
+    popup.className = "cookiesPopUp";
+    popup.style.cssText = `
+      display:flex;
+      position:fixed;
+      bottom:0;
+      background-color:#333;
+      width:100%;
+      padding:2% 5%;
+      justify-content:space-between;
+      align-items:center;
+    `;
+    popup.innerHTML = "<span>Ta strona używa plików cookies.<span>";
+    popup.innerHTML += "<span style='cursor:pointer;border:2px solid #fff;border-radius:5px;padding:5px 10px' onclick='accept()'>OK</span>";
+    document.body.append(popup);
+  }
+  const accept = () => {
+    document.querySelector(".cookiesPopUp").remove();
+    document.cookie = "popup=false";
+  }
+
+</script>

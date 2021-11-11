@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webions Game</title>
+    <title>Webions</title>
     <link rel="shortcut icon" href="../img/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./style/page.css">
     <meta name="google-site-verification" content="hntgAqdbXzNcBY02LAfBw-qPdejtMqYa75hPCQdBres" />
+    <link rel="manifest" href="json/manifest.json">
+    <link rel="apple-touch-icon" href="img/logos/logo_512.png">
+    <link rel="apple-touch-startup-image" href="img/logos/logo_512.png">
+    <meta name="apple-mobile-web-app-title" content="Webions">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
   </head>
   <body>
   <header>
@@ -34,7 +40,7 @@
   </p>
   <form action="account.html">
     <h2>Wanna play?</h2>
-    <input type="submit" value="SIGN IN">
+    <input type="submit" value="PLAY!">
     <p>
       <a href="/account.html?action=register">Sign up</a> if u're here for first time<br />
     </p>
@@ -52,8 +58,7 @@
 
     <aside>
       <a href="/players.html?online=true">Online list</a>
-      <a href="#">Stats</a>
-      <a href="#">Last deaths</a>
+      <a href="/players.html?lastdeaths=true">Last deaths</a>
     </aside>
     </div>
   <footer>
@@ -65,3 +70,30 @@
   </footer>
   </body>
 </html>
+<!-- COOKIES POLICY-->
+<script>
+  console.log(document.cookie);
+  console.log("e?")
+  if(!document.cookie.split("; ").includes("popup=false")){
+    const popup = document.createElement("div");
+    popup.className = "cookiesPopUp";
+    popup.style.cssText = `
+      display:flex;
+      position:fixed;
+      bottom:0;
+      background-color:#333;
+      width:100%;
+      padding:2% 5%;
+      justify-content:space-between;
+      align-items:center;
+    `;
+    popup.innerHTML = "<span>Ta strona używa plików cookies.<span>";
+    popup.innerHTML += "<span style='cursor:pointer;border:2px solid #fff;border-radius:5px;padding:5px 10px' onclick='accept()'>OK</span>";
+    document.body.append(popup);
+  }
+  const accept = () => {
+    document.querySelector(".cookiesPopUp").remove();
+    document.cookie = "popup=false";
+  }
+
+</script>

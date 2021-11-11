@@ -3,17 +3,16 @@ const dbc = new dbConnect();
 const Map = require("../public/js/map");
 const map = new Map();
 const func = require("../public/js/functions");
+const itemsTypes = require("./itemsTypes").types;
 class Creature {
-  constructor(nickName,creaturesLength){
+  constructor(nickName,creaturesLength = 0,type = "monster"){
     this.id = creaturesLength+1; 
     this.name = nickName;
-    this.position = [34,-10,0];
-    this.startPosition = this.position;
+    this.position = [35,-9,-1];
     this.walk = false;
     this.speed = 2; // grids per second
     this.direction = 1;
     this.health = 2000;
-    this.healthValue = 10;
     this.maxHealth = this.health;
     this.healthExhoust = 0;
     this.exhoustHeal = 1000;
@@ -28,17 +27,105 @@ class Creature {
       dist:100,
       healing:100,
     }
-    this.colors = {
-      head: [240, 169, 98],
-      chest: [240, 98, 98],
-      legs: [155, 155, 155],
-      foots: [13, 13, 13]
+    if(type == "player"){
+      this.quests = [];
+      this.colors = {
+        head: [240, 169, 98],
+        chest: [240, 98, 98],
+        legs: [155, 155, 155],
+        foots: [13, 13, 13]
+      }
+      this.eq = {
+        hd:false,
+        bp:false,
+        nc:false,
+        ch:false,
+        lh:false,
+        rh:false,
+        lg:false,
+        ft:false,
+      }
+      this.startPosition = this.position;
+    }
+    if(["player","npc"].includes(this.type)){
+      this.sayExhoust = false;
     }
   }
-  update(param,game,creatures){
-    // broken sprites fixing
-    if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
-    // SPRITE CHANGER
+  getHit = (game,from,type = 'fist') =>{
+    // if from killed him
+    if(this.health <= from.skills[type]){
+      this.health = 0;
+      from.redTarget = false;
+      if(this.type == "player"){
+        // downgrade exp
+        this.skills.exp = Math.floor(this.skills.exp*0.9);
+        this.updateSkills(game);
+        this.text = "You're dropped level to "+this.skills.level;
+        // save dead
+        const deadLog = {
+          when: new Date(),
+          who: from.name,
+          whoType : from.type,
+          level: this.skills.level
+        };
+        if(func.isSet(this.lastDeaths)){
+          if(this.lastDeaths.length >= 5){this.lastDeaths.shift()}
+          this.lastDeaths.push(deadLog)
+        }else{
+          this.lastDeaths = [deadLog];
+        }
+      }
+    }else{
+      this.health -= from.skills[type];
+      this.text = from.name+" takes u "+from.skills[type]+" hp";
+    }
+    // GIVE EXP TO KILLER! 
+    if(this.type == "monster" && this.health <= 0){
+      from.skills.exp += this.skills.exp;
+      from.updateSkills(game);
+    }
+  }
+  updateSkills(game){
+    const oldLvl = this.skills.level; 
+    this.skills.level = Math.ceil(Math.cbrt(this.skills.exp));
+    if(this.skills.level != oldLvl){
+      this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
+      this.health = this.maxHealth;
+      this.speed = 3 + Math.floor(this.skills.exp/100)/10;
+      this.speed>10?this.speed=10:'';
+      this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
+      dbc[game.db].update(this);
+    }
+  }
+  update(param,game,creatures,items){
+    // SAYING
+    if(func.isSet(param.says) && (!this.sayExhoust || this.sayExhoust <= game.time.getTime())){
+      if(this.type == "player"){
+        this.says = param.says;
+        this.sayExhoust = game.time.getTime() + 1000;
+        // saying to npc's
+        if(this.says == "hi"){
+          for(const c of creatures){
+            if(c.type == "npc" && func.isSet(c.dialog) && c.position[2] == this.position[2]){
+              c.dialog(c,this);
+            }
+          }
+        }
+      }
+    }else{delete this.says;}
+    // SAYING [npc's]
+    if(this.type == "npc"){
+      if(func.isSet(this.says)){
+        this.talking = game.time.getTime() + 20000;
+      }
+      if(func.isSet(this.talking) && this.talking <= game.time.getTime()){
+        delete this.talking;
+        this.says = "Okey, bye then.";
+      }
+    }
+    // SPRITES UPDATE
     if(func.isSet(param.outfit) && this.type == "player"){
       this.sprite = param.outfit.sprite;
       this.colors = param.outfit.colors;
@@ -46,7 +133,6 @@ class Creature {
     }else{
       delete this.outfitUpdate;
     }
-
     // set playerinArea (4 monster walking and targeting)
     let playerInArea;
     if(this.type == "monster"){
@@ -85,8 +171,8 @@ class Creature {
           case 40: phantomPos[1]++;this.direction = 1; break; // down key
         }
       }
-      // monsters walking
-      if(this.type == "monster"){
+      // monsters & npc's walking
+      if(["monster","npc"].includes(this.type)){
         // set walking type (random / follow / escape)
         let walkingMode = "random";
         let isPlayerNear = false;
@@ -101,13 +187,26 @@ class Creature {
             }
           }
         }
-        if(isPlayerNear){
-          if(this.health > 0.2*this.maxHealth && playerInArea.health > 0){
-            walkingMode = "follow";
+        
+        // walking modes
+        if(this.type == "npc"){
+          if(func.isSet(this.talking)){
+            walkingMode = "stay";
           }else{
-            walkingMode = "escape";
+            walkingMode = "random";
           }
+        }else{
+          if(isPlayerNear){
+            if(this.health > 0.2*this.maxHealth && playerInArea.health > 0){
+              walkingMode = "follow";
+            }else{
+              walkingMode = "escape";
+            }
+          }  
         }
+        
+
+
         // move monster
         let r;  // direction of move
         if(walkingMode == "follow"){
@@ -141,6 +240,9 @@ class Creature {
         if(walkingMode == "random") {
           r = Math.floor(Math.random() * 4);
         }
+        if(walkingMode == "stay"){
+          r = -1;
+        }
         if (r == 0) {phantomPos[1]--;} // up
         if (r == 1) {phantomPos[0]++;} // right
         if (r == 2) {phantomPos[1]++;} // down
@@ -150,9 +252,7 @@ class Creature {
         if(phantomPos[0] > this.position[0]){this.direction = 2;}        
         if(phantomPos[0] < this.position[0]){this.direction = 3;}        
         if(phantomPos[1] > this.position[1]){this.direction = 1;}        
-        if(phantomPos[1] < this.position[1]){this.direction = 0;}        
-
-
+        if(phantomPos[1] < this.position[1]){this.direction = 0;}
       }
       // checking if position is availble
       let isFloor = false;
@@ -160,7 +260,6 @@ class Creature {
       let isStairs = false;
       let isWall = false;
       let doorAvalible = true;
-      //*
       // check grids 
       const avalibleGrids = (map.avalibleGrids);
       const notAvalibleGrids = map.notAvalibleGrids;
@@ -172,6 +271,43 @@ class Creature {
         notAvalibleGrids.push("stairs");
         avalibleGrids.splice(avalibleGrids.indexOf("stairs"),1);
       }
+      // ladder 
+      if(this.type == "player"){
+        for(const item of items.itemsInArea){
+          // up
+          if(func.compareTables(item.position,this.position) && item.name == "ladder"){
+            // check if's floor between
+            let isBetween = false;
+            for(const grid of map.getGrid([phantomPos[0],phantomPos[1],phantomPos[2]+1])){
+              // if(grid[4] == "floors"){
+                isBetween = true;
+              // }
+            }
+            if(!isBetween){
+              phantomPos[0]--;
+              phantomPos[1]--;
+              phantomPos[2]++;  
+            }
+          }
+          // down
+          if(func.compareTables([item.position[0]-1,item.position[1]-1,item.position[2]+1],phantomPos)
+          && item.name == "ladder"){
+            // check if's floor between
+            let isBetween = false;
+            for(const grid of map.getGrid(phantomPos)){
+              // if(grid[4] == "floors"){
+                isBetween = true;
+              // }
+            }
+            if(!isBetween){
+              phantomPos[0]++;
+              phantomPos[1]++;
+              phantomPos[2]--;  
+            }
+
+          }
+        }
+      }
       const checkGrids = map.getGrid(phantomPos);
       for(const checkGrid of checkGrids){
         if(checkGrid){
@@ -182,7 +318,7 @@ class Creature {
             isWall = true;
           }
           if(checkGrid[4] == "stairs"){
-            if(this.type == "monster"){isFloor = false;}
+            if(["monster","npc"].includes(this.type)){isFloor = false;}
             if(this.type == "player"){
               isStairs = true;
               phantomPos = checkGrid[5];
@@ -190,7 +326,7 @@ class Creature {
           }
           if(checkGrid[4] == "doors"){
             doorAvalible = false;
-            if(this.type == "monster"){isFloor = false;}
+            if(["monster","npc"].includes(this.type)){isFloor = false;}
             if(this.type == "player" && func.isSet(checkGrid[5])){
               // cases when player can pass through
               // level gate
@@ -225,18 +361,33 @@ class Creature {
             isFloor = false;
         }        
       }
-      // */
+      // check items can't walk and walkon
+      let isItem = false;
+      let itemText = false;
+      for(const i of items.itemsInArea){
+        if(func.compareTables(phantomPos,i.position)){
+          if(func.isSet(i.walkThrow) && i.walkThrow == false){
+            isItem = true;
+          }
+          if(func.isSet(i.walkOn)){
+            itemText = true;
+            i.walkOn(this,i);
+          }
+        }
+      }
+      if(isItem){isFloor = false;}
+
       // set new position or display error
       if(isFloor){
         if((this.type == "player" && typeof key != "undefined") 
-        || (this.type == "monster" && !func.compareTables(this.position,phantomPos)) ){
+        || (["monster","npc"].includes(this.type) && !func.compareTables(this.position,phantomPos)) ){
           // for monsters
           delete this.escapeStuck;
           // set exhoust
           this.walk = game.time.getTime() + Math.round(1000/this.speed);
           this.position = phantomPos;
         }
-      }else if(this.type == "player" && typeof key != "undefined" && doorAvalible){
+      }else if(this.type == "player" && typeof key != "undefined" && doorAvalible && !itemText){
           this.text = "There's no way.";
       }  
     }
@@ -276,6 +427,8 @@ class Creature {
         this.restore = game.time.getTime() + 150000;
         // this.restore = game.time.getTime() + 500;
       }
+      if(this.type == "npc"){
+        this.restore = game.time.getTime();      }
       if(this.name == param.name){
         this.direction = 4;
         game.dead = true;
@@ -285,11 +438,14 @@ class Creature {
     if(this.restore && game.time.getTime() >= this.restore){
       this.health = this.maxHealth;
       // this.cyle = 0;
-      this.direction = 1;
-      this.cyle = this.defaultCyle;
       // this.direction = this.defaultDirection;
       this.restore = false;
-      this.position = this.startPosition;
+      this.direction = 1;
+      if(!this.type == "npc"){
+        this.position = this.startPosition;
+        this.cyle = this.defaultCyle;
+  
+      }
     } 
     // HEALING [player]
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
@@ -303,7 +459,7 @@ class Creature {
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }
-    // healing [monster]
+    // HEALING [monster]
     if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.healthExhoust <= game.time.getTime() && this.health > 0){
       if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
@@ -313,9 +469,6 @@ class Creature {
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }
-    // SELF AUTO HEALING
-    // TODO - SELF AUTO HEALING!
-
     // SHOTS
     if(this.redTarget){
       for(const c of creatures){
@@ -379,35 +532,156 @@ class Creature {
         }
       }
     }
-  }
-  getHit = (game,from,type = 'fist') =>{
-    // if u killed him
-    if(this.health <= from.skills[type]){
-      this.health = 0;
-      from.redTarget = false;
-    }else{
-      this.health -= from.skills[type];
-    }
-    this.text = from.name+" Cię walnął za "+from.skills[type]+" hapa";
-    // GIVE EXP TO KILLER! 
-    if(this.type == "monster" && this.health <= 0){
-      from.skills.exp += this.skills.exp;
-      from.updateSkills(game);
-    }
-  }
-  updateSkills(game){
-    const oldLvl = this.skills.level; 
-    this.skills.level = Math.ceil(Math.sqrt(this.skills.exp));
-    if(this.skills.level != oldLvl){
-      this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
-      this.health = this.maxHealth;
-      this.speed = 3 + Math.floor(this.skills.exp/100)/10;
-      this.speed>10?this.speed=10:'';
-      this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
-      this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
-      this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
-      dbc[game.db].update(this);
+    // ITEM DROPING AND PICK UPING
+    if(param.itemAction){
+      const item = new Item(param.itemAction);
+      item.relocate(this,items,param.itemAction)
+      delete param.itemAction;
     }
   }
 }
-module.exports = Creature;
+class Item{
+  constructor(obj){
+    this.rewrite(obj);
+  }
+  makeNew(obj,where,creature){
+    const item = new Item(obj);
+    if(where == "eq" && func.isSet(item.handle)){
+      let setted = false;
+      for(const f of item.handle){
+        if(!creature.eq[f]){
+          creature.eq[f] = item;
+          setted=true;
+          break;
+        }
+      }
+      if(!setted){
+        creature.text = "You have no empty places.";
+      }
+    }
+  }
+  relocate(creature,items,itemAction){
+    // EQ TO MAP
+    if(itemAction.actionType == 'drop'){
+      console.log(itemAction)
+      if(func.isSet(itemAction.field) && itemAction.field != "" ){
+      // DROP ITEM
+        // SET DROPPING FLOOR [WHEN DROP IS BETWEEN FLOORS]
+        let isPos = false;
+        for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
+          const checkPosition = [this.position[0],this.position[1],floor];
+          for(const grid of map.getGrid(checkPosition)){
+            if(grid[4] == "floors"){
+              isPos = true;
+              this.position = checkPosition;
+              break;
+            }
+          }
+          if(isPos){break;} 
+        }
+        if(isPos){
+          // DELETE IT FROM EQ
+          creature.eq[this.field] = false;
+          // ADD IT TO MAP
+          items.allItems.push(this);
+          // console.log(items);
+          creature.text = "You dropped out a "+this.name+".";
+        }else{
+          creature.text = "Sorry, it not possible.";
+        }
+      }else if( itemAction.field == ""){
+
+        // if(isPos){
+          // DELETE IT FROM BACKPACK
+          // for()
+          let nr = 0;
+          for([nr = 0,inBp] in creature.eq.bp.in.entries()){
+
+          }
+          // creature.eq.bp.in[nr] = false;
+          creature.eq.bp.in.splice(nr,1);
+
+          // ADD IT TO MAP
+          items.allItems.push(this);
+          // console.log(items);
+          creature.text = "You dropped out a "+this.name+".";
+        // }else{
+        //   creature.text = "Sorry, it not possible.";
+        // }
+      }else{
+        creature.text = "You can't drop this out.";
+      }
+    }
+    // MAP TO EQ OR BP
+    if(itemAction.actionType == 'pickUp'){
+      if(this.pickable){
+        let move = false;
+        // try to move this item to eq
+        for(const handle of this.handle){
+          if(!creature.eq[handle]){
+            move = true;
+            creature.eq[handle] = this;
+            break;
+          }
+        }
+        // if eq is full, try give it to bp
+        if(!move && creature.eq.bp){
+          if(!func.isSet(creature.eq.bp.in)){creature.eq.bp.in = [];}
+          // check fields in bp
+          if(creature.eq.bp.in.length < creature.eq.bp.cap){
+            // console.log("zmieści to");
+            creature.eq.bp.in.push(this);
+            move = true;
+          }
+        }
+        // SHOW RESULT
+        if(!move){
+          creature.text = "You can't pick up this "+this.name;
+        }else{
+          creature.text = "You picked up "+this.name;
+          // clear it from itemlist
+          this.delete = true;
+          // to last dropped on top
+          items.allItems.reverse();
+          items.allItems.splice(items.allItems.map((e)=>{ 
+            if(func.compareTables(e.position, this.position)){
+              // this.delete = true;
+              e.delete = true;
+              return this.delete
+            }else{
+              return 0;
+            }
+          }).indexOf(this.delete),1);
+          // reverse it as at begin.
+          items.allItems.reverse();
+          delete this.delete;
+        }
+      }else{
+        creature.text = "You can't take this item."
+      }
+    }
+  }
+  rewrite(obj){
+    if(func.isSet(obj)){
+      // MAKE WITH OBJ
+      for(const key of Object.keys(obj)){
+        this[key] = obj[key];
+      }  
+      // UPDATE IT FROM PROPERTIES FROM ITEMS TYPES
+      for(const it of itemsTypes){
+        if(func.isSet(obj.name) && obj.name == it.name){
+          for(const key of Object.keys(it)){
+            if(!func.isSet(this[key])){
+              this[key] = it[key];
+            }
+          }
+        }
+      }
+      // FILL ID IF IS NOT
+      // if(!func.isSet(this.id)){
+      //   this.id = itemID++;
+      // }
+    }
+  }
+}
+module.exports = [Creature,Item];
