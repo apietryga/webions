@@ -1,7 +1,6 @@
 const monstersTypes = [
   // npc's
-  {
-    name:"Slepo Oma",
+  {name:"Slepo Oma",
     sprite:"oma",
     health:100,
     type:"npc",
@@ -29,18 +28,32 @@ const monstersTypes = [
       }
     }
   },
-  {name:"Training Man",
-  type:"npc",
-  sprite:"trainingMan",
-  health:10000000,
-  speed:0,
-  skills:{
-    fist:10,
-    exp:1,
-    dist:0,
-    healing:1000
-  }
-},
+  { name:"King",
+    type:"npc",
+    sprite:"king",
+    health:10000000,
+    speed:0.8,
+    skills:{
+      fist:10,
+      exp:1,
+      dist:0,
+      healing:1000
+    }
+
+  },
+
+  { name:"Training Man",
+  // type:"npc",
+    sprite:"trainingMan",
+    health:10000000,
+    speed:0,
+    skills:{
+      fist:10,
+      exp:1,
+      dist:0,
+      healing:1000
+    }
+  },
 
 
 

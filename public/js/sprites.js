@@ -1,4 +1,12 @@
 let sprites = [
+
+  { name: "gm",
+    src : "img/sprites/gm.webp?v="+game.version,
+    w:80,
+  },
+  { name: "king",
+    src : "img/sprites/male_king.webp?v="+game.version,
+  },
   { name: "items",
     src : "img/sprites/items.webp?v="+game.version,
   },

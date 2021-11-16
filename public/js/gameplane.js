@@ -42,28 +42,41 @@ const gamePlane = {
       for(const i of gamePlane.items){i.update();drawStack.push(i);}
       // sort it in order of rendering.
       drawStack.sort((a,b)=>{
-        // items down to player
+        // player above items
         if(b.type == "player" && a.type == "item"){return -1;}
-          
-        if(a.position[2] < b.position[2]){
+        let keyA = "position"; 
+        let keyB = "position"; 
+        const staticElements = ['doors','walls','floors','halffloors','item','stairs'];
+        const movingElements = ['monster','player','npc'];
+        if(a.position[2]*1 > b.position[2]*1){
+          return 1;        
+        }else if(a.position[2]*1 < b.position[2]*1){
           return -1;
-        }else if(a.position[2] == b.position[2]){
-          // doors always up
-          if(b.type == "doors"){return -1;}
-          // floors always down.
-          if(a.type == "floors"){return -1;}
-          // dead body down.
-          if(typeof a.health != "undefined" && a.health <= 0 
-          && typeof b.health != "undefined"){return -1;}
-          // right and bottom down.
-          if(a.type != "floors" && b.type != "floors"){
-            if(a.position[1] < b.position[1]){return -1;}
-            if(a.position[0] < b.position[0]){return 1;}
+        }else if(movingElements.includes(b.type) && movingElements.includes(a.type)){
+            keA = "newPos";
+            keB = "newPos";
+          
+        }else if(movingElements.includes(b.type) && !movingElements.includes(a.type)){
+            keA = "position";
+            keB = "newPos";
+          
+        }else if(!movingElements.includes(b.type) && movingElements.includes(a.type)){
+            keA = "newPos";
+            keB = "position";
+        }
+        // dead body down.
+        if( typeof a.health != "undefined" && a.health <= 0 ||  typeof b.health != "undefined" && b.health <= 0 ){
+          if((a.health <= 0 && b.health > 0) || (b.health <= 0 && a.health > 0)){
+            return -1;
           }
+          return 1;
         }
 
-        // stairs and walls 
-
+        if(a[keyA][1] >= b[keyB][1]){return 1;}
+        // if(a[keyA][1] < b[keyB][1]){return -1;}
+        if(a[keyA][0] <= b[keyB][0]){return 1;}
+        // if(a[keyA][0] > b[keyB][0]){return -1;}
+        // console.log(a.position)
       })
       // draw all in order
       for(const e of drawStack){

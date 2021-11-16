@@ -106,7 +106,7 @@ body{
     align-items: center;
   }
   .wrapper{
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     position:fixed;
     left:0;
     top:0;
@@ -116,11 +116,19 @@ body{
     padding:2px;
     height:100%;
     width:100%;
+    .handlerVertical{
+      background-color: #2f2f2f;
+      min-width:10px;
+      cursor: ew-resize;
+    }
     .gameAndConsole{
-      min-width:50%;
-      flex:5;
-      display:flex;
-      flex-direction: column;
+      .handler  {
+        background-color: #2f2f2f;
+        min-height: 10px;
+        padding: 0;
+        cursor: ns-resize;
+        flex: 0 0 auto;
+      }
       .gamePlane{
         flex: 1 1 auto;
         display:flex;
@@ -141,13 +149,6 @@ body{
           // padding-left:100%;
           // height:90%;
         }
-      }
-      .handler {
-        background-color: #2f2f2f;
-        height: 5px;
-        padding: 0;
-        cursor: ns-resize;
-        flex: 0 0 auto;
       }
       .console{
         @extend %inFrame;
@@ -191,6 +192,10 @@ body{
           }
         }
       }
+      min-width:50%;
+      flex:5;
+      display:flex;
+      flex-direction: column;
     }
     .mainMenu{
       @extend %inFrame;

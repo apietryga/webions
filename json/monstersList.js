@@ -1,6 +1,7 @@
 this.data = [
   // npc's
   {"name":"Slepo Oma", "position":[35, -9,-1]},
+  {"name":"King", "position":[55, -30,-1]},
 
   // TEMPLE
   {"name":"Cat","position":[35,-9,1]},
@@ -9,11 +10,10 @@ this.data = [
   {"name":"Cat","position":[40,6,0]},
   // DEPO
   {"name":"Training Man","position":[42,-1,-1]},
-  {"name":"Training Man","position":[46,-1,-1]},
   {"name":"Training Man","position":[50,-1,-1]},
 
-  // TOP OF THE CITY
-  {"name":"Minotaur","position":[41,-17,0]},
+  // CASTLE
+  {"name":"Minotaur","position":[55,-20,-2]},
 
 
   // RIGHT OF CITY

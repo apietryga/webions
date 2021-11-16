@@ -22,7 +22,7 @@ this.types = [
     handle:['bp'],
     pickable:true
   },
-  { name: "Relounder",
+  { name: "Rod",
     sprite: "items",
     spriteNr: 1,
     atk: 100,
@@ -39,7 +39,8 @@ this.types = [
     sprite: "items",
     spriteNr: 2,
     handle: ["hd"],
-    pickable:true
+    pickable:true,
+    health: 180
   },
   { name: "Simple Armor",
     sprite: "items",
@@ -57,13 +58,15 @@ this.types = [
     sprite: "items",
     spriteNr: 5,
     handle: ["ft"],
-    pickable:true
+    pickable:true,
+    speed:2
   },
   { name: "The Crown",
     sprite: "items",
     spriteNr: 6,
     handle: ["hd"],
-    pickable:true
+    pickable:true,
+    health:1000
   },
   { name: "King's Armor",
     sprite: "items",
@@ -81,7 +84,8 @@ this.types = [
     sprite: "items",
     spriteNr: 9,
     handle: ["ft"],
-    pickable:true
+    pickable:true,
+    speed:7
   },
   { name: "Wand of Destiny",
     sprite: "items",
@@ -93,7 +97,8 @@ this.types = [
     sprite: "items",
     spriteNr: 11,
     handle: ["lh","rh"],
-    pickable:true
+    pickable:true,
+    def:8
   },
   { name: "Blessed Shield",
     sprite: "items",

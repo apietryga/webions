@@ -9,34 +9,64 @@
 }
 $tw:rgba(255, 255, 255, 0.096);
 $bodyBg:rgb(90, 27, 27);
+$hbg:rgba(0, 0, 0, 0.5);
+
+%inFrame{
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  padding:2px;
+  background-color: rgb(47, 47, 47);
+  color:#AEAEAC;
+}
+%onFrame{
+  border: 2px solid;
+  border-color: #737373 #444444 #444444 #737373;
+  padding:2px;
+  background-color: rgb(47, 47, 47);
+  color:#AEAEAC;
+}
 html{height:100%;}
 body{
-  background-color:$bodyBg;
-  color:#fff;
+  @extend %inFrame;
   margin:0;
   display:flex;
   flex-direction: column;
   min-height:100%;
-  // border:2px dashed red;
   a{
     text-decoration:none;
     // color:inherit;
     color:rgb(127, 127, 241);
   }
   >header{
-    $hbg:rgba(0, 0, 0, 0.5);
-    background-color:$hbg;
+    @extend %onFrame;
+    // background-color:$hbg;
+    display:flex;
+    justify-content: space-between;
     position:relative;
-    &::after{
-      content:"";
-      position:absolute;
-      z-index:0;
-      width:100%;
-      height:50%;
-      background:linear-gradient($hbg,transparent);
+    .logo{
+      @extend %onFrame;
+      display:flex;
+      align-items: center;
+      padding: 5px 12px;
+      padding-right:20px;
+      font-size: 0.6em;
     }
-    // border:2px dashed yellowgreen;
-    >a{
+    .play{
+      @extend %onFrame;
+      background: linear-gradient(rgb(97, 9, 9),rgb(11, 58, 11));
+      flex:1;
+      justify-content: center;
+      a{
+        width:100%;
+        height:100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        font-size:1.5em;
+      }
+    }
+    a{
+      // border:2px dashed red;
       color:inherit;
       display:flex;
       align-items: center;
@@ -49,78 +79,53 @@ body{
       }
   
     }
-    >nav{
-      // border:2px dashed yellow;
-      // margin-top:-1em;
+   
+  }
+  nav,aside,footer{
+    @extend %onFrame;
+    display:flex;
+    justify-content: space-evenly;
+    a{
+      flex:1;
       display:flex;
-      justify-content: space-evenly;
-      margin:0 2%;
-      gap:2%;
-      padding:2%;
-      background-color:$tw;
-      border-radius:7px;
-      a{
-        color:inherit;
-        padding:2%;
-        background-color:$hbg;
-        border-radius:7px;
-        flex:1;
-        display:flex;
-        align-items: center;
-        justify-content: center;
-        text-align:center;
-        position:relative;
-        box-shadow:2px 2px 2px 2px rgba(255, 0, 0, 0.541);
-        &:hover{
-          background-color:rgba(255, 255, 255, 0.5);
-          transition:1s;
-        }
+      justify-content: center;
+      align-items: center;
+      @extend %onFrame;
+      color:inherit;
+      &:hover{
+        background-color:rgb(68, 67, 67);
+        transition:1s;
       }
     }
   }
   .wrapper{
     position:relative;
-    padding:2%;
     display:flex;
     flex:1;
     main{
-      position:relative;
-      background-color:$tw;
-      // index
+      a{cursor:pointer;}
+      @extend %onFrame;
       flex:3;
-      padding:3%;
-      form{
-        background-color:rgba(255, 255, 255, 0.671);
-        color:#000;
-        box-shadow:0 0 15px 10px rgba(0, 0, 0, 0.493);
-        border-radius:7px;
-        padding:5% 0;
-        display:flex;
-        flex-direction: column;
-        align-items: center;
-        gap:10px;
-        input[type=text]{
-          padding:10px;
-          box-shadow:0 0 15px 2px rgba(0, 0, 0, 0.493);
-          background-color:rgba(255, 255, 255, 0.445);
-          outline:none;
-          border:none;
-          font-size:1.3em;
-          text-align:center;
-        }
-        input[type=submit]{
-          padding:30px 60px;
-          border-radius:7px;
-          border:2px solid #fff;
-          color:#fff;
-          font-weight: bolder;
-          cursor:pointer;
-          background-color:rgba(255, 0, 0, 0.445);
-        }
+      padding:5px;
+      // everywhere 
+      .content{
+        padding:10px;
+        @extend %onFrame;
+        background-color: rgba(255, 255, 255, 0.11);
       }
       // players 
       table{
+        @extend %onFrame;
         width:100%;
+        th{
+          @extend %onFrame;
+          background-color:  rgba(0, 0, 0, 0.493);
+        }
+        td{
+          cursor:pointer;
+          @extend %onFrame;
+          background-color:transparent;
+        }
         // Player list
         .listBody,.listHead{ // tr's from lists
           color:#fff;
@@ -133,19 +138,14 @@ body{
           }
           td{padding:10px;}
           th{padding:5px 20px;}
-        }
-        .listHead{background-color: rgba(0, 0, 0, 0.356);}
-        .listBody{
-          cursor:pointer;
-          background-color:rgba(0, 0, 255, 0.329);
           &:nth-child(even){
-            background-color:rgba(255, 0, 0, 0.288);
+            background-color:rgba(128, 0, 0, 0.322);
           }
         }
-        // Player details
         .detailsBody, .detailsHead{
-          background-color:rgba(255, 255, 0, 0.151);
+          // background-color:rgba(255, 255, 0, 0.151);
           >td{
+            cursor: default;
             text-align: center;
             .spriteWrapper{
               display:flex;
@@ -179,17 +179,19 @@ body{
             }
             &:nth-child(1){
               width:30%;
-              background-color:rgba(0, 128, 0, 0.486);
+              background-color:rgba(0, 128, 0, 0.192);
             }
             &:nth-child(2){
               width:70%;
-              background-color:rgba(0, 0, 255, 0.295);
+              background-color:rgba(0, 0, 255, 0.11);
             }
             table{
-              width:60%;
-              margin-left:20%;
+              // width:60%;
+              // margin-left:20%;
+              width:100%;
+              cursor:default;
               td{
-                width:50%;
+                // cursor:default;
                 padding:5px;
                 &:nth-child(1){
                   text-align:right;
@@ -204,11 +206,12 @@ body{
         }
       }
       h1{
-        line-height: 0.6em;
+        padding:0 0 5px 5px ;
+        // line-height: 0.6em;
         a{font-size:0.5em;color:rgb(171, 171, 235);}
       }
 
-      // howtoplay
+      // Libary
       .tos{
         // border:2px dashed #fff;
         padding:2%;
@@ -216,45 +219,82 @@ body{
         @for $i from 0 to 6 {.H#{$i}{$x:$i - 2;margin:#{$x}em;}}
       }
       .cont{
+        padding:5px;
+        h2{
+          padding:5px 10px;
+          @extend %onFrame;
+          cursor:pointer;
+        }
+        h3{
+          cursor:pointer;
+          @extend %onFrame;
+          padding-left:20px;
+          margin:5px;
+        }
+        div > div{
+          padding-left:30px;
+        }
         img{
           width:80%;
           // margin-left:10%;
           // margin-right:10%;
           margin:5% 10%;
         }
-        h3{
-          margin-top:10%;
-        }
+        .items,.monsters{
+          @extend %onFrame;
+          background-color: transparent;
+          .row{
+            @extend %inFrame;
+          
+            // border:2px dashed red;
+            display:flex;
+            justify-content: space-around;
+            align-items: center;
+            .preview{
+              @extend %inFrame;
+              position:relative;
+              margin:10px;
+            
+              
+            }
+
+
+          }
+          .stats{
+            padding:5px 20px;
+            flex:1;
+          }
+          >div{
+            display: flex;
+            flex-direction: row-reverse;
+  
+          }
+        }        
+
       }
 
     }
-    aside{
-      flex:1;
-      // border:2px dashed blue;
-      display:flex;
-      flex-direction: column;
-      padding:3%;
-      padding-bottom: 0;
-      position:sticky;
-      top:0;
-    }
+
   }
-  footer{
-    background-color:#000;
-    padding:5%;
-    display:flex;
-    flex-direction: column;
+  aside{
+    position:sticky;
+    top:0;
   }
 }
 
 @media (max-width:720px){
   body .wrapper{
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
+  nav{ order: 1;}
 }
-@media (min-width:1000px){
+@media (min-width:720px){
   .wrapper{
     width:60%;
     margin-left:20%;
+  }
+  nav,aside{
+    flex-direction: column;
+    max-height:20vh;
   }
 }

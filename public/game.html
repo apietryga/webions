@@ -32,6 +32,7 @@
         </div>
         <div class="handler"></div>
       </div>
+      <div class="handlerVertical"></div>
       <div class="mainMenu"></div>
       <div class="mobileControls leftPanel"></div>
       <div class="mobileControls rightPanel"></div>
@@ -46,35 +47,57 @@
 <script src="js/controls.js?v={{version}}"></script>
 <!-- RESIZE GAMEPLANE -->
 <script>
-  const handler = document.querySelector('.handler');
-  const wrapper = handler.closest('.gameAndConsole');
-  const boxA = wrapper.querySelector('.gamePlane');
-  let isHandlerDragging = false;
-  document.addEventListener('mousedown', function(e) {
-    if (e.target === handler) {
-      isHandlerDragging = true;
-    }
-  });
-  document.addEventListener('mousemove', function(e) {
-    if (!isHandlerDragging) {
-      return false;
-    }
-    const containerOffsetTop = wrapper.offsetTop;
-    const pointerRelativeYpos = e.clientY - containerOffsetTop;
-    // Arbitrary minimum width set on box A, otherwise its inner content will collapse to width of 0
-    var boxAminHeight = 60;
-    // Resize box A
-    // * 8px is the left/right spacing between .handler and its inner pseudo-element
-    // * Set flex-grow to 0 to prevent it from growing
-    boxA.style.height = (Math.max(boxAminHeight, pointerRelativeYpos - 8)) + 'px';
-    boxA.style.flexGrow = 0;
-    setResolution()
-  });
+  // MAKE RESIZEABLE MENUS
+  const makeResizeable = (handlerName, parent, handleIn, axis) =>{
+    const handler = document.querySelector('.'+handlerName);
+    const wrapper = handler.closest('.'+parent);
+    const boxA = wrapper.querySelector('.'+handleIn);
+    let isHandlerDragging = false;
+    document.addEventListener('mousedown', function(e) {
+      if (e.target === handler) {
+        isHandlerDragging = true;
+      }
+    });
 
-  document.addEventListener('mouseup', function(e) {
-    // Turn off dragging flag when user mouse is up
-    isHandlerDragging = false;
-  });
+    document.addEventListener('mousemove', function(e) {
+      // Arbitrary minimum width set on box A, otherwise its inner content will collapse to width of 0
+      const boxAminHeight = 60;
+
+      if (!isHandlerDragging) {
+        return false;
+      }
+      // get axis
+      let containerOffset,pointerRelative, key;
+      // * 8px is the left/right spacing between .handler and its inner pseudo-element
+      if(axis == "y"){
+        containerOffset = wrapper.offsetTop;
+        pointerRelative = e.clientY - containerOffset;
+        boxA.style.cssText = "min-height:"+(Math.max(boxAminHeight, pointerRelative - 8))+"px !important";
+      }else{
+        containerOffset = wrapper.offsetLeft;
+        pointerRelative = e.clientX - containerOffset;
+        // boxA.style.width = (Math.max(boxAminHeight, pointerRelative - 8)) + 'px !important';
+        // boxA.style.cssText = "min-height:"+(Math.max(boxAminHeight, pointerRelative - 8))+"px !important";
+        boxA.style.cssText = "min-width:"+(Math.max(boxAminHeight, pointerRelative + 8))+"px !important";
+      }
+      // Resize box A
+      // boxA.style[key] = (Math.max(boxAminHeight, pointerRelative - 8)) + 'px !important';
+      // * Set flex-grow to 0 to prevent it from growing
+      boxA.style.flexGrow = 0;
+
+      setResolution()      
+    });
+    document.addEventListener('mouseup', function(e) {
+      // Turn off dragging flag when user mouse is up
+      isHandlerDragging = false;
+    });
+  }
+
+  // SET DOM'S
+  makeResizeable('handler','gameAndConsole','gamePlane', "y");
+  makeResizeable('handlerVertical','wrapper','gameAndConsole', "x");
+
+  
 </script>
 
 <!-- POPUP -->
@@ -139,6 +162,7 @@
 <script src="js/components.js?v={{version}}"></script>
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script src="js/websocket.js?v={{version}}"></script>
+<script src="js/menus.js?v={{version}}"></script>
 <!--| PRELOAD |-->
 <script>
   // preload ;>
@@ -186,7 +210,6 @@
   }
   
 </script>
-<script src="js/menus.js?v={{version}}"></script>
 <!--| DEVELOPER BUTTONS & STATS |-->
 <script>
   const dev = {
@@ -217,7 +240,7 @@
         width:30vw;
         position:fixed;
         left:0;
-        bottom:0;
+        top:0;
         padding:2%;
         font-size:0.6em;
         color:#000;

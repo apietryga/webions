@@ -135,11 +135,12 @@
     drawMap(){
       // update URL
       window.history.replaceState(null, null, "?position="+this.position);
+      // update display 
+      displayPos();
 
-      map.visibleFloor = this.position[2];
+      map.visibleFloor = this.position[2]*1;
       const ctx = this.canvas.getContext("2d");
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
       map.update(this.position,"editor");
       let lastZ = 0;
       for(const g of map.grids){
@@ -169,7 +170,6 @@
         );
       }
 
-
       // draw player view area
       ctx.beginPath();
       ctx.strokeStyle = "#000";
@@ -177,7 +177,6 @@
       const my = (this.canvas.height - 400)/2;
       ctx.rect(mx, my, 440, 440);
       ctx.stroke();
-
 
       ctx.beginPath();
       // draw editing element
@@ -372,7 +371,7 @@
             c.append(g);
           }
           this.dom.append(c);
-          console.log([bg,bgPos,w,p]);
+          // console.log([bg,bgPos,w,p]);
         }
       },
       editPanel:{
@@ -458,6 +457,22 @@
     )},100)// */
 </script>
 
+<!-- DISPLAY POSITION -->
+<script>
+  const displayPos = () => {
+    const currentPosition = window.location.search.split("=")[1];
+    // console.log(currentPosition);
+    let displayPosition = document.querySelector(".displayPosition");
+    if(displayPosition == null){
+      displayPosition = document.createElement("div");
+      displayPosition.className = "displayPosition"
+      document.body.append(displayPosition);
+      displayPosition.style.cssText = "position:fixed;left:0;bottom:0;color:#fff;font-size:3em;";
+    }
+    displayPosition.innerHTML = JSON.stringify(currentPosition);
+  }
+  displayPos();
+</script>
 
 <!-- TESTING -->
 <!-- <script>setTimeout(() => {

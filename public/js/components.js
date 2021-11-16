@@ -30,7 +30,7 @@ class Creature {
   }
   update(){
     // ITEMS UPDATE
-    if(this.type == "player"){
+    if(this.type == "player" && typeof this.eq != "undefined"){
       // MENUS EQ UPDATE
       for(let key of Object.keys(this.eq)){
         if(key == ""){
@@ -89,14 +89,21 @@ class Creature {
       }
     }
     // SPRITE LOAD & UPDATE
+    this.img = map.sprites[this.sprite];
     if(["player","enemy","npc"].includes(this.type) && (!isSet(this.img) || isSet(this.outfitUpdate) )){
       if(isSet(this.outfitUpdate)){
         delete this.outfitUpdate;
       }
-      this.img = map.sprites[this.sprite];
-      const recolor = recolorImage(this.img,this.colors);
-      recolor.onload = () =>{
-        this.img = recolor;
+      if(typeof this.img != "undefined" && typeof this.img.width != "undefined"){
+        const recolor = recolorImage(this.img,this.colors);
+        if(typeof recolor != "number"){
+          recolor.onload = () =>{
+            this.img = recolor;
+          }  
+        }  
+      }else{
+        console.log(map.sprites);
+        this.img = map.sprites["male_oriental"];
       }
     }
     // WALKING
@@ -241,19 +248,24 @@ class Creature {
       ctx.stroke();  
     }
     // draw sprite
-    if(this.position[2] <= map.visibleFloor || map.visibleFloor == 'all'){
-      if(["player","enemy"].includes(this.type)){
-        // draw colors masks
-        const cw = this.img.width/6;
-        ctx.drawImage(
-          this.img, (this.cyle+3) * cw, this.direction * cw, cw, this.img.height/5,
-          this.x - 40, this.y-40, 100, 100
-        );
-        // draw else elements xD
-        ctx.drawImage(
-          this.img, this.cyle * cw, this.direction * cw, cw, this.img.height/5,
-          this.x - 40, this.y-40, 100, 100
-        );
+    if(this.position[2] <= map.visibleFloor){
+      if(["player","enemy"].includes(this.type) && this.name != "GM"){
+        // if(this.name != "GM"){
+          // draw colors masks
+          const cw = this.img.width/6;
+          ctx.drawImage(
+            this.img, (this.cyle+3) * cw, this.direction * cw, cw, this.img.height/5,
+            this.x - 40, this.y-40, 100, 100
+          );
+          // draw else elements xD
+          ctx.drawImage(
+            this.img, this.cyle * cw, this.direction * cw, cw, this.img.height/5,
+            this.x - 40, this.y-40, 100, 100
+          );
+
+        // }else{
+
+        // }
       }else{
         const img = map.sprites[this.sprite];
         ctx.drawImage(
@@ -392,18 +404,12 @@ class Grid {
   draw = (plr = {}) => {
     // for compatibility with mapeditor && gamePlane
     let phantomPlayer = (typeof player === 'undefined')?plr:player; 
-    
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
-
-    // const ctx = gamePlane.ctx;
-
     const w = (typeof map.sprites[this.type] != "undefined")?map.sprites[this.type].dataset.w:40;
-    // const w = 40;
     if(this.type == 'doors' && compareTables(this.position,phantomPlayer.newPos)){
       this.cyle = 1;
     }
-
     if(this.type != 'delete'){
       ctx.drawImage(map.sprites[this.type],
       this.texture * w, this.cyle*w, w, w,

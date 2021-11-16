@@ -1,28 +1,27 @@
-let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
-const ws = new WebSocket(protocol+"//"+window.location.host+"/get",'echo-protocol');
 let getWhat;
 if(Object.keys(searchToObject()).includes("online")){
   getWhat = "onlineList";
 }else{
   getWhat = "playersList";
 }
-ws.onopen = () =>{ws.send(JSON.stringify({"get":getWhat}));}
-ws.onmessage = (mess) => {
-  const main = document.querySelector("main");
-  main.innerHTML = "LOADING ... ";
-  const dt = JSON.parse(mess.data);
+
+// MAIN
+const main = document.querySelector("main");
+if(typeof main != null && typeof playersList != "undefined"){
+  const dt = (typeof playersList == "string")?JSON.parse(playersList):playersList;
   if(typeof dt.length != "undefined"){
     const params = searchToObject();
     const h1 = document.createElement("h1");
     const table = document.createElement("table");
-    main.innerHTML = "";
     main.append(h1);
     main.append(table);
-    if(Object.keys(params).includes("player")){ // PLAYER DETAILS
+
+    // PLAYER DETAILS
+    if(Object.keys(params).includes("player")){
       const backer = document.createElement("a");
       // backer.href = "./players.html";
       backer.onclick = () => {window.history.back()};
-      backer.innerHTML="< GO BACK";
+      backer.innerHTML="< BACK";
       main.prepend(backer);
       
       // get player
@@ -109,24 +108,27 @@ ws.onmessage = (mess) => {
               continue;
             }else if(s == "lastDeaths"){
               order = 5;
+              const table = document.createElement("table");
               for(const death of player.lastDeaths){
                 const row = document.createElement("tr");
                 const tdx1 = document.createElement("td");
-                const when = death.when.split(/[T,.]+/);
-                tdx1.innerHTML = when[0]+" "+when[1];
+                let when = death.when.split(/[T,.]+/);
+                tdx1.innerHTML = when[0];
+                tdx1.innerHTML += "<br /><sub>"+when[0]+"</sub>";
                 const tdx2 = document.createElement("td");
-                tdx2.innerHTML += "Killed by ";     
+                tdx2.innerHTML += "By ";     
                 if(death.whoType == "player"){
                   tdx2.innerHTML += "<a href='/players.html?player="+death.who+"'>"+death.who+"</a>";
                 }else{
                   tdx2.innerHTML += death.who;
                 }
-                tdx2.innerHTML += " on level "+death.level+".";     
+                tdx2.innerHTML += " on "+death.level+" level.";     
                 row.append(tdx1);
                 row.append(tdx2);
-                td2.append(row);
+                table.append(row);
               }
-              player.skills.speed = player[s];
+              td2.append(table);
+              // player.skills.speed = player[s];
             }else{
               order = 3;
               td2.innerHTML = player[s];
@@ -141,14 +143,14 @@ ws.onmessage = (mess) => {
         for(const d of data){
           table.append(d[1]);
         }
-
       }else{
         h1.innerHTML = "Player not found. <br /><a href='players.html'>Look at exists players.</a>"
         table.remove();
       }
 
-    }else if(Object.keys(params).includes("lastdeaths")){ // PLAYERS & ONLINE LIST
-      h1.innerHTML = "Last Deaths";
+    }else if(Object.keys(params).includes("lastdeaths")){
+    // LAST DEATHS  
+      h1.remove();
       // GET ALL DEATHS
       const allDeaths = [];
       for(const player of dt){
@@ -182,15 +184,14 @@ ws.onmessage = (mess) => {
         row.append(td2);
         table.append(row);
       }
-    }else{ // PLAYERS & ONLINE LIST
-      if(getWhat == "onlineList"){
-        h1.innerHTML = "Online list";
-      }else{
-        h1.innerHTML = "Players list";
-      }
+    }else{
 
-      // make table header
       const tbHead = ["lp.","Player name","level"];
+      // SKILLS && PLAYERS & ONLINE LIST 
+      // if(Object.keys(params).includes("skills")){
+      if(typeof skills != "undefined"){
+        tbHead[2] = "SKILLS";
+      }
       const tr = document.createElement("tr");
       tr.className = "listHead";
       for(const [i,h] of tbHead.entries()){
@@ -203,21 +204,43 @@ ws.onmessage = (mess) => {
       table.append(tr);
       const sorted = [];
       for(const d of dt){
-        sorted.push([d.skills.level,d]);
+        if(d.name != "GM"){
+          if(typeof key != "undefined"){
+            if(typeof d.skills[key] != "undefined"){
+              sorted.push([d.skills[key],d]);
+            }
+          }else{
+            sorted.push([d.skills["level"],d]);
+          }
+        }
       }
       sorted.sort((a,b)=>{
         if(a[0] < b[0]){return 1;}
         if(a[0] > b[0]){return -1;}
         return 0;
       });
-      // make players list in order of level
+      // Display message when is no players
+      if(sorted.length < 1){
+        const td = document.createElement("td");
+        td.innerHTML = "No results yet.";
+        td.colSpan = 3;
+        table.append(td);
+      }
+      // make players list in order of key
       for(const [i,playerSort] of sorted.entries()){
         const player = playerSort[1];
         const tr = document.createElement("tr");
         tr.className = "listBody";
         tr.dataset.href = "players.html?player="+player.name;
         tr.onclick = () => { window.location = tr.dataset.href;} 
-        const tds = [i+1,player.name,player.skills.level];
+
+        const tds = [i+1,player.name];
+        if(typeof key != "undefined"){
+          tds.push(player.skills[key]);
+        }else{
+          tds.push(player.skills.level)
+        }
+
         for(const t of tds){
           const td = document.createElement("td");
           td.innerHTML = t;
@@ -243,3 +266,120 @@ function searchToObject() {
 
   return obj;
 }
+
+// LIBARY
+const jsToTable = (typename,type) =>{
+  const dom = document.querySelector("."+typename);
+  if(dom != null){
+    for(const typ of type){
+      if(!typ.pickable){continue;}
+      const row = document.createElement("div");
+      row.className = "row";
+      // DISPLAY STATS
+      const stats = document.createElement("div");
+      stats.className = "stats";
+      const notDisplayingKeys = ["sprite","spriteNr","handle","pickable"];
+      for(const key of Object.keys(typ)){
+        if(typeof typ[key] != "object" && !notDisplayingKeys.includes(key)){
+          stats.innerHTML += ""+key+" <b>"+typ[key]+"</b><br />";
+        }else{
+          if(!notDisplayingKeys.includes(key)){
+            stats.innerHTML += key+"<br />";
+            for(const k of Object.keys(typ[key])){
+              stats.innerHTML += "&nbsp;&nbsp;&nbsp;"+k+"  <b>"+typ[key][k]+"</b><br />";
+            }
+            stats.innerHTML += "<br />";
+          }
+
+        }
+      }
+
+      row.append(stats);
+      // DISPLAY SPRITE
+      for(const sprite of sprites){
+        if(sprite.name == typ.sprite){
+          const ab = map.sprites[typ.sprite].height;
+          const w = map.sprites[typ.sprite].width;
+          const img = document.createElement("div");
+          img.style.height = ((ab)/5)+"px";
+          img.style.backgroundImage = "url("+sprite.src+")";
+          row.append(img);
+          if(typeof typ.spriteNr != "undefined"){
+            hw = 80;
+            // img.style.backgroundRepeat = "no-repeat";
+            img.className = "item preview"
+            img.style.backgroundPosition = "-"+(hw*typ.spriteNr)+"px 0px";
+            img.style.backgroundSize = ((hw)*(w/(ab)))+"px 100%";
+            img.style.width = hw+"px";
+            img.style.height = hw+"px";
+
+          }else{
+            img.className = "monster preview"
+            img.style.width = (ab/5)+"px";
+            img.style.height = (ab/5)+"px";
+            img.style.backgroundPosition = (3*(ab)/5)+"px -"+(1*(ab)/5)+"px";
+          }
+          break;
+        }
+      }
+      dom.append(row);
+    }
+  }
+}
+// LOAD SPRITES
+const map = new Map();
+map.loadSprites(()=>{
+  if(typeof items != "undefined"){
+    jsToTable("items",items);
+  }
+  if(typeof monsters != "undefined"){
+    jsToTable("monsters",monsters);
+  }
+})
+// COLLAPSING LIBARY
+const contentControl = (h) =>{
+  if(h.id != ""){
+    const h1 = document.querySelector("#"+h.id);
+    const dom = document.querySelector("."+h.id);
+    if(dom != null){ 
+      dom.style.display = "none";
+      h1.onclick = () => {
+        if(h.tagName == "H3"){
+          window.location.hash = h.parentNode.className+"_"+h.id;
+        }else{
+          window.location.hash = h.id;
+        }
+        if(dom.style.display == "block"){
+          // if(window.location.hash == h.id){
+            dom.style.display = "none"
+          // }
+        }else{
+          dom.style.display = "block"
+        }
+      }
+    }
+  }
+}
+for(const h of document.querySelectorAll("h2,h3")){
+  contentControl(h);
+}
+// DISPLAY CHAPTER FROM HASH ON PAGE LOAD
+const fadeOnHash = () =>{
+  const hashVal = window.location.hash.split("#")[1];
+  if(typeof hashVal != "undefined"){
+    const splitted = hashVal.split("_");
+    for(const name of splitted){
+      const cls = document.querySelector("."+name);
+      if(cls.style.display == "none"){
+        cls.style.display = "block";
+      }else{
+        console.log(cls.style.display)
+        cls.style.display = "none";
+      }
+    }  
+  }
+}
+window.onhashchange = ()=>{
+  console.log("TERA")
+}
+fadeOnHash();

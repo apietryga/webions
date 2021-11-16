@@ -48,7 +48,7 @@ class Map{
         if(floor*1 < this.minFloor){this.minFloor = floor*1;}
       }
     }
-    this.visibleFloor = this.maxFloor;
+    this.visibleFloor = this.maxFloor*1;
   }
   loadServ(){
     const c = fs.readFileSync(this.path);
@@ -84,7 +84,7 @@ class Map{
     const minX = (how == 'default')?x-6:x-10;
     const maxX = (how == 'default')?14:21;
     const maxY = (how == 'default')?14:21;
-    for(let nZ = -1; nZ <= z; nZ++){
+    for(let nZ = this.minFloor; nZ <= z; nZ++){
       for(let nX = 0; nX < maxX; nX++){
         for(let nY = 0; nY < maxY; nY++){
           const gridCheck = this.getGrid([(nX+minX),(nY+minY),nZ]);
@@ -105,7 +105,6 @@ class Map{
           const floor = Object.keys(gridArr);
           for(const oneGrid of gridArr[floor[0]]){
             if(oneGrid[0] == x && oneGrid[1] == y 
-              // && (floor[0] == z || z == 'all')
             ){
               if(how == "default" && (floor[0] == z )){
                 // in order : sprite, x, y, z, type
@@ -116,7 +115,6 @@ class Map{
                 }
 
                 if(typeof oneGrid[5] != "undefined"){grid.push(oneGrid[5]);console.log(oneGrid[5])}
-                
                 // return grid;
                 resultArr.push(grid);
               }
@@ -176,16 +174,6 @@ class Map{
     const paramv = param.value;
     // find field and delete it if isset (if element is not transparent).
     const issetGrid = this.getGrid([paramv[1],paramv[2],paramv[0]],"4editor")[0];
-    // if((paramv[4] != "halffloors"||paramv[4] != "walls") && issetGrid){
-    //   for(const m of mapArr){
-    //     if(func.compareTables(m.sector,pushSector)){
-    //       const floor = Object.keys(m.floors[paramv[0]]);
-    //       m.floors[paramv[0]][floor].splice(func.indexOfArr(m.floors[paramv[0]][floor],issetGrid),1);
-    //       break;
-    //     }
-    //   }
-          
-    // } 
     if(paramv[4] != 'delete'){
       // adding elements
       // param.value = [z , x , y , sprite, type]

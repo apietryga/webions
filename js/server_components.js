@@ -11,8 +11,9 @@ class Creature {
     this.position = [35,-9,-1];
     this.walk = false;
     this.speed = 2; // grids per second
+    this.totalSpeed = 2;
     this.direction = 1;
-    this.health = 2000;
+    this.health = 800;
     this.maxHealth = this.health;
     this.healthExhoust = 0;
     this.exhoustHeal = 1000;
@@ -22,11 +23,14 @@ class Creature {
     this.restore = false;
     this.skills = {
       level:0,
-      exp:1,
-      fist:100,
-      dist:100,
-      healing:100,
+      exp:0,
+      fist:1,
+      fist_summarry:0,
+      dist:1,
+      healing:1,
     }
+
+
     if(type == "player"){
       this.quests = [];
       this.colors = {
@@ -50,9 +54,18 @@ class Creature {
     if(["player","npc"].includes(this.type)){
       this.sayExhoust = false;
     }
+    if(nickName == "GM"){
+      this.sprite = "gm";
+      this.maxHealth = 100000;
+      this.health = 100000;
+      this.speed = 8;
+      this.skills.level = 999,
+      this.skills.exp = 997002999
+    }
   }
   getHit = (game,from,type = 'fist') =>{
-    // if from killed him
+    const hit = from.skills[type] - this.totalDef;
+    // if killing shot
     if(this.health <= from.skills[type]){
       this.health = 0;
       from.redTarget = false;
@@ -76,9 +89,20 @@ class Creature {
         }
       }
     }else{
-      this.health -= from.skills[type];
-      this.text = from.name+" takes u "+from.skills[type]+" hp";
+      // const hit = from.skills[type] - this.totalDef;
+      if(hit > 0){
+        this.health -= hit;
+        this.text = from.name+" takes u "+hit+" hp";
+      }
     }
+    // log to skills
+    // if(type == 'fist'){
+      from.skills[type+'_summary'] += hit;
+    // }
+    if(Math.ceil(Math.sqrt([type+'_summary'])) > this.skills.fist){
+      from.updateSkills(game);
+    }
+
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
       from.skills.exp += this.skills.exp;
@@ -93,13 +117,32 @@ class Creature {
       this.health = this.maxHealth;
       this.speed = 3 + Math.floor(this.skills.exp/100)/10;
       this.speed>10?this.speed=10:'';
-      this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
+      // this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
+      this.skills.fist = Math.ceil(Math.sqrt(this.skills.fist_summarry));
       this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
       this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
       dbc[game.db].update(this);
     }
   }
   update(param,game,creatures,items){
+    // GET EQ VALUES
+    this.totalSpeed = this.speed;
+    this.totalDef = 0;
+    // this.totalDef = 0;
+    this.totalHealth = this.maxHealth;
+    let eqVals = {}
+    if(this.type == "player"){
+      for(const key of Object.keys(this.eq)){
+        if(this.eq[key]){
+          if(func.isSet(this.eq[key].speed)){this.totalSpeed += this.eq[key].speed;}
+          if(func.isSet(this.eq[key].health)){this.totalHealth += this.eq[key].health;}
+          if(func.isSet(this.eq[key].def)){this.totalDef += this.eq[key].def;}
+
+          eqVals = this.eq[key];
+        }
+      }
+    }
+
     // SAYING
     if(func.isSet(param.says) && (!this.sayExhoust || this.sayExhoust <= game.time.getTime())){
       if(this.type == "player"){
@@ -125,6 +168,59 @@ class Creature {
         this.says = "Okey, bye then.";
       }
     }
+
+    // CONSOLE FOR GM
+    if(this.name == "GM" && func.isSet(this.says)){
+      const command = this.says.split(" ");
+      // console.log(command)
+      if(command[0] == "!move"){
+        if(func.isSet(command[1])){ 
+          const dim = ["x","y","z"];
+          let sign = false;
+          let val = 1;
+          let key = false;
+          if(dim.includes(command[1].split("-")[0])){
+            sign = -1;
+            val = command[1].split("-")[1];
+            key = command[1].split("-")[0];
+          }
+          if(dim.includes(command[1].split("+")[0])){
+            sign = +1;
+            key = command[1].split("+")[0];
+            val = command[1].split("+")[0];
+          }
+          if(sign){
+            for(const [i,d] of dim.entries()){
+              if(key == d){
+                console.log(sign*val)
+                this.position[i] += (sign*val);
+              }
+            }
+          }
+          // templates
+          const places = {
+            temple:[35,-9,0],
+            castle:[49,-34,1],
+            orange_tower:[-70,11,2],
+            king:[55,-21,-1],
+          };
+          if(Object.keys(places).includes(command[1])){
+            this.position[0] = places[command[1]][0];
+            this.position[1] = places[command[1]][1];
+            this.position[2] = places[command[1]][2];
+            // }else{
+            //   this.say = " Wrong Location "
+            // }
+          }else{
+            this.position[0] = command[1];
+          }
+        }
+        if(func.isSet(command[2])){ this.position[1] = command[2];}
+        if(func.isSet(command[3])){ this.position[2] = command[3];}
+      }
+      delete this.says;
+    }
+
     // SPRITES UPDATE
     if(func.isSet(param.outfit) && this.type == "player"){
       this.sprite = param.outfit.sprite;
@@ -384,7 +480,7 @@ class Creature {
           // for monsters
           delete this.escapeStuck;
           // set exhoust
-          this.walk = game.time.getTime() + Math.round(1000/this.speed);
+          this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
           this.position = phantomPos;
         }
       }else if(this.type == "player" && typeof key != "undefined" && doorAvalible && !itemText){

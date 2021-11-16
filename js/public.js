@@ -36,6 +36,7 @@ const passTokens = {
   }
 }
 const bcrypt = require('bcrypt');
+const monstersTypes = require('./monstersTypes');
 password = {
   cryptPassword : (password, callback) => {
     bcrypt.genSalt(10, function(err, salt) {
@@ -55,8 +56,6 @@ password = {
     });
   }
 }
-
-
 const log = {
   ged : [],
   in(nick){
@@ -77,36 +76,46 @@ const log = {
   }
 }
 if(game.dev == true){
-  log.ged.push({nick:"Tosiek",token:"123"})
+  log.ged.push({nick:"GM",token:"123"})
 }
 function public(req, res) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];
   const myURL = new URL(href+url);
   const vals = {
+    name: game.name,
     message:"",
     action:"",
-    nick:""
+    nick:"",
+    aside: "",
+    js:""
   }
-  let path = "";
-  const serveChangedContent = () => {
+  const serveChangedContent = (path = myURL.pathname) =>{
+    if(!path.split("/").includes("public")){
+      path = "./public/"+path;
+    }
     // serve content with message
     fs.readFile(path,"utf8",(e,content) => {
+      if(e != null){console.error(e);}
       for(const v of Object.keys(vals)){
-        content = content.split('{{'+v+'}}').join(vals[v]);
+        if(typeof content != "undefined"){
+          content = content.split('{{'+v+'}}').join(vals[v]);
+        }else{
+          if(path == ""){path = "./public/index.html"}
+        }
       }
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(content);
-    })  
+    })
   }
-  if(myURL.pathname == "/makewww"){
+  if(["/makewww"].includes(myURL.pathname)){
     // make www htmls
     makewww(()=>{
       // serve www folder
       file.serve(req, res);
     });
-  }else if(myURL.pathname == "/account.html"){  // account page
-    path = "./public/account.html";
+  }else if(["/account.html"].includes(myURL.pathname)){  // account page
+    path = "/account.html";
     let body = '';req.on("data",(chunk)=>{body += chunk;});
     const processRequest = (callback) => {
       const data = (body == '')?{type:"LOGIN"}:JSON.parse('{"' + decodeURI(body).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace(/\s/g,'') + '"}');
@@ -248,7 +257,7 @@ function public(req, res) {
       }
     }
     req.on("end", ()=>{processRequest(serveChangedContent)});
-  }else if(myURL.pathname == "/game.html"){     // game page
+  }else if(["/game.html"].includes(myURL.pathname)){     // game page
     if(func.isSet(req.headers.cookie)){
       let player = false;
       for(const cookie of req.headers.cookie.split("; ")){
@@ -260,7 +269,7 @@ function public(req, res) {
             }
           }          
           if(game.dev && !player){
-            player = "Tosiek"
+            player = "GM"
           }
         } 
       }
@@ -271,16 +280,110 @@ function public(req, res) {
         path = "./public/account.html";
         action = "login";
       }
-
     }else{
       path = "./public/account.html";
       vals.message = "Please log in:";
 
     }
-    serveChangedContent();
+    serveChangedContent(myURL.pathname);
+  }else if(["/","/index.html"].includes(myURL.pathname)){
+    vals.aside = `<a href="/players.html?online=true">Online list</a>
+    <a href="/players.html?lastdeaths=true">Last deaths</a>`
+    if(myURL.pathname == "/"){myURL.pathname = "/index.html"}
+    path = myURL.pathname;
+    let body = '';req.on("data",(chunk)=>{body += chunk;});
+    const processRequest = (callback = ()=>{}) => {
+      vals.message = game.whatsNew;
+      callback();
+    } 
+    processRequest(serveChangedContent(myURL.pathname))
+  }else if(["/players.html"].includes(myURL.pathname)){
+    vals.aside = `
+      <a href="/players.html?skills=healing">Healing</a>
+      <a href="/players.html?skills=fist">Fist</a>
+      <a href="/players.html?skills=dist">Dist</a>
+      <a href="/players.html?skills=frags">Frags</a>
+    `;
+    const [key,value] = myURL.search.split("=");
+    if("?skills" == key){
+      vals.message = "<h1>TOP "+value.charAt(0).toUpperCase() +value.slice(1)+"</h1>";
+    }
+    dbc[game.db].loadAll((content)=>{
+      vals.js += "<script>const key = '"+value+"'; </script>";
+      vals.js += "<script>const playerList = '"+JSON.stringify(content)+"';</script>";
+    })
+    if("?online=true" == myURL.search){
+      vals.message = "<h1>Online Players</h1>";
+      dbc[game.db].loadAll((content)=>{
+        const onlineList = [];
+        for(const player of content){
+          if(game.time - player.lastFrame <= 10000){
+            onlineList.push(player)
+          }
+        }
+        vals.js += "<script>const playersList = "+JSON.stringify(onlineList)+";</script>";
+        serveChangedContent(myURL.pathname);
+      })
+      
+    }else if("?player=" == myURL.search){
+
+
+    }else if("?lastdeaths=true" == myURL.search){
+      vals.message = "<h1>Last Deaths</h1>";
+      dbc[game.db].loadAll((content)=>{
+        vals.js += "<script>const playersList = "+JSON.stringify(content)+";</script>";
+        serveChangedContent(myURL.pathname);
+      })
+    }else{
+      if("" == myURL.search){
+        vals.message = "<h1>TOP Players</h1>";
+      }
+      dbc[game.db].loadAll((content)=>{
+        vals.js += "<script>const playersList = '"+JSON.stringify(content)+"';</script>";
+        serveChangedContent(myURL.pathname);
+      })
+      
+    }
+  }else if(["/4devs.html"].includes(myURL.pathname)){
+    vals.aside = `<a href="https://github.com/apietryga/webions2" target="_blank">GITHUB</a>`;
+    serveChangedContent(myURL.pathname);
+  }else if(["/mapeditor.html"].includes(myURL.pathname)){
+    console.log("MAPEDITOR")
+    if(game.dev == true){
+      file.serve(req,res)
+    }else{
+      const location = "/index.html"
+      res.setHeader("Location", location + "junk");
+      res.setHeader("Content-Type", 'text/html');
+      res.end(`Open devTools to edit map 
+              <a href="/4devs.html" target='_blank'> more </a>
+              <br />
+              Done? <br >
+              <a href="/mapeditor.html">REFRESH</a>`);
+    }
+
+  }else if(["/libary.html"].includes(myURL.pathname)){
+    vals.aside = `
+    <a href="/libary.html#install">Install</a>
+    <a href="/libary.html#controls">Controls</a>
+    <a href="/libary.html#monsters">Monsters</a>
+    <a href="/libary.html#items">Items</a>
+    `;
+    // filter creatures to monsters only
+    const creatures = require("./monstersTypes");
+    const monsters = [];
+    for(const creature of creatures){
+      if(typeof creature.type == "undefined" && creature.sprite != "tourets"){
+        monsters.push(creature);
+      }
+    }
+    vals.js = `<script>
+        const monsters = ${JSON.stringify(monsters)};
+        const items = ${JSON.stringify(require("./itemsTypes").types)};
+    </script>`;
+    serveChangedContent(myURL.pathname);
   }else{
-    // serve main folder
-    file.serve(req,res);
+    file.serve(req,res)
   }
 }
 

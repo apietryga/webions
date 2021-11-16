@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webions</title>
+    <title>{{name}}</title>
     <link rel="shortcut icon" href="../img/logos/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./style/page.css">
     <meta name="google-site-verification" content="hntgAqdbXzNcBY02LAfBw-qPdejtMqYa75hPCQdBres" />
@@ -13,47 +13,56 @@
     <link rel="apple-touch-startup-image" href="img/logos/logo_512.png">
     <meta name="apple-mobile-web-app-title" content="Webions">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
+    <script src="./js/map.js"></script>
+    <script src="./js/functions.js" defer></script>
+    <script src="./js/gameDetails.js" defer></script>
+    <script src="./js/sprites.js" defer></script>
+    <script src="./wwwscripts.js" defer></script>
   </head>
   <body>
   <header>
-    <a href="./">
-      <img src="../img/logos/logo.webp" alt="Webions Game Logo" />
-      <h1>WEBIONS</h1>
-    </a>
+    <div class="logo">
+      <a href="./">
+        <img src="../img/logos/logo.webp" alt="Webions Game Logo" />
+        <h1>{{name}}</h1>
+      </a>
+    </div>
+    <div class="play">
+      <a href="game.html">PLAY!</a>
+    </div>
+  </header>
+  
+
+  <div class="wrapper">
     <nav>
       <a href="./">Home</a>
-      <a href="./about.html">About</a>
-      <a href="./players.html">Players</a>
-      <a href="https://github.com/apietryga/webions2" target="_blank">4devs</a>
+      <a href="./libary.html">Libary</a>
+      <a href="./players.html?skills=level">Players</a>
+      <a href="./4devs.html">4devs</a>
     </nav>
-  </header>
-    <div class="wrapper">
-      
+  
+    
 <main>
   <noscript>You must turn on javaScript to see this page.</noscript>
+  {{message}}
 </main>
-<script src="./js/functions.js" defer></script>
-<script src="./wwwscripts.js" defer></script>
+{{js}}
 
     <aside>
-      <a href="/players.html?online=true">Online list</a>
-      <a href="/players.html?lastdeaths=true">Last deaths</a>
-    </aside>
-    </div>
+      {{aside}}
+    </aside>  
+  </div>
   <footer>
-    <a href="#top">Top this page</a>
+    <!-- <a href="#top">Top this page</a> -->
     <a href="./">Home</a>
-    <a href="./about.html">About</a>
-    <a href="./players.html">Players</a>
-    <a href="https://github.com/apietryga/webions2" target="_blank">4devs</a>
+    <a href="./libary.html">Libary</a>
+    <a href="./players.html?skills=level">Players</a>
+    <a href="./4devs.html">4devs</a>
   </footer>
   </body>
 </html>
 <!-- COOKIES POLICY-->
 <script>
-  console.log(document.cookie);
-  console.log("e?")
   if(!document.cookie.split("; ").includes("popup=false")){
     const popup = document.createElement("div");
     popup.className = "cookiesPopUp";
