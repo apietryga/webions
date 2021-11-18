@@ -12,7 +12,7 @@
   touch-action: none;
 }
 
-body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .mainMenu {
+body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   padding: 2px;
@@ -20,7 +20,7 @@ body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wr
   color: #AEAEAC;
 }
 
-body ::-webkit-scrollbar-thumb {
+body ::-webkit-scrollbar-thumb, body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer, body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar, body .wrapper > .mainMenu > div > div, body .popupParent .popup, body .popupParent .popup .closeBar, body .popupParent .popup .closeBar div {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -107,6 +107,7 @@ body button {
 }
 
 body .wrapper {
+  background-color: #2f2f2f;
   position: fixed;
   left: 0;
   top: 0;
@@ -149,11 +150,53 @@ body .wrapper .gameAndConsole .gamePlane {
   padding: 2px;
   background-color: #2f2f2f;
   color: #AEAEAC;
+  position: relative;
 }
 
 body .wrapper .gameAndConsole .gamePlane .gamePlaneCanvas {
   max-width: 90%;
   max-height: 90%;
+}
+
+body .wrapper .gameAndConsole .gamePlane .menusButtons {
+  cursor: pointer;
+  position: absolute;
+}
+
+body .wrapper .gameAndConsole .gamePlane .menusButtons.mainMenu {
+  right: 0;
+}
+
+body .wrapper .gameAndConsole .gamePlane .menusButtons.outfit {
+  left: 0;
+}
+
+body .wrapper .gameAndConsole .gamePlane .outFitContainer {
+  padding: 10px;
+  background-color: #5A5A5A;
+  position: absolute;
+  z-index: 2;
+}
+
+body .wrapper .gameAndConsole .gamePlane .outFitContainer .innerContainer {
+  display: flex;
+  align-items: stretch;
+}
+
+body .wrapper .gameAndConsole .gamePlane .outFitContainer .innerContainer > * {
+  display: flex;
+}
+
+body .wrapper .gameAndConsole .gamePlane .outFitContainer .innerContainer .colorPicker {
+  flex: 5;
+  display: flex;
+}
+
+body .wrapper .gameAndConsole .gamePlane .outFitContainer .innerContainer .layerPicker {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 body .wrapper .gameAndConsole .console {
@@ -200,7 +243,60 @@ body .wrapper .gameAndConsole .console .messagesInput:active {
   outline: 0;
 }
 
-body .wrapper .mainMenu {
+body .wrapper .menuItem0 {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  height: 2em;
+  min-width: 30%;
+}
+
+body .wrapper .menuItem0 button {
+  flex: 1;
+}
+
+body .wrapper .menuItem1, body .wrapper .menuItem2 {
+  position: fixed;
+  min-width: 30%;
+  top: 2em;
+  right: 0;
+}
+
+body .wrapper .menuItem1.menuItem2, body .wrapper .menuItem2.menuItem2 {
+  top: 3em;
+}
+
+body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar {
+  z-index: 10;
+  height: 1em;
+  color: #fff;
+  background-color: #222;
+}
+
+body .wrapper .menuItem1 .healthBar .progressBar, body .wrapper .menuItem1 .manaBar .progressBar, body .wrapper .menuItem2 .healthBar .progressBar, body .wrapper .menuItem2 .manaBar .progressBar {
+  mix-blend-mode: difference;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body .wrapper .menuItem1 .healthBar label, body .wrapper .menuItem1 .manaBar label, body .wrapper .menuItem2 .healthBar label, body .wrapper .menuItem2 .manaBar label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body .wrapper > .mainMenu {
+  margin-top: 4em;
   overflow-y: auto;
   min-width: 30%;
   max-height: 100%;
@@ -212,60 +308,19 @@ body .wrapper .mainMenu {
   color: #AEAEAC;
 }
 
-body .wrapper .mainMenu .collapsed div {
+body .wrapper > .mainMenu .collapsed div {
   display: none !important;
 }
 
-body .wrapper .mainMenu .collapsed .title {
+body .wrapper > .mainMenu .collapsed .title {
   display: flex !important;
 }
 
-body .wrapper .mainMenu .collapsed .title div {
+body .wrapper > .mainMenu .collapsed .title div {
   display: block !important;
 }
 
-body .wrapper .mainMenu .menuItem0 {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  display: flex;
-}
-
-body .wrapper .mainMenu .menuItem0 button {
-  flex: 1;
-}
-
-body .wrapper .mainMenu div .healthBar {
-  color: #fff;
-  border: 2px solid #fff;
-  width: 100%;
-  border-radius: 5px;
-  position: relative;
-  background-color: #222;
-  height: 20px;
-}
-
-body .wrapper .mainMenu div .healthBar .progressBar {
-  height: 100%;
-  background-color: green;
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-body .wrapper .mainMenu div .healthBar label {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-body .wrapper .mainMenu .title {
+body .wrapper > .mainMenu .title {
   width: 100%;
   background-color: #2f2f2f;
   font-size: 0.5em;
@@ -276,24 +331,21 @@ body .wrapper .mainMenu .title {
   cursor: pointer;
 }
 
-body .wrapper .mainMenu .title div:nth-child(1) {
+body .wrapper > .mainMenu .title div:nth-child(1) {
   text-align: right;
   flex: 1;
 }
 
-body .wrapper .mainMenu > div > div {
+body .wrapper > .mainMenu > div > div {
   width: 100%;
-  border: 2px solid;
-  border-color: #444444 #737373 #737373 #444444;
-  background-color: #5a5a5a;
 }
 
-body .wrapper .mainMenu .row {
+body .wrapper > .mainMenu .row {
   display: flex;
   justify-content: center;
 }
 
-body .wrapper .mainMenu .row > div {
+body .wrapper > .mainMenu .row > div {
   margin: 1px;
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
@@ -304,66 +356,64 @@ body .wrapper .mainMenu .row > div {
   max-height: 50px;
 }
 
-body .wrapper .mainMenu .row > div:hover {
+body .wrapper > .mainMenu .row > div:hover {
   border: 2px solid #fff;
 }
 
-body .wrapper .mainMenu .row > div div, body .wrapper .mainMenu .row > div canvas {
+body .wrapper > .mainMenu .row > div div, body .wrapper > .mainMenu .row > div canvas {
   width: 100%;
   height: 100%;
 }
 
-body .wrapper .mainMenu .row .picked {
+body .wrapper > .mainMenu .row .picked {
   border: 2px solid green;
 }
 
-body .wrapper .mainMenu .backpack .row {
+body .wrapper > .mainMenu .backpack .row {
   flex-wrap: wrap;
   justify-content: flex-start;
   margin: 0 auto;
 }
 
-body .wrapper .mainMenu .backpack .row div {
+body .wrapper > .mainMenu .backpack .row div {
   min-width: 30px;
 }
 
-body .wrapper .mainMenu .skills > div:not(.title) {
+body .wrapper > .mainMenu .skills > div:not(.title) {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   padding: 3px;
   font-size: 0.6em;
 }
 
-body .wrapper .mainMenu .skills .displaySkills {
+body .wrapper > .mainMenu .skills .displaySkills {
   display: flex;
   flex-direction: column;
 }
 
-body .wrapper .mainMenu .skills .displaySkills > div {
+body .wrapper > .mainMenu .skills .displaySkills > div {
   display: flex;
   justify-content: space-between;
 }
 
-body .wrapper .mainMenu .skills .displaySkills .progressBar {
-  border: 1px solid #131212;
-  border-radius: 7px;
+body .wrapper > .mainMenu .skills .displaySkills .progressBar {
+  padding: 0;
   background-color: #312e2e;
   position: relative;
 }
 
-body .wrapper .mainMenu .skills .displaySkills .progressBar > div {
+body .wrapper > .mainMenu .skills .displaySkills .progressBar > div {
   z-index: 1;
   text-align: center;
   width: 100%;
   font-size: 0.7em;
 }
 
-body .wrapper .mainMenu .skills .displaySkills .progressBar .progress {
-  border-radius: 7px;
+body .wrapper > .mainMenu .skills .displaySkills .progressBar .progress {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: red;
+  background-color: #501616;
   height: 100%;
 }
 
@@ -399,6 +449,49 @@ body .wrapper .rightPanel {
 
 body .wrapper .leftPanel {
   left: 0;
+}
+
+body .popupParent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30% 30%;
+  height: 40%;
+  width: 40%;
+  position: fixed;
+  font-size: 0.8em;
+}
+
+body .popupParent .popup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5em;
+  padding: 10px 20px;
+  background-color: #5A5A5A;
+  color: #AEAEAC;
+  z-index: 3;
+}
+
+body .popupParent .popup .closeBar {
+  position: absolute;
+  width: calc(100% + 4px);
+  height: 5vh;
+  top: -5vh;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body .popupParent .popup .closeBar div {
+  cursor: pointer;
+  width: 5vh;
+  padding: 2px 5px;
+  background-color: #5a0f0f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loginPage {

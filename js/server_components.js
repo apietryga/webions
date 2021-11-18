@@ -13,24 +13,25 @@ class Creature {
     this.speed = 2; // grids per second
     this.totalSpeed = 2;
     this.direction = 1;
-    this.health = 800;
+    this.health = 100;
     this.maxHealth = this.health;
+    this.totalHealth = this.maxHealth;
     this.healthExhoust = 0;
     this.exhoustHeal = 1000;
     this.shotExhoust = 0;
     this.redTarget = false;
     this.fistExhoust = false;
     this.restore = false;
+    this.sprite = "male_oriental";
     this.skills = {
       level:0,
       exp:0,
       fist:1,
-      fist_summarry:0,
+      fist_summary:1,
       dist:1,
-      healing:1,
+      dist_summary:1,
+      // healing:1,
     }
-
-
     if(type == "player"){
       this.quests = [];
       this.colors = {
@@ -49,6 +50,10 @@ class Creature {
         lg:false,
         ft:false,
       }
+      this.mana = 100;
+      this.maxMana = this.mana;
+      this.manaRegenValue = 0;
+      this.manaRegenExhoust = 0;   
       this.startPosition = this.position;
     }
     if(["player","npc"].includes(this.type)){
@@ -56,17 +61,21 @@ class Creature {
     }
     if(nickName == "GM"){
       this.sprite = "gm";
-      this.maxHealth = 100000;
-      this.health = 100000;
-      this.speed = 8;
-      this.skills.level = 999,
-      this.skills.exp = 997002999
     }
   }
   getHit = (game,from,type = 'fist') =>{
-    const hit = from.skills[type] - this.totalDef;
-    // if killing shot
-    if(this.health <= from.skills[type]){
+    let hit = from.skills[type];
+    if(type == 'dist' && func.isSet(from.totalDist)){
+      hit = from.totalDist;
+    }
+    if(type == 'fist' && func.isSet(from.totalFist)){
+      hit = from.totalFist;
+    }
+    if(func.isSet(this.totalDef) && this.totalDef > 0){
+      hit -= this.totalDef;
+    }
+    // KILLING SHOT
+    if(this.health <= hit){
       this.health = 0;
       from.redTarget = false;
       if(this.type == "player"){
@@ -89,60 +98,91 @@ class Creature {
         }
       }
     }else{
-      // const hit = from.skills[type] - this.totalDef;
       if(hit > 0){
         this.health -= hit;
         this.text = from.name+" takes u "+hit+" hp";
       }
     }
-    // log to skills
-    // if(type == 'fist'){
-      from.skills[type+'_summary'] += hit;
-    // }
-    if(Math.ceil(Math.sqrt([type+'_summary'])) > this.skills.fist){
-      from.updateSkills(game);
+    // COUNT SKILLS
+    if(['fist','dist'].includes(type) && from.type == "player" && !isNaN(hit)){
+      from.skills[type+'_summary']++;
+      from.updateSkills(game,['fist','dist']);
     }
-
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
       from.skills.exp += this.skills.exp;
       from.updateSkills(game);
     }
   }
-  updateSkills(game){
-    const oldLvl = this.skills.level; 
-    this.skills.level = Math.ceil(Math.cbrt(this.skills.exp));
-    if(this.skills.level != oldLvl){
-      this.maxHealth = Math.ceil(1000 + (this.skills.exp/4));
-      this.health = this.maxHealth;
-      this.speed = 3 + Math.floor(this.skills.exp/100)/10;
-      this.speed>10?this.speed=10:'';
-      // this.skills.fist = Math.ceil(100 + (this.skills.exp/100));
-      this.skills.fist = Math.ceil(Math.sqrt(this.skills.fist_summarry));
-      this.skills.dist = Math.ceil(100 + (this.skills.exp/100));
-      this.skills.healing = Math.ceil(100 + (this.skills.exp/100));
+  updateSkills(game, keys = []){
+    let smthChanged = false;
+    // fist, dist update
+    for(const key of keys){
+      const newValue = Math.ceil(Math.sqrt(this.skills[key+"_summary"]));
+      if(this.skills[key] != newValue && newValue != null && !isNaN(newValue) ){
+        this.skills[key] = newValue;
+        smthChanged = true;
+      }  
+    }
+    // level update
+    if(this.skills.level != Math.ceil(Math.cbrt(this.skills.exp))){
+      // console.log("lvlupdate");
+      this.skills.level = Math.ceil(Math.cbrt(this.skills.exp));
+      this.speed = 2 + Math.floor(this.skills.level/10)/10;
+      this.maxHealth = 100 + Math.floor(this.skills.level*10);
+      this.maxMana = 100 + Math.floor(this.skills.level*10);
+      smthChanged = true;
+    }
+    // IF CHANGES - SAVE TO DB
+    if(smthChanged){
       dbc[game.db].update(this);
     }
   }
   update(param,game,creatures,items){
+    // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
+    if(this.type == "player" && this.lastFrame < game.startServerTime){
+      this.skills.level = -1;
+      this.updateSkills(game,['fist','dist']);
+    }
+    // UPDATE FRAME
+    if(typeof game.startServerTime != "undefined"){
+      this.lastFrame = game.time.getTime();
+    }
     // GET EQ VALUES
-    this.totalSpeed = this.speed;
-    this.totalDef = 0;
-    // this.totalDef = 0;
-    this.totalHealth = this.maxHealth;
-    let eqVals = {}
     if(this.type == "player"){
+      this.totalSpeed = this.speed;
+      this.totalDef = 0;
+      this.totalFist = this.skills.fist;
+      this.totalDist = this.skills.dist;
+      this.totalMana = this.maxMana;
+      this.totalManaRegen = this.manaRegenValue;
+      this.totalHealth = this.maxHealth;
       for(const key of Object.keys(this.eq)){
         if(this.eq[key]){
           if(func.isSet(this.eq[key].speed)){this.totalSpeed += this.eq[key].speed;}
-          if(func.isSet(this.eq[key].health)){this.totalHealth += this.eq[key].health;}
           if(func.isSet(this.eq[key].def)){this.totalDef += this.eq[key].def;}
-
-          eqVals = this.eq[key];
+          if(func.isSet(this.eq[key].health)){this.totalHealth += this.eq[key].health;}
+          if(func.isSet(this.eq[key].mana)){this.totalMana += this.eq[key].mana;}
+          if(func.isSet(this.eq[key].manaRegen)){this.totalManaRegen += this.eq[key].manaRegen;}
+          if(func.isSet(this.eq[key].fist)){this.totalFist += this.eq[key].fist;}
+          if(func.isSet(this.eq[key].dist)){this.totalDist += this.eq[key].dist;}
         }
       }
     }
-
+    // CHECK HEALTH ON HEALTH ITEM DROP
+    if(this.health > this.totalHealth && this.type == "player"){
+      this.health = this.totalHealth;
+    }
+    // MANA REGEN
+    if(func.isSet(this.totalManaRegen) && this.manaRegenExhoust < game.time.getTime() && this.totalManaRegen > 0 && this.type == "player"){
+      if((this.mana + this.totalManaRegen) < this.totalMana){
+        this.mana += this.totalManaRegen;
+      }else{
+       this.mana = this.totalMana;
+      }
+      const manaExhoust = 1000;
+      this.manaRegenExhoust = game.time.getTime()*1 + manaExhoust;
+    }
     // SAYING
     if(func.isSet(param.says) && (!this.sayExhoust || this.sayExhoust <= game.time.getTime())){
       if(this.type == "player"){
@@ -168,11 +208,18 @@ class Creature {
         this.says = "Okey, bye then.";
       }
     }
-
     // CONSOLE FOR GM
+    const places = {
+      temple:[35,-9,-1],
+      castle:[49,-34,1],
+      orange_tower:[-70,11,2],
+      king:[55,-21,-1],
+      dragon:[135,1,0],
+      kingslegs:[60,-13,2],
+      barbarian:[4,-33,1],
+    };
     if(this.name == "GM" && func.isSet(this.says)){
       const command = this.says.split(" ");
-      // console.log(command)
       if(command[0] == "!move"){
         if(func.isSet(command[1])){ 
           const dim = ["x","y","z"];
@@ -192,18 +239,11 @@ class Creature {
           if(sign){
             for(const [i,d] of dim.entries()){
               if(key == d){
-                console.log(sign*val)
                 this.position[i] += (sign*val);
               }
             }
           }
           // templates
-          const places = {
-            temple:[35,-9,0],
-            castle:[49,-34,1],
-            orange_tower:[-70,11,2],
-            king:[55,-21,-1],
-          };
           if(Object.keys(places).includes(command[1])){
             this.position[0] = places[command[1]][0];
             this.position[1] = places[command[1]][1];
@@ -220,9 +260,10 @@ class Creature {
       }
       delete this.says;
     }
-
     // SPRITES UPDATE
+    if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
     if(func.isSet(param.outfit) && this.type == "player"){
+      // console.log(param.outfit);
       this.sprite = param.outfit.sprite;
       this.colors = param.outfit.colors;
       this.outfitUpdate = true;
@@ -520,7 +561,7 @@ class Creature {
       this.cyle = 0;
       // for monsters
       if(this.type == "monster"){
-        this.restore = game.time.getTime() + 150000;
+        this.restore = game.time.getTime() + 60000;
         // this.restore = game.time.getTime() + 500;
       }
       if(this.type == "npc"){
@@ -546,12 +587,29 @@ class Creature {
     // HEALING [player]
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
-      // const healthExhoust = 1500; // [ms(exhoust),hp(value)]      
-      if(this.health + this.skills.healing > this.maxHealth){
-        this.health = this.maxHealth;
+      let healValue = Math.floor(this.totalHealth/10);
+      if(this.health + healValue > this.totalHealth){
+        const difference = (this.health + healValue) - this.totalHealth;
+        // console.log(difference);
+        if(this.mana > difference && difference != 0){
+          this.mana -= difference; 
+          this.health = this.totalHealth;
+        }
+
+      }else if(this.mana > healValue){
+        this.mana -= healValue;
+        this.health = this.totalHealth;
+        if(this.health + this.skills.healing <= this.totalHealth){
+          this.mana -= healValue
+          this.health += healValue;
+        }
       }else{
-        if(!func.isSet(this.skills.healing)){this.skills.healing = 100;}
-        this.health += this.skills.healing;
+        if(this.mana > 0){
+          this.health += this.mana;
+          this.mana = 0;
+        }else{
+          this.text = "You have no mana."
+        }
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }
@@ -659,7 +717,6 @@ class Item{
   relocate(creature,items,itemAction){
     // EQ TO MAP
     if(itemAction.actionType == 'drop'){
-      console.log(itemAction)
       if(func.isSet(itemAction.field) && itemAction.field != "" ){
       // DROP ITEM
         // SET DROPPING FLOOR [WHEN DROP IS BETWEEN FLOORS]
@@ -680,7 +737,6 @@ class Item{
           creature.eq[this.field] = false;
           // ADD IT TO MAP
           items.allItems.push(this);
-          // console.log(items);
           creature.text = "You dropped out a "+this.name+".";
         }else{
           creature.text = "Sorry, it not possible.";
@@ -699,7 +755,6 @@ class Item{
 
           // ADD IT TO MAP
           items.allItems.push(this);
-          // console.log(items);
           creature.text = "You dropped out a "+this.name+".";
         // }else{
         //   creature.text = "Sorry, it not possible.";
@@ -725,7 +780,6 @@ class Item{
           if(!func.isSet(creature.eq.bp.in)){creature.eq.bp.in = [];}
           // check fields in bp
           if(creature.eq.bp.in.length < creature.eq.bp.cap){
-            // console.log("zmieści to");
             creature.eq.bp.in.push(this);
             move = true;
           }

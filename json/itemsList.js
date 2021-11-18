@@ -28,34 +28,47 @@ this.list = [
   { name:"ladder",
     position:[33,-25,1],
   },
-  { name:"Rod",
-    position:[36,-9,-1]
+  // DRAGON QUEST
+  { name:"staticBox",
+    spriteNr:2,
+    position:[146,6,1],
+    inItem: "Simple Armor"
   },
+  // WIZARD QUEST
+  { name:"staticBox",
+    position:[-71,13,3],
+    inItem: "Simple Legs",
+    spriteNr:2,
+  },
+  
+  
+
   { name:"coins",
-    position:[38,-9,-1]
+    position:[32,-13,1],
+    spriteNr:11
   },
   { name:"The Crown",
     position:[49,-36,1]
   },
-  { name:"King's Armor",
+  { name:"King Armor",
     position:[56,-13,2]
   },
-  { name:"King's Legs",
+  { name:"King Legs",
     position:[64,-15,2]
   },
-  { name:"King's Boots",
+  { name:"King Boots",
     position:[-71,13,2]
-  },
-  { name:"Simple Armor",
-    position:[35,-9,-1]
-  },
-  { name:"Simple Legs",
-    position:[35,-8,-1]
   },
   { name:"Wand of Destiny",
     position:[-72,11,2]
   },
   { name:"Blessed Shield",
     position:[-70,11,2]
+  },
+  { name:"Magic Hat",
+    position:[-71,10,2]
+  },
+  { name:"Magic Armor",
+    position:[-71,11,2]
   }
 ]

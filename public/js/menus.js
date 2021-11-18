@@ -8,15 +8,30 @@ const menus = {
   buttons:[],
   init(){
     // CREATING VISIBLE BUTTONS TO OPEN MENUS
-    // for(const m of this.menus){
-    //   if(document.querySelector("."+m) == null){
-    //     this.buttons[m] = document.createElement("div");
-    //     this.buttons[m].className = m;
-    //     this[m].div = this.buttons[m]; 
-    //     this[m].init(this.buttons[m]);  
-    //   }
-    //   this[m].resize();
-    // }
+    for(const m of ['outfit','mainMenu']){
+      const dom = document.createElement("div");
+      dom.className = "menusButtons "+m;
+      // dom.innerHTML = m;
+      dom.innerHTML = "x";
+      document.querySelector(".gamePlane").append(dom);
+      if(m == 'outfit'){
+        dom.innerHTML = "&blacktriangleright;";
+      }else{
+        dom.innerHTML = "&blacktriangleright;";
+      }
+      dom.onclick = () => {
+        const displayedMenu = document.querySelector(".wrapper >."+m);
+        if(displayedMenu == null){
+          this[m].show(m);
+        }else if(displayedMenu.style.display == "none"){
+          dom.innerHTML = "&blacktriangleright;";
+          this[m].show(m);
+        }else{
+          dom.innerHTML = "&blacktriangleleft;";
+          this[m].close(m);
+        }
+      }
+    }
     
     // initialize menus
     for(const menu of this.menus){this[menu].init();}
@@ -43,9 +58,15 @@ const menus = {
           onclick: () => {window.location.replace("/account.html?action=logout")}
         }
       ],
-      [{ title:"HEALTH BAR",
+      [{ title:"HEALTH",
           type:"div",
           className:"healthBar",
+          innerHTML: "<div class='progressBar'></div><label>NaN</label>",
+        }
+      ],
+      [{ title:"MANA",
+          type:"div",
+          className:"manaBar",
           innerHTML: "<div class='progressBar'></div><label>NaN</label>",
         }
       ],
@@ -86,7 +107,8 @@ const menus = {
     ],
     init(){
       this.build("PAUSE GAME");
-      this.build("HEALTH BAR");
+      this.build("HEALTH");
+      this.build("MANA");
       this.build("EQUIPMENT");
       this.build("SKILLS");
     },
@@ -175,19 +197,27 @@ const menus = {
           x.onclick = () => {this.close(this.dom,this.menuName)};
         }
       }
-      this.parent.append(this.dom);
-    },
-    close(DOM,menuName){
-      DOM.remove();
-      for(const openField of this.opened){
-        if(openField[0] == menuName){
-          this.opened.splice(this.opened.indexOf(openField),1);
-        }
+      // MAIN NAVBAR & hp & mana ALWAYS ON TOP
+      if(["PAUSE GAME","HEALTH","MANA"].includes(menuName)){
+        document.querySelector(".wrapper").append(this.dom);
+      }else{
+        this.parent.append(this.dom);
       }
+
     },
     update(){
       // SKILLS UPDATE
-      const notShowing = ["oldExp","oldLvl"];
+      const forCountingKeys = [
+        "exp",
+        "fist_summary",
+        "dist_summary"
+      ]
+      const notShowing = [
+        "oldExp",
+        "oldLvl",
+        "healing"
+      ];
+      
       let refreshSkills = false;
       if(isSet(this.skills)){
         for(const key of Object.keys(player.skills)){
@@ -203,30 +233,36 @@ const menus = {
           refreshSkills = true;  
         }
       }
+
       const result = document.querySelector(".displaySkills");
-      if(refreshSkills && result != null){
+      const displaySingleSkill = () =>{
         result.innerHTML = "";
         for(const key of Object.keys(this.skills)){
-          if(notShowing.includes(key)){continue;}
-          // console.log(skill);
+          if(notShowing.concat(forCountingKeys).includes(key)){continue;}
           const row = document.createElement("div");
           row.innerHTML = "<div>"+key+"<div>"
           row.innerHTML += "<div>"+this.skills[key]+"<div>"
           result.append(row);
-          if(key == "level"){
-            // const startThisLevel = (this.skills.level-1)*(this.skills.level-1);
-            const startThisLevel = Math.pow((this.skills.level-1),3);
-            // const expToLvl = this.skills.level*this.skills.level;
-            const expToLvl = Math.pow((this.skills.level),3);
-            const progressBar = document.createElement("div");
-            progressBar.className = "progressBar";
-            progressBar.title = "You need "+(expToLvl-this.skills.exp)+" exp to gain level";
-            const percent = Math.round(((this.skills.exp-startThisLevel)*100)/(expToLvl-startThisLevel));
-            progressBar.innerHTML = "<div class='progress' style='width:"+percent+"%;'></div>";
-            progressBar.innerHTML += "<div>"+this.skills.exp+"/"+expToLvl+"</div>";
-            result.append(progressBar);
+          const progressBar = document.createElement("div");
+          progressBar.className = "progressBar";
+          if(['level'].includes(key)){
+            startThisLevel = Math.pow((this.skills.level-1),3);
+            expToLvl = Math.pow((this.skills.level),3);
+            secondKey = "exp"
+          }else if(['fist','dist'].includes(key)){
+            startThisLevel = Math.pow((this.skills[key]-1),2);
+            expToLvl = Math.pow((this.skills[key]),2);
+            secondKey = key+"_summary";
           }
+          const percent = ((this.skills[secondKey]-startThisLevel)*100)/(expToLvl-startThisLevel);
+          progressBar.innerHTML = "<div class='progress' style='width:"+percent+"%;'></div>";
+          progressBar.innerHTML += "<div>"+(this.skills[secondKey]-startThisLevel)+"/"+(expToLvl-startThisLevel)+"</div>";
+          progressBar.title = this.skills[secondKey]+"/"+expToLvl;
+          result.append(progressBar);
         }
+      } 
+      if(refreshSkills && result != null ){
+        displaySingleSkill();
       } 
     },
     twiceClick(item,parent){
@@ -273,18 +309,40 @@ const menus = {
           sq.style.height = Math.floor((row.offsetWidth-12)/4)+"px";
         }
       }
-    }
+    },
+    show(DOMClassName){
+      const oFC = document.querySelector(".wrapper >."+DOMClassName);
+      const gameAndConsole = document.querySelector(".gameAndConsole");
+      if(oFC != null){
+        oFC.style.display = "flex";
+        gameAndConsole.style.cssText = "";
+      }
+    },
+    close(menuName){
+      const dom = document.querySelector(".wrapper >."+menuName);
+      const gameAndConsole = document.querySelector(".gameAndConsole");
+      if(dom != null){
+        gameAndConsole.style.cssText = "min-width: 100% !important; flex-grow: 0;";
+        dom.style.display = "none";
+      }
+      for(const openField of this.opened){
+        if(openField[0] == menuName){
+          this.opened.splice(this.opened.indexOf(openField),1);
+        }
+      }
+    },
   },
   outfit:{
     div:document.createElement("div"),
     init(){
-      const butt = document.createElement("button");
-      butt.innerHTML = "&blacktriangleright;";
-      butt.onclick = () => {
-        this.close();
-        this.show();
-      }
-      this.div.append(butt);
+      // console.log("outfit.")
+      // const butt = document.createElement("button");
+      // butt.innerHTML = "&blacktriangleright;";
+      // butt.onclick = () => {
+      //   this.close();
+      //   this.show();
+      // }
+      // this.div.append(butt);
     },
     resize(){
       const x = (window.innerWidth - document.querySelector(".gamePlaneCanvas").clientWidth)/2;
@@ -296,6 +354,10 @@ const menus = {
       `;
     },
     show(){
+      // clear old frames
+      for(const frame of document.querySelectorAll(".outFitContainer")){
+        frame.remove();
+      }
       // get avalible sprites
       for(const sprite of sprites){
         if(sprite.group == "outfits" && sprite.name.split("_")[0] == player.sex){
@@ -319,22 +381,13 @@ const menus = {
     },
     build(){
       const container = document.createElement("div");
-      container.className = "outFitContainter";
-      container.style.cssText = `
-        position:absolute;
-        width:${Math.round(gamePlane.canvas.offsetWidth*0.8)}px;
-        border:3px solid #2F2F2F;
-        border-top:20px solid #2F2F2F;
-        background-color:#5A5A5A;
-        color:#fff;
-        z-index:2;
-      `;menus.gamePlane.append(container);
+      container.className = "outFitContainer";
+      container.style.cssText = "min-width:"+Math.round(gamePlane.canvas.offsetWidth*0.8)+"px";
+      menus.gamePlane.append(container);
 
       const innerContainer = document.createElement("div");
-      innerContainer.style.cssText = `
-        display:flex;  
-        padding:10px;
-      `;container.append(innerContainer);
+      innerContainer.className = "innerContainer";
+      container.append(innerContainer);
 
       const canvas = document.createElement("canvas");
       canvas.className = "preview";
@@ -351,21 +404,12 @@ const menus = {
 
       const layerPicker = document.createElement("div");
       layerPicker.className = "layerPicker";
-      layerPicker.style.cssText = `
-        flex:1;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-between;
-        padding:0 3px 0 10px;
-      `;innerContainer.append(layerPicker);
+      innerContainer.append(layerPicker);
       this.tools.layerPicker();
 
       const colorPicker = document.createElement("div");
       colorPicker.className = "colorPicker";
-      colorPicker.style.cssText = `
-        flex:5;
-        display:flex;
-      `;innerContainer.append(colorPicker); 
+      innerContainer.append(colorPicker); 
       this.tools.colorPicker();
 
       canvas.style.height = canvas.offsetWidth+"px";
@@ -374,7 +418,6 @@ const menus = {
       footer.style.cssText = `
         display:flex;  
         padding:10px;
-        padding-top:0;
       `;container.append(footer);
 
       const spriteChanger = document.createElement("div");
@@ -433,6 +476,7 @@ const menus = {
         spriteChanger.innerHTML = "";
         // make text value
         const textField= document.createElement("div");
+        textField.className = "textField";
         textField.style.cssText = `
           border:2px solid;
           border-color:#444444 #737373 #737373 #444444;
@@ -446,13 +490,21 @@ const menus = {
           height:2em;
           padding:0 20px;
         `;
-        this.sprites;
-        const text = document.createElement("span");
+        
+        // GET OUTFIT SPRITES
         let sName;
+        this.sprites = [];
+        for(const sprite of sprites){
+          if(sprite.group == "outfits" 
+          && sprite.name.split("_")[0] == player.sex){
+            this.sprites.push(sprite.name);
+          }
+        }
+        const text = document.createElement("span");
         if(isSet(this.sprites[this.activeSprite])){
           sName = this.sprites[this.activeSprite];
         }else{
-          sName = player.sprite;
+            sName = player.sprite;
         }
         text.innerHTML = capitalizeFirstLetter(sName.split("_")[1]);
         textField.append(text);
@@ -478,15 +530,13 @@ const menus = {
           if(butt == "left"){
             button[butt].innerHTML = "&blacktriangleleft;"
             spriteChanger.append(textField);
-            
           }else{
             button[butt].innerHTML = "&blacktriangleright;";
-           
           }
           button[butt].onclick = () => {
             if(butt == "left"){
               this.activeSprite++;
-              if(this.activeSprite > this.sprites.length){
+              if(this.activeSprite > this.sprites.length-1){
                 this.activeSprite = 0;
               }
             }else{
@@ -609,9 +659,9 @@ const menus = {
       }
     },
     close(){
-      const oFC = document.querySelector(".outFitContainter");
+      const oFC = document.querySelector(".outFitContainer");
       if(oFC != null){
-        document.querySelector(".outFitContainter").remove();
+        document.querySelector(".outFitContainer").remove();
       }
     }
   },

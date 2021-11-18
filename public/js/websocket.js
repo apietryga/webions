@@ -93,6 +93,7 @@ const serv = {
             continue;
           }
           if(key == "health"){gamePlane.creatures.list[charId]["oldHealth"] = gamePlane.creatures.list[charId]["health"];}
+          if(key == "mana"){gamePlane.creatures.list[charId]["oldMana"] = gamePlane.creatures.list[charId]["mana"];}
           if(key == "skills"){
             let oldExp;
             let oldLvl;
@@ -135,7 +136,7 @@ const serv = {
         dev.stats.time = serv.time;
         dev.stats.db = data.game.db;
         dev.stats.player = player.name;
-        dev.stats.health = player.health;
+        // dev.stats.health = player.health;
         dev.stats.position = player.position;
         dev.stats.grids = map.grids.length;
         // dev.stats.url = urlParams.get('player');

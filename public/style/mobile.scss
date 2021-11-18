@@ -1,4 +1,5 @@
 @media(orientation:portrait){
+  .handler,.handlerVertical{display:none;}
   $buttonSize:48vw;
   .gameAndConsole{
     .gamePlane{
@@ -6,10 +7,10 @@
       width:100%;
       height:calc(100% - (2*#{$buttonSize}))!important;
       left:0;
-      top:$buttonSize;
+      // top:$buttonSize;
     }
   }
-  .mainMenu,.console{
+  .wrapper >.mainMenu,.console{
     // height:calc(100% - 48vw);
     position:absolute!important;
     top:0;
@@ -28,8 +29,9 @@
   }
 }
 @media(orientation:landscape){
+  .handler,.handlerVertical{display:none;}
   $buttonSize:40vh;
-  .console,.mainMenu{
+  .console,.wrapper >.mainMenu{
     flex:unset!important;
     min-width:$buttonSize!important;
     width:$buttonSize;

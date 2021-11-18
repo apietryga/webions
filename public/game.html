@@ -58,7 +58,6 @@
         isHandlerDragging = true;
       }
     });
-
     document.addEventListener('mousemove', function(e) {
       // Arbitrary minimum width set on box A, otherwise its inner content will collapse to width of 0
       const boxAminHeight = 60;
@@ -76,15 +75,10 @@
       }else{
         containerOffset = wrapper.offsetLeft;
         pointerRelative = e.clientX - containerOffset;
-        // boxA.style.width = (Math.max(boxAminHeight, pointerRelative - 8)) + 'px !important';
-        // boxA.style.cssText = "min-height:"+(Math.max(boxAminHeight, pointerRelative - 8))+"px !important";
         boxA.style.cssText = "min-width:"+(Math.max(boxAminHeight, pointerRelative + 8))+"px !important";
       }
-      // Resize box A
-      // boxA.style[key] = (Math.max(boxAminHeight, pointerRelative - 8)) + 'px !important';
       // * Set flex-grow to 0 to prevent it from growing
       boxA.style.flexGrow = 0;
-
       setResolution()      
     });
     document.addEventListener('mouseup', function(e) {
@@ -92,60 +86,43 @@
       isHandlerDragging = false;
     });
   }
-
+  
+  // const toggleMainMenu = () => {
+  //   // const dom = document.
+  // }
+  // toggleMainMenu();
   // SET DOM'S
   makeResizeable('handler','gameAndConsole','gamePlane', "y");
   makeResizeable('handlerVertical','wrapper','gameAndConsole', "x");
-
-  
 </script>
 
 <!-- POPUP -->
 <script>
     const popup = {
-    init(title = "GAME STOPPED."){
+    init(title = "Player paused."){
       this.dom = document.createElement("div");
-      this.dom.style.cssText = `
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        width:100%;
-        height:100%;
-        position:fixed;
-        left:0;
-        top:0;
-        z-index:3;
-        font-size:0.8em;
-      `;
+      this.dom.className = "popupParent";
       this.container = document.createElement("div");
-      this.container.style.cssText = `
-        border:2px dashed red;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        font-size:0.5em;
-        padding:10px 20px;
-        border:3px solid #2F2F2F;
-        border-top:20px solid #2F2F2F;
-        background-color:#5A5A5A;
-        color:#AEAEAC;
-        
-      `;
+      this.container.className = "popup";
+      this.closeBar = document.createElement("div");
+      this.closeBar.className = "closeBar";
+      this.closeButton = document.createElement("div");
+      this.closeButton.innerHTML = "x";
+      this.closeButton.onclick = () =>{
+        this.dom.remove();
+      }
+      this.closeBar.append(this.closeButton);
+      this.container.append(this.closeBar);
       this.h1 = document.createElement("h1");
       this.h1.innerHTML = title;
       this.button = document.createElement("button");
       this.button.style.position = "unset";
       this.button.style.padding = "10px 50px";
       this.button.addEventListener(mobileControls.ev,() => {window.location.reload()});
-      this.button.innerText = " PLAY. ";
-
+      this.button.innerText = " RELOAD ";
       this.dom.append(this.container);
-      
       this.container.append(this.h1);
       this.container.append(this.button);
-
       document.body.append(this.dom);
     }
   }

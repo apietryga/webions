@@ -272,16 +272,21 @@ const jsToTable = (typename,type) =>{
   const dom = document.querySelector("."+typename);
   if(dom != null){
     for(const typ of type){
-      if(!typ.pickable){continue;}
+      if(!typ.pickable&&typ.type == "item"){continue;}
       const row = document.createElement("div");
       row.className = "row";
       // DISPLAY STATS
       const stats = document.createElement("div");
       stats.className = "stats";
-      const notDisplayingKeys = ["sprite","spriteNr","handle","pickable"];
+      const notDisplayingKeys = ["sprite","spriteNr","handle","pickable","walkThrow"];
       for(const key of Object.keys(typ)){
         if(typeof typ[key] != "object" && !notDisplayingKeys.includes(key)){
-          stats.innerHTML += ""+key+" <b>"+typ[key]+"</b><br />";
+          // display without key
+          if(['desc'].includes(key)){
+            stats.innerHTML += "<i>"+typ[key]+"</i><br />";
+          }else{
+            stats.innerHTML += ""+key+" <b>"+typ[key]+"</b><br />";
+          }
         }else{
           if(!notDisplayingKeys.includes(key)){
             stats.innerHTML += key+"<br />";
@@ -379,7 +384,7 @@ const fadeOnHash = () =>{
     }  
   }
 }
-window.onhashchange = ()=>{
-  console.log("TERA")
-}
+// window.onhashchange = ()=>{
+//   console.log("TERA")
+// }
 fadeOnHash();

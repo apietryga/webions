@@ -33,11 +33,7 @@ class Creature {
     if(this.type == "player" && typeof this.eq != "undefined"){
       // MENUS EQ UPDATE
       for(let key of Object.keys(this.eq)){
-        if(key == ""){
-          console.log("OTHER!")
-        }
         // eq prewiev update
-      
         const field = document.querySelector("."+key);
         if(this.eq[key] && field != null){
           if(field.innerHTML == "" || field.innerHTML == "&nbsp;"){
@@ -48,7 +44,6 @@ class Creature {
         }else if(field != null){
           field.innerHTML = "";
         }
-      
         // Backpack preview update
         // const square = document.querySelectorAll(".backpack .row >div");
         // if(key == "bp"){
@@ -85,25 +80,19 @@ class Creature {
         //       for(const s of square){s.innerHTML = "";}
         //   }
         // } 
-
       }
     }
     // SPRITE LOAD & UPDATE
-    this.img = map.sprites[this.sprite];
-    if(["player","enemy","npc"].includes(this.type) && (!isSet(this.img) || isSet(this.outfitUpdate) )){
+    if((["player","enemy"].includes(this.type) && (!isSet(this.img)) || isSet(this.outfitUpdate) )){
       if(isSet(this.outfitUpdate)){
         delete this.outfitUpdate;
       }
-      if(typeof this.img != "undefined" && typeof this.img.width != "undefined"){
+      this.img = map.sprites[this.sprite];
+      if(typeof this.img != "undefined"){
         const recolor = recolorImage(this.img,this.colors);
-        if(typeof recolor != "number"){
-          recolor.onload = () =>{
-            this.img = recolor;
-          }  
-        }  
-      }else{
-        console.log(map.sprites);
-        this.img = map.sprites["male_oriental"];
+        recolor.onload = () =>{
+          this.img = recolor;
+        }
       }
     }
     // WALKING
@@ -249,8 +238,7 @@ class Creature {
     }
     // draw sprite
     if(this.position[2] <= map.visibleFloor){
-      if(["player","enemy"].includes(this.type) && this.name != "GM"){
-        // if(this.name != "GM"){
+      if(["player","enemy"].includes(this.type)){
           // draw colors masks
           const cw = this.img.width/6;
           ctx.drawImage(
@@ -262,10 +250,6 @@ class Creature {
             this.img, this.cyle * cw, this.direction * cw, cw, this.img.height/5,
             this.x - 40, this.y-40, 100, 100
           );
-
-        // }else{
-
-        // }
       }else{
         const img = map.sprites[this.sprite];
         ctx.drawImage(
@@ -296,31 +280,46 @@ class Creature {
       ctx.lineTo(this.x + 40, this.y -1);
       ctx.stroke();  
     }
-    // draw name and health bar
+    // draw name and health bar & update mana bar
     if(this.health > 0 && this.position[2] == player.position[2]){
       let maxBarWidth = 28;
       let barWidth = (maxBarWidth * this.health) / this.maxHealth;
       let percHealth = (100 * this.health) / this.maxHealth;
       // menus health bar update
       if(this.type == "player"){
-        const healthBar = document.querySelector(".healthBar");
-        if(healthBar != null && healthBar.style.display != "none"){
-          healthBar.querySelector("div").style.width = percHealth+"%";
-          healthBar.querySelector("div").style.backgroundColor = hpColor(percHealth>75?75:percHealth);
-          healthBar.querySelector("label").innerHTML = this.health+"/"+this.maxHealth;
+        barWidth = (maxBarWidth * this.health) / this.totalHealth;
+        percHealth = (100 * this.health) / this.totalHealth;
+        for(const key of ["healthBar","manaBar"]){
+          const DOMBar = document.querySelector("."+key);
+          if(DOMBar != null && DOMBar.style.display != "none"){
+           if(key == "healthBar"){
+              DOMBar.querySelector("div").style.width = percHealth+"%";
+              DOMBar.querySelector("div").style.backgroundColor = hpColor(percHealth>75?75:percHealth);
+              DOMBar.querySelector("label").innerHTML = this.health+"/"+this.totalHealth;
+            }else{
+              const percMana = (100 * this.mana) / this.totalMana;
+              DOMBar.querySelector("div").style.width = percMana+"%";
+              DOMBar.querySelector("div").style.backgroundColor = 'blue';
+              DOMBar.querySelector("label").innerHTML = this.mana+"/"+this.totalMana;  
+            }
+          }
         }
       }
-      ctx.fillStyle = hpColor(percHealth);
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 1;
-      ctx.font = '900 10px Tahoma';
-      ctx.textAlign = "center";
-      ctx.fillText(this.name, this.x + 5, this.y - 22);
-      ctx.strokeText(this.name, this.x + 5, this.y - 22);
-      ctx.beginPath();
-      ctx.rect(this.x - 11, this.y - 18, 30, 5);
-      ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
-      ctx.stroke();
+      // if(isHealthBar){
+        // CANVAS RENDER
+        ctx.fillStyle = hpColor(percHealth);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
+        ctx.font = '900 10px Tahoma';
+        ctx.textAlign = "center";
+        ctx.fillText(this.name, this.x + 5, this.y - 22);
+        ctx.strokeText(this.name, this.x + 5, this.y - 22);
+        ctx.beginPath();
+        ctx.rect(this.x - 11, this.y - 18, 30, 5);
+        ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
+        ctx.stroke();
+      // }
+
     }
     // draw hits and healing value
     if(isSet(this.oldHealth) && this.oldHealth != this.health){
@@ -552,7 +551,6 @@ class Action{  // class for hitText, Bullets,
     }
   }
 }
-
 class Item{
   constructor(obj){
     // MAKE ITEM FROM OBJ
@@ -581,6 +579,13 @@ class Item{
       item.spriteNr * img.height, 0, img.height, img.height,
       0, 0, img.height, img.height
     );
+    // Item's skills preview
+    sq.title = sq.name+" \n";
+    for(const key of Object.keys(item)){
+      if(['def','speed','health','mana','manaRegen','fist','dist','atk'].includes(key)){
+        sq.title += key+": "+item[key]+"\n";
+      }
+    }
     sq.onclick = () => {
       // console.log("click")
       if(sq.classList.contains("picked")){

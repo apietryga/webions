@@ -63,7 +63,7 @@ const cm = { // creatures managment
         "startPosition",
         "speed",
         "email",
-        "sex",
+        // "sex",
         "password",
         "lastDeaths"
       ];
@@ -112,7 +112,7 @@ const cm = { // creatures managment
         // update player is exists
         if(p.name == param.name){
           isPlayer = p;
-          isPlayer.lastFrame = game.time.getTime();
+          // isPlayer.lastFrame = game.time.getTime();
           isPlayer.update(param,game,cm.monstersInArea.concat(this.list),im);
           callback(isPlayer);
           break;
@@ -143,7 +143,7 @@ const cm = { // creatures managment
             // dbc[game.db].update(newPlayer);
           }
           newPlayer.type = "player";
-          newPlayer.lastFrame = game.time.getTime();
+          // newPlayer.lastFrame = game.time.getTime();
           this.inLoading.splice(this.inLoading.indexOf(param.name),1);     
           this.list.push(newPlayer);
           callback(newPlayer);
@@ -191,6 +191,8 @@ let param;cm.init();im.init();
 dbc.init(()=>{
   console.log("Database set: "+game.db);
   const server = http.createServer(public).listen(process.env.PORT || 80);
+  const date = new Date();
+  game.startServerTime = date.getTime();
   console.log("serwer is running on: http://webions");
   // WEBSOCKET
   new WebSocketServer({httpServer : server})

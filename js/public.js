@@ -321,6 +321,8 @@ function public(req, res) {
             onlineList.push(player)
           }
         }
+        // vals.js += `<script>${playersList = ``+JSON.stringify(onlineList)+``}"</script>`;
+        // vals.js += "<script>const playersList = "+JSON.stringify(onlineList)+";</script>";
         vals.js += "<script>const playersList = "+JSON.stringify(onlineList)+";</script>";
         serveChangedContent(myURL.pathname);
       })

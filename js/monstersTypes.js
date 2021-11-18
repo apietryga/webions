@@ -41,7 +41,6 @@ const monstersTypes = [
     }
 
   },
-
   { name:"Training Man",
   // type:"npc",
     sprite:"trainingMan",
@@ -54,11 +53,7 @@ const monstersTypes = [
       healing:1000
     }
   },
-
-
-
   // default
-  
   {name:"Minotaur",
     sprite:"minotaur",
     health:3000,
@@ -73,11 +68,11 @@ const monstersTypes = [
   {name:"Dragon",
     sprite:"dragon",
     health:1800,
-    speed:2,
+    speed:3,
     skills:{
       fist:400,
-      exp:100,
-      dist:150,
+      exp:400,
+      dist:450,
       healing:200
     }
   },
@@ -94,7 +89,7 @@ const monstersTypes = [
   {name:"Cyclops",
     sprite:"cyclops",
     health:750,
-    speed:2.5,
+    speed:2,
     skills:{
       fist:250,
       exp:50,
@@ -126,7 +121,7 @@ const monstersTypes = [
   },
   {name:"Cat",
     sprite:"cat",
-    health:500,
+    health:15,
     speed:1.5,
     skills:{
       fist:0,
@@ -140,7 +135,27 @@ const monstersTypes = [
     speed:1.5,
     skills:{
       fist:50,
-      exp:10,
+      exp:25,
+      dist:0
+    }
+  },
+  {name:"Barbarian",
+    sprite:"barbarian",
+    health:150,
+    speed:2.5,
+    skills:{
+      fist:50,
+      exp:30,
+      dist:0
+    }
+  },
+  {name:"Barbarian Monk",
+    sprite:"barbarian_monk",
+    health:300,
+    speed:3,
+    skills:{
+      fist:150,
+      exp:80,
       dist:0
     }
   },

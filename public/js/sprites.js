@@ -1,8 +1,8 @@
 let sprites = [
-
   { name: "gm",
-    src : "img/sprites/gm.webp?v="+game.version,
-    w:80,
+    src : "img/sprites/outfits/gm.webp?v="+game.version,
+    // w:80,
+    group:'outfits'
   },
   { name: "king",
     src : "img/sprites/male_king.webp?v="+game.version,
@@ -95,6 +95,14 @@ let sprites = [
   },
   { name: "wasp",
     src : "img/sprites/wasp.webp?v="+game.version,
+    group : "monsters"
+  },
+  { name: "barbarian",
+    src : "img/sprites/barbarian_knight.webp?v="+game.version,
+    group : "monsters"
+  },
+  { name: "barbarian_monk",
+    src : "img/sprites/barbarian.webp?v="+game.version,
     group : "monsters"
   },
   { name: "cat",

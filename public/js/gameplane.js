@@ -43,7 +43,7 @@ const gamePlane = {
       // sort it in order of rendering.
       drawStack.sort((a,b)=>{
         // player above items
-        if(b.type == "player" && a.type == "item"){return -1;}
+        // if(b.type == "player" && a.type == "item"){return -1;}
         let keyA = "position"; 
         let keyB = "position"; 
         const staticElements = ['doors','walls','floors','halffloors','item','stairs'];
@@ -71,25 +71,33 @@ const gamePlane = {
           }
           return 1;
         }
-
+        // items down
+        if(staticElements.includes(a.type) && movingElements.includes(b.type)){
+          return -1;
+        }
+        if(staticElements.includes(b.type) && movingElements.includes(a.type)){
+          return 1;
+        }
         if(a[keyA][1] >= b[keyB][1]){return 1;}
-        // if(a[keyA][1] < b[keyB][1]){return -1;}
         if(a[keyA][0] <= b[keyB][0]){return 1;}
-        // if(a[keyA][0] > b[keyB][0]){return -1;}
-        // console.log(a.position)
       })
       // draw all in order
       for(const e of drawStack){
         e.draw();
       }
+      // update actions
+      // console.log(gamePlane.actions.length);
       for(const a of gamePlane.actions){a.update();}
       inGameConsole.update();
     });
   },
-  stop(title = "GAME STOPPED."){
+  stop(title = "GAME PAUSED."){
     // show popup
     popup.init(title);
     clearInterval(this.interval);
-    console.log("Game stopped.")
+    menus.console.log(
+      "Game Paused. <a href='/game.html'>RELOAD</a> to play.",
+      {color:"#fff"}
+    )
   }
 }
