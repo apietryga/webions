@@ -10,7 +10,7 @@
   },
   {
     "name": "Tosiek",
-    "position": [60, -2, 1],
+    "position": [35, -9, -1],
     "speed": 2,
     "health": 337,
     "maxHealth": 180,
@@ -23,7 +23,7 @@
       "fist_summary": 88,
       "dist_summary": 91
     },
-    "lastFrame": 1637344044977,
+    "lastFrame": 1637355041464,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$Z4Jyv7E2x4Brdq1Nil2fn.pFTsLWad4RQuO0ixsFfGrEIoz1DA4hC",

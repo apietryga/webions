@@ -141,6 +141,10 @@ class Creature {
     }
   }
   update(param,game,creatures,items){
+    // tp to temple
+    if(this.type == "player" && this.says == "!temple"){
+      this.position = [35,-9,-1];
+    }
     // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
     if(this.type == "player" && this.lastFrame < game.startServerTime){
       this.skills.level = -1;
