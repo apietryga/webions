@@ -9,7 +9,7 @@ const dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
 const  {CourierClient} = require("@trycourier/courier");
 const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5R6HYK6W"});  
-const [Creature,Items] = require("./server_components");
+const Creature = require("./server_components")[0];
 const passTokens = {
   vals : [],
   generate(pName){
@@ -36,7 +36,6 @@ const passTokens = {
   }
 }
 const bcrypt = require('bcrypt');
-const monstersTypes = require('./monstersTypes');
 password = {
   cryptPassword : (password, callback) => {
     bcrypt.genSalt(10, function(err, salt) {
@@ -70,7 +69,6 @@ const log = {
     for(const res of this.ged){
       if(res.nick == nick){
         this.ged.splice(this.ged.indexOf(res),1);
-        console.log(res.nick +" LOGGED OUT")
       }
     }
   }
@@ -78,7 +76,7 @@ const log = {
 if(game.dev == true){
   log.ged.push({nick:"GM",token:"123"})
 }
-function public(req, res) {
+function public(req, res, playersList) {
   const {url} = req;
   const href = "http://"+req.rawHeaders[1];
   const myURL = new URL(href+url);
@@ -315,18 +313,9 @@ function public(req, res) {
     if("?online=true" == myURL.search){
       vals.message = "<h1>Online Players</h1>";
       dbc[game.db].loadAll((content)=>{
-        const onlineList = [];
-        for(const player of content){
-          if(game.time - player.lastFrame <= 10000){
-            onlineList.push(player)
-          }
-        }
-        // vals.js += `<script>${playersList = ``+JSON.stringify(onlineList)+``}"</script>`;
-        // vals.js += "<script>const playersList = "+JSON.stringify(onlineList)+";</script>";
-        vals.js += "<script>const playersList = "+JSON.stringify(onlineList)+";</script>";
+        vals.js += "<script>const playersList = "+JSON.stringify(playersList)+";</script>";
         serveChangedContent(myURL.pathname);
       })
-      
     }else if("?player=" == myURL.search){
 
 
@@ -350,7 +339,6 @@ function public(req, res) {
     vals.aside = `<a href="https://github.com/apietryga/webions2" target="_blank">GITHUB</a>`;
     serveChangedContent(myURL.pathname);
   }else if(["/mapeditor.html"].includes(myURL.pathname)){
-    console.log("MAPEDITOR")
     if(game.dev == true){
       file.serve(req,res)
     }else{

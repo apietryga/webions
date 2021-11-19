@@ -16,11 +16,30 @@ this.list = [
     level:0,
     spriteNr:2,
     inItem: "Simple Shield"
-  },  
+  },
+  //  CASTLE BOXES
+  { name:"staticBox",
+    position:[50,-40,0],
+    spriteNr:2,
+    inItem: "ladder"
+  },
+    // TOWER 
+    { name:"staticBox",
+      position:[48,-37,4],
+      spriteNr:2,
+      inItem: "Random Item"
+    },
+
   // KING's QUEST
   { name:"staticBox",
-    position:[56,-21,-1],
+    position:[56,-20,-1],
+    spriteNr:2,
     inItem: "Rod"
+  },
+  { name:"staticBox",
+    position:[55,-25,-2],
+    spriteNr:2,
+    inItem: "Wand of Destiny"
   },
   { name:"ladder",
     position:[32,-23,0],
@@ -28,16 +47,30 @@ this.list = [
   { name:"ladder",
     position:[33,-25,1],
   },
+  // CYCLOPS QUEST
+  { name:"staticBox",
+    position:[90,4,1],
+    inItem: "Simple Legs"
+  },
+
   // DRAGON QUEST
+  { name:"staticBox",
+    position:[138,-1,0],
+    inItem: "Simple Armor"
+  },
   { name:"staticBox",
     spriteNr:2,
     position:[146,6,1],
-    inItem: "Simple Armor"
+    inItem: "King Armor"
   },
   // WIZARD QUEST
   { name:"staticBox",
+    position:[-68,14,-1],
+    inItem: "Magic Armor",
+  },
+  { name:"staticBox",
     position:[-71,13,3],
-    inItem: "Simple Legs",
+    inItem: "Magic Hat",
     spriteNr:2,
   },
   

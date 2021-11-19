@@ -43,6 +43,7 @@ this.data = [
 
   {"name":"Dragon","position":[138,0,1]},
   {"name":"Dragon","position":[146,5,1]},
+  {"name":"Dragon","position":[147,5,1]},
 
   // LEFT OF LEAUGE
   {"name":"Orange Wizard","position":[-73,11,3]},

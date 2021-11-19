@@ -41,7 +41,10 @@ class dbConnect{
       "sex",
       "colors",
       "eq",
-      "lastDeaths"
+      "lastDeaths",
+      "quests",
+      "mana",
+      "maxMana"
     ];
     this.json.dataToSave = this.dataToSave;
     this.redis.dataToSave = this.dataToSave;

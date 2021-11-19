@@ -125,21 +125,52 @@ this.types = [
     handle:['bp'],
     pickable:true
   },
+  { name: "Random Item",
+    sprite: "items",
+    spriteNr: 15,
+    handle: ["lh","rh","bp","nc","hd","ch","lg","ft"],
+    pickable:true,
+    randStats: [
+      {speed: '0 - 3'},
+      {mana: '0 - 100'},
+      {manaRegen: '0 - 50'},
+      {health: '0 - 200'},
+      {def: '0 - 100'},
+    ]
+  },
   { name: "staticBox",
     sprite: "action_items",
     spriteNr : 3,
     walkThrow : false,
     walkOn : (creature,item) => {
+      // creature.quests = [];
+
       if(typeof item.level != "undefined" && item.level > creature.skills.level){
         creature.text = "You need "+item.level+" level to open this box";
-      }else if(typeof creature.eq !=  "undefined" && !creature.eq.bp && creature.type == "player"){
+      }else if(typeof creature.eq !=  "undefined"&& creature.type == "player" && !creature.quests.includes(item.name)){
+        // console.log(creature.quests);
+        // for(const keys of Object.keys(creature.eq)){
+        // let isField = true;
+        // console.log(item)
+        // if(typeof item.handle != "undefined"){
         item.makeNew({name:item.inItem},"eq",creature);
-        creature.text = "You've found "+item.inItem+".";
+// 
+        // const phantomItem = new Item(item);
+        // console.log(item)
+        // for(const handle of phantomItem.handle){
+        //   if(!handle){
+        //     isField = false;
+        //   }
+        // }
+        // if(isField){
+        //   creature.quests.push(item.name);
+        //   creature.text = "You've found "+item.inItem+".";
+        // }
       }else{
-        creature.text = "This box is empty.";
+        console.log(creature.quests)
+
       }
     },
     pickable:false
   }
-
 ];

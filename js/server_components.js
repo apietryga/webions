@@ -3,6 +3,7 @@ const dbc = new dbConnect();
 const Map = require("../public/js/map");
 const map = new Map();
 const func = require("../public/js/functions");
+const game = require("../public/js/gameDetails");
 const itemsTypes = require("./itemsTypes").types;
 class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
@@ -10,8 +11,9 @@ class Creature {
     this.name = nickName;
     this.position = [35,-9,-1];
     this.walk = false;
-    this.speed = 2; // grids per second
-    this.totalSpeed = 2;
+    // this.speed = 2; // grids per second
+    // this.totalSpeed = 2;
+    this.totalSpeed = this.speed;
     this.direction = 1;
     this.health = 100;
     this.maxHealth = this.health;
@@ -146,6 +148,7 @@ class Creature {
     }
     // UPDATE FRAME
     if(typeof game.startServerTime != "undefined"){
+      // console.log( game.startServerTime)
       this.lastFrame = game.time.getTime();
     }
     // GET EQ VALUES
@@ -169,6 +172,15 @@ class Creature {
         }
       }
     }
+    // monsters and npc's speed update
+    if(["monster","npc"].includes(this.type)){
+      if(func.isSet(this.speed)){
+        this.totalSpeed = this.speed;
+      }else{
+        this.totalSpeed = 1.5;
+      }
+    }
+
     // CHECK HEALTH ON HEALTH ITEM DROP
     if(this.health > this.totalHealth && this.type == "player"){
       this.health = this.totalHealth;
@@ -212,11 +224,14 @@ class Creature {
     const places = {
       temple:[35,-9,-1],
       castle:[49,-34,1],
-      orange_tower:[-70,11,2],
+      wizards:[-70,11,2],
       king:[55,-21,-1],
       dragon:[135,1,0],
       kingslegs:[60,-13,2],
       barbarian:[4,-33,1],
+      depo:[43,0,0],
+      castlegate:[40,-23,0],
+      castletower:[47,-41,4],
     };
     if(this.name == "GM" && func.isSet(this.says)){
       const command = this.says.split(" ");
@@ -379,6 +394,8 @@ class Creature {
         }
         if(walkingMode == "stay"){
           r = -1;
+           // set exhoust
+           this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
         }
         if (r == 0) {phantomPos[1]--;} // up
         if (r == 1) {phantomPos[0]++;} // right
@@ -416,14 +433,30 @@ class Creature {
             // check if's floor between
             let isBetween = false;
             for(const grid of map.getGrid([phantomPos[0],phantomPos[1],phantomPos[2]+1])){
-              // if(grid[4] == "floors"){
                 isBetween = true;
-              // }
+            }
+            // check if grid next to is avalible
+            let isNextAvalible = false;
+            for(const grid of map.getGrid([phantomPos[0],phantomPos[1],phantomPos[2]])){
+              if(grid[4] == "floors"){
+                if(grid[4] == "floors"){
+                  isNextAvalible = true;
+                }
+              }
             }
             if(!isBetween){
-              phantomPos[0]--;
-              phantomPos[1]--;
-              phantomPos[2]++;  
+              let isNextAvalible = false;
+              // check future position
+              for(const grid of map.getGrid([phantomPos[0]-1,phantomPos[1]-1,phantomPos[2]+1])){
+                if(grid[4] == "floors"){
+                  isNextAvalible = true;
+                }
+              }
+              if(isNextAvalible){
+                phantomPos[0]--;
+                phantomPos[1]--;
+                phantomPos[2]++;
+              }
             }
           }
           // down
@@ -700,18 +733,53 @@ class Item{
   }
   makeNew(obj,where,creature){
     const item = new Item(obj);
-    if(where == "eq" && func.isSet(item.handle)){
-      let setted = false;
-      for(const f of item.handle){
-        if(!creature.eq[f]){
-          creature.eq[f] = item;
-          setted=true;
-          break;
+    // GENERATE RANDOM STATS:
+    if(func.isSet(item.randStats)){
+      // let x;
+      for(const randStat of item.randStats){
+        // 50% chance of display this stat
+        if(Math.round(Math.random())){
+          const key = Object.keys(randStat)[0];
+          const [min, max] = randStat[key].split("-");
+          const value = min*1 + Math.floor(Math.random() * max);
+          if(value > 0){
+            item[key] = value;
+          }       
         }
       }
-      if(!setted){
-        creature.text = "You have no empty places.";
+    }
+    if((func.isSet(creature.boxExhoust) && creature.boxExhoust <= game.time.getTime()) || !func.isSet(creature.boxExhoust)){
+      let setted = false;
+      let f; // key of eq item
+      // check empty places in eq
+      if(where == "eq" && func.isSet(item.handle)){
+        for(f of item.handle){
+          if(!creature.eq[f]){
+            setted=true;
+            break;
+          }
+        }
       }
+      // check player quests
+      let isQuest = false;
+      for(const quest of creature.quests){
+        if(quest == item.name){
+          isQuest = true;
+          break;
+        }        
+      }
+      // display result
+      if(isQuest && creature.name != "GM"){
+        creature.text = "The box is empty.";
+      }else if(!setted){
+        creature.text = "You have no empty places.";
+      }else{
+        creature.text = "You've found a "+item.name;
+        creature.eq[f] = item;
+        creature.quests.push(item.name)
+      }
+      // set exhoust on box
+      creature.boxExhoust = game.time.getTime()+1000;
     }
   }
   relocate(creature,items,itemAction){

@@ -282,6 +282,7 @@ class Creature {
     }
     // draw name and health bar & update mana bar
     if(this.health > 0 && this.position[2] == player.position[2]){
+    // if(this.health > 0 && this.position[2] == map.visi){
       let maxBarWidth = 28;
       let barWidth = (maxBarWidth * this.health) / this.maxHealth;
       let percHealth = (100 * this.health) / this.maxHealth;
@@ -309,8 +310,8 @@ class Creature {
         // CANVAS RENDER
         ctx.fillStyle = hpColor(percHealth);
         ctx.strokeStyle = 'black';
-        ctx.lineWidth = 1;
-        ctx.font = '900 10px Tahoma';
+        ctx.lineWidth = 1.5;
+        ctx.font = '900 20px Tahoma';
         ctx.textAlign = "center";
         ctx.fillText(this.name, this.x + 5, this.y - 22);
         ctx.strokeText(this.name, this.x + 5, this.y - 22);
@@ -441,7 +442,7 @@ class Text {
       ctx.fillStyle = '#fff';
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 0.8;
-      ctx.font = '900 15px Tahoma';
+      ctx.font = '900 25px Tahoma';
       ctx.textAlign = "center";
       ctx.fillText(this.text, player.x, player.y + 230);
       ctx.strokeText(this.text, player.x, player.y + 230);

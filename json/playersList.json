@@ -10,41 +10,42 @@
   },
   {
     "name": "Tosiek",
-    "position": [46, -24, 0],
-    "speed": 2.8,
-    "health": 1005,
-    "maxHealth": 900,
+    "position": [49, -25, 0],
+    "speed": 2.7,
+    "health": 870,
+    "maxHealth": 870,
     "skills": {
-      "level": 80,
-      "exp": 495405,
+      "level": 77,
+      "exp": 446419,
       "fist": 37,
-      "dist": 32,
+      "dist": 33,
       "healing": 5011,
-      "fist_summary": 1322,
-      "dist_summary": 981
+      "fist_summary": 1359,
+      "dist_summary": 1035
     },
-    "lastFrame": 1637239444778,
+    "lastFrame": 1637327004480,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
     "colors": {
       "head": [212, 212, 212],
-      "chest": [98, 240, 98],
-      "legs": [240, 98, 98],
-      "foots": [240, 98, 240]
+      "chest": [212, 212, 212],
+      "legs": [13, 13, 13],
+      "foots": [13, 13, 240]
     },
     "eq": {
       "hd": {
         "type": "item",
-        "name": "Simple Helmet",
+        "name": "Magic Hat",
+        "position": [36, -9, -1],
         "sprite": "items",
-        "spriteNr": 2,
+        "spriteNr": 13,
         "handle": ["hd"],
         "pickable": true,
-        "health": 180,
-        "position": [83, -7, 1],
+        "mana": 400,
+        "manaRegen": 50,
         "actionType": "pickUp",
-        "visibleFloor": 5,
+        "visibleFloor": -1,
         "field": "hd"
       },
       "bp": false,
@@ -64,17 +65,17 @@
       },
       "lh": {
         "type": "item",
-        "name": "Rod",
+        "name": "Wand of Destiny",
+        "position": [33, -12, -1],
         "sprite": "items",
-        "spriteNr": 1,
-        "fist": 15,
-        "dist": 20,
-        "manaRegen": 2,
+        "fist": 100,
+        "dist": 100,
+        "spriteNr": 10,
+        "manaRegen": 100,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "position": [66, 5, 1],
         "actionType": "pickUp",
-        "visibleFloor": 5,
+        "visibleFloor": -1,
         "field": "lh"
       },
       "rh": {
@@ -100,25 +101,19 @@
       },
       "ft": {
         "type": "item",
-        "name": "Simple Boots",
+        "name": "King Boots",
+        "position": [34, -12, -1],
         "sprite": "items",
-        "spriteNr": 5,
+        "spriteNr": 9,
         "handle": ["ft"],
         "pickable": true,
-        "speed": 2,
-        "position": [33, -8, -1],
+        "speed": 4,
         "actionType": "pickUp",
         "visibleFloor": -1,
         "field": "ft"
       }
     },
     "lastDeaths": [
-      {
-        "when": "2021-11-12T17:28:57.406Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 91
-      },
       {
         "when": "2021-11-12T17:29:00.698Z",
         "who": "GM",
@@ -142,9 +137,18 @@
         "who": "GM",
         "whoType": "player",
         "level": 79
+      },
+      {
+        "when": "2021-11-18T16:31:13.922Z",
+        "who": "Cyclops",
+        "whoType": "monster",
+        "level": 77
       }
     ],
-    "sprite": "male_wizard"
+    "sprite": "male_oriental",
+    "quests": [],
+    "mana": 1270,
+    "maxMana": 870
   },
   {
     "name": "Zuzia",
@@ -667,24 +671,24 @@
   },
   {
     "name": "GM",
-    "position": [36, -8, -1],
-    "speed": 2.1,
-    "health": 290,
-    "maxHealth": 290,
+    "position": [49, -37, 4],
+    "speed": 2.2,
+    "health": 370,
+    "maxHealth": 370,
     "sprite": "gm",
     "skills": {
-      "level": 19,
-      "exp": 6011,
-      "fist": 310,
-      "dist": 113,
+      "level": 27,
+      "exp": 18900,
+      "fist": 311,
+      "dist": 114,
       "healing": 119,
-      "fist_summary": 95652,
-      "dist_summary": 12718
+      "fist_summary": 96698,
+      "dist_summary": 12922
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1637248322073,
+    "lastFrame": 1637327831207,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -695,49 +699,31 @@
       "hd": {
         "type": "item",
         "name": "Magic Hat",
-        "position": [50, -35, 1],
+        "position": [-71, 10, 2],
         "sprite": "items",
         "spriteNr": 13,
         "handle": ["hd"],
         "pickable": true,
         "mana": 400,
         "manaRegen": 50,
-        "actionType": "pickUp",
-        "visibleFloor": 1,
-        "field": "hd"
+        "actionType": "pickUp"
       },
-      "bp": {
-        "type": "item",
-        "name": "ladder",
-        "position": [52, -26, 0],
-        "sprite": "action_items",
-        "spriteNr": 4,
-        "handle": ["lh", "rh", "bp"],
-        "pickable": true,
-        "desc": "You can use it to move between floors.",
-        "actionType": "pickUp",
-        "in": [],
-        "visibleFloor": 5,
-        "field": "bp"
-      },
+      "bp": false,
       "nc": false,
       "ch": {
-        "type": "item",
-        "name": "King Armor",
-        "position": [-71, 12, 2],
+        "name": "Magic Armor",
         "sprite": "items",
-        "spriteNr": 7,
+        "spriteNr": 14,
         "handle": ["ch"],
         "pickable": true,
-        "def": 100,
-        "actionType": "pickUp",
-        "visibleFloor": 2,
-        "field": "ch"
+        "def": 50,
+        "mana": 200,
+        "manaRegen": 25
       },
       "lh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [-69, 10, 3],
+        "position": [-72, 11, 2],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -745,22 +731,18 @@
         "manaRegen": 100,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "actionType": "pickUp",
-        "visibleFloor": 5,
-        "field": "rh"
+        "actionType": "pickUp"
       },
       "rh": {
         "type": "item",
         "name": "Blessed Shield",
-        "position": [-70, 10, 3],
+        "position": [-70, 11, 2],
         "sprite": "items",
         "spriteNr": 12,
         "handle": ["lh", "rh"],
         "pickable": true,
         "def": 100,
-        "actionType": "pickUp",
-        "visibleFloor": 5,
-        "field": "lh"
+        "actionType": "pickUp"
       },
       "lg": {
         "type": "item",
@@ -788,18 +770,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-11-17T22:54:12.177Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 21
-      },
-      {
-        "when": "2021-11-17T22:54:22.353Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 21
-      },
-      {
         "when": "2021-11-17T23:14:57.620Z",
         "who": "Minotaur",
         "whoType": "monster",
@@ -816,8 +786,64 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 19
+      },
+      {
+        "when": "2021-11-18T17:06:02.210Z",
+        "who": "Orange Wizard",
+        "whoType": "monster",
+        "level": 18
+      },
+      {
+        "when": "2021-11-18T17:23:00.999Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 19
       }
-    ]
+    ],
+    "quests": [
+      "Simple Boots",
+      "Simple Helmet",
+      "Rod",
+      "ladder",
+      "ladder",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item"
+    ],
+    "mana": 970,
+    "maxMana": 370
   },
   {
     "name": "Niko",
@@ -1173,9 +1199,9 @@
   {
     "name": "asd",
     "position": [49, 0, -1],
-    "speed": 1,
-    "health": 220,
-    "maxHealth": 100,
+    "speed": 2,
+    "health": 200,
+    "maxHealth": 150,
     "skills": {
       "level": 5,
       "exp": 125,
@@ -1233,7 +1259,11 @@
         "speed": 2
       }
     },
-    "lastFrame": 1637164209236
+    "lastFrame": 1637326076934,
+    "sprite": "male_oriental",
+    "quests": [],
+    "mana": 150,
+    "maxMana": 150
   },
   {
     "name": "1",

@@ -190,7 +190,7 @@ const im = { // items management
 let param;cm.init();im.init();
 dbc.init(()=>{
   console.log("Database set: "+game.db);
-  const server = http.createServer(public).listen(process.env.PORT || 80);
+  const server = http.createServer((req,res)=>{public(req,res,cm.players.list)}).listen(process.env.PORT || 80);
   const date = new Date();
   game.startServerTime = date.getTime();
   console.log("serwer is running on: http://webions");
@@ -242,3 +242,4 @@ dbc.init(()=>{
     })
   })
 })
+

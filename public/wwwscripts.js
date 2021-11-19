@@ -4,8 +4,7 @@ if(Object.keys(searchToObject()).includes("online")){
 }else{
   getWhat = "playersList";
 }
-
-// MAIN
+// PLAYERS
 const main = document.querySelector("main");
 if(typeof main != null && typeof playersList != "undefined"){
   const dt = (typeof playersList == "string")?JSON.parse(playersList):playersList;
@@ -17,13 +16,22 @@ if(typeof main != null && typeof playersList != "undefined"){
     main.append(table);
 
     // PLAYER DETAILS
+    const dToShow = [
+      "speed",
+      "sprite",
+      "health",
+      "skills",
+      "lastDeaths"
+    ];
+    const skillsToNotShow = [
+      "dist_summary",
+      "fist_summary"
+    ];
     if(Object.keys(params).includes("player")){
       const backer = document.createElement("a");
-      // backer.href = "./players.html";
       backer.onclick = () => {window.history.back()};
       backer.innerHTML="< BACK";
       main.prepend(backer);
-      
       // get player
       let player = false;
       for(const plr of dt){
@@ -34,13 +42,7 @@ if(typeof main != null && typeof playersList != "undefined"){
       }
       if(player){
         h1.innerHTML = player.name;
-        const dToShow = [
-          "speed",
-          "sprite",
-          "health",
-          "skills",
-          "lastDeaths"
-        ];
+        
         const data = [];
         for(const s of Object.keys(player)){
           if(dToShow.includes(s)){
@@ -61,7 +63,6 @@ if(typeof main != null && typeof playersList != "undefined"){
                 const recolor = recolorImage(img,player.colors);
                 recolor.onload = () =>{
                   img = recolor;
-                  console.log("LOADED!")
                   // draw else elements xD
                   ctx.drawImage(
                     img, 260, 100, 80, 80,
@@ -91,16 +92,16 @@ if(typeof main != null && typeof playersList != "undefined"){
               order = 4;
               const skillsTbl = document.createElement("table");
               for(const k of Object.keys(player.skills)){
-                const sTr = document.createElement("tr");
-                const sTd1 = document.createElement("td");
-                const sTd2 = document.createElement("td");
-
-                sTd1.innerHTML = k;
-                sTd2.innerHTML = player.skills[k];
-
-                sTr.append(sTd1);
-                sTr.append(sTd2);
-                skillsTbl.append(sTr);
+                if(!skillsToNotShow.includes(k)){
+                  const sTr = document.createElement("tr");
+                  const sTd1 = document.createElement("td");
+                  const sTd2 = document.createElement("td");
+                  sTd1.innerHTML = k;
+                  sTd2.innerHTML = player.skills[k];
+                  sTr.append(sTd1);
+                  sTr.append(sTd2);
+                  skillsTbl.append(sTr);
+                }
               }
               td2.append(skillsTbl);
             }else if(s == "speed"){
@@ -147,7 +148,6 @@ if(typeof main != null && typeof playersList != "undefined"){
         h1.innerHTML = "Player not found. <br /><a href='players.html'>Look at exists players.</a>"
         table.remove();
       }
-
     }else if(Object.keys(params).includes("lastdeaths")){
     // LAST DEATHS  
       h1.remove();
@@ -185,10 +185,8 @@ if(typeof main != null && typeof playersList != "undefined"){
         table.append(row);
       }
     }else{
-
-      const tbHead = ["lp.","Player name","level"];
       // SKILLS && PLAYERS & ONLINE LIST 
-      // if(Object.keys(params).includes("skills")){
+      const tbHead = ["lp.","Player name","level"];
       if(typeof skills != "undefined"){
         tbHead[2] = "SKILLS";
       }
@@ -205,13 +203,7 @@ if(typeof main != null && typeof playersList != "undefined"){
       const sorted = [];
       for(const d of dt){
         if(d.name != "GM"){
-          if(typeof key != "undefined"){
-            if(typeof d.skills[key] != "undefined"){
-              sorted.push([d.skills[key],d]);
-            }
-          }else{
-            sorted.push([d.skills["level"],d]);
-          }
+          sorted.push([d.skills[key],d]);
         }
       }
       sorted.sort((a,b)=>{
@@ -226,6 +218,7 @@ if(typeof main != null && typeof playersList != "undefined"){
         td.colSpan = 3;
         table.append(td);
       }
+
       // make players list in order of key
       for(const [i,playerSort] of sorted.entries()){
         const player = playerSort[1];
@@ -235,12 +228,11 @@ if(typeof main != null && typeof playersList != "undefined"){
         tr.onclick = () => { window.location = tr.dataset.href;} 
 
         const tds = [i+1,player.name];
-        if(typeof key != "undefined"){
+        if(typeof key != "undefined" && typeof player.skills[key] != "undefined"){
           tds.push(player.skills[key]);
         }else{
           tds.push(player.skills.level)
         }
-
         for(const t of tds){
           const td = document.createElement("td");
           td.innerHTML = t;
@@ -266,12 +258,13 @@ function searchToObject() {
 
   return obj;
 }
-
 // LIBARY
 const jsToTable = (typename,type) =>{
   const dom = document.querySelector("."+typename);
   if(dom != null){
+    const notDisplayingItems = ["staticBox","backpack","coins"];
     for(const typ of type){
+      if(notDisplayingItems.includes(typ.name)){continue;}
       if(!typ.pickable&&typ.type == "item"){continue;}
       const row = document.createElement("div");
       row.className = "row";
@@ -280,10 +273,17 @@ const jsToTable = (typename,type) =>{
       stats.className = "stats";
       const notDisplayingKeys = ["sprite","spriteNr","handle","pickable","walkThrow"];
       for(const key of Object.keys(typ)){
-        if(typeof typ[key] != "object" && !notDisplayingKeys.includes(key)){
-          // display without key
+        if(!notDisplayingKeys.includes(key)){
           if(['desc'].includes(key)){
+            // display without key
             stats.innerHTML += "<i>"+typ[key]+"</i><br />";
+          }else if(['randStats'].includes(key)){
+            // items random stats
+            for(const randStat of typ[key]){
+              const randKey = Object.keys(randStat);
+              const randValue = randStat[randKey];
+              stats.innerHTML += ""+randKey+" <b>"+randValue+"</b><br />";
+            }
           }else{
             stats.innerHTML += ""+key+" <b>"+typ[key]+"</b><br />";
           }
@@ -298,7 +298,6 @@ const jsToTable = (typename,type) =>{
 
         }
       }
-
       row.append(stats);
       // DISPLAY SPRITE
       for(const sprite of sprites){
@@ -378,13 +377,9 @@ const fadeOnHash = () =>{
       if(cls.style.display == "none"){
         cls.style.display = "block";
       }else{
-        console.log(cls.style.display)
         cls.style.display = "none";
       }
     }  
   }
 }
-// window.onhashchange = ()=>{
-//   console.log("TERA")
-// }
 fadeOnHash();
