@@ -268,37 +268,55 @@ const jsToTable = (typename,type) =>{
       if(!typ.pickable&&typ.type == "item"){continue;}
       const row = document.createElement("div");
       row.className = "row";
+            
       // DISPLAY STATS
       const stats = document.createElement("div");
       stats.className = "stats";
+      
+      const li = document.createElement("ul");
       const notDisplayingKeys = ["sprite","spriteNr","handle","pickable","walkThrow"];
       for(const key of Object.keys(typ)){
+        row.append(li)
+        // li.innerHTML = "<h4>"+typ[key]+"</h4>";
         if(!notDisplayingKeys.includes(key)){
           if(['desc'].includes(key)){
             // display without key
-            stats.innerHTML += "<i>"+typ[key]+"</i><br />";
+            li.innerHTML += "<i>"+typ[key]+"</i><br />";
+          }else if(['name'].includes(key)){
+            // console.log(typ)
+            li.innerHTML += "<h4>"+typ[key]+"</h4>";
+
+          }else if(['skills'].includes(key)){
+            // const li = document.createElement("ul");stats.append(li);
+            // li.innerHTML = "<h4>Stats</h4>";
+            for(const stat of Object.keys(typ[key])){
+              if(typ.skills[stat] > 0){
+                li.innerHTML += "<li><b>"+stat+"</b> : "+typ.skills[stat]+"</li>";
+              }
+
+            }
+
           }else if(['randStats'].includes(key)){
             // items random stats
             for(const randStat of typ[key]){
               const randKey = Object.keys(randStat);
               const randValue = randStat[randKey];
-              stats.innerHTML += ""+randKey+" <b>"+randValue+"</b><br />";
+              li.innerHTML += "<li><b>"+randKey+"</b> : "+randValue+"</li>";
             }
           }else{
-            stats.innerHTML += ""+key+" <b>"+typ[key]+"</b><br />";
+            li.innerHTML += "<li>"+key+" <b>"+typ[key]+"</b></li>";
           }
         }else{
           if(!notDisplayingKeys.includes(key)){
-            stats.innerHTML += key+"<br />";
+            li.innerHTML += key+"<br />";
             for(const k of Object.keys(typ[key])){
-              stats.innerHTML += "&nbsp;&nbsp;&nbsp;"+k+"  <b>"+typ[key][k]+"</b><br />";
+              li.innerHTML += "&nbsp;&nbsp;&nbsp;"+k+"  <b>"+typ[key][k]+"</b><br />";
             }
-            stats.innerHTML += "<br />";
+            li.innerHTML += "<br />";
           }
 
         }
       }
-      row.append(stats);
       // DISPLAY SPRITE
       for(const sprite of sprites){
         if(sprite.name == typ.sprite){
@@ -309,7 +327,7 @@ const jsToTable = (typename,type) =>{
           img.style.backgroundImage = "url("+sprite.src+")";
           row.append(img);
           if(typeof typ.spriteNr != "undefined"){
-            hw = 80;
+            hw = 40;
             // img.style.backgroundRepeat = "no-repeat";
             img.className = "item preview"
             img.style.backgroundPosition = "-"+(hw*typ.spriteNr)+"px 0px";

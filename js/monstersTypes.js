@@ -125,7 +125,7 @@ const monstersTypes = [
     speed:1.5,
     skills:{
       fist:0,
-      exp:1,
+      exp:0,
       dist:0
     }
   },

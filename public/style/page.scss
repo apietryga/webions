@@ -241,28 +241,55 @@ body{
           margin:5% 10%;
         }
         .items,.monsters{
-          @extend %onFrame;
+          @extend %inFrame;
           background-color: transparent;
           .row{
             @extend %inFrame;
+            margin-bottom: 1em;
           
             // border:2px dashed red;
             display:flex;
-            justify-content: space-around;
+            justify-content: flex-end;
+            // justify-content: space-around;
             align-items: center;
             .preview{
               @extend %inFrame;
+
               position:relative;
-              margin:10px;
-            
+              margin:11px;
+              // width:30px;
               
             }
-
+            position:relative;
+            $titleSize:2em;
+            padding-top:$titleSize;
+            h4{
+              position:absolute;
+              display:flex;
+              align-items: center;
+              padding-left:0.8em;
+              width:100%;
+              @extend %onFrame;
+              left:0;
+              top:0;
+              height:$titleSize;
+            }
+            ul{
+              flex:1;
+              margin:0;
+              // border:2px dashed red;
+              @extend %inFrame;
+              list-style-type: none;
+              // padding:1em;
+              padding:0.5em;
+              // li{
+              // }
+            }
 
           }
           .stats{
             padding:5px 20px;
-            flex:1;
+            // flex:1;
           }
           >div{
             display: flex;

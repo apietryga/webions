@@ -143,32 +143,10 @@ this.types = [
     spriteNr : 3,
     walkThrow : false,
     walkOn : (creature,item) => {
-      // creature.quests = [];
-
       if(typeof item.level != "undefined" && item.level > creature.skills.level){
         creature.text = "You need "+item.level+" level to open this box";
       }else if(typeof creature.eq !=  "undefined"&& creature.type == "player" && !creature.quests.includes(item.name)){
-        // console.log(creature.quests);
-        // for(const keys of Object.keys(creature.eq)){
-        // let isField = true;
-        // console.log(item)
-        // if(typeof item.handle != "undefined"){
         item.makeNew({name:item.inItem},"eq",creature);
-// 
-        // const phantomItem = new Item(item);
-        // console.log(item)
-        // for(const handle of phantomItem.handle){
-        //   if(!handle){
-        //     isField = false;
-        //   }
-        // }
-        // if(isField){
-        //   creature.quests.push(item.name);
-        //   creature.text = "You've found "+item.inItem+".";
-        // }
-      }else{
-        console.log(creature.quests)
-
       }
     },
     pickable:false

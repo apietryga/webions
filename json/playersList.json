@@ -10,145 +10,110 @@
   },
   {
     "name": "Tosiek",
-    "position": [49, -25, 0],
-    "speed": 2.7,
-    "health": 870,
-    "maxHealth": 870,
+    "position": [60, -2, 1],
+    "speed": 2,
+    "health": 337,
+    "maxHealth": 180,
     "skills": {
-      "level": 77,
-      "exp": 446419,
-      "fist": 37,
-      "dist": 33,
-      "healing": 5011,
-      "fist_summary": 1359,
-      "dist_summary": 1035
+      "level": 8,
+      "exp": 352,
+      "fist": 10,
+      "dist": 10,
+      "healing": 101,
+      "fist_summary": 88,
+      "dist_summary": 91
     },
-    "lastFrame": 1637327004480,
+    "lastFrame": 1637344044977,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
+    "password": "$2b$10$Z4Jyv7E2x4Brdq1Nil2fn.pFTsLWad4RQuO0ixsFfGrEIoz1DA4hC",
     "colors": {
-      "head": [212, 212, 212],
-      "chest": [212, 212, 212],
-      "legs": [13, 13, 13],
-      "foots": [13, 13, 240]
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [240, 240, 42]
     },
     "eq": {
       "hd": {
-        "type": "item",
-        "name": "Magic Hat",
-        "position": [36, -9, -1],
+        "name": "Simple Helmet",
         "sprite": "items",
-        "spriteNr": 13,
+        "spriteNr": 2,
         "handle": ["hd"],
         "pickable": true,
-        "mana": 400,
-        "manaRegen": 50,
-        "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "hd"
+        "health": 180
       },
       "bp": false,
       "nc": false,
-      "ch": {
-        "type": "item",
-        "name": "Simple Armor",
-        "sprite": "items",
-        "spriteNr": 3,
-        "handle": ["ch"],
-        "pickable": true,
-        "def": 25,
-        "position": [48, 0, -1],
-        "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "ch"
-      },
+      "ch": false,
       "lh": {
         "type": "item",
-        "name": "Wand of Destiny",
-        "position": [33, -12, -1],
+        "name": "Random Item",
         "sprite": "items",
-        "fist": 100,
-        "dist": 100,
-        "spriteNr": 10,
-        "manaRegen": 100,
-        "handle": ["lh", "rh"],
+        "spriteNr": 15,
+        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
         "pickable": true,
+        "randStats": [
+          {"speed": "0 - 3"},
+          {"mana": "0 - 100"},
+          {"manaRegen": "0 - 50"},
+          {"health": "0 - 200"},
+          {"def": "0 - 100"}
+        ],
+        "manaRegen": 33,
+        "health": 146,
+        "def": 91,
+        "position": [50, -34, 2],
         "actionType": "pickUp",
-        "visibleFloor": -1,
+        "visibleFloor": 2,
         "field": "lh"
       },
       "rh": {
-        "name": "Simple Shield",
+        "name": "Rod",
         "sprite": "items",
-        "spriteNr": 11,
+        "spriteNr": 1,
+        "fist": 15,
+        "dist": 20,
+        "manaRegen": 2,
         "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 20
+        "pickable": true
       },
       "lg": {
-        "type": "item",
         "name": "Simple Legs",
         "sprite": "items",
         "spriteNr": 4,
         "handle": ["lg"],
         "pickable": true,
-        "manaRegen": 10,
-        "position": [34, -7, -1],
-        "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "lg"
+        "manaRegen": 10
       },
       "ft": {
-        "type": "item",
-        "name": "King Boots",
-        "position": [34, -12, -1],
+        "name": "Simple Boots",
         "sprite": "items",
-        "spriteNr": 9,
+        "spriteNr": 5,
         "handle": ["ft"],
         "pickable": true,
-        "speed": 4,
-        "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "ft"
+        "speed": 1
       }
     },
     "lastDeaths": [
       {
-        "when": "2021-11-12T17:29:00.698Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 88
-      },
-      {
-        "when": "2021-11-14T11:26:34.114Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 85
-      },
-      {
-        "when": "2021-11-14T11:27:12.836Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 82
-      },
-      {
-        "when": "2021-11-14T11:27:25.661Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 79
-      },
-      {
-        "when": "2021-11-18T16:31:13.922Z",
-        "who": "Cyclops",
+        "when": "2021-11-19T15:05:00.806Z",
+        "who": "Wasp",
         "whoType": "monster",
-        "level": 77
+        "level": 5
       }
     ],
-    "sprite": "male_oriental",
-    "quests": [],
-    "mana": 1270,
-    "maxMana": 870
+    "sprite": "male_wizard",
+    "quests": [
+      "Simple Boots",
+      "Simple Helmet",
+      "Simple Shield",
+      "ladder",
+      "Random Item",
+      "Rod",
+      "Simple Legs"
+    ],
+    "mana": 180,
+    "maxMana": 180
   },
   {
     "name": "Zuzia",
@@ -592,103 +557,25 @@
     "sex": "male"
   },
   {
-    "name": "",
-    "position": [92, -8, 1],
-    "speed": 1,
-    "health": 140,
-    "maxHealth": 160,
-    "skills": {
-      "level": 6,
-      "exp": 201,
-      "fist": 0,
-      "dist": 0,
-      "healing": 100,
-      "fist_summary": null,
-      "dist_summary": null
-    },
-    "colors": {
-      "head": [240, 169, 98],
-      "chest": [240, 98, 98],
-      "legs": [155, 155, 155],
-      "foots": [13, 13, 13]
-    },
-    "eq": {
-      "hd": {
-        "name": "Simple Helmet",
-        "sprite": "items",
-        "spriteNr": 2,
-        "handle": ["hd"],
-        "pickable": true,
-        "health": 180
-      },
-      "bp": {
-        "type": "item",
-        "name": "ladder",
-        "position": [53, -26, 0],
-        "sprite": "action_items",
-        "spriteNr": 4,
-        "handle": ["lh", "rh", "bp"],
-        "pickable": true,
-        "desc": "You can use it to move between floors.",
-        "actionType": "pickUp",
-        "visibleFloor": 5,
-        "field": "lh"
-      },
-      "nc": false,
-      "ch": false,
-      "lh": {
-        "name": "Rod",
-        "sprite": "items",
-        "spriteNr": 1,
-        "fist": 15,
-        "dist": 20,
-        "manaRegen": 2,
-        "handle": ["lh", "rh"],
-        "pickable": true
-      },
-      "rh": {
-        "name": "Rod",
-        "sprite": "items",
-        "spriteNr": 1,
-        "fist": 15,
-        "dist": 20,
-        "manaRegen": 2,
-        "handle": ["lh", "rh"],
-        "pickable": true
-      },
-      "lg": false,
-      "ft": {
-        "name": "Simple Boots",
-        "sprite": "items",
-        "spriteNr": 5,
-        "handle": ["ft"],
-        "pickable": true,
-        "speed": 2
-      }
-    },
-    "lastFrame": 1637191493768,
-    "sprite": "male_oriental"
-  },
-  {
     "name": "GM",
-    "position": [49, -37, 4],
+    "position": [56, -22, -1],
     "speed": 2.2,
-    "health": 370,
-    "maxHealth": 370,
+    "health": 350,
+    "maxHealth": 350,
     "sprite": "gm",
     "skills": {
-      "level": 27,
-      "exp": 18900,
+      "level": 25,
+      "exp": 15354,
       "fist": 311,
       "dist": 114,
       "healing": 119,
-      "fist_summary": 96698,
+      "fist_summary": 96700,
       "dist_summary": 12922
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1637327831207,
+    "lastFrame": 1637344086737,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -723,7 +610,7 @@
       "lh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [-72, 11, 2],
+        "position": [56, -23, -1],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -731,7 +618,9 @@
         "manaRegen": 100,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "actionType": "pickUp"
+        "actionType": "pickUp",
+        "visibleFloor": -1,
+        "field": "lh"
       },
       "rh": {
         "type": "item",
@@ -770,18 +659,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-11-17T23:14:57.620Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 20
-      },
-      {
-        "when": "2021-11-17T23:34:30.611Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 19
-      },
-      {
         "when": "2021-11-17T23:36:40.243Z",
         "who": "Minotaur",
         "whoType": "monster",
@@ -798,6 +675,18 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 19
+      },
+      {
+        "when": "2021-11-19T13:19:09.364Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 26
+      },
+      {
+        "when": "2021-11-19T13:26:43.577Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 25
       }
     ],
     "quests": [
@@ -842,8 +731,8 @@
       "Random Item",
       "Random Item"
     ],
-    "mana": 970,
-    "maxMana": 370
+    "mana": 950,
+    "maxMana": 350
   },
   {
     "name": "Niko",
@@ -1333,6 +1222,95 @@
     "lastDeaths": [
       {
         "when": "2021-11-18T02:37:51.729Z",
+        "who": "Wasp",
+        "whoType": "monster",
+        "level": 6
+      }
+    ]
+  },
+  {
+    "name": "",
+    "position": [35, -9, -1],
+    "health": 160,
+    "maxHealth": 160,
+    "sprite": "male_oriental",
+    "skills": {
+      "level": 6,
+      "exp": 180,
+      "fist": 0,
+      "dist": 0,
+      "healing": 100,
+      "fist_summary": null,
+      "dist_summary": null
+    },
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": {
+        "name": "Simple Helmet",
+        "sprite": "items",
+        "spriteNr": 2,
+        "handle": ["hd"],
+        "pickable": true,
+        "health": 180
+      },
+      "bp": {
+        "type": "item",
+        "name": "ladder",
+        "position": [53, -26, 0],
+        "sprite": "action_items",
+        "spriteNr": 4,
+        "handle": ["lh", "rh", "bp"],
+        "pickable": true,
+        "desc": "You can use it to move between floors.",
+        "actionType": "pickUp",
+        "visibleFloor": 5,
+        "field": "lh"
+      },
+      "nc": false,
+      "ch": false,
+      "lh": {
+        "name": "Rod",
+        "sprite": "items",
+        "spriteNr": 1,
+        "fist": 15,
+        "dist": 20,
+        "manaRegen": 2,
+        "handle": ["lh", "rh"],
+        "pickable": true
+      },
+      "rh": {
+        "name": "Rod",
+        "sprite": "items",
+        "spriteNr": 1,
+        "fist": 15,
+        "dist": 20,
+        "manaRegen": 2,
+        "handle": ["lh", "rh"],
+        "pickable": true
+      },
+      "lg": false,
+      "ft": {
+        "name": "Simple Boots",
+        "sprite": "items",
+        "spriteNr": 5,
+        "handle": ["ft"],
+        "pickable": true,
+        "speed": 2
+      }
+    },
+    "mana": 160,
+    "maxMana": 160,
+    "speed": 2,
+    "lastFrame": 1637343914914,
+    "lastDeaths": [
+      {
+        "when": "2021-11-19T17:32:58.401Z",
         "who": "Wasp",
         "whoType": "monster",
         "level": 6

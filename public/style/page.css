@@ -34,7 +34,7 @@ h5 {
   }
 }
 
-body, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row, body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview {
+body, body .wrapper main .cont .items, body .wrapper main .cont .monsters, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row, body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview, body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   padding: 2px;
@@ -42,7 +42,7 @@ body, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .
   color: #AEAEAC;
 }
 
-body > header, body > header .logo, body > header .play, body nav, body aside, body footer, body nav a, body aside a, body footer a, body .wrapper main, body .wrapper main .content, body .wrapper main table, body .wrapper main table th, body .wrapper main table td, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items, body .wrapper main .cont .monsters {
+body > header, body > header .logo, body > header .play, body nav, body aside, body footer, body nav a, body aside a, body footer a, body .wrapper main, body .wrapper main .content, body .wrapper main table, body .wrapper main table th, body .wrapper main table td, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -318,19 +318,39 @@ body .wrapper main .cont .items, body .wrapper main .cont .monsters {
 }
 
 body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row {
+  margin-bottom: 1em;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-items: center;
+  position: relative;
+  padding-top: 2em;
 }
 
 body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview {
   position: relative;
-  margin: 10px;
+  margin: 11px;
+}
+
+body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding-left: 0.8em;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 2em;
+}
+
+body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
+  flex: 1;
+  margin: 0;
+  list-style-type: none;
+  padding: 0.5em;
 }
 
 body .wrapper main .cont .items .stats, body .wrapper main .cont .monsters .stats {
   padding: 5px 20px;
-  flex: 1;
 }
 
 body .wrapper main .cont .items > div, body .wrapper main .cont .monsters > div {

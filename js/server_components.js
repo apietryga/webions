@@ -11,7 +11,7 @@ class Creature {
     this.name = nickName;
     this.position = [35,-9,-1];
     this.walk = false;
-    // this.speed = 2; // grids per second
+    this.speed = 2; // grids per second
     // this.totalSpeed = 2;
     this.totalSpeed = this.speed;
     this.direction = 1;

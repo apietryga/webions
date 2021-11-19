@@ -106,6 +106,7 @@ function public(req, res, playersList) {
       res.end(content);
     })
   }
+  // console.log(myURL.pathname.slice(-4))
   if(["/makewww"].includes(myURL.pathname)){
     // make www htmls
     makewww(()=>{
@@ -152,6 +153,11 @@ function public(req, res, playersList) {
           })
         }else{
           if(myURL.search == "?action=logout"){
+            // res.cookie("token", "");
+            // res.setHeader('set-cookie', 'mycookie=; max-age=0');
+                        // cookies.set('testtoken', {expires: Date.now()});
+            // res.clearCookie("token");
+            vals.js = "<script>delete_cookie('token')</script>";
             vals.action = "logout";
             vals.message = "<b style='color:green;'>You're succesfully logout.</b>";
           }
@@ -258,7 +264,9 @@ function public(req, res, playersList) {
   }else if(["/game.html"].includes(myURL.pathname)){     // game page
     if(func.isSet(req.headers.cookie)){
       let player = false;
+      // check login on cookies
       for(const cookie of req.headers.cookie.split("; ")){
+        // const all
         const [key,value] = cookie.split("=");
         if(key == "token"){
           for(const logged of log.ged){
@@ -267,6 +275,8 @@ function public(req, res, playersList) {
             }
           }          
           if(game.dev && !player){
+            console.log("GM")
+
             player = "GM"
           }
         } 
@@ -276,14 +286,14 @@ function public(req, res, playersList) {
         vals.nick = player;
       }else{
         path = "./public/account.html";
-        action = "login";
+        vals.message = "Please log in:";
       }
     }else{
       path = "./public/account.html";
       vals.message = "Please log in:";
 
     }
-    serveChangedContent(myURL.pathname);
+    serveChangedContent(path);
   }else if(["/","/index.html"].includes(myURL.pathname)){
     vals.aside = `<a href="/players.html?online=true">Online list</a>
     <a href="/players.html?lastdeaths=true">Last deaths</a>`
@@ -372,6 +382,8 @@ function public(req, res, playersList) {
         const items = ${JSON.stringify(require("./itemsTypes").types)};
     </script>`;
     serveChangedContent(myURL.pathname);
+  }else if([".html"].includes(myURL.pathname.slice(-4))){
+    console.log(myURL.pathname);
   }else{
     file.serve(req,res)
   }

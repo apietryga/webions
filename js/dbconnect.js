@@ -4,7 +4,6 @@ const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
 class dbConnect{
   init(callback){
-    console.log("Setting database");
     // Redis connection
     if(typeof process.env.REDIS_URL == "string" || typeof process.env.REDIS_TLS_URL == "string"){
       this.redis.client = redis.createClient(process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL, {tls: {rejectUnauthorized: false,}});
@@ -53,7 +52,7 @@ class dbConnect{
   redis = {
     loadAll(callback){
       this.client.keys("*",(e,keys)=>{
-        if(typeof keys == "undefined" || keys.length == 0){callback(0)}
+        if(typeof keys == "undefined" || keys.length == 0){callback(0) || e != null}
         const json = [];
         for(const [i,k] of keys.entries()){
           this.client.get(k,(e,v)=>{
@@ -94,7 +93,12 @@ class dbConnect{
     src: "./json/playersList.json",
     loadAll(callback){
       fs.readFile(this.src,"utf8",(e,content) => {
-        callback(JSON.parse(content));
+        console.log(e)
+        if(e == null){
+          callback(JSON.parse(content));
+        }else{
+          callback();
+        }
       })
     },
     load(player,callback){
@@ -116,7 +120,6 @@ class dbConnect{
       })
     },
     update(player){
-      // console.log(player);
       this.playerIsSet(player.name,(p)=>{
         if(typeof p[0] == "object"){
           // update record

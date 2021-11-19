@@ -441,8 +441,8 @@ class Text {
       let ctx = gamePlane.context;
       ctx.fillStyle = '#fff';
       ctx.strokeStyle = 'black';
-      ctx.lineWidth = 0.8;
-      ctx.font = '900 25px Tahoma';
+      ctx.lineWidth = 1.5;
+      ctx.font = '900 20px Tahoma';
       ctx.textAlign = "center";
       ctx.fillText(this.text, player.x, player.y + 230);
       ctx.strokeText(this.text, player.x, player.y + 230);

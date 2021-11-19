@@ -100,19 +100,13 @@ const cm = { // creatures managment
     inLoading:[],
     update(param,callback){
       // TO DO MAKE inArea PLAYERS LIST!
-      // check if player is on the list.
+
+      // check if player is on the list (in the game).
       let isPlayer = false;
-      // for(const c of this.list){
-      //   if(Math.abs( c.position[0] - player.position[0] ) < 7
-      //   && Math.abs( c.position[1] - player.position[1] ) < 7){
-      //     this.inArea.push(c);
-      //   }
-      // }
       for(const p of this.list){
-        // update player is exists
+        // update player is playing
         if(p.name == param.name){
           isPlayer = p;
-          // isPlayer.lastFrame = game.time.getTime();
           isPlayer.update(param,game,cm.monstersInArea.concat(this.list),im);
           callback(isPlayer);
           break;
@@ -137,10 +131,6 @@ const cm = { // creatures managment
             if(newPlayer.lastFrame < game.lastUpdate){
               newPlayer.position = defaultPosition;
             }
-
-          }else{
-            // create record
-            // dbc[game.db].update(newPlayer);
           }
           newPlayer.type = "player";
           // newPlayer.lastFrame = game.time.getTime();
@@ -214,11 +204,11 @@ dbc.init(()=>{
       if(Object.keys(param).includes("get")){
         const mapPatch = map.path;
         // Get playersList
-        if(param.get == "playersList"){
-          dbc[game.db].loadAll((result)=>{
-            connection.sendUTF(stringify(result,null,2));
-          })
-        }
+        // if(param.get == "playersList"){
+        //   dbc[game.db].loadAll((result)=>{
+        //     connection.sendUTF(stringify(result,null,2));
+        //   })
+        // }
         // Get gameMap
         if(param.get == "map"){
           const mapRead = fs.readFileSync(mapPatch,{encoding:'utf8'});
