@@ -210,15 +210,23 @@ class Creature {
   }
   draw(){
     let ctx = gamePlane.context;
-    // sayin in console and canvas
-    if(isSet(this.says) && this.says != ""){
-      if(this.type == "player" || this.type  == "enemy"){
-        menus.console.log(this.name+"["+this.skills.level+"]: "+this.says);
-      }else if(this.type == "npc"){
-        menus.console.log(this.name+": "+this.says);
+ 
+    // SAYING
+    if(this.name == player.name){
+      // RENDER ALL SAYS NEAR
+      for(const creature of gamePlane.creatures.list){
+        // console.log(creature);
+        if(isSet(creature.says) && creature.says != ""){
+          // console.log(creature.says)
+          if(["player","enemy"].includes(creature.type)){
+            menus.console.log(creature.name+"["+creature.skills.level+"]: "+creature.says);
+          }else if(creature.type == "npc"){
+            menus.console.log(creature.name+": "+creature.says);
+          }
+          gamePlane.actions.push(new Action("says",creature.position[0],creature.position[1],100,200,[creature.name,creature.says],900));
+          delete creature.says;
+        }
       }
-      gamePlane.actions.push(new Action("says",this.position[0],this.position[1],100,200,[this.name,this.says],900));
-      delete this.says;
     }
     // draw half of whiteTarget
     if(player.whiteTarget == this.id){

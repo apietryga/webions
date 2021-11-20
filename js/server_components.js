@@ -140,7 +140,9 @@ class Creature {
     }
   }
   update(param,game,creatures,items){
+
     // SAYI'n
+    if(func.isSet(this.says)){delete this.says;}
     if(func.isSet(param.says) && param.says != ""){
       // CONSOLE FOR GM
       const places = {
@@ -217,19 +219,24 @@ class Creature {
           // }  
         }
         if(this.type == "npc"){
-          this.says = "elo"; 
+          // this.says = "elo"; 
           this.sayExhoust = game.time.getTime() + 1000;
-          console.log("elo...");
+          // console.log("elo...");
 
           // if(func.isSet(this.says)){
           // this.says = param.says;
           // if()
-          // for(const speakKey of Object.keys(this.dial)){
-          //   if(param.says.toLowerCase() == speakKey){
-          //     // this.speaker = player;
-          //     this.says = this.dial[speakKey];
-          //     this.talking = game.time.getTime() + 5000;
-  
+          // console.log(this.dial)
+          // for(const dialog of this.dial){
+          //   for(const speakKey of Object.keys(dialog)){
+          //     // console.log(speakKey)
+          //     if(param.says.toLowerCase() == speakKey){
+          //       let text = dialog[speakKey];
+          //       text.replace("{name}",param.name);
+          //       // this.says = text;
+          //       // this.dialog(this,player)
+          //       this.talking = game.time.getTime() + 8000;
+          //     }
           //   }
           // }
           // console.log(this.says);
@@ -240,14 +247,13 @@ class Creature {
           //   this.talking = game.time.getTime() + 10000;
           // }
           
-          // if(func.isSet(this.talking) && this.talking <= game.time.getTime()){
-          //   this.says = "Okey, bye then.";
-          //   delete this.talking;
-          // }
         }
       }
-      delete this.says;
+    }if(func.isSet(this.talking) && this.talking <= game.time.getTime()){  // clear npc's
+      this.says = "Okey, bye then.";
+      delete this.talking;
     }
+
     // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
     if(this.type == "player" && this.lastFrame < game.startServerTime){
       this.skills.level = -1;

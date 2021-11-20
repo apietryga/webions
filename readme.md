@@ -10,21 +10,21 @@
   # TESTING
     - Move to temple : !temple
     - grids rendering - DO NOT RENDER DOWN FLOORS!!
-    - NPC's saying
+    - Console speaking
 
   # CRITICAL
-    - Console speaking problem
     - rescale scores in inactive players
     - Bug with doubled characters (?)
     
   # TO DO
-    - IOS Compatibility
-    - Walking throw static items
+    - Mobile item stats
+    - Add eq to players stats [page]
     - Landscape map control mobile
     - Eq view in landscape mobile
+    - Walking throw static items
+    - IOS Compatibility
+    - NPC's speaking
     - NPC's staying on saying
-    - Add eq to players stats [page]
-    - Mobile item stats
     - backpacks
     - Dead body as item + LOOTING
     - Nick always top

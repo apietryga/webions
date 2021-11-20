@@ -10,20 +10,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [32, -22, 0],
+    "position": [36, -10, -1],
     "speed": 2,
     "health": 506,
     "maxHealth": 180,
     "skills": {
       "level": 8,
       "exp": 352,
-      "fist": 10,
+      "fist": 12,
       "dist": 10,
       "healing": 101,
-      "fist_summary": 88,
-      "dist_summary": 91
+      "fist_summary": 138,
+      "dist_summary": 93
     },
-    "lastFrame": 1637422652991,
+    "lastFrame": 1637432381814,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$Z4Jyv7E2x4Brdq1Nil2fn.pFTsLWad4RQuO0ixsFfGrEIoz1DA4hC",
@@ -558,7 +558,7 @@
   },
   {
     "name": "GM",
-    "position": [37, -9, -1],
+    "position": [56, -31, -1],
     "speed": 2.2,
     "health": 1524,
     "maxHealth": 330,
@@ -575,7 +575,7 @@
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1637428716443,
+    "lastFrame": 1637432378401,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
