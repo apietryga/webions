@@ -283,9 +283,10 @@ class Creature {
     // draw name and health bar & update mana bar
     if(this.health > 0 && this.position[2] == player.position[2]){
     // if(this.health > 0 && this.position[2] == map.visi){
+      if(!isSet(this.totalHealth)){this.totalHealth = this.maxHealth;}
       let maxBarWidth = 28;
-      let barWidth = (maxBarWidth * this.health) / this.maxHealth;
-      let percHealth = (100 * this.health) / this.maxHealth;
+      let barWidth = (maxBarWidth * this.health) / this.totalHealth;
+      let percHealth = (100 * this.health) / this.totalHealth;
       // menus health bar update
       if(this.type == "player"){
         barWidth = (maxBarWidth * this.health) / this.totalHealth;
@@ -306,21 +307,18 @@ class Creature {
           }
         }
       }
-      // if(isHealthBar){
-        // CANVAS RENDER
-        ctx.fillStyle = hpColor(percHealth);
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 1.5;
-        ctx.font = '900 20px Tahoma';
-        ctx.textAlign = "center";
-        ctx.fillText(this.name, this.x + 5, this.y - 22);
-        ctx.strokeText(this.name, this.x + 5, this.y - 22);
-        ctx.beginPath();
-        ctx.rect(this.x - 11, this.y - 18, 30, 5);
-        ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
-        ctx.stroke();
-      // }
-
+      // CANVAS RENDER
+      ctx.fillStyle = hpColor(percHealth);
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1.5;
+      ctx.font = '900 20px Tahoma';
+      ctx.textAlign = "center";
+      ctx.fillText(this.name, this.x + 5, this.y - 22);
+      ctx.strokeText(this.name, this.x + 5, this.y - 22);
+      ctx.beginPath();
+      ctx.rect(this.x - 11, this.y - 18, 30, 5);
+      ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
+      ctx.stroke();
     }
     // draw hits and healing value
     if(isSet(this.oldHealth) && this.oldHealth != this.health){
@@ -355,13 +353,15 @@ class Creature {
           }
         }
         const piece = 100 - Math.round(((this.bulletOnTarget - serv.time)*100)/(this.bulletOnTarget - this.startBullet));
-        // X POS
-        const pX = ((Math.abs(this.shotVictim.position[0] - this.position[0])*piece) / 100);
-        this.shotVictim.position[0]<this.position[0]?this.shotBullet.x=this.position[0]-pX:this.shotBullet.x=this.position[0]+pX;
-        // Y POS
-        const pY = ((Math.abs(this.shotVictim.position[1] - this.position[1])*piece) / 100);
-        this.shotVictim.position[1]<this.position[1]?this.shotBullet.y=this.position[1]-pY:this.shotBullet.y=this.position[1]+pY;
-        this.shotBullet.update();
+        if(isSet(this.shotVictim)){
+          // X POS
+          const pX = ((Math.abs(this.shotVictim.position[0] - this.position[0])*piece) / 100);
+          this.shotVictim.position[0]<this.position[0]?this.shotBullet.x=this.position[0]-pX:this.shotBullet.x=this.position[0]+pX;
+          // Y POS
+          const pY = ((Math.abs(this.shotVictim.position[1] - this.position[1])*piece) / 100);
+          this.shotVictim.position[1]<this.position[1]?this.shotBullet.y=this.position[1]-pY:this.shotBullet.y=this.position[1]+pY;
+          this.shotBullet.update();
+        }
       }else{
         // first time
         this.shotBullet = new Action("bullet",this.position[0],this.position[1],10,10,1);

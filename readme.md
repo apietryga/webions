@@ -3,6 +3,11 @@
   You can simply download this repository and make server on your own by open "server.js" by nodejs.
 
 ## BUGS TO FIXED IN 0.3 < versions
+  # CRITICAL
+    - grids rendering - DO NOT RENDER DOWN FLOORS!!
+    - rescale scores in inactive players
+    - last floor of random item quest broke.
+
   1. IOS Compatibility
   2. Creatures totalhealth in creatures draw
   3. Walking throw static items

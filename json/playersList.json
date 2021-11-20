@@ -23,7 +23,7 @@
       "fist_summary": 88,
       "dist_summary": 91
     },
-    "lastFrame": 1637355041464,
+    "lastFrame": 1637405686734,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$Z4Jyv7E2x4Brdq1Nil2fn.pFTsLWad4RQuO0ixsFfGrEIoz1DA4hC",
@@ -558,7 +558,7 @@
   },
   {
     "name": "GM",
-    "position": [56, -22, -1],
+    "position": [36, -22, 0],
     "speed": 2.2,
     "health": 350,
     "maxHealth": 350,
@@ -575,7 +575,7 @@
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1637344086737,
+    "lastFrame": 1637405920242,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
