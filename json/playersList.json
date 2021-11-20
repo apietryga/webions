@@ -1271,7 +1271,7 @@
   },
   {
     "name": "",
-    "position": [35, -9, -1],
+    "position": {"0": 35, "1": -9, "2": -1},
     "health": 160,
     "maxHealth": 160,
     "sprite": "male_oriental",
@@ -1284,7 +1284,7 @@
       "fist_summary": null,
       "dist_summary": null
     },
-    "quests": [],
+    "quests": {},
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -1349,14 +1349,14 @@
     "maxMana": 160,
     "speed": 2,
     "lastFrame": 1637343914914,
-    "lastDeaths": [
-      {
+    "lastDeaths": {
+      "0": {
         "when": "2021-11-19T17:32:58.401Z",
         "who": "Wasp",
         "whoType": "monster",
         "level": 6
       }
-    ]
+    }
   },
   {
     "name": "asd2",
@@ -1368,15 +1368,15 @@
     "skills": {
       "level": 0,
       "exp": 0,
-      "fist": 4,
-      "fist_summary": 16,
-      "dist": 4,
-      "dist_summary": 14
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 1,
+      "dist_summary": 1
     },
     "password": "$2b$10$Plztr84SdthmVkCHJqwVS.dA8y1OF0lQxr8/wnKAqxQRv17ha1jkK",
     "email": "1@a.pl",
     "sex": "female",
-    "quests": ["Simple Boots", "Simple Helmet", "Simple Shield"],
+    "quests": [],
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -1384,37 +1384,16 @@
       "foots": [13, 13, 13]
     },
     "eq": {
-      "hd": {
-        "name": "Simple Helmet",
-        "sprite": "items",
-        "spriteNr": 2,
-        "handle": ["hd"],
-        "pickable": true,
-        "health": 180
-      },
+      "hd": false,
       "bp": false,
       "nc": false,
       "ch": false,
-      "lh": {
-        "name": "Simple Shield",
-        "sprite": "items",
-        "spriteNr": 11,
-        "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 20
-      },
+      "lh": false,
       "rh": false,
       "lg": false,
-      "ft": {
-        "name": "Simple Boots",
-        "sprite": "items",
-        "spriteNr": 5,
-        "handle": ["ft"],
-        "pickable": true,
-        "speed": 1
-      }
+      "ft": false
     },
-    "mana": 0,
+    "mana": 100,
     "maxMana": 100,
     "lastFrame": 1637423563025,
     "lastDeaths": [

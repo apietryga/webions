@@ -95,6 +95,38 @@ const cm = { // creatures managment
     })
   },
   players: {
+    init(db){
+      // refresh list of players, delete all < 13 exp
+      // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
+      // db.loadAll((res)=>{
+      //   for(const plr of res){
+      //     // make instance of player
+      //     const player = new Creature(plr.name,0,"player");
+      //     // rewrite it
+      //     for(const key of Object.keys(plr)){
+      //       if(typeof plr[key] == "object"){
+      //         player[key] = {};
+      //         for(const keyIn of Object.keys(plr[key])){
+      //           player[key][keyIn] = plr[key][keyIn];
+      //         }
+      //       }else{
+      //         player[key] = plr[key];
+      //       }
+      //     }
+      //     // delete if exp < 13
+      //     if(player.skills.exp < 13){
+      //       console.log("DEL: " + player.name +" : "+player.skills.exp);
+      //     }else{
+      //       // update stats
+      //       player.skills.level = -1;
+      //       player.updateSkills(game,['fist','dist']);
+      //       console.log(player.name+":")
+      //       console.log(player.skills)
+      //       db.update(player);
+      //     }
+      //   }
+      // });
+    },
     list:[],
     inArea:[],
     inLoading:[],
@@ -180,6 +212,7 @@ const im = { // items management
 let param;cm.init();im.init();
 dbc.init(()=>{
   console.log("Database set: "+game.db);
+  cm.players.init(dbc[game.db]);
   const server = http.createServer((req,res)=>{public(req,res,cm.players.list)}).listen(process.env.PORT || 80);
   const date = new Date();
   game.startServerTime = date.getTime();

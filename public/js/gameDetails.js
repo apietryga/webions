@@ -5,7 +5,7 @@ const game = {
   fps: 16,
   db:"redis",
   lastUpdate: 1633895983384,
-  dev: true,
+  dev: false,
   whatsNew: `
   <p>
     Hey, <br />

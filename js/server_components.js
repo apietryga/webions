@@ -140,8 +140,7 @@ class Creature {
     }
   }
   update(param,game,creatures,items){
-
-    // SAYI'n
+    // SAY'n
     if(func.isSet(this.says)){delete this.says;}
     if(func.isSet(param.says) && param.says != ""){
       // CONSOLE FOR GM
@@ -249,16 +248,11 @@ class Creature {
           
         }
       }
-    }if(func.isSet(this.talking) && this.talking <= game.time.getTime()){  // clear npc's
-      this.says = "Okey, bye then.";
-      delete this.talking;
     }
-
-    // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
-    if(this.type == "player" && this.lastFrame < game.startServerTime){
-      this.skills.level = -1;
-      this.updateSkills(game,['fist','dist']);
-    }
+    // if(func.isSet(this.talking) && this.talking <= game.time.getTime()){  // clear npc's
+    //   this.says = "Okey, bye then.";
+    //   delete this.talking;
+    // }
     // UPDATE LASTFRAME
     if(typeof game.startServerTime != "undefined"){
       this.lastFrame = game.time.getTime();

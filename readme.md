@@ -17,8 +17,8 @@
     - Bug with doubled characters (?)
     
   # TO DO
-    - Mobile item stats
     - Add eq to players stats [page]
+    - Mobile item stats
     - Landscape map control mobile
     - Eq view in landscape mobile
     - Walking throw static items
