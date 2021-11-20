@@ -283,14 +283,19 @@ class Creature {
     // draw name and health bar & update mana bar
     if(this.health > 0 && this.position[2] == player.position[2]){
     // if(this.health > 0 && this.position[2] == map.visi){
-      if(!isSet(this.totalHealth)){this.totalHealth = this.maxHealth;}
+      // if(!isSet(this.totalHealth)){this.totalHealth = this.maxHealth;}
       let maxBarWidth = 28;
+      // let barWidth = (maxBarWidth * this.health) / this.totalHealth;
+      // let percHealth = (100 * this.health) / this.totalHealth;
+      console.log(this.name+" : "+this.totalHealth)
+      // menus health bar update
       let barWidth = (maxBarWidth * this.health) / this.totalHealth;
       let percHealth = (100 * this.health) / this.totalHealth;
-      // menus health bar update
+        
+      // UPDATE DOM BARS IN MENUS
       if(this.type == "player"){
-        barWidth = (maxBarWidth * this.health) / this.totalHealth;
-        percHealth = (100 * this.health) / this.totalHealth;
+        // barWidth = (maxBarWidth * this.health) / this.totalHealth;
+        // percHealth = (100 * this.health) / this.totalHealth;
         for(const key of ["healthBar","manaBar"]){
           const DOMBar = document.querySelector("."+key);
           if(DOMBar != null && DOMBar.style.display != "none"){

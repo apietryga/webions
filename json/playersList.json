@@ -10,9 +10,9 @@
   },
   {
     "name": "Tosiek",
-    "position": [35, -9, -1],
+    "position": [32, -22, 0],
     "speed": 2,
-    "health": 337,
+    "health": 506,
     "maxHealth": 180,
     "skills": {
       "level": 8,
@@ -23,7 +23,7 @@
       "fist_summary": 88,
       "dist_summary": 91
     },
-    "lastFrame": 1637405686734,
+    "lastFrame": 1637406004842,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$Z4Jyv7E2x4Brdq1Nil2fn.pFTsLWad4RQuO0ixsFfGrEIoz1DA4hC",
@@ -558,24 +558,24 @@
   },
   {
     "name": "GM",
-    "position": [36, -22, 0],
+    "position": [35, -9, -1],
     "speed": 2.2,
     "health": 350,
     "maxHealth": 350,
     "sprite": "gm",
     "skills": {
       "level": 25,
-      "exp": 15354,
+      "exp": 13931,
       "fist": 311,
       "dist": 114,
       "healing": 119,
-      "fist_summary": 96700,
-      "dist_summary": 12922
+      "fist_summary": 96711,
+      "dist_summary": 12929
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1637405920242,
+    "lastFrame": 1637407207455,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -659,12 +659,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-11-17T23:36:40.243Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 19
-      },
-      {
         "when": "2021-11-18T17:06:02.210Z",
         "who": "Orange Wizard",
         "whoType": "monster",
@@ -685,6 +679,12 @@
       {
         "when": "2021-11-19T13:26:43.577Z",
         "who": "Minotaur",
+        "whoType": "monster",
+        "level": 25
+      },
+      {
+        "when": "2021-11-20T11:20:07.439Z",
+        "who": "Orange Wizard",
         "whoType": "monster",
         "level": 25
       }

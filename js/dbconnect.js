@@ -93,7 +93,6 @@ class dbConnect{
     src: "./json/playersList.json",
     loadAll(callback){
       fs.readFile(this.src,"utf8",(e,content) => {
-        console.log(e)
         if(e == null){
           callback(JSON.parse(content));
         }else{

@@ -156,6 +156,7 @@ class Creature {
       this.lastFrame = game.time.getTime();
     }
     // GET EQ VALUES
+    this.totalHealth = this.maxHealth;
     if(this.type == "player"){
       this.totalSpeed = this.speed;
       this.totalDef = 0;
@@ -163,7 +164,6 @@ class Creature {
       this.totalDist = this.skills.dist;
       this.totalMana = this.maxMana;
       this.totalManaRegen = this.manaRegenValue;
-      this.totalHealth = this.maxHealth;
       for(const key of Object.keys(this.eq)){
         if(this.eq[key]){
           if(func.isSet(this.eq[key].speed)){this.totalSpeed += this.eq[key].speed;}
