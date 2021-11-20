@@ -275,8 +275,6 @@ function public(req, res, playersList) {
             }
           }          
           if(game.dev && !player){
-            console.log("GM")
-
             player = "GM"
           }
         } 

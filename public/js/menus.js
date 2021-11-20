@@ -153,7 +153,6 @@ const menus = {
           row.append(sq);    
           // FILL SQUARES BY ITEMS
           if(isSet(inItems[i])){
-            // console.log(inItems[i])
             sq.append(inItems[i].toDOM());
           }
         }
@@ -268,12 +267,10 @@ const menus = {
     twiceClick(item,parent){
       if(item.name == 'backpack'){
         const itemOptions = {cap:item.cap}
-        // console.log(parent)
         // check it position
         if(parent.className == "bp"){
           itemOptions.position = "eq>bp";
         }else{
-          console.log(parent);
           itemOptions.position = "eq>bp>bp[1]";
         }
         // check if bp is open now
@@ -335,14 +332,7 @@ const menus = {
   outfit:{
     div:document.createElement("div"),
     init(){
-      // console.log("outfit.")
-      // const butt = document.createElement("button");
-      // butt.innerHTML = "&blacktriangleright;";
-      // butt.onclick = () => {
-      //   this.close();
-      //   this.show();
-      // }
-      // this.div.append(butt);
+      // idk
     },
     resize(){
       const x = (window.innerWidth - document.querySelector(".gamePlaneCanvas").clientWidth)/2;
@@ -651,7 +641,6 @@ const menus = {
               this.colors[this.layer] = pColor;
               this.preview();
               this.colorPicker();
-              // console.log(pColor);
             }
             col.append(singleColor);
           }

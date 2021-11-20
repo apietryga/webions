@@ -2,26 +2,31 @@
   Webions is a MMORPG game working on browsers. 
   You can simply download this repository and make server on your own by open "server.js" by nodejs.
 
+## gameDetails.js
+  [ONDEPLOY]: SET dev = false (to GM can't login default.)
+
 ## BUGS TO FIXED IN 0.3 < versions
+
   # TESTING
-    - grids rendering - DO NOT RENDER DOWN FLOORS!!
-    - rescale scores in inactive players
-    - last floor of random item quest broke. [check ladder walking]
     - Move to temple : !temple
+    - grids rendering - DO NOT RENDER DOWN FLOORS!!
+    - NPC's saying
 
   # CRITICAL
     - Console speaking problem
-    - NPC's saying
+    - rescale scores in inactive players
+    - Bug with doubled characters (?)
+    
   # TO DO
     - IOS Compatibility
     - Walking throw static items
-    - Bug with doubled characters (?)
     - Landscape map control mobile
     - Eq view in landscape mobile
     - NPC's staying on saying
     - Add eq to players stats [page]
     - Mobile item stats
-    - Dead body as item
+    - backpacks
+    - Dead body as item + LOOTING
     - Nick always top
     - Player above redtarget
 

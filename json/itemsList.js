@@ -84,7 +84,7 @@ this.list = [
     position:[49,-36,1]
   },
   { name:"King Armor",
-    position:[56,-13,2]
+    position:[57,-13,1]
   },
   { name:"King Legs",
     position:[64,-15,2]

@@ -23,7 +23,7 @@
       "fist_summary": 88,
       "dist_summary": 91
     },
-    "lastFrame": 1637408967960,
+    "lastFrame": 1637422652991,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$Z4Jyv7E2x4Brdq1Nil2fn.pFTsLWad4RQuO0ixsFfGrEIoz1DA4hC",
@@ -558,24 +558,24 @@
   },
   {
     "name": "GM",
-    "position": [55, -30, -1],
+    "position": [37, -9, -1],
     "speed": 2.2,
-    "health": 340,
-    "maxHealth": 350,
+    "health": 1524,
+    "maxHealth": 330,
     "sprite": "gm",
     "skills": {
-      "level": 25,
-      "exp": 13931,
-      "fist": 311,
+      "level": 23,
+      "exp": 11936,
+      "fist": 312,
       "dist": 114,
       "healing": 119,
-      "fist_summary": 96712,
-      "dist_summary": 12930
+      "fist_summary": 96761,
+      "dist_summary": 12962
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1637414815370,
+    "lastFrame": 1637428716443,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -585,18 +585,49 @@
     "eq": {
       "hd": {
         "type": "item",
-        "name": "Magic Hat",
-        "position": [-71, 10, 2],
+        "name": "The Crown",
+        "position": [49, -36, 1],
         "sprite": "items",
-        "spriteNr": 13,
+        "spriteNr": 6,
         "handle": ["hd"],
         "pickable": true,
-        "mana": 400,
-        "manaRegen": 50,
+        "health": 1000,
         "actionType": "pickUp"
       },
-      "bp": false,
-      "nc": false,
+      "bp": {
+        "name": "Random Item",
+        "sprite": "items",
+        "spriteNr": 15,
+        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
+        "pickable": true,
+        "randStats": [
+          {"speed": "0 - 3"},
+          {"mana": "0 - 100"},
+          {"manaRegen": "0 - 50"},
+          {"health": "0 - 200"},
+          {"def": "0 - 100"}
+        ],
+        "mana": 27,
+        "manaRegen": 22,
+        "health": 188
+      },
+      "nc": {
+        "name": "Random Item",
+        "sprite": "items",
+        "spriteNr": 15,
+        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
+        "pickable": true,
+        "randStats": [
+          {"speed": "0 - 3"},
+          {"mana": "0 - 100"},
+          {"manaRegen": "0 - 50"},
+          {"health": "0 - 200"},
+          {"def": "0 - 100"}
+        ],
+        "manaRegen": 46,
+        "health": 6,
+        "def": 92
+      },
       "ch": {
         "name": "Magic Armor",
         "sprite": "items",
@@ -641,8 +672,7 @@
         "spriteNr": 8,
         "handle": ["lg"],
         "pickable": true,
-        "def": 100,
-        "speed": 2,
+        "def": 50,
         "actionType": "pickUp"
       },
       "ft": {
@@ -658,18 +688,6 @@
       }
     },
     "lastDeaths": [
-      {
-        "when": "2021-11-18T17:06:02.210Z",
-        "who": "Orange Wizard",
-        "whoType": "monster",
-        "level": 18
-      },
-      {
-        "when": "2021-11-18T17:23:00.999Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 19
-      },
       {
         "when": "2021-11-19T13:19:09.364Z",
         "who": "Minotaur",
@@ -687,6 +705,18 @@
         "who": "Orange Wizard",
         "whoType": "monster",
         "level": 25
+      },
+      {
+        "when": "2021-11-20T14:59:19.272Z",
+        "who": "Orange Wizard",
+        "whoType": "monster",
+        "level": 24
+      },
+      {
+        "when": "2021-11-20T16:07:35.795Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 23
       }
     ],
     "quests": [
@@ -729,10 +759,14 @@
       "Random Item",
       "Random Item",
       "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
       "Random Item"
     ],
-    "mana": 950,
-    "maxMana": 350
+    "mana": 557,
+    "maxMana": 330
   },
   {
     "name": "Niko",
@@ -1087,17 +1121,17 @@
   },
   {
     "name": "asd",
-    "position": [49, 0, -1],
+    "position": [46, -5, 0],
     "speed": 2,
-    "health": 200,
-    "maxHealth": 150,
+    "health": 300,
+    "maxHealth": 180,
     "skills": {
-      "level": 5,
-      "exp": 125,
+      "level": 8,
+      "exp": 425,
       "fist": 33,
-      "fist_summary": 1025,
-      "dist": 26,
-      "dist_summary": 667
+      "fist_summary": 1059,
+      "dist": 27,
+      "dist_summary": 702
     },
     "password": "$2b$10$5VwSHiuadm7Qxowup.8oouy8Q7YhDADeK1uSt7.Kru.KxXj3IShnS",
     "email": "a1@a.pl",
@@ -1138,7 +1172,14 @@
         "handle": ["lh", "rh"],
         "pickable": true
       },
-      "lg": false,
+      "lg": {
+        "name": "Simple Legs",
+        "sprite": "items",
+        "spriteNr": 4,
+        "handle": ["lg"],
+        "pickable": true,
+        "manaRegen": 10
+      },
       "ft": {
         "name": "Simple Boots",
         "sprite": "items",
@@ -1148,11 +1189,11 @@
         "speed": 2
       }
     },
-    "lastFrame": 1637326076934,
+    "lastFrame": 1637423482617,
     "sprite": "male_oriental",
-    "quests": [],
-    "mana": 150,
-    "maxMana": 150
+    "quests": ["Simple Legs"],
+    "mana": 180,
+    "maxMana": 180
   },
   {
     "name": "1",
@@ -1314,6 +1355,74 @@
         "who": "Wasp",
         "whoType": "monster",
         "level": 6
+      }
+    ]
+  },
+  {
+    "name": "asd2",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 100,
+    "sprite": "male_oriental",
+    "skills": {
+      "level": 0,
+      "exp": 0,
+      "fist": 4,
+      "fist_summary": 16,
+      "dist": 4,
+      "dist_summary": 14
+    },
+    "password": "$2b$10$Plztr84SdthmVkCHJqwVS.dA8y1OF0lQxr8/wnKAqxQRv17ha1jkK",
+    "email": "1@a.pl",
+    "sex": "female",
+    "quests": ["Simple Boots", "Simple Helmet", "Simple Shield"],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": {
+        "name": "Simple Helmet",
+        "sprite": "items",
+        "spriteNr": 2,
+        "handle": ["hd"],
+        "pickable": true,
+        "health": 180
+      },
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": {
+        "name": "Simple Shield",
+        "sprite": "items",
+        "spriteNr": 11,
+        "handle": ["lh", "rh"],
+        "pickable": true,
+        "def": 20
+      },
+      "rh": false,
+      "lg": false,
+      "ft": {
+        "name": "Simple Boots",
+        "sprite": "items",
+        "spriteNr": 5,
+        "handle": ["ft"],
+        "pickable": true,
+        "speed": 1
+      }
+    },
+    "mana": 0,
+    "maxMana": 100,
+    "lastFrame": 1637423563025,
+    "lastDeaths": [
+      {
+        "when": "2021-11-20T15:52:42.963Z",
+        "who": "Wasp",
+        "whoType": "monster",
+        "level": 0
       }
     ]
   }

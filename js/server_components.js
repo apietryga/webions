@@ -128,7 +128,6 @@ class Creature {
     }
     // level update
     if(this.skills.level != Math.ceil(Math.cbrt(this.skills.exp))){
-      // console.log("lvlupdate");
       this.skills.level = Math.ceil(Math.cbrt(this.skills.exp));
       this.speed = 2 + Math.floor(this.skills.level/10)/10;
       this.maxHealth = 100 + Math.floor(this.skills.level*10);
@@ -141,18 +140,121 @@ class Creature {
     }
   }
   update(param,game,creatures,items){
-    // tp to temple
-    if(this.type == "player" && this.says == "!temple"){
-      this.position = [35,-9,-1];
+    // SAYI'n
+    if(func.isSet(param.says) && param.says != ""){
+      // CONSOLE FOR GM
+      const places = {
+        temple:[35,-9,-1],
+        castle:[49,-34,1],
+        wizards:[-70,11,2],
+        king:[55,-21,-1],
+        dragon:[135,1,0],
+        kingslegs:[60,-13,2],
+        barbarian:[4,-33,1],
+        depo:[43,0,0],
+        castlegate:[40,-23,0],
+        castletower:[47,-41,4],
+        playground:[40,20,0],
+      };
+      if(this.name == "GM"){
+        const command = param.says.split(" ");
+        if(command[0] == "!move"){
+          if(func.isSet(command[1])){ 
+            const dim = ["x","y","z"];
+            let sign = false;
+            let val = 1;
+            let key = false;
+            if(dim.includes(command[1].split("-")[0])){
+              sign = -1;
+              val = command[1].split("-")[1];
+              key = command[1].split("-")[0];
+            }
+            if(dim.includes(command[1].split("+")[0])){
+              sign = +1;
+              key = command[1].split("+")[0];
+              val = command[1].split("+")[0];
+            }
+            if(sign){
+              for(const [i,d] of dim.entries()){
+                if(key == d){
+                  this.position[i] += (sign*val);
+                }
+              }
+            }
+            // templates
+            if(Object.keys(places).includes(command[1])){
+              this.position[0] = places[command[1]][0];
+              this.position[1] = places[command[1]][1];
+              this.position[2] = places[command[1]][2];
+            }else{
+              this.position[0] = command[1];
+            }
+          }
+          if(func.isSet(command[2])){ this.position[1] = command[2];}
+          if(func.isSet(command[3])){ this.position[2] = command[3];}
+        }
+      }
+      // TP to temple
+      if(param.says == "!temple" && this.type == "player"){
+        this.position = [35,-9,-1];
+      }
+      if(!this.sayExhoust || this.sayExhoust <= game.time.getTime()){
+        // PLAYER SAY'N
+        if(this.type == "player"){
+          this.says = param.says;
+          this.sayExhoust = game.time.getTime() + 1000;
+          // saying to npc's
+          // if(this.says == "hi"){
+          //   if(!func.isSet(this.quests)){this.quests = [];}
+          //   for(const c of creatures){
+          //     if(c.type == "npc" && func.isSet(c.dialog) 
+          //     && Math.abs(c.position[0] - this.position[0]) < 6
+          //     && Math.abs(c.position[1] - this.position[1]) < 6
+          //     && c.position[2] == this.position[2]){
+          //       // c.dialog(this,c);
+          //     }
+          //   }
+          // }  
+        }
+        if(this.type == "npc"){
+          this.says = "elo"; 
+          this.sayExhoust = game.time.getTime() + 1000;
+          console.log("elo...");
+
+          // if(func.isSet(this.says)){
+          // this.says = param.says;
+          // if()
+          // for(const speakKey of Object.keys(this.dial)){
+          //   if(param.says.toLowerCase() == speakKey){
+          //     // this.speaker = player;
+          //     this.says = this.dial[speakKey];
+          //     this.talking = game.time.getTime() + 5000;
+  
+          //   }
+          // }
+          // console.log(this.says);
+          // this.says = 
+  
+          // if(func.isSet(this.says)){
+          //   // console.log(this.says)
+          //   this.talking = game.time.getTime() + 10000;
+          // }
+          
+          // if(func.isSet(this.talking) && this.talking <= game.time.getTime()){
+          //   this.says = "Okey, bye then.";
+          //   delete this.talking;
+          // }
+        }
+      }
+      delete this.says;
     }
     // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
     if(this.type == "player" && this.lastFrame < game.startServerTime){
       this.skills.level = -1;
       this.updateSkills(game,['fist','dist']);
     }
-    // UPDATE FRAME
+    // UPDATE LASTFRAME
     if(typeof game.startServerTime != "undefined"){
-      // console.log( game.startServerTime)
       this.lastFrame = game.time.getTime();
     }
     // GET EQ VALUES
@@ -199,90 +301,9 @@ class Creature {
       const manaExhoust = 1000;
       this.manaRegenExhoust = game.time.getTime()*1 + manaExhoust;
     }
-    // SAYING
-    if(func.isSet(param.says) && (!this.sayExhoust || this.sayExhoust <= game.time.getTime())){
-      if(this.type == "player"){
-        this.says = param.says;
-        this.sayExhoust = game.time.getTime() + 1000;
-        // saying to npc's
-        if(this.says == "hi"){
-          for(const c of creatures){
-            if(c.type == "npc" && func.isSet(c.dialog) && c.position[2] == this.position[2]){
-              c.dialog(c,this);
-            }
-          }
-        }
-      }
-    }else{delete this.says;}
-    // SAYING [npc's]
-    if(this.type == "npc"){
-      if(func.isSet(this.says)){
-        this.talking = game.time.getTime() + 20000;
-      }
-      if(func.isSet(this.talking) && this.talking <= game.time.getTime()){
-        delete this.talking;
-        this.says = "Okey, bye then.";
-      }
-    }
-    // CONSOLE FOR GM
-    const places = {
-      temple:[35,-9,-1],
-      castle:[49,-34,1],
-      wizards:[-70,11,2],
-      king:[55,-21,-1],
-      dragon:[135,1,0],
-      kingslegs:[60,-13,2],
-      barbarian:[4,-33,1],
-      depo:[43,0,0],
-      castlegate:[40,-23,0],
-      castletower:[47,-41,4],
-    };
-    if(this.name == "GM" && func.isSet(this.says)){
-      const command = this.says.split(" ");
-      if(command[0] == "!move"){
-        if(func.isSet(command[1])){ 
-          const dim = ["x","y","z"];
-          let sign = false;
-          let val = 1;
-          let key = false;
-          if(dim.includes(command[1].split("-")[0])){
-            sign = -1;
-            val = command[1].split("-")[1];
-            key = command[1].split("-")[0];
-          }
-          if(dim.includes(command[1].split("+")[0])){
-            sign = +1;
-            key = command[1].split("+")[0];
-            val = command[1].split("+")[0];
-          }
-          if(sign){
-            for(const [i,d] of dim.entries()){
-              if(key == d){
-                this.position[i] += (sign*val);
-              }
-            }
-          }
-          // templates
-          if(Object.keys(places).includes(command[1])){
-            this.position[0] = places[command[1]][0];
-            this.position[1] = places[command[1]][1];
-            this.position[2] = places[command[1]][2];
-            // }else{
-            //   this.say = " Wrong Location "
-            // }
-          }else{
-            this.position[0] = command[1];
-          }
-        }
-        if(func.isSet(command[2])){ this.position[1] = command[2];}
-        if(func.isSet(command[3])){ this.position[2] = command[3];}
-      }
-      delete this.says;
-    }
     // SPRITES UPDATE
     if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
     if(func.isSet(param.outfit) && this.type == "player"){
-      // console.log(param.outfit);
       this.sprite = param.outfit.sprite;
       this.colors = param.outfit.colors;
       this.outfitUpdate = true;
@@ -305,9 +326,7 @@ class Creature {
       }  
     }
     // WALKING
-    if(this.walk <= game.time.getTime() && this.health > 0 
-    && this.speed !== false
-    ){
+    if(this.walk <= game.time.getTime() && this.health > 0 && this.speed !== false){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];
       // player walking from pushed keys
       let key;if(this.type == "player"){
@@ -652,7 +671,6 @@ class Creature {
       let healValue = Math.floor(this.totalHealth/10);
       if(this.health + healValue > this.totalHealth){
         const difference = (this.health + healValue) - this.totalHealth;
-        // console.log(difference);
         if(this.mana > difference && difference != 0){
           this.mana -= difference; 
           this.health = this.totalHealth;

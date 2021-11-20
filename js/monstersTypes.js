@@ -15,6 +15,10 @@ const monstersTypes = [
       // menus.console("Walk on");
       return says = "Elo"
     },
+    speaker : [], 
+    dial : [
+      {"hi" : "Hi ello! {name}! \n Walk on this boxes to get nice items!"}
+    ],
     dialog:(npc,player) => {
       if(player.says == "hi"){
         if(player.quests.includes("Simple Boots")){

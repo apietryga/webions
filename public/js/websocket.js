@@ -7,30 +7,34 @@ const serv = {
   },
   connected:false,
   param : {},
+  // data to server
   paramUpdate(){
     this.param.name = player.name;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
     if(player.itemAction){this.param.itemAction = player.itemAction;delete player.itemAction}
-    if(player.says){this.param.says = player.says;delete player.says;}
+    if(player.says){this.param.says = player.says;}
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     return this.param;
   },
   // every frame load:
   load(cb){
-    // get response
+    // Response from serv
     const res = (msg,callback) => {
       const data = JSON.parse(msg.data);
+      // update game properties
+      this.datetime = data.game.time;
+      this.time = new Date(this.datetime).getTime();
+      gamePlane.fps = data.game.fps;
+      // clear sayin'
+
+
       // player died
       if(typeof data.game.dead != "undefined"){
         gamePlane.stop("You are dead.");
         callback();
       }
-      // update game properties
-      this.datetime = data.game.time;
-      this.time = new Date(this.datetime).getTime();
-      gamePlane.fps = data.game.fps;
       // get names of online players
       let onlinePlayers = [];
       for(const p of data.creatures){

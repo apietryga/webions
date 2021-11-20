@@ -210,8 +210,8 @@ class Creature {
   }
   draw(){
     let ctx = gamePlane.context;
-    // draw sayin in console and canvas
-    if(isSet(this.says)){
+    // sayin in console and canvas
+    if(isSet(this.says) && this.says != ""){
       if(this.type == "player" || this.type  == "enemy"){
         menus.console.log(this.name+"["+this.skills.level+"]: "+this.says);
       }else if(this.type == "npc"){
@@ -339,9 +339,8 @@ class Creature {
     }
     // drav level promotion
     if(isSet(this.skills) &&isSet(this.skills.oldLvl) && this.skills.level != this.skills.oldLvl && this.type == "player"){
-      // console.log(this.skills.oldLvl+" / "+this.skills.level+" / "+this.lastFrame);
       if(this.skills.oldLvl != 0){
-        gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level));
+        gamePlane.actions.push(new Action("centerTxt",this.position[0],this.position[1],100,200,this.skills.level,3000));
       }
       this.skills.oldLvl = this.skills.level;
     }
@@ -470,6 +469,9 @@ class Action{  // class for hitText, Bullets,
     this.showFPS = 0;
     this.showingLength = Math.floor(length/gamePlane.fps);
     this.position = [this.x,this.y];
+    if(this.type == "says"){
+      this.text = text;
+    }
   }
   update(){
     this.showFPS++;
@@ -524,10 +526,6 @@ class Action{  // class for hitText, Bullets,
       var img = map.sprites.actions;
       ctx.drawImage(img, 3*40, this.text * 40, 40, 40,
       x, y, 40, 40);
-      // ctx.beginPath();
-      // ctx.rect(x, y, this.w, this.h);
-      // ctx.strokeStyle = "red";
-      // ctx.stroke();
     }
     if(this.type == "misc"){
       var img = map.sprites.actions;
