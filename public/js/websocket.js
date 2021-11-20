@@ -62,8 +62,9 @@ const serv = {
             myChar = player;
           }else{
             let type = "monster";
-            if(creature.type == "player"){type = "enemy";
-            }else if(creature.type == "npc"){type = "npc"}
+            if(creature.type == "player"){type = "enemy";}
+            if(creature.type == "npc"){type = "npc";}
+            // }else if(creature.type == "npc"){type = "npc"}
             myChar = new Creature(type,creature.position,creature.name);
           }
           gamePlane.creatures.list.push(myChar);
@@ -85,6 +86,7 @@ const serv = {
         // updating values
         for(const key of Object.keys(creature)){
           if(key == "position"){
+            // gamePlane.creatures.list[charId]["servPos"] = creature[key];
             if(!compareTables(gamePlane.creatures.list[charId]["newPos"],creature[key])){
               gamePlane.creatures.list[charId]["oldPos"] = gamePlane.creatures.list[charId]["newPos"];
               gamePlane.creatures.list[charId]["newPos"] = creature[key];

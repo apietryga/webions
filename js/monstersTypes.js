@@ -17,14 +17,11 @@ const monstersTypes = [
     },
     dialog:(npc,player) => {
       if(player.says == "hi"){
-        if(player.quests.includes("simpleBoots")){
-          npc.says = "I have no more quests."
+        if(player.quests.includes("Simple Boots")){
+          npc.says = "I have no more quests. \n Go to the king in the north castle."
         }else{
-          npc.says = "Hi "+player.name+"! \n I have a quest for you! \n Are you interested in?"; 
+          npc.says = "Hi "+player.name+"! \n Walk on this boxes to get nice items!"; 
         }
-      }
-      if(player.says == "quest"){
-        npc.says = "JA, HAHA QUEST?";
       }
     }
   },
@@ -38,14 +35,22 @@ const monstersTypes = [
       exp:1,
       dist:0,
       healing:1000
+    },
+    dialog:(npc,player) => {
+      if(player.says == "hi"){
+        if(player.quests.includes("Rod")){
+          npc.says = "If you want better rod, kill the Minotaur!"
+        }else{
+          npc.says = "Hi "+player.name+"! \n Rod for you is in the box."; 
+        }
+      }
     }
-
   },
   { name:"Training Man",
   // type:"npc",
     sprite:"trainingMan",
     health:10000000,
-    speed:0,
+    speed:false,
     skills:{
       fist:10,
       exp:1,
@@ -164,7 +169,7 @@ const monstersTypes = [
   {name:"Touret",
     sprite:"tourets",
     health:5000,
-    speed:0,
+    speed:false,
     skills:{
       fist:300,
       exp:300,
@@ -174,7 +179,7 @@ const monstersTypes = [
   {name:"Inhibitor",
     sprite:"tourets",
     health:5000,
-    speed:0,
+    speed:false,
     skills:{
       fist:600,
       exp:600,
@@ -184,7 +189,7 @@ const monstersTypes = [
   {name:"Nexus",
     sprite:"tourets",
     health:5000,
-    speed:0,
+    speed:false,
     skills:{
       fist:1200,
       exp:1200,

@@ -12,7 +12,6 @@ class Creature {
     this.position = [35,-9,-1];
     this.walk = false;
     this.speed = 2; // grids per second
-    // this.totalSpeed = 2;
     this.totalSpeed = this.speed;
     this.direction = 1;
     this.health = 100;
@@ -64,6 +63,7 @@ class Creature {
     if(nickName == "GM"){
       this.sprite = "gm";
     }
+    this.baseSpeed = this.speed;
   }
   getHit = (game,from,type = 'fist') =>{
     let hit = from.skills[type];
@@ -178,13 +178,13 @@ class Creature {
     }
     // monsters and npc's speed update
     if(["monster","npc"].includes(this.type)){
-      if(func.isSet(this.speed)){
+      if(func.isSet(this.speed) && this.speed != 0){
         this.totalSpeed = this.speed;
+        this.baseSpeed = this.speed;
       }else{
-        this.totalSpeed = 1.5;
+        this.totalSpeed = this.baseSpeed;
       }
     }
-
     // CHECK HEALTH ON HEALTH ITEM DROP
     if(this.health > this.totalHealth && this.type == "player"){
       this.health = this.totalHealth;
@@ -305,7 +305,9 @@ class Creature {
       }  
     }
     // WALKING
-    if(this.walk <= game.time.getTime() && this.health > 0 && this.speed > 0){
+    if(this.walk <= game.time.getTime() && this.health > 0 
+    && this.speed !== false
+    ){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];
       // player walking from pushed keys
       let key;if(this.type == "player"){
@@ -327,6 +329,7 @@ class Creature {
           case 40: phantomPos[1]++;this.direction = 1; break; // down key
         }
       }
+      let r;  // direction of move
       // monsters & npc's walking
       if(["monster","npc"].includes(this.type)){
         // set walking type (random / follow / escape)
@@ -364,7 +367,6 @@ class Creature {
 
 
         // move monster
-        let r;  // direction of move
         if(walkingMode == "follow"){
           if(Math.abs(this.position[0] - playerInArea.position[0]) > 1
           || Math.abs(this.position[1] - playerInArea.position[1]) > 1){
@@ -398,8 +400,6 @@ class Creature {
         }
         if(walkingMode == "stay"){
           r = -1;
-           // set exhoust
-           this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
         }
         if (r == 0) {phantomPos[1]--;} // up
         if (r == 1) {phantomPos[0]++;} // right
@@ -529,11 +529,27 @@ class Creature {
       }
       if(isWall){isFloor = false;}
       if(!doorAvalible){isFloor = false;}
-      // check monsters and players
+      // check monsters and players on position
       for(const c of creatures){
-        if ((func.compareTables(c.position, phantomPos) && c.health > 0) && ((this.type != "player" && !isStairs)||(this.id != c.id))) {
-            isFloor = false;
-        }        
+        if (
+          // if player is on the same pos with live creature
+          (func.compareTables(c.position, phantomPos) && c.health > 0) 
+          // and if creature is no player and there's no stairs
+          // && ((this.type != "player" && !isStairs)
+          // and if creature is no player and there's stairs
+          && ((this.type != "player" && isStairs)
+          // && ((["player","npc","monster"].includes(c.type) && isStairs)
+          // or creature is current player
+          ||(this.id != c.id))
+        ){
+          isFloor = false;
+        }else if(
+          // when there's other creature on stairs - go on
+          this.type == "player" && ["npc","player","monster"].includes(c.type)
+          && isStairs
+        ){
+          isFloor = true;
+        }
       }
       // check items can't walk and walkon
       let isItem = false;
@@ -550,6 +566,15 @@ class Creature {
         }
       }
       if(isItem){isFloor = false;}
+
+      // monsters & npc's staying
+      if(!isFloor && ["npc","monster"].includes(this.type)){
+        // set exhoust
+        this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
+        this.speed = 0;
+      }else if(["npc","monster"].includes(this.type)){
+        this.speed = this.totalSpeed;
+      }
 
       // set new position or display error
       if(isFloor){

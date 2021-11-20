@@ -11,7 +11,6 @@ this.data = [
   // DEPO
   {"name":"Training Man","position":[42,-1,-1]},
   {"name":"Training Man","position":[50,-1,-1]},
-
   // CASTLE
   {"name":"Minotaur","position":[55,-20,-2]},
 

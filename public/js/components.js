@@ -101,20 +101,26 @@ class Creature {
       const timeLeft = walkTime - (serv.time - this.walkingStart);
       // walking cyle (animation)
       timeLeft > walkTime/2?this.cyle = 2:this.cyle = 1;
-      // set position
-      const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
-      this.position = equalArr(this.oldPos);
-      for(let l of [[0,1],[1,0]]){
-        if(this.newPos[2] != this.oldPos[2]){
-          this.position = this.newPos;
-        }
-        if(this.newPos[l[0]] == this.oldPos[l[0]] ){
-          if(this.newPos[l[1]] > this.oldPos[l[1]]){
-            this.position[l[1]] = this.oldPos[l[1]] + piece;
-          }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
-            this.position[l[1]] = this.oldPos[l[1]] - piece;
+      // monsers and npc's has 0 speed when stay.
+      if(this.speed > 0){
+        // CHANGE POSITION OF CREATURE
+        const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
+        this.position = equalArr(this.oldPos);
+        for(let l of [[0,1],[1,0]]){
+          if(this.newPos[2] != this.oldPos[2]){
+            this.position = this.newPos;
+          }
+          if(this.newPos[l[0]] == this.oldPos[l[0]] ){
+            if(this.newPos[l[1]] > this.oldPos[l[1]]){
+              this.position[l[1]] = this.oldPos[l[1]] + piece;
+            }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
+              this.position[l[1]] = this.oldPos[l[1]] - piece;
+            }
           }
         }
+      }else{
+        // this.direction = 1;
+        this.cyle = 0;
       }
     }else{
       if(this.sprite != "tourets"){
@@ -282,13 +288,8 @@ class Creature {
     }
     // draw name and health bar & update mana bar
     if(this.health > 0 && this.position[2] == player.position[2]){
-    // if(this.health > 0 && this.position[2] == map.visi){
-      // if(!isSet(this.totalHealth)){this.totalHealth = this.maxHealth;}
-      let maxBarWidth = 28;
-      // let barWidth = (maxBarWidth * this.health) / this.totalHealth;
-      // let percHealth = (100 * this.health) / this.totalHealth;
-      console.log(this.name+" : "+this.totalHealth)
       // menus health bar update
+      let maxBarWidth = 28;
       let barWidth = (maxBarWidth * this.health) / this.totalHealth;
       let percHealth = (100 * this.health) / this.totalHealth;
         

@@ -15,6 +15,15 @@ const public = require("./js/public");
 const itemsList = require("./json/itemsList").list;
 const func = require("./public/js/functions");
 
+ // filter data on websocket send
+const disallowKeys = [
+  "startPosition",
+  // "speed",
+  "email",
+  // "sex",
+  "password",
+  "lastDeaths"
+];
 const cm = { // creatures managment
   allMonsters: [],
   monstersInArea: [],
@@ -58,15 +67,6 @@ const cm = { // creatures managment
       this.monstersUpdate(player);
       game.player = player.id;
       if(typeof player.text == "undefined"){delete player.text;}
-      // filter data
-      const disallowKeys = [
-        "startPosition",
-        "speed",
-        "email",
-        // "sex",
-        "password",
-        "lastDeaths"
-      ];
       const filteredCreatures = [];
       for(const creature of this.players.list.concat(this.monstersInArea)){
         const filteredCreature = {};
