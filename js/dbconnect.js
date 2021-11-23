@@ -72,7 +72,7 @@ class dbConnect{
         callback(JSON.parse(c));
       })    
     },
-    update(player){
+    update(player,callback = ()=>{}){
       if(typeof this.client != "undefined"){
         this.client.get(player.name, (e,c)=>{
           // filter vals
@@ -84,9 +84,16 @@ class dbConnect{
           }
           // save filtered vals
           const stringyfy = JSON.stringify(valToStore);
-          this.client.set(player.name,stringyfy,()=>{});
+          // console.log(stringyfy)
+          this.client.set(player.name,stringyfy,()=>{callback()});
         })  
+      }else{
+        console.error("Error na 102");
+        callback();
       }
+    },
+    del(playerName){
+      this.client.del(playerName);
     }
   }
   json = {

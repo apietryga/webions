@@ -25,8 +25,10 @@ const gamePlane = {
     serv.load(()=>{
       menus.update();
       gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
-      player.update();
-      map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
+      if(typeof player.update == 'function'){
+        player.update();
+      }else{console.log("nope.")}
+     map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
       const drawStack = [];
       // update grids
       for(const g of map.grids){

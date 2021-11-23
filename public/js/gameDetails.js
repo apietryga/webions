@@ -12,7 +12,6 @@ const game = {
     This is testing version of game. <br />
     If you find here bugs, or errors - connect to server owner.
   </p>
-
   `
 }
 if(typeof window == "undefined"){module.exports = game;}

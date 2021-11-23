@@ -124,7 +124,7 @@ class Creature {
       if(this.skills[key] != newValue && newValue != null && !isNaN(newValue) ){
         this.skills[key] = newValue;
         smthChanged = true;
-      }  
+      } 
     }
     // level update
     if(this.skills.level != Math.ceil(Math.cbrt(this.skills.exp))){

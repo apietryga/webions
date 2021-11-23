@@ -5,24 +5,26 @@
 ## gameDetails.js
   [ONDEPLOY]: SET dev = false (to GM can't login default.)
 
-## BUGS TO FIXED IN 0.3 < versions
+## BUGS TO FIX IN 0.3 < versions
 
   # TESTING
-    - Move to temple : !temple
-    - grids rendering - DO NOT RENDER DOWN FLOORS!!
-    - Console speaking
+    - gameplane.js?v={{version}}:28 Uncaught TypeError: player.update is not a function
 
   # CRITICAL
+    - SAVE PLAYERS STATS AND EQS BEFORE SERV CRASH 
+    - Mobile item stats
+    - IOS Compatibility
     - rescale scores in inactive players
     - Bug with doubled characters (?)
-    
+      - creatures.update w gameplane - WTF?
+    - add delete acc opt
+    - mailgun
   # TO DO
+    - allow train on afk.
     - Add eq to players stats [page]
-    - Mobile item stats
     - Landscape map control mobile
     - Eq view in landscape mobile
     - Walking throw static items
-    - IOS Compatibility
     - NPC's speaking
     - NPC's staying on saying
     - backpacks
