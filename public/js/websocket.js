@@ -4,6 +4,10 @@ const serv = {
     // this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
     this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
     this.ws.onopen = () => {this.connected = true;console.log("WS open.");}
+    this.param.focus = true;
+    window.onfocus = () => {this.param.focus = true;};
+    window.onblur  = () => {this.param.focus = false;};
+
   },
   connected:false,
   param : {},
@@ -127,6 +131,7 @@ const serv = {
             continue;
           }
           if(key == "type"){continue;}
+          if(key == "console"){menus.console.log(creature[key])}
           gamePlane.creatures.list[charId][key] = creature[key];
         }
       }

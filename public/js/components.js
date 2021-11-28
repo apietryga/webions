@@ -564,6 +564,7 @@ class Action{  // class for hitText, Bullets,
     }
   }
 }
+const imgQuene = [];
 class Item{
   constructor(obj){
     // MAKE ITEM FROM OBJ
@@ -583,15 +584,17 @@ class Item{
       sq[k] = item[k];
     }
     sq.className = "itemDOM";
-    sq.id = item.id;
+    // sq.id = item.id;
     const img = map.sprites[item.sprite];
     sq.width = img.height;
     sq.height = img.height;
     const ctx = sq.getContext("2d");
+    
     ctx.drawImage(img, 
       item.spriteNr * img.height, 0, img.height, img.height,
       0, 0, img.height, img.height
-    );
+    );  
+    
     // Item's skills preview
     sq.title = sq.name+" \n";
     for(const key of Object.keys(item)){

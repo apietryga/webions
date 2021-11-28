@@ -2,26 +2,27 @@
   Webions is a MMORPG game working on browsers. 
   You can simply download this repository and make server on your own by open "server.js" by nodejs.
 
-## gameDetails.js
-  [ONDEPLOY]: SET dev = false (to GM can't login default.)
+  ## TESTING
+    - rescale scores of inactive players
+    - add eq and quests to players stats [page]
+    - save players before server restart [testing heroku detection]
+    - allow train on afk.
+    - fix gameplane.js:28 Uncaught TypeError
 
-## BUGS TO FIX IN 0.3 < versions
-
-  # TESTING
-    - gameplane.js?v={{version}}:28 Uncaught TypeError: player.update is not a function
-
-  # CRITICAL
-    - SAVE PLAYERS STATS AND EQS BEFORE SERV CRASH 
+  ## CRITICAL BUGS
     - Mobile item stats
     - IOS Compatibility
-    - rescale scores in inactive players
     - Bug with doubled characters (?)
       - creatures.update w gameplane - WTF?
-    - add delete acc opt
     - mailgun
-  # TO DO
-    - allow train on afk.
-    - Add eq to players stats [page]
+    - strict register names (no numbers and monsters names)
+    - remove this.skills.healing opt, and improve healing with mana
+    - fix doubled console message on sent
+    - del makewww and generate public pages
+    - show readme in main page
+  
+
+  ## TO DO
     - Landscape map control mobile
     - Eq view in landscape mobile
     - Walking throw static items
@@ -31,6 +32,9 @@
     - Dead body as item + LOOTING
     - Nick always top
     - Player above redtarget
+    - add shielding
+    - add magic lvl
+    - ladder not display on player stats
 
 ## STORAGE
   By default the data store in simple redis server as JSON stringyfy, but it automatically changed to storing in JSON files, if redis connection is not set.

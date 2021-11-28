@@ -4,6 +4,12 @@ if(Object.keys(searchToObject()).includes("online")){
 }else{
   getWhat = "playersList";
 }
+// LOAD SPRITES [PLAYERS AFTER LOAD.]
+const map = new Map();
+map.loadSprites(()=>{
+  if(typeof items != "undefined"){jsToTable("items",items);}
+  if(typeof monsters != "undefined"){jsToTable("monsters",monsters);}
+})
 // PLAYERS
 const main = document.querySelector("main");
 if(typeof main != null && typeof playersList != "undefined"){
@@ -20,7 +26,10 @@ if(typeof main != null && typeof playersList != "undefined"){
       "speed",
       "sprite",
       "health",
+      "mana",
+      "eq",
       "skills",
+      "quests",
       "lastDeaths"
     ];
     const skillsToNotShow = [
@@ -42,8 +51,10 @@ if(typeof main != null && typeof playersList != "undefined"){
       }
       if(player){
         h1.innerHTML = player.name;
-        
         const data = [];
+        // update total vals
+        player.type = "player";
+        setTotalVals(player);
         for(const s of Object.keys(player)){
           if(dToShow.includes(s)){
             let order = 0;
@@ -80,14 +91,46 @@ if(typeof main != null && typeof playersList != "undefined"){
               const healthBar = document.createElement("div");
               healthBar.className = "healthBar";
               const healthProgress = document.createElement("div");
-              const progress = (player.health*100)/player.maxHealth;
+              const progress = (player.health*100)/player.totalHealth;
               healthProgress.style.width = progress+"%";
-              healthProgress.style.backgroundColor = "green";
               const label = document.createElement("div");
-              label.innerHTML = player.health+" / "+player.maxHealth;
+              label.innerHTML = player.health+" / "+player.totalHealth;
               healthBar.append(healthProgress);
               healthBar.append(label);
               td2.append(healthBar);
+            }else if(s == "mana"){
+              order = 1;
+              const manaBar = document.createElement("div");
+              manaBar.className = "manaBar";
+              const manaProgress = document.createElement("div");
+              const progress = (player.mana*100)/player.totalMana;
+              manaProgress.style.width = progress+"%";
+              const label = document.createElement("div");
+              label.innerHTML = player.mana+" / "+player.totalMana;
+              manaBar.append(manaProgress);
+              manaBar.append(label);
+              td2.append(manaBar);
+            }else if(s == "eq"){
+              order = 3;
+              td2.className = "eq";
+              const allFields = document.createElement("div");
+              allFields.className = "allFields";
+              for(const eqField of Object.keys(player.eq)){
+                // make field
+                const fieldDOM = document.createElement("div");
+                fieldDOM.style.gridArea = eqField;
+                allFields.append(fieldDOM);
+                // fill it by items
+                if(player.eq[eqField]){
+                  const loadAfterSprites = setInterval(()=>{if(isSet(map.sprites)){clearInterval(loadAfterSprites);
+                    // MAKE PLAYER EQ HERE!
+                    const item = new Item(player.eq[eqField]);
+                    const itemDOM = item.toDOM();
+                    fieldDOM.append(itemDOM);
+                  }},100);   
+                }
+              }
+              td2.append(allFields);
             }else if(s == "skills"){
               order = 4;
               const skillsTbl = document.createElement("table");
@@ -105,9 +148,26 @@ if(typeof main != null && typeof playersList != "undefined"){
               }
               td2.append(skillsTbl);
             }else if(s == "speed"){
-              player.skills.speed = player[s];
+              player.skills.speed = player.totalSpeed;
               continue;
-            }else if(s == "lastDeaths"){
+            }else if(s == "quests"){
+              if(player.quests.length == 0){continue;}
+              order = 4;
+              // console.log(player.quests)
+              td2.className = "quests";
+              for(const quest of player.quests){
+                const questsDOM = document.createElement("div");
+                // questsDOM.className = "quests";
+                questsDOM.innerHTML = quest+" Quest";
+                td2.append(questsDOM);
+              }
+
+
+            }else if(s == "lastDeaths" && isSet(player.lastDeaths)){
+              if(!isSet(player.lastDeaths[1]) && isSet(player.lastDeaths[0])){
+                player.lastDeaths = [player.lastDeaths[0]];
+              }
+              if(player.lastDeaths.length == 0){continue;}
               order = 5;
               const table = document.createElement("table");
               for(const death of player.lastDeaths){
@@ -185,6 +245,7 @@ if(typeof main != null && typeof playersList != "undefined"){
         table.append(row);
       }
     }else{
+      table.style.cursor = "pointer";
       // SKILLS && PLAYERS & ONLINE LIST 
       const tbHead = ["lp.","Player name","level"];
       if(typeof skills != "undefined"){
@@ -348,16 +409,6 @@ const jsToTable = (typename,type) =>{
     }
   }
 }
-// LOAD SPRITES
-const map = new Map();
-map.loadSprites(()=>{
-  if(typeof items != "undefined"){
-    jsToTable("items",items);
-  }
-  if(typeof monsters != "undefined"){
-    jsToTable("monsters",monsters);
-  }
-})
 // COLLAPSING LIBARY
 const contentControl = (h) =>{
   if(h.id != ""){

@@ -106,7 +106,6 @@ function public(req, res, playersList) {
       res.end(content);
     })
   }
-  // console.log(myURL.pathname.slice(-4))
   if(["/makewww"].includes(myURL.pathname)){
     // make www htmls
     makewww(()=>{
@@ -305,11 +304,12 @@ function public(req, res, playersList) {
     processRequest(serveChangedContent(myURL.pathname))
   }else if(["/players.html"].includes(myURL.pathname)){
     vals.aside = `
-      <a href="/players.html?skills=healing">Healing</a>
+      <a href="/players.html?skills=level">Level</a>
       <a href="/players.html?skills=fist">Fist</a>
       <a href="/players.html?skills=dist">Dist</a>
-      <a href="/players.html?skills=frags">Frags</a>
+      <a href="/players.html?online=true">Online</a>
     `;
+    vals.js += "<script src='./js/components.js'></script>";
     const [key,value] = myURL.search.split("=");
     if("?skills" == key){
       vals.message = "<h1>TOP "+value.charAt(0).toUpperCase() +value.slice(1)+"</h1>";
@@ -324,9 +324,6 @@ function public(req, res, playersList) {
         vals.js += "<script>const playersList = "+JSON.stringify(playersList)+";</script>";
         serveChangedContent(myURL.pathname);
       })
-    }else if("?player=" == myURL.search){
-
-
     }else if("?lastdeaths=true" == myURL.search){
       vals.message = "<h1>Last Deaths</h1>";
       dbc[game.db].loadAll((content)=>{
@@ -341,7 +338,6 @@ function public(req, res, playersList) {
         vals.js += "<script>const playersList = '"+JSON.stringify(content)+"';</script>";
         serveChangedContent(myURL.pathname);
       })
-      
     }
   }else if(["/4devs.html"].includes(myURL.pathname)){
     vals.aside = `<a href="https://github.com/apietryga/webions2" target="_blank">GITHUB</a>`;
@@ -359,7 +355,6 @@ function public(req, res, playersList) {
               Done? <br >
               <a href="/mapeditor.html">REFRESH</a>`);
     }
-
   }else if(["/libary.html"].includes(myURL.pathname)){
     vals.aside = `
     <a href="/libary.html#install">Install</a>
@@ -386,5 +381,4 @@ function public(req, res, playersList) {
     file.serve(req,res)
   }
 }
-
 module.exports = public; 

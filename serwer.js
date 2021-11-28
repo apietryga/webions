@@ -14,13 +14,10 @@ const game = require("./public/js/gameDetails");
 const public = require("./js/public");
 const itemsList = require("./json/itemsList").list;
 const func = require("./public/js/functions");
-
- // filter data on websocket send
+// filter data on websocket send
 const disallowKeys = [
   "startPosition",
-  // "speed",
   "email",
-  // "sex",
   "password",
   "lastDeaths"
 ];
@@ -96,16 +93,35 @@ const cm = { // creatures managment
   },
   players: {
     init(db){
+      // make test player to make clear difference between obj and arr vals
+      const testPlayer = new Creature("",0,"player");
       // refresh list of players, delete all < 13 exp
       // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
+      const skipKeys = [
+        "healthValue",
+        "text",
+        "game",
+        "shotTarget",
+        "bulletOnTarget",
+        "cyle",
+        "password",
+        "email",
+        "sex"
+      ];
       db.loadAll((res)=>{
         for(const plr of res){
           // make instance of player
           const player = new Creature(plr.name,0,"player");
-          // rewrite it
+          // rewrite
           for(const key of Object.keys(plr)){
-            if(typeof plr[key] == "object"){
+            if(skipKeys.includes(key)){continue;}
+            if(testPlayer[key].constructor === Object){
               player[key] = {};
+              for(const keyIn of Object.keys(plr[key])){
+                player[key][keyIn] = plr[key][keyIn];
+              }
+            }else if(testPlayer[key].constructor === Array){
+              player[key] = [];
               for(const keyIn of Object.keys(plr[key])){
                 player[key][keyIn] = plr[key][keyIn];
               }
@@ -114,16 +130,15 @@ const cm = { // creatures managment
             }
           }
           // delete if exp < 13
-          if(player.skills.exp < 13){
-            // db.del(player.name)
-            console.log("DEL: " + player.name +" : "+player.skills.exp);
+          if(player.skills.exp < 13 || player.name == "" || player.name == 1){
+            db.del(player.name)
           }else{
-            // update stats
+            // update player for health, mana etc
+            player.update({name:player.name},game,[],{itemsInArea:[]});
+            // update player skills
             player.skills.level = -1;
+            // player is update in db there:
             player.updateSkills(game,['fist','dist']);
-            // console.log(player.name+":")
-            // console.log(player.skills)
-            db.update(player);
           }
         }
       });
@@ -174,15 +189,17 @@ const cm = { // creatures managment
       }
       
       // kick off offline.
+      const kickTime = isPlayer.focus?1000:10000;
       setTimeout(() => {
         if(typeof isPlayer == "object" 
-          && new Date().getTime() - isPlayer.lastFrame > 1000
+          && new Date().getTime() - isPlayer.lastFrame > kickTime
           && this.list.includes(isPlayer)){
             cm.players.kick(isPlayer)
         }
       }, 1000);
     },
     kick(player){
+      console.log(player.name+" kicked.")
       this.list.splice(this.list.indexOf(player),1);
       dbc[game.db].update(player);
     }
@@ -212,18 +229,6 @@ const im = { // items management
 }
 let param;cm.init();im.init();
 dbc.init(()=>{
-  // SAVE PLAYERS BEFORE SERV EXIT
-  process.on('beforeExit', code => {
-    // Can make asynchronous calls
-    console.log(`Players must be saved here.`)
-    setTimeout(() => {
-      // tu players
-      // console.log(`Process will exit with code: ${code}`)
-      console.log(`Players must be saved here.`)
-      // process.exit(code)
-    }, 1000)
-  })
-  // console.log("Database set: "+game.db);
   cm.players.init(dbc[game.db]);
   const server = http.createServer((req,res)=>{public(req,res,cm.players.list)}).listen(process.env.PORT || 80);
   const date = new Date();
@@ -248,17 +253,9 @@ dbc.init(()=>{
       // Getting data
       if(Object.keys(param).includes("get")){
         const mapPatch = map.path;
-        // Get playersList
-        // if(param.get == "playersList"){
-        //   dbc[game.db].loadAll((result)=>{
-        //     connection.sendUTF(stringify(result,null,2));
-        //   })
-        // }
-        // Get gameMap
         if(param.get == "map"){
           const mapRead = fs.readFileSync(mapPatch,{encoding:'utf8'});
           const mapArr = JSON.parse(mapRead);
-          // result = map;
           connection.sendUTF(stringify(mapArr,null,2));
         }
         // Get onlinelist
@@ -278,3 +275,21 @@ dbc.init(()=>{
   })
 })
 
+
+// SAVE PLAYERS BEFORE SERVER CRASH
+// TEST EXIT DETECTION TO SAVE PLAYER BEFORE CRASH [ FROM HEROKU ]
+process.on('SIGTERM', shutdown('SIGTERM')).on('SIGINT', shutdown('SIGINT')).on('uncaughtException', shutdown('uncaughtException'));
+function shutdown(signal) {
+  return (err) => {
+    if (err) console.error(err.stack || err);
+    for(const player of cm.players.list){
+      player.console = "Server will restart in few seconds.";
+      dbc[game.db].update(player);
+    }
+    setTimeout(() => {
+      console.log('PLAYERS SAVED, EXITING.');
+      process.exit(err ? 1 : 0);
+    }, 5000).unref();
+  };
+}
+// END OF TESTING DETECTION

@@ -84,11 +84,10 @@ class dbConnect{
           }
           // save filtered vals
           const stringyfy = JSON.stringify(valToStore);
-          // console.log(stringyfy)
           this.client.set(player.name,stringyfy,()=>{callback()});
         })  
       }else{
-        console.error("Error na 102");
+        console.error("Player "+player.name+" not updated.");
         callback();
       }
     },
@@ -113,7 +112,8 @@ class dbConnect{
       })
     },
     playerIsSet(name,callback){
-      this.loadAll((r)=>{
+      const r = JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
+      // this.loadAll((r)=>{
         // find player by name
         let isPlayer = false;
         for(let p of r){
@@ -123,9 +123,10 @@ class dbConnect{
           }
         }
         callback([isPlayer,r]);
-      })
+      // })
     },
-    update(player){
+    update(player,callback = ()=>{}){
+      // console.log("JEST UPDATE")
       this.playerIsSet(player.name,(p)=>{
         if(typeof p[0] == "object"){
           // update record
@@ -153,8 +154,16 @@ class dbConnect{
       })
     },
     save(newContent){
-      const content = stringify(newContent);
-      fs.writeFileSync(this.src, content, ()=>{});  
+      fs.writeFileSync(this.src, stringify(newContent));  
+    },
+    del(playerName){
+      const allPlayers = JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
+      for(const [i,player] of allPlayers.entries()){
+        if(player.name == playerName){
+          allPlayers.splice(i,1);
+        }
+      }
+      this.save(allPlayers);
     }
   }
 }

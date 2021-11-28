@@ -9,6 +9,7 @@ class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
     this.id = creaturesLength+1; 
     this.name = nickName;
+    this.type = type;
     this.position = [35,-9,-1];
     this.walk = false;
     this.speed = 2; // grids per second
@@ -34,6 +35,8 @@ class Creature {
       // healing:1,
     }
     if(type == "player"){
+      this.lastFrame = 0;
+      this.lastDeaths = [];
       this.quests = [];
       this.colors = {
         head: [240, 169, 98],
@@ -108,7 +111,7 @@ class Creature {
     // COUNT SKILLS
     if(['fist','dist'].includes(type) && from.type == "player" && !isNaN(hit)){
       from.skills[type+'_summary']++;
-      from.updateSkills(game,['fist','dist']);
+      from.updateSkills(game);
     }
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
@@ -116,10 +119,11 @@ class Creature {
       from.updateSkills(game);
     }
   }
-  updateSkills(game, keys = []){
+  updateSkills(game, keys = ['fist','dist']){
     let smthChanged = false;
     // fist, dist update
     for(const key of keys){
+      if(!func.isSet(this.skills[key+"_summary"])){this.skills[key+"_summary"] = 0;}
       const newValue = Math.ceil(Math.sqrt(this.skills[key+"_summary"]));
       if(this.skills[key] != newValue && newValue != null && !isNaN(newValue) ){
         this.skills[key] = newValue;
@@ -140,6 +144,11 @@ class Creature {
     }
   }
   update(param,game,creatures,items){
+    this.focus = param.focus;
+    // clear console
+    if(func.isSet(this.console)){
+      delete this.console;
+    }
     // SAY'n
     if(func.isSet(this.says)){delete this.says;}
     if(func.isSet(param.says) && param.says != ""){
@@ -249,35 +258,32 @@ class Creature {
         }
       }
     }
-    // if(func.isSet(this.talking) && this.talking <= game.time.getTime()){  // clear npc's
-    //   this.says = "Okey, bye then.";
-    //   delete this.talking;
-    // }
-    // UPDATE LASTFRAME
+    // UPDATE LASTFRAME || KEEP PLAYER IN GAME || save player on logout
     if(typeof game.startServerTime != "undefined"){
+
+      // console.log(game.time.getTime() - this.lastFrame)
+
       this.lastFrame = game.time.getTime();
+      // console.log("ref");
+      //   if(!func.isSet(this.tries)){
+    //     this.tries = [0,0,0,0,0];
+    //   }else{
+    //     this.tries.push(0);
+    //   }
+    //   setTimeout(()=>{
+    //    if(func.isSet(this.tries)){
+    //     this.tries.pop();
+    //     if(this.tries < 1){
+    //       delete this.tries;
+    //       dbc[game.db].update(this);
+    //       console.log("update")
+    //     }
+    //   }
+    // },1000)
+
     }
-    // GET EQ VALUES
-    this.totalHealth = this.maxHealth;
-    if(this.type == "player"){
-      this.totalSpeed = this.speed;
-      this.totalDef = 0;
-      this.totalFist = this.skills.fist;
-      this.totalDist = this.skills.dist;
-      this.totalMana = this.maxMana;
-      this.totalManaRegen = this.manaRegenValue;
-      for(const key of Object.keys(this.eq)){
-        if(this.eq[key]){
-          if(func.isSet(this.eq[key].speed)){this.totalSpeed += this.eq[key].speed;}
-          if(func.isSet(this.eq[key].def)){this.totalDef += this.eq[key].def;}
-          if(func.isSet(this.eq[key].health)){this.totalHealth += this.eq[key].health;}
-          if(func.isSet(this.eq[key].mana)){this.totalMana += this.eq[key].mana;}
-          if(func.isSet(this.eq[key].manaRegen)){this.totalManaRegen += this.eq[key].manaRegen;}
-          if(func.isSet(this.eq[key].fist)){this.totalFist += this.eq[key].fist;}
-          if(func.isSet(this.eq[key].dist)){this.totalDist += this.eq[key].dist;}
-        }
-      }
-    }
+    // GET EQ VALUES (totalHealth, totalMana etc.)
+    func.setTotalVals(this);
     // monsters and npc's speed update
     if(["monster","npc"].includes(this.type)){
       if(func.isSet(this.speed) && this.speed != 0){

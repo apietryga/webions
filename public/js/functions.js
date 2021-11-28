@@ -86,12 +86,34 @@ this.setRoute = (sPos,fPos,map,creatures = [],possibilities = 200) => {
 this.isSet = (val) => {
   let result = false;
   if(typeof val != "undefined"){
-    // console.log();
     result = true;
   }
   return result;
 }
+this.setTotalVals = (where) => {
+  where.totalHealth = where.maxHealth;
+  if(where.type == "player"){
+    where.totalSpeed = where.speed;
+    where.totalDef = 0;
+    where.totalFist = where.skills.fist;
+    where.totalDist = where.skills.dist;
+    where.totalMana = where.maxMana;
+    where.totalManaRegen = where.manaRegenValue;
+    for(const key of Object.keys(where.eq)){
+      if(where.eq[key]){
+        if(this.isSet(where.eq[key].speed)){where.totalSpeed += where.eq[key].speed;}
+        if(this.isSet(where.eq[key].def)){where.totalDef += where.eq[key].def;}
+        if(this.isSet(where.eq[key].health)){where.totalHealth += where.eq[key].health;}
+        if(this.isSet(where.eq[key].mana)){where.totalMana += where.eq[key].mana;}
+        if(this.isSet(where.eq[key].manaRegen)){where.totalManaRegen += where.eq[key].manaRegen;}
+        if(this.isSet(where.eq[key].fist)){where.totalFist += where.eq[key].fist;}
+        if(this.isSet(where.eq[key].dist)){where.totalDist += where.eq[key].dist;}
+      }
+    }
+  }
 
+
+}
 function recolorImage(img, fresh = {head:[50,50,50],chest:[50,50,50],legs:[50,50,50],foots:[50,50,50]}){
   if(!isSet(img)){return 0;}
   const c = document.createElement('canvas');
@@ -176,31 +198,3 @@ function get_cookie(name){
       return c.trim().startsWith(name + '=');
   });
 }
-
-// function insertParam(key, value) {
-//   key = encodeURIComponent(key);
-//   value = encodeURIComponent(value);
-
-//   // kvp looks like ['key1=value1', 'key2=value2', ...]
-//   var kvp = document.location.search.substr(1).split('&');
-//   let i=0;
-
-//   for(; i<kvp.length; i++){
-//       if (kvp[i].startsWith(key + '=')) {
-//           let pair = kvp[i].split('=');
-//           pair[1] = value;
-//           kvp[i] = pair.join('=');
-//           break;
-//       }
-//   }
-
-//   if(i >= kvp.length){
-//       kvp[kvp.length] = [key,value].join('=');
-//   }
-
-//   // can return this or...
-//   let params = kvp.join('&');
-
-//   // reload page with new params
-//   document.location.search = params;
-// }

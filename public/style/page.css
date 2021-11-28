@@ -34,7 +34,7 @@ h5 {
   }
 }
 
-body, body .wrapper main .cont .items, body .wrapper main .cont .monsters, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row, body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview, body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
+body, body .wrapper main table .detailsBody .eq .allFields div, body .wrapper main table .detailsHead .eq .allFields div, body .wrapper main .cont .items, body .wrapper main .cont .monsters, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row, body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview, body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   padding: 2px;
@@ -42,7 +42,7 @@ body, body .wrapper main .cont .items, body .wrapper main .cont .monsters, body 
   color: #AEAEAC;
 }
 
-body > header, body > header .logo, body > header .play, body nav, body aside, body footer, body nav a, body aside a, body footer a, body .wrapper main, body .wrapper main .content, body .wrapper main table, body .wrapper main table th, body .wrapper main table td, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
+body > header, body > header .logo, body > header .play, body nav, body aside, body footer, body nav a, body aside a, body footer a, body .wrapper main, body .wrapper main .content, body .wrapper main table, body .wrapper main table th, body .wrapper main table td, body .wrapper main table .detailsBody .quests, body .wrapper main table .detailsHead .quests, body .wrapper main table .detailsBody .quests div, body .wrapper main table .detailsHead .quests div, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -155,7 +155,6 @@ body .wrapper main table th {
 }
 
 body .wrapper main table td {
-  cursor: pointer;
   background-color: transparent;
 }
 
@@ -181,7 +180,42 @@ body .wrapper main table .listBody th, body .wrapper main table .listHead th {
 }
 
 body .wrapper main table .listBody:nth-child(even), body .wrapper main table .listHead:nth-child(even) {
-  background-color: rgba(128, 0, 0, 0.322);
+  background-color: rgba(13, 51, 16, 0.322);
+}
+
+body .wrapper main table .detailsBody .eq, body .wrapper main table .detailsHead .eq {
+  padding: 2%;
+}
+
+body .wrapper main table .detailsBody .eq .allFields, body .wrapper main table .detailsHead .eq .allFields {
+  margin: 0 auto;
+  display: grid;
+  width: 150px;
+  grid-template-areas: "nc hd bp" "lh ch rh" ". lg ." ". ft .";
+}
+
+body .wrapper main table .detailsBody .eq .allFields div, body .wrapper main table .detailsHead .eq .allFields div {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+}
+
+body .wrapper main table .detailsBody .eq .allFields div canvas, body .wrapper main table .detailsHead .eq .allFields div canvas {
+  min-width: 50%;
+  min-height: 50%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+body .wrapper main table .detailsBody .quests, body .wrapper main table .detailsHead .quests {
+  padding: 2%;
+}
+
+body .wrapper main table .detailsBody .quests div, body .wrapper main table .detailsHead .quests div {
+  background-color: #1a361c;
+  text-align: left;
+  padding: 2%;
 }
 
 body .wrapper main table .detailsBody > td, body .wrapper main table .detailsHead > td {
@@ -202,7 +236,7 @@ body .wrapper main table .detailsBody > td .spriteWrapper .sprite, body .wrapper
   animation: walk 0.4s step-start infinite;
 }
 
-body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table .detailsHead > td .healthBar {
+body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table .detailsBody > td .manaBar, body .wrapper main table .detailsHead > td .healthBar, body .wrapper main table .detailsHead > td .manaBar {
   border: 2px solid #000;
   margin: 2%;
   border-radius: 7px;
@@ -210,18 +244,26 @@ body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table 
   height: 25px;
 }
 
-body .wrapper main table .detailsBody > td .healthBar div, body .wrapper main table .detailsHead > td .healthBar div {
+body .wrapper main table .detailsBody > td .healthBar div, body .wrapper main table .detailsBody > td .manaBar div, body .wrapper main table .detailsHead > td .healthBar div, body .wrapper main table .detailsHead > td .manaBar div {
   height: 100%;
   border-radius: 5px;
   position: absolute;
   font-size: 15px;
 }
 
-body .wrapper main table .detailsBody > td .healthBar div:nth-child(2), body .wrapper main table .detailsHead > td .healthBar div:nth-child(2) {
+body .wrapper main table .detailsBody > td .healthBar div:nth-child(2), body .wrapper main table .detailsBody > td .manaBar div:nth-child(2), body .wrapper main table .detailsHead > td .healthBar div:nth-child(2), body .wrapper main table .detailsHead > td .manaBar div:nth-child(2) {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table .detailsHead > td .healthBar {
+  background-color: #206113;
+}
+
+body .wrapper main table .detailsBody > td .manaBar, body .wrapper main table .detailsHead > td .manaBar {
+  background-color: #0c3181;
 }
 
 body .wrapper main table .detailsBody > td:nth-child(1), body .wrapper main table .detailsHead > td:nth-child(1) {
