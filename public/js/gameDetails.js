@@ -1,11 +1,11 @@
 const game = {
   name:"Webions",
   time : new Date(),
-  version : 0.31,
+  version : 0.32,
   fps: 16,
   db:"redis",
   lastUpdate: 1633895983384,
-  dev: true,
+  dev: false,
   whatsNew: `
   <p>
     Hey, <br />

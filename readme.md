@@ -10,6 +10,7 @@
     - fix gameplane.js:28 Uncaught TypeError
 
   ## CRITICAL BUGS
+    - less death penalty
     - Mobile item stats
     - IOS Compatibility
     - Bug with doubled characters (?)
@@ -18,9 +19,10 @@
     - strict register names (no numbers and monsters names)
     - remove this.skills.healing opt, and improve healing with mana
     - fix doubled console message on sent
-    - del makewww and generate public pages
+    - del makewww and generate public pages dynamically
     - show readme in main page
-  
+    - if player's online - show his stats dynamically
+    - add lastFrame to players stats [page]
 
   ## TO DO
     - Landscape map control mobile
