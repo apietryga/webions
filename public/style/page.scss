@@ -59,15 +59,15 @@ body{
       justify-content: center;
       align-items: center;
       a{
-        background: linear-gradient(rgb(97, 9, 9),rgb(11, 58, 11));
+        background: linear-gradient(#B79900,#9A0102,#9A0102,#B79900);
         @extend %onFrame;
-        width:80%;
-        height:80%;
+        width:100%;
+        height:100%;
+        // padding:10px 20% ;
         display:flex;
         justify-content: center;
         align-items: center;
         font-size:1.5em;
-        // margin
       }
     }
     a{
@@ -144,10 +144,12 @@ body{
             width:100%;
           }
           td{padding:10px;}
-          th{padding:5px 20px;}
+          th{padding:5px 20px;background-color:rgb(41, 41, 41);}
           &:nth-child(even){
-            background-color:rgba(13, 51, 16, 0.322);
+            // background-color:rgba(13, 51, 16, 0.322);
+            background-color:#9a010157;
           }
+          &:nth-child(odd){background-color: #b7990052;}
         }
         // Player details
         .detailsBody, .detailsHead{

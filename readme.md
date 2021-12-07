@@ -8,20 +8,20 @@
   - fixed gameplane.js:28 Uncaught TypeError
   - fixed functions.js:102 Uncaught TypeError on karo player
   - decrease death penalty ( 10% to 5% )
+  - show readme on main page
+  - add lastFrame to players stats [page]
+  - refresh [public] css's and js's dynamically (fixed when smth not loading )
   - [dev] del minimist and node-static dependencies (github dependency alert)
   - [dev] del makewww and generate public pages dynamically
-  - show readme on main page
 
 ## WORKIN' ON
-  - add lastFrame to players stats [page]
-  - refresh [public] css's and js's dynamically
   - replace courier with mailgun - **to make repository public**
   - mobile item stats
   - IOS clicking compatibility
   - strict register names (no numbers and monsters names)
   - remove this.skills.healing opt, and improve healing with mana
   - fix doubled console message on sent
-  - Landscape map control mobile
+  - landscape map control mobile
   - eq view in landscape mobile
   - walking throught static items
   - NPC's speaking
@@ -35,7 +35,7 @@
   - ladder not display on player stats
 
 ## TO CATCH
-  - bug with doubled characters (?) (creatures.update in gameplane? - when, how?)
+  - (?) bug with doubled characters (creatures.update in gameplane? - when, how?)
 
 ## STORAGE
   By default the data store in simple redis server as JSON stringify, but it automatically changed to storing in JSON files, if redis connection is not set.

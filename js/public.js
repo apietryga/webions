@@ -327,7 +327,7 @@ function public(req, res, playersList) {
       <a href="/players.html?skills=dist">Dist</a>
       <a href="/players.html?online=true">Online</a>
     `;
-    vals.js += "<script src='./js/components.js'></script>";
+    vals.js += "<script src='./js/components.js?version="+game.version+"'></script>";
     const [key,value] = myURL.search.split("=");
     if("?skills" == key){
       vals.message = "<h1>TOP "+value.charAt(0).toUpperCase() +value.slice(1)+"</h1>";

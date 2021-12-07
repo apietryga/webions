@@ -137,7 +137,7 @@ class Creature {
       smthChanged = true;
     }
     // IF CHANGES - SAVE TO DB
-    if(smthChanged){
+    if(smthChanged && func.isSet(db.update)){
       db.update(this);
     }
   }
@@ -689,7 +689,6 @@ class Creature {
           // FIST FIGHTING
           if(this.skills.fist > 0 && this.fistExhoust <= game.time.getTime() && c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
             this.fistExhoust = game.time.getTime() + 1000;
-            // c.getHit(game,this);
             c.getHit(db,this);
           }
           // DISTANCE SHOT - 68 is "D" key [players]
@@ -739,7 +738,6 @@ class Creature {
               this.shotTarget = c.id;
               this.shotExhoust = game.time.getTime() + 1500;
               this.bulletOnTarget = game.time.getTime()+300;
-              // setTimeout(() => { c.getHit(game,this,'dist'); }, 300);
               setTimeout(() => { c.getHit(db,this,'dist'); }, 300);
             }
           }

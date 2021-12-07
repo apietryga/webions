@@ -150,6 +150,7 @@ class dbConnect{
           p[1].push(nPlayer);
         }
         this.save(p[1]);
+        callback();
       })
     },
     save(newContent){

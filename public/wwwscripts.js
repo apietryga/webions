@@ -30,7 +30,8 @@ if(typeof main != null && typeof playersList != "undefined"){
       "eq",
       "skills",
       "quests",
-      "lastDeaths"
+      "lastDeaths",
+      "lastFrame"
     ];
     const skillsToNotShow = [
       "dist_summary",
@@ -86,6 +87,16 @@ if(typeof main != null && typeof playersList != "undefined"){
                 }
               }
               td2.append(canvasSprite);
+            }else if(s == "lastFrame"){
+              order = 2;
+              const currentDate = new Date().getTime();
+              const lf = new Date(player.lastFrame);
+              const frameToString = lf.getDate()+"."+lf.getMonth()+"."+lf.getFullYear()+", "+lf.getHours()+":"+lf.getMinutes();
+              if(currentDate - lf < 3000){
+                td2.innerHTML = "<span style='color:#fff;'>Online now</span>";
+              }else{
+                td2.innerHTML = "<span>"+frameToString+"</span>";
+              }
             }else if(s == "health"){
               order = 1;
               const healthBar = document.createElement("div");
@@ -150,10 +161,9 @@ if(typeof main != null && typeof playersList != "undefined"){
             }else if(s == "speed"){
               player.skills.speed = player.totalSpeed;
               continue;
-            }else if(s == "quests"){
+            }else if(s == "quests" && player.name != "GM"){
               if(player.quests.length == 0 || player.quests.constructor != Array){continue;}
               order = 4;
-              // console.log(player.quests)
               td2.className = "quests";
               for(const quest of player.quests){
                 const questsDOM = document.createElement("div");
@@ -161,8 +171,6 @@ if(typeof main != null && typeof playersList != "undefined"){
                 questsDOM.innerHTML = quest+" Quest";
                 td2.append(questsDOM);
               }
-
-
             }else if(s == "lastDeaths" && isSet(player.lastDeaths)){
               if(!isSet(player.lastDeaths[1]) && isSet(player.lastDeaths[0])){
                 player.lastDeaths = [player.lastDeaths[0]];
@@ -170,12 +178,12 @@ if(typeof main != null && typeof playersList != "undefined"){
               if(player.lastDeaths.length == 0){continue;}
               order = 5;
               const table = document.createElement("table");
-              for(const death of player.lastDeaths){
+              for(const death of player.lastDeaths.reverse()){
                 const row = document.createElement("tr");
                 const tdx1 = document.createElement("td");
                 let when = death.when.split(/[T,.]+/);
-                tdx1.innerHTML = when[0];
-                tdx1.innerHTML += "<br /><sub>"+when[0]+"</sub>";
+                tdx1.innerHTML = when[0].replaceAll("-",".");
+                tdx1.innerHTML += "<br /><sub>"+when[1].slice(0,5)+"</sub>";
                 const tdx2 = document.createElement("td");
                 tdx2.innerHTML += "By ";     
                 if(death.whoType == "player"){
@@ -189,10 +197,6 @@ if(typeof main != null && typeof playersList != "undefined"){
                 table.append(row);
               }
               td2.append(table);
-              // player.skills.speed = player[s];
-            }else{
-              order = 3;
-              td2.innerHTML = player[s];
             }
             tr.append(td1);
             tr.append(td2);          
@@ -230,7 +234,7 @@ if(typeof main != null && typeof playersList != "undefined"){
         const row = document.createElement("tr");
         const td1 = document.createElement("td");
         const when = death.when.split(/[T,.]+/);
-        td1.innerHTML = when[0]+" "+when[1];
+        td1.innerHTML = when[0].replaceAll("-",".")+", "+when[1].slice(0,5);
         const td2 = document.createElement("td");
         td2.innerHTML = "<a href='/players.html?player="+death.player+"'>"+death.player+"</a>";
         td2.innerHTML += " was killed by ";     

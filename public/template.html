@@ -5,25 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{name}}</title>
-    <link rel="shortcut icon" href="../img/logos/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./style/page.css">
+    <link rel="shortcut icon" href="../img/logos/favicon.ico?v={{version}}" type="image/x-icon">
+    <link rel="stylesheet" href="./style/page.css?v={{version}}">
     <meta name="google-site-verification" content="hntgAqdbXzNcBY02LAfBw-qPdejtMqYa75hPCQdBres" />
-    <link rel="manifest" href="json/manifest.json">
-    <link rel="apple-touch-icon" href="img/logos/logo_512.png">
-    <link rel="apple-touch-startup-image" href="img/logos/logo_512.png">
-    <meta name="apple-mobile-web-app-title" content="Webions">
+    <link rel="manifest" href="json/manifest.json?v={{version}}">
+    <link rel="apple-touch-icon" href="./img/logos/logo_512.png?v={{version}}">
+    <link rel="apple-touch-startup-image" href="./img/logos/logo_512.png?v={{version}}">
+    <meta name="apple-mobile-web-app-title" content="{{name}}">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <script src="./js/map.js"></script>
-    <script src="./js/functions.js" defer></script>
-    <script src="./js/gameDetails.js" defer></script>
-    <script src="./js/sprites.js" defer></script>
-    <script src="./wwwscripts.js" defer></script>
+    <script src="./js/map.js?v={{version}}"></script>
+    <script src="./js/functions.js?v={{version}}" defer></script>
+    <script src="./js/gameDetails.js?v={{version}}js" defer></script>
+    <script src="./js/sprites.js?v={{version}}" defer></script>
+    <script src="./wwwscripts.js?v={{version}}" defer></script>
   </head>
   <body>
   <header>
     <div class="logo">
       <a href="./">
-        <img src="../img/logos/logo.webp" alt="Webions Game Logo" />
+        <img src="../img/logos/logo.webp?v={{version}}" alt="Webions Game Logo" />
         <h1>{{name}}</h1>
       </a>
     </div>
