@@ -1,13 +1,15 @@
 const fs = require('fs');
 const func = require("../public/js/functions");
 const {URL} = require('url');
-const makewww = require("../public/makewww");
 const dbConnect = require("./dbconnect");
 const dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
 const  {CourierClient} = require("@trycourier/courier");
 const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5R6HYK6W"});  
 const Creature = require("./server_components")[0];
+const MarkdownIt = require('markdown-it'),
+md = new MarkdownIt();
+    
 const passTokens = {
   vals : [],
   generate(pName){
@@ -76,34 +78,57 @@ if(game.dev == true){
 }
 function public(req, res, playersList) {
   const {url} = req;
-  const href = "http://"+req.rawHeaders[1];
+  const href = "https://"+req.rawHeaders[1];
   const myURL = new URL(href+url);
   const vals = {
     name: game.name,
+    version: game.version,
     message:"",
     action:"",
     nick:"",
     aside: "",
     js:""
   }
+  const fromTemplate = ["",'index','players','libary','rules','404','4devs'];
+  let fileName = myURL.pathname.split("/")[1].split(".")[0] == ""?'index':myURL.pathname.split("/")[1].split(".")[0];
   const fileExtension = myURL.pathname.split(".")[myURL.pathname.split(".").length-1] == "/"?'html': myURL.pathname.split(".")[myURL.pathname.split(".").length-1];
+  const fileType = ["webp","png","gif","jpg","jpeg","ico"].includes(fileExtension)?'image':'text';
+  let contentType = fileType+'/'+fileExtension;
   const serveChangedContent = (path = myURL.pathname) =>{
-    const fileType = ["webp","png","gif","jpg","jpeg"].includes(fileExtension)?'image':'text';
-    const contentType = fileType+'/'+fileExtension;
     if(!path.split("/").includes("public")){
       path = "./public/"+path;
+    }
+    if(!fs.existsSync(path) && !fromTemplate.includes(fileName)){
+      fileName = "404";
+      contentType = "text/html";
     }
     // serve content with message
     res.writeHead(200, { 'Content-Type': contentType });
     if(fileType == 'text'){
-      fs.readFile(path,"utf8",(e,content) => {
-        if(e != null){console.error(e);}
-        for(const v of Object.keys(vals)){
-          if(typeof content != "undefined"){
-            content = content.split('{{'+v+'}}').join(vals[v]);
-          }else{
-            if(path == ""){path = "./public/index.html"}
+      // dynamically generate page by combine template.html and contents.html
+      if(fromTemplate.includes(fileName)){
+        path = "./public/template.html";
+        const allContents = fs.readFileSync("./public/contents.html", "utf8");
+        for(const titleAndContent of allContents.split("<!--| ")){
+          const [title,content] = titleAndContent.split(" |-->");
+          if(title == fileName){
+            vals.content = content;
           }
+        }
+      }
+      // console.log(path)
+      fs.readFile(path,"utf8",(e,content) => {
+        if(e == null){
+          if(func.isSet(vals.content)){content = content.split('{{content}}').join(vals.content);}
+          for(const v of Object.keys(vals)){
+            if(typeof content != "undefined"){
+              content = content.split('{{'+v+'}}').join(vals[v]);
+            }else{
+              if(path == ""){path = "./public/index.html"}
+            }
+          }
+        }else{
+          console.error(e);
         }
         res.end(content);
       })
@@ -112,10 +137,7 @@ function public(req, res, playersList) {
       fs.createReadStream(path).pipe(res);
     }
   }
-  if(["/makewww"].includes(myURL.pathname)){
-    // make www htmls
-    makewww(()=>{console.log("WWW UPDATED")});
-  }else if(["/account.html"].includes(myURL.pathname)){  // account page
+  if(["/account.html"].includes(myURL.pathname)){  // account page
     path = "/account.html";
     let body = '';req.on("data",(chunk)=>{body += chunk;});
     const processRequest = (callback) => {
@@ -294,17 +316,7 @@ function public(req, res, playersList) {
 
     }
     serveChangedContent(path);
-  }else if(["/","/index.html"].includes(myURL.pathname)){
-    vals.aside = `<a href="/players.html?online=true">Online list</a>
-    <a href="/players.html?lastdeaths=true">Last deaths</a>`
-    if(myURL.pathname == "/"){myURL.pathname = "/index.html"}
-    path = myURL.pathname;
-    let body = '';req.on("data",(chunk)=>{body += chunk;});
-    const processRequest = (callback = ()=>{}) => {
-      vals.message = game.whatsNew;
-      callback();
-    } 
-    processRequest(serveChangedContent(myURL.pathname))
+  
   }else if(["/players.html"].includes(myURL.pathname)){
     vals.aside = `
       <a href="/players.html?skills=level">Level</a>
@@ -378,8 +390,18 @@ function public(req, res, playersList) {
         const items = ${JSON.stringify(require("./itemsTypes").types)};
     </script>`;
     serveChangedContent(myURL.pathname);
-  }else if([".html"].includes(myURL.pathname.slice(-4))){
-    console.log(myURL.pathname);
+  }else if(["/","/index.html"].includes(myURL.pathname)){
+    vals.aside = `<a href="/players.html?online=true">Online list</a>
+    <a href="/players.html?lastdeaths=true">Last deaths</a>`;
+    if(myURL.pathname == "/"){myURL.pathname = "/index.html"}
+    path = myURL.pathname;
+    // vals.message = game.whatsNew;
+    // const readme = fs.readFileSync("readme.md", "utf8");
+    // console.log(readme);
+    const result = md.render(fs.readFileSync("readme.md", "utf8"));
+
+    vals.message = result;
+    serveChangedContent();
   }else{
     serveChangedContent(myURL.pathname);
   }

@@ -53,16 +53,21 @@ body{
     }
     .play{
       @extend %onFrame;
-      background: linear-gradient(rgb(97, 9, 9),rgb(11, 58, 11));
       flex:1;
       justify-content: center;
+      display:flex;
+      justify-content: center;
+      align-items: center;
       a{
-        width:100%;
-        height:100%;
+        background: linear-gradient(rgb(97, 9, 9),rgb(11, 58, 11));
+        @extend %onFrame;
+        width:80%;
+        height:80%;
         display:flex;
         justify-content: center;
         align-items: center;
         font-size:1.5em;
+        // margin
       }
     }
     a{
@@ -104,11 +109,13 @@ body{
     flex:1;
     main{
       a{cursor:pointer;}
+      pre{white-space: break-spaces;}
       @extend %onFrame;
       flex:3;
       padding:5px;
       // everywhere 
       .content{
+        h1{padding:0;}
         padding:10px;
         @extend %onFrame;
         background-color: rgba(255, 255, 255, 0.11);

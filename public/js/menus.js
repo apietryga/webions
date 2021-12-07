@@ -43,17 +43,17 @@ const menus = {
     parent: document.querySelector(".mainMenu"),
     doms : [
       [{ title: "PAUSE GAME",
-          innerHTML: "PG",
+          innerHTML: "⏸",
           type: "button",
           onclick: () => {gamePlane.stop();}
         },
         { title: "MAIN PAGE",
-          innerHTML: "MP",
+          innerHTML: "🏠",
           type: "button",
           onclick: () => {window.location.replace("/")}
         },
         { title: "LOGOUT",
-          innerHTML: "LO",
+          innerHTML: "📤",
           type: "button",
           onclick: () => {window.location.replace("/account.html?action=logout")}
         }

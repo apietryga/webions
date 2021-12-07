@@ -42,7 +42,7 @@ body, body .wrapper main table .detailsBody .eq .allFields div, body .wrapper ma
   color: #AEAEAC;
 }
 
-body > header, body > header .logo, body > header .play, body nav, body aside, body footer, body nav a, body aside a, body footer a, body .wrapper main, body .wrapper main .content, body .wrapper main table, body .wrapper main table th, body .wrapper main table td, body .wrapper main table .detailsBody .quests, body .wrapper main table .detailsHead .quests, body .wrapper main table .detailsBody .quests div, body .wrapper main table .detailsHead .quests div, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
+body > header, body > header .logo, body > header .play, body > header .play a, body nav, body aside, body footer, body nav a, body aside a, body footer a, body .wrapper main, body .wrapper main .content, body .wrapper main table, body .wrapper main table th, body .wrapper main table td, body .wrapper main table .detailsBody .quests, body .wrapper main table .detailsHead .quests, body .wrapper main table .detailsBody .quests div, body .wrapper main table .detailsHead .quests div, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -81,14 +81,17 @@ body > header .logo {
 }
 
 body > header .play {
-  background: linear-gradient(#610909, #0b3a0b);
   flex: 1;
   justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body > header .play a {
-  width: 100%;
-  height: 100%;
+  background: linear-gradient(#610909, #0b3a0b);
+  width: 80%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -141,9 +144,17 @@ body .wrapper main a {
   cursor: pointer;
 }
 
+body .wrapper main pre {
+  white-space: break-spaces;
+}
+
 body .wrapper main .content {
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.11);
+}
+
+body .wrapper main .content h1 {
+  padding: 0;
 }
 
 body .wrapper main table {

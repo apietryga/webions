@@ -1,5 +1,3 @@
-const dbConnect = require("./dbconnect");
-const dbc = new dbConnect();
 const Map = require("../public/js/map");
 const map = new Map();
 const func = require("../public/js/functions");
@@ -86,8 +84,7 @@ class Creature {
       if(this.type == "player"){
         // downgrade exp
         this.skills.exp = Math.floor(this.skills.exp*0.95);
-        // this.updateSkills(game);
-        this.updateSkills(dbc[game.db]);
+        this.updateSkills(db);
         this.text = "You're dropped level to "+this.skills.level;
         // save dead
         const deadLog = {
