@@ -151,7 +151,7 @@ if(typeof main != null && typeof playersList != "undefined"){
               player.skills.speed = player.totalSpeed;
               continue;
             }else if(s == "quests"){
-              if(player.quests.length == 0){continue;}
+              if(player.quests.length == 0 || player.quests.constructor != Array){continue;}
               order = 4;
               // console.log(player.quests)
               td2.className = "quests";
@@ -263,7 +263,7 @@ if(typeof main != null && typeof playersList != "undefined"){
       table.append(tr);
       const sorted = [];
       for(const d of dt){
-        if(d.name != "GM"){
+        if(d.name != "GM" && isSet(d.skills)){
           sorted.push([d.skills[key],d]);
         }
       }

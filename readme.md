@@ -4,25 +4,26 @@
 
   ## TESTING
     - rescale scores of inactive players
-    - add eq and quests to players stats [page]
-    - save players before server restart [testing heroku detection]
-    - allow train on afk.
+    - fixed db update on promotion
     - fix gameplane.js:28 Uncaught TypeError
+    - functions.js:102 Uncaught TypeError: Cannot convert undefined or null to object (karo page)
+    - less death penalty ( 10% to 5% )
+    - [dev] del minimist and node-static dependencies (Github dependency alert)
 
   ## CRITICAL BUGS
-    - less death penalty
+    - del makewww and generate public pages dynamically
+    - show readme in main page
+    - add lastFrame to players stats [page]
+    - refresh [public] css's and js's dynamically
+    - mailgun
+
     - Mobile item stats
     - IOS Compatibility
     - Bug with doubled characters (?)
       - creatures.update w gameplane - WTF?
-    - mailgun
     - strict register names (no numbers and monsters names)
     - remove this.skills.healing opt, and improve healing with mana
     - fix doubled console message on sent
-    - del makewww and generate public pages dynamically
-    - show readme in main page
-    - if player's online - show his stats dynamically
-    - add lastFrame to players stats [page]
 
   ## TO DO
     - Landscape map control mobile

@@ -4,7 +4,6 @@
     "bcrypt": "^5.0.1",
     "http-shutdown": "^1.2.2",
     "json-stringify-pretty-compact": "^3.0.0",
-    "node-static": "^0.7.11",
     "redis": "^3.1.2",
     "websocket": "^1.0.34"
   },

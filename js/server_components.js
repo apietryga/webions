@@ -68,7 +68,7 @@ class Creature {
     }
     this.baseSpeed = this.speed;
   }
-  getHit = (game,from,type = 'fist') =>{
+  getHit = (db,from,type = 'fist') =>{
     let hit = from.skills[type];
     if(type == 'dist' && func.isSet(from.totalDist)){
       hit = from.totalDist;
@@ -85,8 +85,9 @@ class Creature {
       from.redTarget = false;
       if(this.type == "player"){
         // downgrade exp
-        this.skills.exp = Math.floor(this.skills.exp*0.9);
-        this.updateSkills(game);
+        this.skills.exp = Math.floor(this.skills.exp*0.95);
+        // this.updateSkills(game);
+        this.updateSkills(dbc[game.db]);
         this.text = "You're dropped level to "+this.skills.level;
         // save dead
         const deadLog = {
@@ -111,15 +112,15 @@ class Creature {
     // COUNT SKILLS
     if(['fist','dist'].includes(type) && from.type == "player" && !isNaN(hit)){
       from.skills[type+'_summary']++;
-      from.updateSkills(game);
+      from.updateSkills(db);
     }
     // GIVE EXP TO KILLER! 
     if(this.type == "monster" && this.health <= 0){
       from.skills.exp += this.skills.exp;
-      from.updateSkills(game);
+      from.updateSkills(db);
     }
   }
-  updateSkills(game, keys = ['fist','dist']){
+  updateSkills(db, keys = ['fist','dist']){
     let smthChanged = false;
     // fist, dist update
     for(const key of keys){
@@ -140,10 +141,10 @@ class Creature {
     }
     // IF CHANGES - SAVE TO DB
     if(smthChanged){
-      dbc[game.db].update(this);
+      db.update(this);
     }
   }
-  update(param,game,creatures,items){
+  update(param,db,creatures,items){
     this.focus = param.focus;
     // clear console
     if(func.isSet(this.console)){
@@ -229,15 +230,12 @@ class Creature {
         if(this.type == "npc"){
           // this.says = "elo"; 
           this.sayExhoust = game.time.getTime() + 1000;
-          // console.log("elo...");
 
           // if(func.isSet(this.says)){
           // this.says = param.says;
           // if()
-          // console.log(this.dial)
           // for(const dialog of this.dial){
           //   for(const speakKey of Object.keys(dialog)){
-          //     // console.log(speakKey)
           //     if(param.says.toLowerCase() == speakKey){
           //       let text = dialog[speakKey];
           //       text.replace("{name}",param.name);
@@ -247,11 +245,9 @@ class Creature {
           //     }
           //   }
           // }
-          // console.log(this.says);
           // this.says = 
   
           // if(func.isSet(this.says)){
-          //   // console.log(this.says)
           //   this.talking = game.time.getTime() + 10000;
           // }
           
@@ -260,27 +256,7 @@ class Creature {
     }
     // UPDATE LASTFRAME || KEEP PLAYER IN GAME || save player on logout
     if(typeof game.startServerTime != "undefined"){
-
-      // console.log(game.time.getTime() - this.lastFrame)
-
       this.lastFrame = game.time.getTime();
-      // console.log("ref");
-      //   if(!func.isSet(this.tries)){
-    //     this.tries = [0,0,0,0,0];
-    //   }else{
-    //     this.tries.push(0);
-    //   }
-    //   setTimeout(()=>{
-    //    if(func.isSet(this.tries)){
-    //     this.tries.pop();
-    //     if(this.tries < 1){
-    //       delete this.tries;
-    //       dbc[game.db].update(this);
-    //       console.log("update")
-    //     }
-    //   }
-    // },1000)
-
     }
     // GET EQ VALUES (totalHealth, totalMana etc.)
     func.setTotalVals(this);
@@ -649,10 +625,9 @@ class Creature {
       // for monsters
       if(this.type == "monster"){
         this.restore = game.time.getTime() + 60000;
-        // this.restore = game.time.getTime() + 500;
       }
       if(this.type == "npc"){
-        this.restore = game.time.getTime();      }
+        this.restore = game.time.getTime();}
       if(this.name == param.name){
         this.direction = 4;
         game.dead = true;
@@ -717,7 +692,8 @@ class Creature {
           // FIST FIGHTING
           if(this.skills.fist > 0 && this.fistExhoust <= game.time.getTime() && c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
             this.fistExhoust = game.time.getTime() + 1000;
-            c.getHit(game,this);
+            // c.getHit(game,this);
+            c.getHit(db,this);
           }
           // DISTANCE SHOT - 68 is "D" key [players]
           if(typeof param.controls != "undefined" && this.shotExhoust <= game.time.getTime() && ((this.type == "player" && param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
@@ -766,7 +742,8 @@ class Creature {
               this.shotTarget = c.id;
               this.shotExhoust = game.time.getTime() + 1500;
               this.bulletOnTarget = game.time.getTime()+300;
-              setTimeout(() => { c.getHit(game,this,'dist'); }, 300);
+              // setTimeout(() => { c.getHit(game,this,'dist'); }, 300);
+              setTimeout(() => { c.getHit(db,this,'dist'); }, 300);
             }
           }
         }

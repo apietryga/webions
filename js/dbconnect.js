@@ -126,7 +126,6 @@ class dbConnect{
       // })
     },
     update(player,callback = ()=>{}){
-      // console.log("JEST UPDATE")
       this.playerIsSet(player.name,(p)=>{
         if(typeof p[0] == "object"){
           // update record

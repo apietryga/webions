@@ -99,20 +99,20 @@ this.setTotalVals = (where) => {
     where.totalDist = where.skills.dist;
     where.totalMana = where.maxMana;
     where.totalManaRegen = where.manaRegenValue;
-    for(const key of Object.keys(where.eq)){
-      if(where.eq[key]){
-        if(this.isSet(where.eq[key].speed)){where.totalSpeed += where.eq[key].speed;}
-        if(this.isSet(where.eq[key].def)){where.totalDef += where.eq[key].def;}
-        if(this.isSet(where.eq[key].health)){where.totalHealth += where.eq[key].health;}
-        if(this.isSet(where.eq[key].mana)){where.totalMana += where.eq[key].mana;}
-        if(this.isSet(where.eq[key].manaRegen)){where.totalManaRegen += where.eq[key].manaRegen;}
-        if(this.isSet(where.eq[key].fist)){where.totalFist += where.eq[key].fist;}
-        if(this.isSet(where.eq[key].dist)){where.totalDist += where.eq[key].dist;}
+    if(this.isSet(where.eq)){
+      for(const key of Object.keys(where.eq)){
+        if(where.eq[key]){
+          if(this.isSet(where.eq[key].speed)){where.totalSpeed += where.eq[key].speed;}
+          if(this.isSet(where.eq[key].def)){where.totalDef += where.eq[key].def;}
+          if(this.isSet(where.eq[key].health)){where.totalHealth += where.eq[key].health;}
+          if(this.isSet(where.eq[key].mana)){where.totalMana += where.eq[key].mana;}
+          if(this.isSet(where.eq[key].manaRegen)){where.totalManaRegen += where.eq[key].manaRegen;}
+          if(this.isSet(where.eq[key].fist)){where.totalFist += where.eq[key].fist;}
+          if(this.isSet(where.eq[key].dist)){where.totalDist += where.eq[key].dist;}
+        }
       }
     }
   }
-
-
 }
 function recolorImage(img, fresh = {head:[50,50,50],chest:[50,50,50],legs:[50,50,50],foots:[50,50,50]}){
   if(!isSet(img)){return 0;}

@@ -1,8 +1,6 @@
 const fs = require('fs');
 const func = require("../public/js/functions");
 const {URL} = require('url');
-const static = require('node-static');
-const file = new(static.Server)("public");
 const makewww = require("../public/makewww");
 const dbConnect = require("./dbconnect");
 const dbc = new dbConnect();dbc.init(()=>{});
@@ -88,30 +86,35 @@ function public(req, res, playersList) {
     aside: "",
     js:""
   }
+  const fileExtension = myURL.pathname.split(".")[myURL.pathname.split(".").length-1] == "/"?'html': myURL.pathname.split(".")[myURL.pathname.split(".").length-1];
   const serveChangedContent = (path = myURL.pathname) =>{
+    const fileType = ["webp","png","gif","jpg","jpeg"].includes(fileExtension)?'image':'text';
+    const contentType = fileType+'/'+fileExtension;
     if(!path.split("/").includes("public")){
       path = "./public/"+path;
     }
     // serve content with message
-    fs.readFile(path,"utf8",(e,content) => {
-      if(e != null){console.error(e);}
-      for(const v of Object.keys(vals)){
-        if(typeof content != "undefined"){
-          content = content.split('{{'+v+'}}').join(vals[v]);
-        }else{
-          if(path == ""){path = "./public/index.html"}
+    res.writeHead(200, { 'Content-Type': contentType });
+    if(fileType == 'text'){
+      fs.readFile(path,"utf8",(e,content) => {
+        if(e != null){console.error(e);}
+        for(const v of Object.keys(vals)){
+          if(typeof content != "undefined"){
+            content = content.split('{{'+v+'}}').join(vals[v]);
+          }else{
+            if(path == ""){path = "./public/index.html"}
+          }
         }
-      }
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(content);
-    })
+        res.end(content);
+      })
+    }else{
+      // images
+      fs.createReadStream(path).pipe(res);
+    }
   }
   if(["/makewww"].includes(myURL.pathname)){
     // make www htmls
-    makewww(()=>{
-      // serve www folder
-      file.serve(req, res);
-    });
+    makewww(()=>{console.log("WWW UPDATED")});
   }else if(["/account.html"].includes(myURL.pathname)){  // account page
     path = "/account.html";
     let body = '';req.on("data",(chunk)=>{body += chunk;});
@@ -344,7 +347,7 @@ function public(req, res, playersList) {
     serveChangedContent(myURL.pathname);
   }else if(["/mapeditor.html"].includes(myURL.pathname)){
     if(game.dev == true){
-      file.serve(req,res)
+      serveChangedContent(myURL.pathname);
     }else{
       const location = "/index.html"
       res.setHeader("Location", location + "junk");
@@ -378,7 +381,7 @@ function public(req, res, playersList) {
   }else if([".html"].includes(myURL.pathname.slice(-4))){
     console.log(myURL.pathname);
   }else{
-    file.serve(req,res)
+    serveChangedContent(myURL.pathname);
   }
 }
 module.exports = public; 

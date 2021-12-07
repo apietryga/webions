@@ -13,7 +13,6 @@ const inGameMonsters = require("./json/monstersList").data;
 const game = require("./public/js/gameDetails");
 const public = require("./js/public");
 const itemsList = require("./json/itemsList").list;
-const func = require("./public/js/functions");
 // filter data on websocket send
 const disallowKeys = [
   "startPosition",
@@ -53,7 +52,8 @@ const cm = { // creatures managment
       }
     }
     for(const c of this.monstersInArea){
-      c.update(param,game,this.monstersInArea.concat(this.players.list),im);
+      // 0 because of monsters don't upgrades skills
+      c.update(param,0,this.monstersInArea.concat(this.players.list),im);
     }
   },
   init(){
@@ -93,9 +93,6 @@ const cm = { // creatures managment
   },
   players: {
     init(db){
-      // make test player to make clear difference between obj and arr vals
-      const testPlayer = new Creature("",0,"player");
-      // refresh list of players, delete all < 13 exp
       // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
       const skipKeys = [
         "healthValue",
@@ -104,9 +101,6 @@ const cm = { // creatures managment
         "shotTarget",
         "bulletOnTarget",
         "cyle",
-        "password",
-        "email",
-        "sex"
       ];
       db.loadAll((res)=>{
         for(const plr of res){
@@ -115,12 +109,14 @@ const cm = { // creatures managment
           // rewrite
           for(const key of Object.keys(plr)){
             if(skipKeys.includes(key)){continue;}
-            if(testPlayer[key].constructor === Object){
+            if(plr[key].constructor === Object){
+            // if it's object
               player[key] = {};
               for(const keyIn of Object.keys(plr[key])){
                 player[key][keyIn] = plr[key][keyIn];
               }
-            }else if(testPlayer[key].constructor === Array){
+            }else if(plr[key].constructor === Array){
+            // if it's array
               player[key] = [];
               for(const keyIn of Object.keys(plr[key])){
                 player[key][keyIn] = plr[key][keyIn];
@@ -129,17 +125,12 @@ const cm = { // creatures managment
               player[key] = plr[key];
             }
           }
-          // delete if exp < 13
-          if(player.skills.exp < 13 || player.name == "" || player.name == 1){
-            db.del(player.name)
-          }else{
-            // update player for health, mana etc
-            player.update({name:player.name},game,[],{itemsInArea:[]});
-            // update player skills
-            player.skills.level = -1;
-            // player is update in db there:
-            player.updateSkills(game,['fist','dist']);
-          }
+          // update player
+          player.update({name:player.name},db,[],{itemsInArea:[]});
+          // update player skills
+          player.skills.level = -1;
+          // player is update in db there:
+          player.updateSkills(db);
         }
       });
     },
@@ -148,19 +139,17 @@ const cm = { // creatures managment
     inLoading:[],
     update(param,callback){
       // TO DO MAKE inArea PLAYERS LIST!
-
       // check if player is on the list (in the game).
       let isPlayer = false;
       for(const p of this.list){
         // update player is playing
         if(p.name == param.name){
           isPlayer = p;
-          isPlayer.update(param,game,cm.monstersInArea.concat(this.list),im);
+          isPlayer.update(param,dbc[game.db],cm.monstersInArea.concat(this.list),im);
           callback(isPlayer);
           break;
         }
       }
-
       // push player to list
       if(isPlayer == false && !this.inLoading.includes(param.name)){
         this.inLoading.push(param.name);
@@ -187,7 +176,6 @@ const cm = { // creatures managment
           callback(newPlayer);
         }); 
       }
-      
       // kick off offline.
       const kickTime = isPlayer.focus?1000:10000;
       setTimeout(() => {
@@ -199,7 +187,7 @@ const cm = { // creatures managment
       }, 1000);
     },
     kick(player){
-      console.log(player.name+" kicked.")
+      console.log(player.name+" KICKED")
       this.list.splice(this.list.indexOf(player),1);
       dbc[game.db].update(player);
     }
@@ -233,7 +221,7 @@ dbc.init(()=>{
   const server = http.createServer((req,res)=>{public(req,res,cm.players.list)}).listen(process.env.PORT || 80);
   const date = new Date();
   game.startServerTime = date.getTime();
-  console.log("serwer is running on: http://webions");
+  console.log("SERWER IS RUNNING");
   // WEBSOCKET
   new WebSocketServer({httpServer : server})
   .on('request', (req)=>{
