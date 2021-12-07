@@ -9,7 +9,6 @@ const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5
 const Creature = require("./server_components")[0];
 const MarkdownIt = require('markdown-it'),
 md = new MarkdownIt();
-    
 const passTokens = {
   vals : [],
   generate(pName){
@@ -91,14 +90,18 @@ function public(req, res, playersList) {
   }
   const fromTemplate = ["",'index','players','libary','rules','404','4devs'];
   let fileName = myURL.pathname.split("/")[1].split(".")[0] == ""?'index':myURL.pathname.split("/")[1].split(".")[0];
-  const fileExtension = myURL.pathname.split(".")[myURL.pathname.split(".").length-1] == "/"?'html': myURL.pathname.split(".")[myURL.pathname.split(".").length-1];
-  const fileType = ["webp","png","gif","jpg","jpeg","ico"].includes(fileExtension)?'image':'text';
+  let fileExtension = myURL.pathname.split(".")[myURL.pathname.split(".").length-1] == "/"?'html': myURL.pathname.split(".")[myURL.pathname.split(".").length-1];
+  const allowedFileTypes = ["webp","png","gif","jpg","jpeg","ico"];
+  const fileType = allowedFileTypes.includes(fileExtension)?'image':'text';
   let contentType = fileType+'/'+fileExtension;
   const serveChangedContent = (path = myURL.pathname) =>{
     if(!path.split("/").includes("public")){
       path = "./public/"+path;
     }
-    if(!fs.existsSync(path) && !fromTemplate.includes(fileName)){
+    if(!fs.existsSync(path) 
+    && !fromTemplate.includes(fileName) 
+    || !allowedFileTypes.concat(['html','css','js','json']).includes(fileExtension)){
+      fileExtension = "html";
       fileName = "404";
       contentType = "text/html";
     }

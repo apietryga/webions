@@ -14,7 +14,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -51,7 +51,7 @@
       "fist_summary": 1363,
       "dist_summary": 1039
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -194,7 +194,7 @@
       "dist_summary": null,
       "fist_summary": null
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -255,7 +255,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 288,
+    "mana": 316,
     "maxMana": 4910
   },
   {
@@ -273,7 +273,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
@@ -357,7 +357,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "male",
@@ -448,7 +448,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -486,7 +486,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
     "email": "a@ad.pl",
     "sex": "female",
@@ -527,7 +527,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -565,7 +565,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -615,7 +615,7 @@
       "dist_summary": 0
     },
     "type": "player",
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "text": "",
     "game": {
       "time": "2021-10-17T11:04:50.826Z",
@@ -656,24 +656,24 @@
   },
   {
     "name": "GM",
-    "position": [39, 0, 0],
+    "position": [37, -8, 0],
     "speed": 2.2,
-    "health": 350,
+    "health": 360,
     "maxHealth": 360,
     "sprite": "gm",
     "skills": {
       "level": 26,
-      "exp": 17010,
+      "exp": 17440,
       "fist": 312,
       "dist": 114,
       "healing": 119,
-      "fist_summary": 97029,
-      "dist_summary": 12924
+      "fist_summary": 97043,
+      "dist_summary": 12936
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1638911360564,
+    "lastFrame": 1638912693964,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -954,7 +954,7 @@
         "actionType": "pickUp"
       }
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "lastDeaths": [
       {
         "when": "2021-11-14T11:11:20.518Z",
@@ -1077,7 +1077,7 @@
         "field": "ft"
       }
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "lastDeaths": [
       {
         "when": "2021-11-16T01:12:52.298Z",
@@ -1106,7 +1106,7 @@
     ],
     "sprite": "male_oriental",
     "quests": [],
-    "mana": 194,
+    "mana": 208,
     "maxMana": 250
   },
   {
@@ -1178,7 +1178,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "lastDeaths": [
       {
         "when": "2021-11-17T15:19:20.685Z",
@@ -1255,7 +1255,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1638910983855,
+    "lastFrame": 1638912462675,
     "sprite": "male_oriental",
     "quests": [],
     "mana": 150,
