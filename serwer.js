@@ -275,8 +275,7 @@ function shutdown(signal) {
       dbc[game.db].update(player);
     }
     setTimeout(() => {
-      console.log('PLAYERS SAVED, EXITING.');
-      process.exit(err ? 1 : 0);
+      console.log('PLAYERS SAVED, SAFE.');
     }, 5000).unref();
   };
 }

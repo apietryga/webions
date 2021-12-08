@@ -33,6 +33,8 @@
   - add shielding
   - add magic lvl
   - ladder not display on player stats
+  - display eq on page [loading failed - why?]
+  - display lastframe hour - minutes break.
 
 ## TO CATCH
   - (?) bug with doubled characters (creatures.update in gameplane? - when, how?)
