@@ -23,6 +23,12 @@
   background-color: rgb(47, 47, 47);
   color:#AEAEAC;
 }
+%onFrameButt{
+  @extend %onFrame;
+  &:active{
+    @extend %inFrame;
+  }
+}
 // scrollbars
 body{
   ::-webkit-scrollbar {
@@ -76,7 +82,6 @@ body{
       width:70%;
       height:14px;
       .progressBar{
-        // border:2px dashed green;
         background-color:rgb(145, 32, 32);
         width:0;
         height:100%;
@@ -86,27 +91,18 @@ body{
       width:70%;
       font-size:0.75em;
     }
-
   }
   button{
     background-color:#404040;
     color:#AEAEAC;
-    // padding:5px;
     border:2px solid;
     border-color:#757575 #323232 #323232 #757575;
     cursor:pointer; 
-    // margin:0 3px;
-    // padding:2%;
-    // width:50px;
-    // height:15px;
-    // font-size:10px;
-    // position:fixed;
     display:flex;
     justify-content: center;
     align-items: center;
   }
   .wrapper{
-    // flex-wrap: wrap;
     background-color:#2f2f2f;
     position:fixed;
     left:0;
@@ -142,34 +138,26 @@ body{
         color:#AEAEAC;
         position:relative;
         .gamePlaneCanvas{
-          // left:0;
-          // top:0;
           max-width:90%;
           max-height:90%;
-          // width:100%;
-          // width:padding-left
-          // padding-left:100%;
-          // height:90%;
         }
         .menusButtons{
-          @extend %onFrame;
+          @extend %onFrameButt;
           cursor:pointer;
-          // border:2px dashed red;
           position:absolute;
           &.mainMenu{
-            // border:2px dashed green;
             right:0;
           }
           &.outfit{
             left:0;
           }
-  
         }
         .outFitContainer{
           padding:10px;
-          // padding-top:5vh;
           @extend %onFrame;
           background-color:#5A5A5A;
+          position:absolute;
+          z-index:2;
           .innerContainer{
             display:flex;  
             align-items: stretch;
@@ -188,22 +176,10 @@ body{
               justify-content:space-between;
               // padding:0 3px 0 10px;
             }
-            // .spriteChanger{
-            //   border:2px solid;
-            //   border-color:#444444 #737373 #737373 #444444;
-            //   display:flex;
-            //   justify-content:center;
-            //   align-items:center;
-            //   margin:0 3px;
-            //   font-size:0.7em;
-            //   flex:1;
-            //   width:40px;
-            //   height:2em;
-            //   padding:0 20px;
-            // }
           }
-          position:absolute;
-          z-index:2;
+          button{
+            @extend %onFrameButt;
+          }
         }
       }
       .console{
@@ -255,18 +231,19 @@ body{
     }
     // BUTTONS PG MP LO
     .menuItem0{
-      // position:sticky;
       @extend %inFrame;
       position:fixed;
       top:0;
       right:0;
       z-index:3;
       display:flex;
-      button{flex:1;}
       height:2em;
       min-width: 30%;
+      button{
+        flex:1;
+        @extend %onFrameButt;
+      }
     }
-
     // HEALTH & MANA BARS
     .menuItem1,.menuItem2{
       position:fixed;
@@ -305,10 +282,11 @@ body{
         }
       }
     }
-    > .mainMenu{
+    >.mainMenu{
       margin-top:4em;
       @extend %inFrame;
       overflow-y:auto;
+      height:fit-content;
       min-width:30%;
       max-height:100%;
       flex:1;
@@ -339,7 +317,6 @@ body{
         gap:8px;
         cursor:pointer;
         div:nth-child(1){text-align:right;flex:1;}
-      
       }
       // STYLING DIVS
       >div >div{
@@ -398,10 +375,8 @@ body{
             justify-content: space-between;
           }
           .progressBar{
-            // border:1px solid #131212;
             @extend %inFrame;
             padding:0;
-            // border-radius:7px;
             background-color:rgb(49, 46, 46);
             position:relative;
             >div{
@@ -411,7 +386,6 @@ body{
               font-size:0.7em;
             }
             .progress{
-              // border-radius:7px;
               position:absolute;
               top:0;
               left:0;
@@ -482,23 +456,27 @@ body{
         display:flex;
         justify-content: flex-end;
         div{
+          @extend %onFrameButt;
           cursor:pointer;
           width:5vh;
           padding: 2px 5px;
-          background-color:rgb(90, 15, 15);
+          background-color:rgb(90, 15, 15)!important;
           display:flex;
           justify-content: center;
           align-items: center;
           @extend %onFrame;
         }
       }
-      
-      // border:2px dashed red!important;
+      button{
+        @extend %onFrameButt;
+      }
     }
   }
 }
+
 // ACCOUNT PAGE
 .loginPage{
+  $formBG: #2f2f2fb4;
   a{text-decoration: none;color:#fff;}
   height:100vh;
   padding:10%;
@@ -519,19 +497,35 @@ body{
       padding:5%;
     }
     form{
+      @extend %inFrame;
+      background-color:$formBG;
+      border-top:0;
+      border-bottom:0;
       display:none;
       flex-direction: column;
+      input{
+        padding:5px 10px;
+        margin:5px;
+        background-color:$formBG;
+        @extend %inFrame;
+        &:focus{
+          outline:0;
+        }
+      }
+      input[type=submit]{
+        @extend %onFrame;
+        cursor:pointer;
+        // background-color:$formBG;
+      }
       div{
         display:flex;
         justify-content: space-between;        
-        margin:1px;
-        padding:5px 10px;
         gap:5px;
         >*{width:100%;}
         >b{text-align: right;}
-        &:not(.additional){
-          background-color:rgba(255, 255, 255, 0.2);
-        }
+        // &:not(.additional){
+          // background-color:rgba(255, 255, 255, 0.2);
+        // }
         .sex{
           background-color: transparent;
           display:flex;
@@ -541,21 +535,48 @@ body{
             padding:0;
             width:100%;
             display:flex;
-            input{margin:auto 0;}
-            label{width:100%;}
+            // input{margin:auto 0;}
+            // label{width:100%;}
           }
+          input[type=radio]{
+            position:relative;
+            &:after{
+              content:"";
+              width:100%;
+              height:100%;
+              position:absolute;
+              left:-2px;
+              top:-2px;
+              border-radius:50%;
+              @extend %onFrame;
+              padding:0;
+            }
+            &:checked::after{
+              @extend %inFrame;
+              padding:0;
+            }
+          }
+          margin-left:5px;
         }
       }
     }
     .message{
+      @extend %inFrame;
+      background-color:$formBG;
+      padding:3%;
+      border-bottom:0;
       text-align:center;
       padding-bottom:0;
     }
     .additional{
+      @extend %inFrame;
+      background-color:$formBG;
+      padding:3%;
       display:flex;
       flex-direction: column;
       gap:5px;
       justify-content: space-between;
+      border-top:0;
       padding-top:0;
     }
   }

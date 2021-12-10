@@ -20,7 +20,6 @@ if(typeof main != null && typeof playersList != "undefined"){
     const table = document.createElement("table");
     main.append(h1);
     main.append(table);
-
     // PLAYER DETAILS
     const dToShow = [
       "speed",
@@ -82,7 +81,7 @@ if(typeof main != null && typeof playersList != "undefined"){
                   );
                   ctx.drawImage(
                     img, 20, 100, 80, 80,
-                    1, 1, 80, 80
+                    0, 0, 80, 80
                   );
                 }
               }
@@ -134,6 +133,7 @@ if(typeof main != null && typeof playersList != "undefined"){
                 // fill it by items
                 if(player.eq[eqField]){
                   const loadAfterSprites = setInterval(()=>{if(isSet(map.sprites)){clearInterval(loadAfterSprites);
+                    console.log("interval of sprites")
                     // MAKE PLAYER EQ HERE!
                     const item = new Item(player.eq[eqField]);
                     const itemDOM = item.toDOM();
@@ -278,12 +278,14 @@ if(typeof main != null && typeof playersList != "undefined"){
       });
       // Display message when is no players
       if(sorted.length < 1){
+        const tr = document.createElement("tr");
         const td = document.createElement("td");
-        td.innerHTML = "No results yet.";
+        td.innerHTML = "No one.";
         td.colSpan = 3;
-        table.append(td);
+        td.style.padding = "10px";
+        tr.append(td);
+        table.append(tr);
       }
-
       // make players list in order of key
       for(const [i,playerSort] of sorted.entries()){
         const player = playerSort[1];

@@ -1,46 +1,59 @@
 this.list = [
   // TEMPLE
   { name:"staticBox",
-    position:[31,-11,-1],
-    level:0,
+    position:[32,-12,-1],
     inItem:"Simple Boots"
   },
+  { name:"Simple Boots",
+    position:[31,-12,-1]
+  },
   { name:"staticBox",
-    position:[31,-7,-1],
-    level:0,
+    position:[32,-6,-1],
     inItem: "Simple Helmet"
   },
-  // DEPO
+  { name:"Simple Helmet",
+    position:[31,-6,-1]
+  },
+  // DEPO - TRAINS
   { name:"staticBox",
-    position:[46,-1,-1],
+    position:[49,8,-1],
     level:0,
     spriteNr:2,
     inItem: "Simple Shield"
   },
-  //  CASTLE BOXES
+  { name:"Simple Shield",
+    position:[49,9,-1]
+  },
+  // NORTH OF CASTLE [ladder]
   { name:"staticBox",
     position:[50,-40,0],
     spriteNr:2,
     inItem: "ladder"
   },
-    // TOWER 
-    { name:"staticBox",
-      position:[48,-37,4],
-      spriteNr:2,
-      inItem: "Random Item"
-    },
-
+  // TOWER 
+  { name:"staticBox",
+    position:[48,-37,4],
+    spriteNr:2,
+    inItem: "Random Item"
+  },
   // KING's QUEST
   { name:"staticBox",
     position:[56,-20,-1],
     spriteNr:2,
     inItem: "Rod"
   },
+  { name:"Rod",
+    position:[57,-20,-1]
+  },
   { name:"staticBox",
-    position:[55,-25,-2],
+    position:[56,-24,-2],
     spriteNr:2,
     inItem: "Wand of Destiny"
   },
+  { name:"Wand of Destiny",
+    position:[56,-25,-2]
+  },
+  // CASTLEGATE
   { name:"ladder",
     position:[32,-23,0],
   },
@@ -52,7 +65,6 @@ this.list = [
     position:[90,4,1],
     inItem: "Simple Legs"
   },
-
   // DRAGON QUEST
   { name:"staticBox",
     position:[138,-1,0],
@@ -73,30 +85,50 @@ this.list = [
     inItem: "Magic Hat",
     spriteNr:2,
   },
-  
-  
+  // DEPO CHESTS
+  { name:"staticBox",
+    position:[42,-2,1],
+    inItem: "King Legs",
+    level:100
+  },
+  { name:"King Legs",
+    position:[41,-2,1]
+  },
+  { name:"staticBox",
+    position:[42,0,1],
+    inItem: "King Boots",
+    level:150
+  },
+  { name:"King Boots",
+    position:[41,0,1]
+  },
+  { name:"staticBox",
+    position:[42,2,1],
+    inItem: "Blessed Shield",
+    level:200
+  },
+  { name:"Blessed Shield",
+    position:[41,2,1]
+  },
+  { name:"staticBox",
+    position:[42,4,1],
+    inItem: "The Crown",
+    level:250
+  },
+  { name:"The Crown",
+    position:[41,4,1]
+  },
+
 
   { name:"coins",
     position:[32,-13,1],
     spriteNr:11
   },
-  { name:"The Crown",
-    position:[49,-36,1]
-  },
   { name:"King Armor",
     position:[57,-13,1]
   },
-  { name:"King Legs",
-    position:[64,-15,2]
-  },
-  { name:"King Boots",
-    position:[-71,13,2]
-  },
   { name:"Wand of Destiny",
     position:[-72,11,2]
-  },
-  { name:"Blessed Shield",
-    position:[-70,11,2]
   },
   { name:"Magic Hat",
     position:[-71,10,2]

@@ -86,16 +86,10 @@
       isHandlerDragging = false;
     });
   }
-  
-  // const toggleMainMenu = () => {
-  //   // const dom = document.
-  // }
-  // toggleMainMenu();
   // SET DOM'S
   makeResizeable('handler','gameAndConsole','gamePlane', "y");
   makeResizeable('handlerVertical','wrapper','gameAndConsole', "x");
 </script>
-
 <!-- POPUP -->
 <script>
     const popup = {
@@ -179,7 +173,7 @@
 <script>
   if('serviceWorker' in navigator) {
     // serviceWorkerRegistration.update();
-    navigator.serviceWorker.register('serviceWorker.js'
+    navigator.serviceWorker.register('serviceWorker.js?v={{version}}'
     // , {scope: 'serviceWorker'}).then(function(registration) {
     //   registration.update();
     // }
@@ -259,6 +253,5 @@
   }
   if(new URLSearchParams(window.location.search).get("dev") == "on"){
     dev.init();
-    document.cookie = "token=123"
   }
 </script>

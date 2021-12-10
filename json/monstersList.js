@@ -9,8 +9,8 @@ this.data = [
   {"name":"Cat","position":[24,-5,0]},
   {"name":"Cat","position":[40,6,0]},
   // DEPO
-  {"name":"Training Man","position":[42,-1,-1]},
-  {"name":"Training Man","position":[50,-1,-1]},
+  {"name":"Training Man","position":[43,0,-1]},
+  {"name":"Training Man","position":[43,5,-1]},
   // CASTLE
   {"name":"Minotaur","position":[55,-20,-2]},
 

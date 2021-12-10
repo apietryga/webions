@@ -141,7 +141,7 @@ const serv = {
         gamePlane.items.push(new Item(item));
       }
       // update dev info
-      if(game.dev){
+      // if(game.dev){
         // dev.stats = data.game;
         dev.stats.fps = dev.counterFPS+"/"+data.game.fps;
         dev.stats.time = serv.time;
@@ -156,7 +156,7 @@ const serv = {
         dev.stats.redTarget = player.redTarget;
         // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
         dev.update();
-      }
+      // }
       callback();
     }
     this.ws.onclose = () => {             // set connection

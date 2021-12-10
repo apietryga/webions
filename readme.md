@@ -3,27 +3,33 @@
   You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "server.js" by nodejs. I will make instructions for this in future versions.
 
 ## TESTING NOW
-  - rescale scores of inactive players
-  - fixed database update on level promotion
-  - fixed gameplane.js:28 Uncaught TypeError
-  - fixed functions.js:102 Uncaught TypeError on karo player
-  - decrease death penalty ( 10% to 5% )
-  - show readme on main page
   - add lastFrame to players stats [page]
   - refresh [public] css's and js's dynamically (fixed when smth not loading )
-  - [dev] del minimist and node-static dependencies (github dependency alert)
-  - [dev] del makewww and generate public pages dynamically
+  - don't kick players when app is not focus
+  - script's mime types (currently is text/js) [account.js]
+  - auto login players even if serv crash
+  - auto back to game after serv is disconect
+  - restore player targets after relogin
+  - catch all err's [in logs.json]
 
 ## WORKIN' ON
+  - ladder not display on player stats
+  - fix doubled console message on sent
+  - display eq on page [loading failed - why?]
+  - display lastframe hour - minutes break.
+  - make subpages for libary
+  - repair player kick (once - now 6 times...)
+  - in console placeholder write "click enter to type" on pc 
   - replace courier with mailgun - **to make repository public**
+  - get gitting without def (from eq) when kicked (most on train's)
+  - base mana regen
   - mobile item stats
   - IOS clicking compatibility
   - strict register names (no numbers and monsters names)
   - remove this.skills.healing opt, and improve healing with mana
-  - fix doubled console message on sent
   - landscape map control mobile
   - eq view in landscape mobile
-  - walking throught static items
+  - walking throught static items/monsters (not players and empty boxes, hmm?)
   - NPC's speaking
   - NPC's staying on saying
   - backpacks
@@ -32,14 +38,12 @@
   - player above redtarget
   - add shielding
   - add magic lvl
-  - ladder not display on player stats
-  - display eq on page [loading failed - why?]
-  - display lastframe hour - minutes break.
+  - SSL 
 
 ## TO CATCH
-  - (?) bug with doubled characters (creatures.update in gameplane? - when, how?)
+  - Unexpected server crash (when?, why?) [8.12.2021]
+  - bug with doubled characters (creatures.update in gameplane? - when, how?) [8.12.2021]
 
 ## STORAGE
-  By default the data store in simple redis server as JSON stringify, but it automatically changed to storing in JSON files, if redis connection is not set.
-
-  Remember, that if you would host Webions server on heroku - JSON files will be cleared once a day - redis db not. 
+  By default the data store in simple redis server as JSON stringify, but it automatically changed to storing in JSON file ***/json/playersList.json***, if redis connection is not set.
+  Remember, that if you would host game server on heroku - JSON files will be cleared once a day - redis db not. 

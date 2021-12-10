@@ -14,7 +14,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -34,24 +34,25 @@
       "ft": false
     },
     "mana": 100,
-    "maxMana": 150
+    "maxMana": 150,
+    "redTarget": false
   },
   {
     "name": "Tosiek",
-    "position": [38, -4, 0],
+    "position": [43, 6, -1],
     "speed": 2.7,
-    "health": 860,
+    "health": 535,
     "maxHealth": 860,
     "skills": {
       "level": 76,
-      "exp": 424183,
-      "fist": 37,
+      "exp": 424238,
+      "fist": 40,
       "dist": 33,
       "healing": 5011,
-      "fist_summary": 1363,
-      "dist_summary": 1039
+      "fist_summary": 1561,
+      "dist_summary": 1045
     },
-    "lastFrame": 1638915557764,
+    "lastFrame": 1639144929442,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -173,10 +174,12 @@
         "level": 76
       }
     ],
-    "sprite": "male_oriental",
+    "sprite": "male_citizen",
     "quests": ["ladder"],
     "mana": 1260,
-    "maxMana": 860
+    "maxMana": 860,
+    "token": "myrizlkica",
+    "redTarget": 7
   },
   {
     "name": "Zuzia",
@@ -194,7 +197,7 @@
       "dist_summary": null,
       "fist_summary": null
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -255,8 +258,9 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 348,
-    "maxMana": 4910
+    "mana": 960,
+    "maxMana": 4910,
+    "redTarget": false
   },
   {
     "name": "Tosiek2",
@@ -273,7 +277,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
@@ -340,7 +344,8 @@
     "position": [32, -7, -1],
     "quests": [],
     "mana": 100,
-    "maxMana": 170
+    "maxMana": 170,
+    "redTarget": false
   },
   {
     "name": "Marcel",
@@ -357,7 +362,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "male",
@@ -430,7 +435,8 @@
     ],
     "quests": [],
     "mana": 100,
-    "maxMana": 670
+    "maxMana": 670,
+    "redTarget": false
   },
   {
     "name": "Tosiek1",
@@ -448,7 +454,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -468,7 +474,8 @@
       "ft": false
     },
     "mana": 100,
-    "maxMana": 130
+    "maxMana": 130,
+    "redTarget": false
   },
   {
     "name": "Tosiek4",
@@ -486,7 +493,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
     "email": "a@ad.pl",
     "sex": "female",
@@ -509,7 +516,8 @@
       "ft": false
     },
     "mana": 100,
-    "maxMana": 160
+    "maxMana": 160,
+    "redTarget": false
   },
   {
     "name": "Tosiek8",
@@ -527,7 +535,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -547,7 +555,8 @@
       "ft": false
     },
     "mana": 100,
-    "maxMana": 140
+    "maxMana": 140,
+    "redTarget": false
   },
   {
     "name": "Maja",
@@ -565,7 +574,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -585,7 +594,8 @@
       "ft": false
     },
     "mana": 100,
-    "maxMana": 140
+    "maxMana": 140,
+    "redTarget": false
   },
   {
     "id": 29,
@@ -615,7 +625,7 @@
       "dist_summary": 0
     },
     "type": "player",
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "text": "",
     "game": {
       "time": "2021-10-17T11:04:50.826Z",
@@ -656,24 +666,24 @@
   },
   {
     "name": "GM",
-    "position": [37, -8, 0],
+    "position": [57, -31, -1],
     "speed": 2.2,
-    "health": 360,
-    "maxHealth": 360,
+    "health": 1350,
+    "maxHealth": 350,
     "sprite": "gm",
     "skills": {
-      "level": 26,
-      "exp": 17440,
+      "level": 25,
+      "exp": 14661,
       "fist": 312,
-      "dist": 114,
+      "dist": 115,
       "healing": 119,
-      "fist_summary": 97043,
-      "dist_summary": 12936
+      "fist_summary": 97157,
+      "dist_summary": 13049
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -682,16 +692,12 @@
     },
     "eq": {
       "hd": {
-        "type": "item",
-        "name": "Magic Hat",
-        "position": [-71, 10, 2],
+        "name": "The Crown",
         "sprite": "items",
-        "spriteNr": 13,
+        "spriteNr": 6,
         "handle": ["hd"],
         "pickable": true,
-        "mana": 400,
-        "manaRegen": 50,
-        "actionType": "pickUp"
+        "health": 1000
       },
       "bp": {
         "name": "Random Item",
@@ -722,7 +728,7 @@
       "lh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [-72, 11, 2],
+        "position": [55, -28, -1],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -730,7 +736,9 @@
         "manaRegen": 100,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "actionType": "pickUp"
+        "actionType": "pickUp",
+        "visibleFloor": -1,
+        "field": "lh"
       },
       "rh": {
         "type": "item",
@@ -769,34 +777,34 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-11-17T23:34:30.611Z",
+        "when": "2021-12-09T16:51:15.883Z",
         "who": "Minotaur",
         "whoType": "monster",
-        "level": 19
+        "level": 25
       },
       {
-        "when": "2021-11-17T23:36:40.243Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 19
-      },
-      {
-        "when": "2021-11-18T17:06:02.210Z",
-        "who": "Orange Wizard",
-        "whoType": "monster",
-        "level": 18
-      },
-      {
-        "when": "2021-11-18T17:23:00.999Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 19
-      },
-      {
-        "when": "2021-11-28T21:59:11.972Z",
+        "when": "2021-12-09T21:55:46.829Z",
         "who": "Orange Wizard",
         "whoType": "monster",
         "level": 26
+      },
+      {
+        "when": "2021-12-09T21:57:06.098Z",
+        "who": "Orange Wizard",
+        "whoType": "monster",
+        "level": 26
+      },
+      {
+        "when": "2021-12-10T00:00:03.353Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 25
+      },
+      {
+        "when": "2021-12-10T00:02:04.318Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 25
       }
     ],
     "quests": [
@@ -840,10 +848,12 @@
       "Random Item",
       "Random Item",
       "Random Item",
-      "Random Item"
+      "Random Item",
+      "The Crown"
     ],
-    "mana": 960,
-    "maxMana": 360
+    "mana": 550,
+    "maxMana": 350,
+    "redTarget": false
   },
   {
     "name": "Niko",
@@ -954,7 +964,7 @@
         "actionType": "pickUp"
       }
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "lastDeaths": [
       {
         "when": "2021-11-14T11:11:20.518Z",
@@ -966,7 +976,8 @@
     "sprite": "male_oriental",
     "quests": [],
     "mana": 100,
-    "maxMana": 160
+    "maxMana": 160,
+    "redTarget": false
   },
   {
     "name": "test",
@@ -1077,7 +1088,7 @@
         "field": "ft"
       }
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "lastDeaths": [
       {
         "when": "2021-11-16T01:12:52.298Z",
@@ -1106,8 +1117,9 @@
     ],
     "sprite": "male_oriental",
     "quests": [],
-    "mana": 224,
-    "maxMana": 250
+    "mana": 250,
+    "maxMana": 250,
+    "redTarget": false
   },
   {
     "name": "test2",
@@ -1178,7 +1190,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "lastDeaths": [
       {
         "when": "2021-11-17T15:19:20.685Z",
@@ -1190,7 +1202,8 @@
     "sprite": "male_oriental",
     "quests": [],
     "mana": 140,
-    "maxMana": 140
+    "maxMana": 140,
+    "redTarget": false
   },
   {
     "name": "asd",
@@ -1255,11 +1268,12 @@
         "speed": 2
       }
     },
-    "lastFrame": 1638915523274,
+    "lastFrame": 1639144929442,
     "sprite": "male_oriental",
     "quests": [],
     "mana": 150,
     "maxMana": 150,
-    "lastDeaths": []
+    "lastDeaths": [],
+    "redTarget": false
   }
 ]

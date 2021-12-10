@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1 {
@@ -34,19 +35,25 @@ h5 {
   }
 }
 
-body, body .wrapper main table .detailsBody .eq .allFields div, body .wrapper main table .detailsHead .eq .allFields div, body .wrapper main .cont .items, body .wrapper main .cont .monsters, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row, body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview, body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
+body > header .logo:active, body > header .play a:active, body nav a:active, body aside a:active, body footer a:active, body .wrapper main > table .listBody:active, body, body .wrapper main > table .detailsBody .eq .allFields div, body .wrapper main > table .detailsHead .eq .allFields div, body .wrapper main > table .detailsBody > td, body .wrapper main > table .detailsHead > td, body .wrapper main .cont .items, body .wrapper main .cont .monsters, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row, body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview, body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+body > header, body > header .play, body nav, body aside, body footer, body .wrapper main, body .wrapper main .content, body .wrapper main > table, body .wrapper main > table th, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
+  border: 2px solid;
+  border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
-body > header, body > header .logo, body > header .play, body > header .play a, body nav, body aside, body footer, body nav a, body aside a, body footer a, body .wrapper main, body .wrapper main .content, body .wrapper main table, body .wrapper main table th, body .wrapper main table td, body .wrapper main table .detailsBody .quests, body .wrapper main table .detailsHead .quests, body .wrapper main table .detailsBody .quests div, body .wrapper main table .detailsHead .quests div, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
+body > header .logo, body > header .play a, body nav a, body aside a, body footer a, body .wrapper main > table .listBody {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
-  background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
@@ -108,6 +115,7 @@ body > header a {
 
 body > header a img {
   height: 4em;
+  width: 4em;
   margin-right: 1em;
 }
 
@@ -126,7 +134,6 @@ body nav a, body aside a, body footer a {
 
 body nav a:hover, body aside a:hover, body footer a:hover {
   background-color: #444343;
-  transition: 1s;
 }
 
 body .wrapper {
@@ -157,94 +164,95 @@ body .wrapper main .content h1 {
   padding: 0;
 }
 
-body .wrapper main table {
+body .wrapper main > table {
+  border-spacing: 0;
   width: 100%;
 }
 
-body .wrapper main table th {
+body .wrapper main > table th {
   background-color: rgba(0, 0, 0, 0.493);
 }
 
-body .wrapper main table td {
-  background-color: transparent;
-}
-
-body .wrapper main table .listBody, body .wrapper main table .listHead {
-  color: #fff;
-  border: none;
-}
-
-body .wrapper main table .listBody td:nth-child(3), body .wrapper main table .listHead td:nth-child(3) {
-  text-align: center;
-}
-
-body .wrapper main table .listBody td:nth-child(2), body .wrapper main table .listBody th:nth-child(2), body .wrapper main table .listHead td:nth-child(2), body .wrapper main table .listHead th:nth-child(2) {
+body .wrapper main > table .listBody, body .wrapper main > table .listHead {
+  display: flex;
   width: 100%;
 }
 
-body .wrapper main table .listBody td, body .wrapper main table .listHead td {
-  padding: 10px;
-}
-
-body .wrapper main table .listBody th, body .wrapper main table .listHead th {
+body .wrapper main > table .listBody td, body .wrapper main > table .listBody th, body .wrapper main > table .listHead td, body .wrapper main > table .listHead th {
   padding: 5px 20px;
-  background-color: #292929;
 }
 
-body .wrapper main table .listBody:nth-child(even), body .wrapper main table .listHead:nth-child(even) {
-  background-color: #9a010157;
+body .wrapper main > table .listBody td:nth-child(2), body .wrapper main > table .listBody th:nth-child(2), body .wrapper main > table .listHead td:nth-child(2), body .wrapper main > table .listHead th:nth-child(2) {
+  width: 60%;
 }
 
-body .wrapper main table .listBody:nth-child(odd), body .wrapper main table .listHead:nth-child(odd) {
-  background-color: #b7990052;
+body .wrapper main > table .listBody td:nth-child(3), body .wrapper main > table .listBody td:nth-child(1), body .wrapper main > table .listBody th:nth-child(3), body .wrapper main > table .listBody th:nth-child(1), body .wrapper main > table .listHead td:nth-child(3), body .wrapper main > table .listHead td:nth-child(1), body .wrapper main > table .listHead th:nth-child(3), body .wrapper main > table .listHead th:nth-child(1) {
+  text-align: center;
+  width: 20%;
 }
 
-body .wrapper main table .detailsBody .eq, body .wrapper main table .detailsHead .eq {
+body .wrapper main > table .listBody td:nth-child(2), body .wrapper main > table .listHead td:nth-child(2) {
+  border-left: 2px solid #737373;
+  border-right: 2px solid #737373;
+}
+
+body .wrapper main > table .listBody:nth-child(even), body .wrapper main > table .listHead:nth-child(even) {
+  background-color: #9a01013f !important;
+}
+
+body .wrapper main > table .listBody:nth-child(odd), body .wrapper main > table .listHead:nth-child(odd) {
+  background-color: #b7990038 !important;
+}
+
+body .wrapper main > table .listBody th, body .wrapper main > table .listHead th {
+  background-color: #2f2f2f !important;
+}
+
+body .wrapper main > table .detailsBody .eq, body .wrapper main > table .detailsHead .eq {
   padding: 2%;
 }
 
-body .wrapper main table .detailsBody .eq .allFields, body .wrapper main table .detailsHead .eq .allFields {
+body .wrapper main > table .detailsBody .eq .allFields, body .wrapper main > table .detailsHead .eq .allFields {
   margin: 0 auto;
   display: grid;
   width: 150px;
   grid-template-areas: "nc hd bp" "lh ch rh" ". lg ." ". ft .";
 }
 
-body .wrapper main table .detailsBody .eq .allFields div, body .wrapper main table .detailsHead .eq .allFields div {
+body .wrapper main > table .detailsBody .eq .allFields div, body .wrapper main > table .detailsHead .eq .allFields div {
   width: 50px;
   height: 50px;
   display: grid;
   place-items: center;
 }
 
-body .wrapper main table .detailsBody .eq .allFields div canvas, body .wrapper main table .detailsHead .eq .allFields div canvas {
+body .wrapper main > table .detailsBody .eq .allFields div canvas, body .wrapper main > table .detailsHead .eq .allFields div canvas {
   min-width: 50%;
   min-height: 50%;
   max-width: 100%;
   max-height: 100%;
 }
 
-body .wrapper main table .detailsBody .quests, body .wrapper main table .detailsHead .quests {
+body .wrapper main > table .detailsBody .quests, body .wrapper main > table .detailsHead .quests {
   padding: 2%;
 }
 
-body .wrapper main table .detailsBody .quests div, body .wrapper main table .detailsHead .quests div {
-  background-color: #1a361c;
+body .wrapper main > table .detailsBody .quests div, body .wrapper main > table .detailsHead .quests div {
   text-align: left;
   padding: 2%;
 }
 
-body .wrapper main table .detailsBody > td, body .wrapper main table .detailsHead > td {
+body .wrapper main > table .detailsBody > td, body .wrapper main > table .detailsHead > td {
   cursor: default;
   text-align: center;
 }
 
-body .wrapper main table .detailsBody > td .spriteWrapper, body .wrapper main table .detailsHead > td .spriteWrapper {
+body .wrapper main > table .detailsBody > td .spriteWrapper, body .wrapper main > table .detailsHead > td .spriteWrapper {
   display: flex;
   justify-content: center;
 }
 
-body .wrapper main table .detailsBody > td .spriteWrapper .sprite, body .wrapper main table .detailsHead > td .spriteWrapper .sprite {
+body .wrapper main > table .detailsBody > td .spriteWrapper .sprite, body .wrapper main > table .detailsHead > td .spriteWrapper .sprite {
   width: 50px;
   height: 50px;
   background-repeat: no-repeat;
@@ -252,7 +260,7 @@ body .wrapper main table .detailsBody > td .spriteWrapper .sprite, body .wrapper
   animation: walk 0.4s step-start infinite;
 }
 
-body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table .detailsBody > td .manaBar, body .wrapper main table .detailsHead > td .healthBar, body .wrapper main table .detailsHead > td .manaBar {
+body .wrapper main > table .detailsBody > td .healthBar, body .wrapper main > table .detailsBody > td .manaBar, body .wrapper main > table .detailsHead > td .healthBar, body .wrapper main > table .detailsHead > td .manaBar {
   border: 2px solid #000;
   margin: 2%;
   border-radius: 7px;
@@ -260,53 +268,58 @@ body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table 
   height: 25px;
 }
 
-body .wrapper main table .detailsBody > td .healthBar div, body .wrapper main table .detailsBody > td .manaBar div, body .wrapper main table .detailsHead > td .healthBar div, body .wrapper main table .detailsHead > td .manaBar div {
+body .wrapper main > table .detailsBody > td .healthBar div, body .wrapper main > table .detailsBody > td .manaBar div, body .wrapper main > table .detailsHead > td .healthBar div, body .wrapper main > table .detailsHead > td .manaBar div {
   height: 100%;
   border-radius: 5px;
   position: absolute;
   font-size: 15px;
 }
 
-body .wrapper main table .detailsBody > td .healthBar div:nth-child(2), body .wrapper main table .detailsBody > td .manaBar div:nth-child(2), body .wrapper main table .detailsHead > td .healthBar div:nth-child(2), body .wrapper main table .detailsHead > td .manaBar div:nth-child(2) {
+body .wrapper main > table .detailsBody > td .healthBar div:nth-child(2), body .wrapper main > table .detailsBody > td .manaBar div:nth-child(2), body .wrapper main > table .detailsHead > td .healthBar div:nth-child(2), body .wrapper main > table .detailsHead > td .manaBar div:nth-child(2) {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-body .wrapper main table .detailsBody > td .healthBar, body .wrapper main table .detailsHead > td .healthBar {
+body .wrapper main > table .detailsBody > td .healthBar, body .wrapper main > table .detailsHead > td .healthBar {
   background-color: #206113;
 }
 
-body .wrapper main table .detailsBody > td .manaBar, body .wrapper main table .detailsHead > td .manaBar {
+body .wrapper main > table .detailsBody > td .manaBar, body .wrapper main > table .detailsHead > td .manaBar {
   background-color: #0c3181;
 }
 
-body .wrapper main table .detailsBody > td:nth-child(1), body .wrapper main table .detailsHead > td:nth-child(1) {
+body .wrapper main > table .detailsBody > td:nth-child(1), body .wrapper main > table .detailsHead > td:nth-child(1) {
   width: 30%;
-  background-color: rgba(0, 128, 0, 0.192);
+  background-color: #9a01013f;
+  border-right: 0;
 }
 
-body .wrapper main table .detailsBody > td:nth-child(2), body .wrapper main table .detailsHead > td:nth-child(2) {
+body .wrapper main > table .detailsBody > td:nth-child(2), body .wrapper main > table .detailsHead > td:nth-child(2) {
   width: 70%;
-  background-color: rgba(0, 0, 255, 0.11);
+  background-color: #b7990038;
+  border-left: 0;
 }
 
-body .wrapper main table .detailsBody > td table, body .wrapper main table .detailsHead > td table {
+body .wrapper main > table .detailsBody > td table, body .wrapper main > table .detailsHead > td table {
+  background-color: #2f2f2f;
   width: 100%;
   cursor: default;
 }
 
-body .wrapper main table .detailsBody > td table td, body .wrapper main table .detailsHead > td table td {
+body .wrapper main > table .detailsBody > td table td, body .wrapper main > table .detailsHead > td table td {
   padding: 5px;
 }
 
-body .wrapper main table .detailsBody > td table td:nth-child(1), body .wrapper main table .detailsHead > td table td:nth-child(1) {
+body .wrapper main > table .detailsBody > td table td:nth-child(1), body .wrapper main > table .detailsHead > td table td:nth-child(1) {
   text-align: right;
+  background-color: #9a01013f;
+  padding-right: 10px;
 }
 
-body .wrapper main table .detailsBody > td table td:nth-child(2), body .wrapper main table .detailsHead > td table td:nth-child(2) {
-  background-color: rgba(0, 0, 255, 0.267);
+body .wrapper main > table .detailsBody > td table td:nth-child(2), body .wrapper main > table .detailsHead > td table td:nth-child(2) {
+  background-color: #b7990038;
 }
 
 body .wrapper main h1 {

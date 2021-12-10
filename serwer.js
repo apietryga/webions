@@ -13,6 +13,7 @@ const inGameMonsters = require("./json/monstersList").data;
 const game = require("./public/js/gameDetails");
 const public = require("./js/public");
 const itemsList = require("./json/itemsList").list;
+let servRequest = false;
 // filter data on websocket send
 const disallowKeys = [
   "startPosition",
@@ -158,6 +159,13 @@ const cm = { // creatures managment
         let newID = 1; while(ids.includes(newID)){newID++;}
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1,"player");
+        // save player login token
+        if(servRequest){
+          for(const cookie of servRequest.headers.cookie.split("; ")){
+            const [key,value] = cookie.split("=");
+            if(key == "token"){newPlayer.token = value;}
+          } 
+        }
         dbc[game.db].load(newPlayer,(res)=>{
           if(res){
             // merge it with newPlayer
@@ -177,7 +185,7 @@ const cm = { // creatures managment
         }); 
       }
       // kick off offline.
-      const kickTime = isPlayer.focus?1000:10000;
+      const kickTime = isPlayer.focus?1000:20000;
       setTimeout(() => {
         if(typeof isPlayer == "object" 
           && new Date().getTime() - isPlayer.lastFrame > kickTime
@@ -218,10 +226,14 @@ const im = { // items management
 let param;cm.init();im.init();
 dbc.init(()=>{
   cm.players.init(dbc[game.db]);
-  const server = http.createServer((req,res)=>{public(req,res,cm.players.list)}).listen(process.env.PORT || 80);
+  const server = http.createServer((req,res)=>{
+    servRequest = req;
+    public(req,res,cm.players.list)
+  }).listen(process.env.PORT || 80);
   const date = new Date();
   game.startServerTime = date.getTime();
   console.log("SERWER IS RUNNING");
+  console.log("MAILGUN API KEY: " + process.env.MAILGUN_API_KEY);
   // WEBSOCKET
   new WebSocketServer({httpServer : server})
   .on('request', (req)=>{
@@ -274,9 +286,30 @@ function shutdown(signal) {
       player.console = "Server will restart in few seconds.";
       dbc[game.db].update(player);
     }
-    setTimeout(() => {
-      console.log('PLAYERS SAVED, SAFE.');
-    }, 5000).unref();
+    console.log('PLAYERS SAVED AFTER '+signal);
+    // setTimeout(() => {
+    // }, 5000).unref();
   };
 }
 // END OF TESTING DETECTION
+
+
+// SAVING LOGS FROM CONSOLE
+const log = console.log;
+const err = console.error;
+const extendConsole = (val) => {
+  const date = new Date();
+  const time = date.getHours()+":"+date.getMinutes(); 
+  args = [time,val];
+  const content = JSON.parse(fs.readFileSync('./public/logs.json','utf-8'));
+  content.push({time : val});
+  fs.writeFileSync('./public/logs.json',stringify(content));
+}
+console.log = (val) => {     
+  extendConsole(val);
+  log.apply(console, args);
+}
+console.error = (val) => {     
+  extendConsole(val);
+  err.apply(console, args);
+}

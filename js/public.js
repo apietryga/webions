@@ -38,8 +38,10 @@ const bcrypt = require('bcrypt');
 password = {
   cryptPassword : (password, callback) => {
     bcrypt.genSalt(10, function(err, salt) {
-     if (err) 
+     if (err){
+      console.error(err);
        return callback(err);
+     } 
   
      bcrypt.hash(password, salt, function(err, hash) {
        return callback(err, hash);
@@ -91,8 +93,9 @@ function public(req, res, playersList) {
   const fromTemplate = ["",'index','players','libary','rules','404','4devs'];
   let fileName = myURL.pathname.split("/")[1].split(".")[0] == ""?'index':myURL.pathname.split("/")[1].split(".")[0];
   let fileExtension = myURL.pathname.split(".")[myURL.pathname.split(".").length-1] == "/"?'html': myURL.pathname.split(".")[myURL.pathname.split(".").length-1];
+  fileExtension == 'js' ? fileExtension = 'javascript':'';
   const allowedFileTypes = ["webp","png","gif","jpg","jpeg","ico"];
-  const fileType = allowedFileTypes.includes(fileExtension)?'image':'text';
+  const fileType = allowedFileTypes.includes(fileExtension)?'image':fileExtension == 'json'?'application':'text';
   let contentType = fileType+'/'+fileExtension;
   const serveChangedContent = (path = myURL.pathname) =>{
     if(!path.split("/").includes("public")){
@@ -100,7 +103,7 @@ function public(req, res, playersList) {
     }
     if(!fs.existsSync(path) 
     && !fromTemplate.includes(fileName) 
-    || !allowedFileTypes.concat(['html','css','js','json']).includes(fileExtension)){
+    || !allowedFileTypes.concat(['html','css','javascript','json']).includes(fileExtension)){
       fileExtension = "html";
       fileName = "404";
       contentType = "text/html";
@@ -154,6 +157,7 @@ function public(req, res, playersList) {
               if(func.isSet(dbres.password)){
               // if player is complete registered.
                 password.comparePassword(data.password,dbres.password,(e,h)=>{
+                  if(e != null){console.error(e);}
                   if(h){
                     // path = "./public/game.html"
                     vals.action = "game";
@@ -180,10 +184,6 @@ function public(req, res, playersList) {
           })
         }else{
           if(myURL.search == "?action=logout"){
-            // res.cookie("token", "");
-            // res.setHeader('set-cookie', 'mycookie=; max-age=0');
-                        // cookies.set('testtoken', {expires: Date.now()});
-            // res.clearCookie("token");
             vals.js = "<script>delete_cookie('token')</script>";
             vals.action = "logout";
             vals.message = "<b style='color:green;'>You're succesfully logout.</b>";
@@ -202,6 +202,7 @@ function public(req, res, playersList) {
             }else{
               // CRYPT PASSWORD
               password.cryptPassword(data.password,(e,h)=>{
+                if(e != null){console.error(e);}
                 dbres.password = h;
                 dbres.email = data.email.replace("%40","@");
                 dbres.sex = data.sex;
@@ -217,6 +218,7 @@ function public(req, res, playersList) {
           // making new player
             const newPlayer = new Creature(data.nick);
             password.cryptPassword(data.password,(e,h)=>{
+              if(e != null){console.error(e);}
               newPlayer.password = h;
               newPlayer.email = data.email.replace("%40","@");
               newPlayer.sex = data.sex;
@@ -272,6 +274,7 @@ function public(req, res, playersList) {
             dbc[game.db].load({name:pName},(dbres)=>{
               // CRYPT PASSWORD
               password.cryptPassword(data.newpass,(e,h)=>{
+                if(e != null){console.error(e);}
                 dbres.password = h;
                 dbc[game.db].update(dbres)
                 vals.action = "login";
@@ -291,19 +294,41 @@ function public(req, res, playersList) {
   }else if(["/game.html"].includes(myURL.pathname)){     // game page
     if(func.isSet(req.headers.cookie)){
       let player = false;
+      // wait for connect to db and find player's token.
+      let isWaiting = false;
       // check login on cookies
       for(const cookie of req.headers.cookie.split("; ")){
-        // const all
         const [key,value] = cookie.split("=");
         if(key == "token"){
-          for(const logged of log.ged){
-            if(value == logged.token){
-              player = logged.nick;
+          isWaiting = true;
+          dbc[game.db].loadAll((allPlayers)=>{
+            // check not logged players [after server crash]
+            for(const singlePlayer of allPlayers){
+              if(typeof singlePlayer.token != "undefined"){
+                player = singlePlayer.name;
+                log.ged.push({nick:singlePlayer.name,token:singlePlayer.token})
+              }
             }
-          }          
-          if(game.dev && !player){
-            player = "GM"
-          }
+
+            // check logged players
+            for(const logged of log.ged){
+              if(value == logged.token){
+                player = logged.nick;
+              }
+            }   
+            // set default GM when is game dev  
+            if(game.dev && !player){
+              player = "GM"
+            }
+            if(player){
+              path = "./public/game.html";
+              vals.nick = player;
+            }else{
+              path = "./public/account.html";
+              vals.message = "Please log in:";
+            }
+            serveChangedContent(path);
+          });
         } 
       }
       if(player){
@@ -313,13 +338,14 @@ function public(req, res, playersList) {
         path = "./public/account.html";
         vals.message = "Please log in:";
       }
+      if(!isWaiting){
+        serveChangedContent(path);
+      }
     }else{
       path = "./public/account.html";
       vals.message = "Please log in:";
-
-    }
-    serveChangedContent(path);
-  
+      serveChangedContent(path);
+    }  
   }else if(["/players.html"].includes(myURL.pathname)){
     vals.aside = `
       <a href="/players.html?skills=level">Level</a>

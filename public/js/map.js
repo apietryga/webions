@@ -145,6 +145,7 @@ class Map{
     }
   }
   loadSprites(callback) {
+    console.log("loading sprites")
     let loadQuene = [];
     for(const s of sprites){
       loadQuene.push(s.name);

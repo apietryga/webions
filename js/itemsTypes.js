@@ -143,7 +143,7 @@ this.types = [
     spriteNr : 3,
     walkThrow : false,
     walkOn : (creature,item) => {
-      if(typeof item.level != "undefined" && item.level > creature.skills.level){
+      if(typeof item.level != "undefined" && item.level > creature.skills.level && creature.name != "GM"){
         creature.text = "You need "+item.level+" level to open this box";
       }else if(typeof creature.eq !=  "undefined"&& creature.type == "player" && !creature.quests.includes(item.name)){
         item.makeNew({name:item.inItem},"eq",creature);
