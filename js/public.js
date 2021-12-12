@@ -302,9 +302,9 @@ function public(req, res, playersList) {
         if(key == "token"){
           isWaiting = true;
           dbc[game.db].loadAll((allPlayers)=>{
-            // check not logged players [after server crash]
+            // check not logged players [after server crash] 
             for(const singlePlayer of allPlayers){
-              if(typeof singlePlayer.token != "undefined"){
+              if(typeof singlePlayer.token != "undefined"  && singlePlayer.token == value  ){
                 player = singlePlayer.name;
                 log.ged.push({nick:singlePlayer.name,token:singlePlayer.token})
               }
