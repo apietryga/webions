@@ -560,6 +560,7 @@ class Creature {
           if(func.isSet(i.walkOn)){
             itemText = true;
             i.walkOn(this,i);
+            // i.walkOn(this,i);
           }
         }
       }

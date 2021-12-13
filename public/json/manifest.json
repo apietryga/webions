@@ -2,15 +2,15 @@
   "name": "Webions",
   "start_url": "/",
   "short_name": "Webions",
-  "background_color": "grey",
+  "background_color": "black",
   "description": "Webions game",
   "author": "Antek Pietryga",
   "display": "standalone",
   "icons": [
     {
-      "src": "/img/logos/logo_512.png",
+      "src": "/apple-touch-icon.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "150x150"
     }
   ],
   "content_scripts": [

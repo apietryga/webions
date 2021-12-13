@@ -36,6 +36,7 @@ if(typeof main != null && typeof playersList != "undefined"){
       "dist_summary",
       "fist_summary"
     ];
+    // display single player
     if(Object.keys(params).includes("player")){
       const backer = document.createElement("a");
       backer.onclick = () => {window.history.back()};
@@ -132,13 +133,11 @@ if(typeof main != null && typeof playersList != "undefined"){
                 allFields.append(fieldDOM);
                 // fill it by items
                 if(player.eq[eqField]){
-                  const loadAfterSprites = setInterval(()=>{if(isSet(map.sprites)){clearInterval(loadAfterSprites);
-                    console.log("interval of sprites")
-                    // MAKE PLAYER EQ HERE!
+                  map.loadSprites((val)=>{
                     const item = new Item(player.eq[eqField]);
                     const itemDOM = item.toDOM();
                     fieldDOM.append(itemDOM);
-                  }},100);   
+                  })
                 }
               }
               td2.append(allFields);

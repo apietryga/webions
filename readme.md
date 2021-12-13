@@ -11,11 +11,11 @@
   - auto back to game after serv is disconect
   - restore player targets after relogin
   - catch all err's [in logs.json]
+  - items eq not display on player stats
+  - display eq on page [loading failed - why?]
 
 ## WORKIN' ON
-  - ladder not display on player stats
   - fix doubled console message on sent
-  - display eq on page [loading failed - why?]
   - display lastframe hour - minutes break.
   - make subpages for libary
   - repair player kick (once - now 6 times...)

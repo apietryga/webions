@@ -507,7 +507,7 @@ body .popupParent .popup .closeBar div {
 }
 
 .loginPage main {
-  background-image: url("../img/logos/logo.webp");
+  background-image: url("../logo.webp");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center 50%;

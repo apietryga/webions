@@ -14,7 +14,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -39,20 +39,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [43, 6, -1],
+    "position": [45, -2, 1],
     "speed": 2.7,
-    "health": 535,
+    "health": 860,
     "maxHealth": 860,
     "skills": {
       "level": 76,
-      "exp": 424238,
+      "exp": 424263,
       "fist": 40,
       "dist": 33,
       "healing": 5011,
-      "fist_summary": 1561,
-      "dist_summary": 1045
+      "fist_summary": 1573,
+      "dist_summary": 1053
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639398036319,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -179,7 +179,7 @@
     "mana": 1260,
     "maxMana": 860,
     "token": "myrizlkica",
-    "redTarget": 7
+    "redTarget": false
   },
   {
     "name": "Zuzia",
@@ -197,7 +197,7 @@
       "dist_summary": null,
       "fist_summary": null
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -258,7 +258,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 960,
+    "mana": 972,
     "maxMana": 4910,
     "redTarget": false
   },
@@ -277,7 +277,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
@@ -362,7 +362,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "male",
@@ -454,7 +454,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -493,7 +493,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
     "email": "a@ad.pl",
     "sex": "female",
@@ -535,7 +535,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -574,7 +574,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -625,7 +625,7 @@
       "dist_summary": 0
     },
     "type": "player",
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "text": "",
     "game": {
       "time": "2021-10-17T11:04:50.826Z",
@@ -666,7 +666,7 @@
   },
   {
     "name": "GM",
-    "position": [57, -31, -1],
+    "position": [48, -2, 1],
     "speed": 2.2,
     "health": 1350,
     "maxHealth": 350,
@@ -677,13 +677,13 @@
       "fist": 312,
       "dist": 115,
       "healing": 119,
-      "fist_summary": 97157,
-      "dist_summary": 13049
+      "fist_summary": 97159,
+      "dist_summary": 13054
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639397286362,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -853,7 +853,8 @@
     ],
     "mana": 550,
     "maxMana": 350,
-    "redTarget": false
+    "redTarget": false,
+    "token": "dnfvwxnuwef"
   },
   {
     "name": "Niko",
@@ -964,7 +965,7 @@
         "actionType": "pickUp"
       }
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "lastDeaths": [
       {
         "when": "2021-11-14T11:11:20.518Z",
@@ -1088,7 +1089,7 @@
         "field": "ft"
       }
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "lastDeaths": [
       {
         "when": "2021-11-16T01:12:52.298Z",
@@ -1190,7 +1191,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "lastDeaths": [
       {
         "when": "2021-11-17T15:19:20.685Z",
@@ -1268,7 +1269,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639144929442,
+    "lastFrame": 1639394861474,
     "sprite": "male_oriental",
     "quests": [],
     "mana": 150,

@@ -5,6 +5,6 @@ const game = {
   fps: 16,
   db:"redis",
   lastUpdate: 1633895983384,
-  dev: false
+  dev: true
 }
 if(typeof window == "undefined"){module.exports = game;}
