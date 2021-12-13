@@ -7,15 +7,16 @@
   - in console placeholder write "click enter to type" on pc 
   - eq view in landscape mobile
   - mobile item stats
-
+  - upperwalls
+  
 ## WORKIN' ON
+  - make subpages for libary
   - landscape map control mobile [planeclicking]
   - display lastframe hour - minutes break.
-  - make subpages for libary
   - fix doubled console message on sent
   - repair player kick (once - now 6 times...)
   - replace courier with mailgun - **to make repository public**
-  - get gitting without def (from eq) when kicked (most on train's)
+  - fix get hitting without def (from eq) when kicked (most on train's)
   - base mana regen
   - strict register names (no numbers and monsters names)
   - remove this.skills.healing opt, and improve healing with mana
