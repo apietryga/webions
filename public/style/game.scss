@@ -1,0 +1,564 @@
+@import "both.scss";
+*{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-drag: none;
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+  touch-action: none;                              
+  box-sizing: border-box;
+}
+// scrollbars
+body{
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @extend %inFrame;
+  }
+  ::-webkit-scrollbar-thumb {
+    @extend %onFrame;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }  
+}
+body{
+  color:#fff;
+  font-size:20px;
+  background-color:rgba(0, 0, 0, 0.9);
+  noscript{
+    position:fixed;
+    width:100%;
+    height:100%;
+    left:0;
+    top:0;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    z-index:100;
+  }
+  .loader{
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:rgb(24, 24, 24);
+    z-index:2;
+    h1{margin-bottom:0;}
+    img{
+      max-width: 50%;
+      max-height: 50%;
+    }
+    .loadProgress{
+      border:1px solid #fff;
+      border-radius:3px;
+      width:70%;
+      height:14px;
+      .progressBar{
+        background-color:rgb(145, 32, 32);
+        width:0;
+        height:100%;
+      }
+    }
+    .loadDetails{
+      width:70%;
+      font-size:0.75em;
+    }
+  }
+  button{
+    background-color:#404040;
+    color:#AEAEAC;
+    border:2px solid;
+    border-color:#757575 #323232 #323232 #757575;
+    cursor:pointer; 
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .wrapper{
+    background-color:#2f2f2f;
+    position:fixed;
+    left:0;
+    top:0;
+    display:flex;
+    align-items:space-between;
+    justify-content: space-between;
+    padding:2px;
+    height:100%;
+    width:100%;
+    .handlerVertical{
+      background-color: #2f2f2f;
+      min-width:10px;
+      cursor: ew-resize;
+    }
+    .gameAndConsole{
+      .handler  {
+        background-color: #2f2f2f;
+        min-height: 10px;
+        padding: 0;
+        cursor: ns-resize;
+        flex: 0 0 auto;
+      }
+      .gamePlane{
+        flex: 1 1 auto;
+        display:flex;
+        justify-content: center;
+        align-items:center;
+        border: 2px solid;
+        border-color: #444444 #737373 #737373 #444444;
+        padding:2px;
+        background-color: rgb(47, 47, 47);
+        color:#AEAEAC;
+        position:relative;
+        .gamePlaneCanvas{
+          max-width:90%;
+          max-height:90%;
+        }
+        .menusButtons{
+          @extend %onFrameButt;
+          cursor:pointer;
+          position:absolute;
+          &.mainMenu{
+            right:0;
+          }
+          &.outfit{
+            left:0;
+          }
+        }
+        .outFitContainer{
+          padding:10px;
+          @extend %onFrame;
+          background-color:#5A5A5A;
+          position:absolute;
+          z-index:2;
+          .innerContainer{
+            display:flex;  
+            align-items: stretch;
+            >*{
+              display:flex;
+            }
+            .colorPicker{
+              flex:5;
+              display:flex;
+            }
+            .layerPicker{
+              
+              flex:1;
+              display:flex;
+              flex-direction:column;
+              justify-content:space-between;
+              // padding:0 3px 0 10px;
+            }
+          }
+          button{
+            @extend %onFrameButt;
+          }
+        }
+      }
+      .console{
+        @extend %inFrame;
+        flex: 1 1 auto;
+        display:flex;
+        flex-direction: column;
+        position:relative;
+        .messages{
+          user-select:text;
+          *{user-select:text;}
+          position:absolute;
+          width:100%;
+          top:0;
+          left:0;
+          height:calc(100% - 28px);
+          display:flex;
+          flex-direction: column;
+          justify-content: flex-start;
+
+          overflow-y: scroll;
+          @extend %inFrame;
+          font-family: Arial, Helvetica, sans-serif;
+          font-size:0.6em;
+          line-height: 120%;
+          font-weight: bold;
+          color:#bbc412;
+          background-color: #474747;
+        }
+        .messagesInput{
+          position:absolute;
+          bottom:4px;
+          left:0;
+          width:100%;
+          outline:0;
+          @extend %inFrame;
+          // flex:1;
+          height:20px;
+          background-color:#363636;
+          &:active{
+            outline:0;
+          }
+        }
+      }
+      min-width:50%;
+      flex:5;
+      display:flex;
+      flex-direction: column;
+    }
+    // BUTTONS PG MP LO
+    .menuItem0{
+      @extend %inFrame;
+      position:fixed;
+      top:0;
+      right:0;
+      z-index:3;
+      display:flex;
+      height:2em;
+      min-width: 30%;
+      button{
+        flex:1;
+        @extend %onFrameButt;
+      }
+    }
+    // HEALTH & MANA BARS
+    .menuItem1,.menuItem2{
+      position:fixed;
+      min-width: 30%;
+      // right:0;
+      top:2em;
+      &.menuItem2{
+        top:3em;
+      }
+      right:0;
+      .healthBar, .manaBar{
+        z-index:10;
+        height:1em;
+        @extend %onFrame;
+        color:#fff;
+        // position:relative;
+        background-color:#222;
+        // height:20px;
+        .progressBar{
+          mix-blend-mode: difference;
+          height:100%;
+          width:50%;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+        }
+        label{
+          position:absolute;
+          width:100%;
+          height:100%;
+          top:0;
+          font-size:10px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        }
+      }
+    }
+    >.mainMenu{
+      margin-top:4em;
+      @extend %inFrame;
+      // overflow-y: auto;
+      height: fit-content;
+      min-width:30%;
+      max-height:100%;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      padding:2px;
+      background-color: rgb(47, 47, 47);
+      color:#AEAEAC;
+      .collapsed{
+        div{
+          display:none!important;
+        }
+        .title{
+          display:flex!important;
+          div{
+            display:block!important;
+          }
+        }
+      }
+      // EVERYWHERE TITLES
+      .title{
+        width:100%;
+        background-color:rgb(47, 47, 47);
+        font-size:0.5em;
+        padding:3px;
+        display:flex;
+        justify-content: space-between;
+        gap:8px;
+        cursor:pointer;
+        div:nth-child(1){text-align:right;flex:1;}
+      }
+      // STYLING DIVS
+      >div >div{
+        width:100%;
+        @extend %onFrame;
+      }
+      // FOR CAPACITY ITEMS (EQ, BACKPACKS, LOCKERS etc)
+      .row{
+        display:flex;
+        justify-content: center;
+        >div{
+          margin:1px;
+          border: 2px solid; 
+          border-color: rgb(68, 68, 68) rgb(115, 115, 115) rgb(115, 115, 115) rgb(68, 68, 68); 
+          width:25%;
+          min-width:30px;
+          min-height:30px;
+          max-width:50px;
+          max-height:50px;
+          &:hover{
+            border:2px solid #fff;
+          }
+          >div,canvas{
+            width:100%;
+            height:100%;
+          }
+        }
+        .picked{
+          border:2px solid green;
+        }
+      }
+      // 4 backpacks and lockers
+      .backpack{
+        .row{
+          flex-wrap:wrap;
+          justify-content: flex-start;
+          // justify-content: space-evenly;
+          margin:0 auto;
+          div{
+            min-width:30px;
+          }
+        }
+      }
+      .skills{
+        >div:not(.title){
+          border: 2px solid; 
+          border-color: rgb(68, 68, 68) rgb(115, 115, 115) rgb(115, 115, 115) rgb(68, 68, 68); 
+          padding: 3px;
+          font-size:0.6em;
+        }
+        .displaySkills{
+          display:flex;
+          flex-direction:column;
+          >div{
+            display:flex;
+            justify-content: space-between;
+          }
+          .progressBar{
+            @extend %inFrame;
+            padding:0;
+            background-color:rgb(49, 46, 46);
+            position:relative;
+            >div{
+              z-index:1;
+              text-align:center;
+              width:100%;
+              font-size:0.7em;
+            }
+            .progress{
+              position:absolute;
+              top:0;
+              left:0;
+              background-color:rgb(80, 22, 22);
+              height:100%;
+            }
+          }
+        }
+      }
+    }
+    .mobileControls{
+      // position:absolute;
+      min-width:30%;
+      bottom:0;
+      z-index:2;
+      border:10px dashed rgba(0, 0, 0, 0.692);
+      background-color: rgba(255, 255, 255, 0.425);
+      margin:2px;
+      border-radius:50%;
+      display:none;
+      flex-wrap:wrap;
+      div{
+        width:33%;
+        display:flex;
+        justify-content: center;
+        align-items:center;
+      }
+      .arrow{
+        background-color:rgb(41, 39, 39);
+        border:5px solid rgba(255, 255, 255, 0.568);
+        border-radius:10px;
+        position:relative;
+      }
+    }
+    .rightPanel{
+      right:0;
+    }
+    .leftPanel{
+      left:0;
+    }
+  }
+  .popupParent{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:30vh 30vw;
+    height:40%; width:40%;
+    position:fixed;
+    font-size:0.8em;
+    .popup{
+      @extend %onFrame;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      font-size:0.5em;
+      padding:10px 20px;
+      background-color:#5A5A5A;
+      color:#AEAEAC;
+      z-index:3;
+      .closeBar{
+        @extend %onFrame;
+        position:absolute;
+        width: calc(100% + 4px);
+        height:5vh;
+        top:-5vh;
+        display:flex;
+        justify-content: flex-end;
+        div{
+          @extend %onFrameButt;
+          cursor:pointer;
+          width:5vh;
+          padding: 2px 5px;
+          background-color:rgb(90, 15, 15)!important;
+          display:flex;
+          justify-content: center;
+          align-items: center;
+          @extend %onFrame;
+        }
+      }
+      button{
+        @extend %onFrameButt;
+      }
+    }
+  }
+}
+
+// ACCOUNT PAGE
+.loginPage{
+  $formBG: #2f2f2fb4;
+  a{text-decoration: none;color:#fff;}
+  height:100vh;
+  padding:10%;
+  font-size:0.9em;
+  main{
+    background-image: url("../logo.webp");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center 50%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+    >*{
+      width:50%;
+      background-color:rgba(0, 0, 0, 0.6);
+      padding:5%;
+    }
+    form{
+      @extend %inFrame;
+      background-color:$formBG;
+      border-top:0;
+      border-bottom:0;
+      display:none;
+      flex-direction: column;
+      input{
+        padding:5px 10px;
+        margin:5px;
+        background-color:$formBG;
+        @extend %inFrame;
+        &:focus{
+          outline:0;
+        }
+      }
+      input[type=submit]{
+        @extend %onFrame;
+        cursor:pointer;
+        // background-color:$formBG;
+      }
+      div{
+        display:flex;
+        justify-content: space-between;        
+        gap:5px;
+        >*{width:100%;}
+        >b{text-align: right;}
+        // &:not(.additional){
+          // background-color:rgba(255, 255, 255, 0.2);
+        // }
+        .sex{
+          background-color: transparent;
+          display:flex;
+          flex-direction: column;
+          padding:0;
+          legend{
+            padding:0;
+            width:100%;
+            display:flex;
+            // input{margin:auto 0;}
+            // label{width:100%;}
+          }
+          input[type=radio]{
+            position:relative;
+            &:after{
+              content:"";
+              width:100%;
+              height:100%;
+              position:absolute;
+              left:-2px;
+              top:-2px;
+              border-radius:50%;
+              @extend %onFrame;
+              padding:0;
+            }
+            &:checked::after{
+              @extend %inFrame;
+              padding:0;
+            }
+          }
+          margin-left:5px;
+        }
+      }
+    }
+    .message{
+      @extend %inFrame;
+      background-color:$formBG;
+      padding:3%;
+      border-bottom:0;
+      text-align:center;
+      padding-bottom:0;
+    }
+    .additional{
+      @extend %inFrame;
+      background-color:$formBG;
+      padding:3%;
+      display:flex;
+      flex-direction: column;
+      gap:5px;
+      justify-content: space-between;
+      border-top:0;
+      padding-top:0;
+    }
+  }
+}

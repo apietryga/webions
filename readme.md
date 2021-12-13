@@ -6,10 +6,10 @@
   - IOS clicking compatibility
   - in console placeholder write "click enter to type" on pc 
   - eq view in landscape mobile
+  - mobile item stats
 
 ## WORKIN' ON
-  - mobile item stats
-  - landscape map control mobile
+  - landscape map control mobile [planeclicking]
   - display lastframe hour - minutes break.
   - make subpages for libary
   - fix doubled console message on sent

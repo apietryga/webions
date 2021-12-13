@@ -14,7 +14,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -39,20 +39,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [54, -16, -1],
+    "position": [55, -21, -1],
     "speed": 2.7,
-    "health": 860,
-    "maxHealth": 860,
+    "health": 810,
+    "maxHealth": 840,
     "skills": {
-      "level": 76,
-      "exp": 424263,
-      "fist": 40,
+      "level": 74,
+      "exp": 403457,
+      "fist": 44,
       "dist": 33,
       "healing": 5011,
-      "fist_summary": 1575,
-      "dist_summary": 1057
+      "fist_summary": 1900,
+      "dist_summary": 1082
     },
-    "lastFrame": 1639402162273,
+    "lastFrame": 1639414524731,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -95,7 +95,7 @@
       "lh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [33, -12, -1],
+        "position": [43, 1, -1],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -144,12 +144,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-11-14T11:26:34.114Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 85
-      },
-      {
         "when": "2021-11-14T11:27:12.836Z",
         "who": "GM",
         "whoType": "player",
@@ -172,12 +166,18 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 76
+      },
+      {
+        "when": "2021-12-13T16:49:18.776Z",
+        "who": "Cyclops",
+        "whoType": "monster",
+        "level": 74
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder"],
-    "mana": 1260,
-    "maxMana": 860,
+    "mana": 1240,
+    "maxMana": 840,
     "token": "myrizlkica",
     "redTarget": false
   },
@@ -197,7 +197,7 @@
       "dist_summary": null,
       "fist_summary": null
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -258,7 +258,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 984,
+    "mana": 1000,
     "maxMana": 4910,
     "redTarget": false
   },
@@ -277,7 +277,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
@@ -362,7 +362,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "male",
@@ -454,7 +454,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -493,7 +493,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
     "email": "a@ad.pl",
     "sex": "female",
@@ -535,7 +535,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -574,7 +574,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -625,7 +625,7 @@
       "dist_summary": 0
     },
     "type": "player",
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "text": "",
     "game": {
       "time": "2021-10-17T11:04:50.826Z",
@@ -666,24 +666,24 @@
   },
   {
     "name": "GM",
-    "position": [30, -5, 0],
+    "position": [50, -3, 0],
     "speed": 2.2,
     "health": 1350,
     "maxHealth": 350,
     "sprite": "gm",
     "skills": {
       "level": 25,
-      "exp": 14661,
+      "exp": 14000,
       "fist": 312,
       "dist": 115,
       "healing": 119,
-      "fist_summary": 97159,
-      "dist_summary": 13054
+      "fist_summary": 97161,
+      "dist_summary": 13056
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639401700148,
+    "lastFrame": 1639414494144,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -712,7 +712,8 @@
           {"health": "0 - 200"},
           {"def": "0 - 100"}
         ],
-        "speed": 2
+        "speed": 2,
+        "in": []
       },
       "nc": false,
       "ch": {
@@ -773,15 +774,11 @@
         "pickable": true,
         "speed": 4,
         "actionType": "pickUp"
-      }
+      },
+      "label": false,
+      "itemContainer": false
     },
     "lastDeaths": [
-      {
-        "when": "2021-12-09T16:51:15.883Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 25
-      },
       {
         "when": "2021-12-09T21:55:46.829Z",
         "who": "Orange Wizard",
@@ -802,6 +799,12 @@
       },
       {
         "when": "2021-12-10T00:02:04.318Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 25
+      },
+      {
+        "when": "2021-12-13T16:27:25.015Z",
         "who": "Minotaur",
         "whoType": "monster",
         "level": 25
@@ -965,7 +968,7 @@
         "actionType": "pickUp"
       }
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "lastDeaths": [
       {
         "when": "2021-11-14T11:11:20.518Z",
@@ -1089,7 +1092,7 @@
         "field": "ft"
       }
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "lastDeaths": [
       {
         "when": "2021-11-16T01:12:52.298Z",
@@ -1191,7 +1194,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "lastDeaths": [
       {
         "when": "2021-11-17T15:19:20.685Z",
@@ -1269,7 +1272,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639401691939,
+    "lastFrame": 1639414494144,
     "sprite": "male_oriental",
     "quests": [],
     "mana": 150,

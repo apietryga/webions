@@ -1,0 +1,28 @@
+.eq .itemContainer .label {
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+.eq .itemContainer {
+  position: relative;
+}
+
+.eq .itemContainer .label {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  min-width: 80px;
+  font-size: 0.7em;
+  display: none;
+  padding: 5px;
+  z-index: 1;
+  text-align: left;
+  background-color: #2f2f2fb6 !important;
+}
+
+.eq .itemContainer:hover > .label {
+  display: block;
+}

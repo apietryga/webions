@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="style/both.css?v={{version}}">
+    <link rel="stylesheet" href="style/game.css?v={{version}}">
+    <link id="mobileCSS" rel="stylesheet" href="style/mobile.css?v={{version}}">
+    <link rel="shortcut icon" href="favicon.ico?v={{version}}" type="image/x-icon">
+    <title>{{name}}</title>
+    <link rel="manifest" href="./json/manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="apple-touch-startup-image" href="apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="{{name}}">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  </head>
+  <body  onselect = "document.selection.empty()">
+    <noscript>
+      This game will not apear without JavaScript - turn it on to play.
+    </noscript>
+    <div class="loader">
+      <img src="logo.webp" alt="{{name}} Game">
+      <h1>{{name}}</h1>
+      <div class="loadProgress">
+        <div class="progressBar"></div>
+      </div>
+      <div class="loadDetails"></div>
+    </div>
+    <div class="wrapper">
+      <div class="gameAndConsole">
+        <div class="gamePlane">
+          <canvas class="gamePlaneCanvas"></canvas>  
+        </div>
+        <div class="handler"></div>
+      </div>
+      <div class="handlerVertical"></div>
+      <div class="mainMenu"></div>
+      <div class="mobileControls leftPanel"></div>
+      <div class="mobileControls rightPanel"></div>
+    </div>
+  </body>
+</html>
+<script src="js/gameDetails.js?v={{version}}"></script>
+<script src="js/functions.js?v={{version}}"></script>
+<script src="js/sprites.js?v={{version}}"></script>
+<script src="js/map.js?v={{version}}"></script>
+<script>const map = new Map();</script>
+<script src="js/controls.js?v={{version}}"></script>
+<!-- RESIZE GAMEPLANE -->
+<script>
+  // MAKE RESIZEABLE MENUS
+  const makeResizeable = (handlerName, parent, handleIn, axis) =>{
+    const handler = document.querySelector('.'+handlerName);
+    const wrapper = handler.closest('.'+parent);
+    const boxA = wrapper.querySelector('.'+handleIn);
+    let isHandlerDragging = false;
+    document.addEventListener('mousedown', function(e) {
+      if (e.target === handler) {
+        isHandlerDragging = true;
+      }
+    });
+    document.addEventListener('mousemove', function(e) {
+      // Arbitrary minimum width set on box A, otherwise its inner content will collapse to width of 0
+      const boxAminHeight = 60;
+
+      if (!isHandlerDragging) {
+        return false;
+      }
+      // get axis
+      let containerOffset,pointerRelative, key;
+      // * 8px is the left/right spacing between .handler and its inner pseudo-element
+      if(axis == "y"){
+        containerOffset = wrapper.offsetTop;
+        pointerRelative = e.clientY - containerOffset;
+        boxA.style.cssText = "min-height:"+(Math.max(boxAminHeight, pointerRelative - 8))+"px !important";
+      }else{
+        containerOffset = wrapper.offsetLeft;
+        pointerRelative = e.clientX - containerOffset;
+        boxA.style.cssText = "min-width:"+(Math.max(boxAminHeight, pointerRelative + 8))+"px !important";
+      }
+      // * Set flex-grow to 0 to prevent it from growing
+      boxA.style.flexGrow = 0;
+      setResolution()      
+    });
+    document.addEventListener('mouseup', function(e) {
+      // Turn off dragging flag when user mouse is up
+      isHandlerDragging = false;
+    });
+  }
+  // SET DOM'S
+  makeResizeable('handler','gameAndConsole','gamePlane', "y");
+  makeResizeable('handlerVertical','wrapper','gameAndConsole', "x");
+</script>
+<!-- POPUP -->
+<script>
+    const popup = {
+    init(title = "Player paused."){
+      this.dom = document.createElement("div");
+      this.dom.className = "popupParent";
+      this.container = document.createElement("div");
+      this.container.className = "popup";
+      this.closeBar = document.createElement("div");
+      this.closeBar.className = "closeBar";
+      this.closeButton = document.createElement("div");
+      this.closeButton.innerHTML = "x";
+      this.closeButton.onclick = () =>{
+        this.dom.remove();
+      }
+      this.closeBar.append(this.closeButton);
+      this.container.append(this.closeBar);
+      this.h1 = document.createElement("h1");
+      this.h1.innerHTML = title;
+      this.button = document.createElement("button");
+      this.button.style.position = "unset";
+      this.button.style.padding = "10px 50px";
+      this.button.addEventListener(mobileControls.ev,() => {window.location.reload()});
+      this.button.innerText = " RELOAD ";
+      this.dom.append(this.container);
+      this.container.append(this.h1);
+      this.container.append(this.button);
+      document.body.append(this.dom);
+    }
+  }
+</script>
+<!-- PLAYER INIT SETTINGS -->
+<script>
+  let player = {
+    name : "{{nick}}",
+    position :[0,0,0]
+  };
+</script>
+<!--| GAMEPLANE PROPERTIES |-->
+<script src="js/gameplane.js?v={{version}}"></script>
+<script src="js/components.js?v={{version}}"></script>
+<!--| WEBSOCKET SERVER CONNECTION |-->
+<script src="js/websocket.js?v={{version}}"></script>
+<script src="js/menus.js?v={{version}}"></script>
+<!--| PRELOAD |-->
+<script>
+  // preload ;>
+  const load = {
+    details(text){
+      document.querySelector(".loadDetails").innerHTML = text;
+    },
+    progress(percent){
+      document.querySelector(".progressBar").style.width = percent+"%";
+    },
+    both(text,percent){
+      this.details(text);
+      this.progress(percent);
+    }
+  }
+  load.both("Load sprites",10);
+  map.loadSprites(()=>{
+    menus.init();
+    load.both("Load serwer info",50);
+    serv.load(()=>{
+      load.both("Loading map",70);
+      map.generate(()=>{
+        load.both("Loading Game Plane",90);
+        gamePlane.init();
+        setResolution();
+        document.querySelector(".loader").style.display = "none";
+      })
+    })
+  });
+  // set elements resolution:
+  
+  window.onresize = () =>{
+    setResolution();
+  }
+</script>
+<!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
+<script>
+  if('serviceWorker' in navigator) {
+    // serviceWorkerRegistration.update();
+    navigator.serviceWorker.register('serviceWorker.js?v={{version}}'
+    // , {scope: 'serviceWorker'}).then(function(registration) {
+    //   registration.update();
+    // }
+    );
+  }
+  
+</script>
+<!--| DEVELOPER BUTTONS & STATS |-->
+<script>
+  const dev = {
+    buttonIndex : 0,
+    init(){
+      // this.makeDevButt("STOP",()=>{gamePlane.stop()});
+      // this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
+      this.makeStatsField();
+      this.update();
+    },
+    makeDevButt(title,func){
+      const butt = document.createElement("button");
+      // butt.onclick = () => { func()};
+      butt.addEventListener(mobileControls.ev,func);
+      butt.style.cssText = `
+        position:fixed;
+      `;
+      butt.innerHTML =  title;
+      butt.style.zIndex = 4;
+      document.body.append(butt);
+      butt.style.marginTop = ((butt.clientHeight+10)*this.buttonIndex)+ "px";
+      this.buttonIndex++;
+    },
+    makeStatsField(){
+      this.statsDOM = document.createElement("div");
+      this.statsDOM.innerHTML = "DEV STATS."
+      this.statsDOM.style.cssText = `
+        width:30vw;
+        position:fixed;
+        left:0;
+        top:0;
+        padding:2%;
+        font-size:0.6em;
+        color:#000;
+        background-color:rgba(255,255,255,0.8);
+        z-index:4;
+        `;
+      document.body.append(this.statsDOM);
+    },
+    stats : {
+      player: player.name
+    },
+    oldSec : 0,
+    currFPS : 0,
+    counterFPS : 0,
+    update(){
+      // count fps
+      const sec = new Date().getSeconds();
+      if(this.oldSec == sec){
+        // counter
+        this.currFPS++;
+      }else{
+        this.counterFPS = this.currFPS;
+        this.currFPS = 0;
+        this.oldSec = sec;
+      }
+      if(typeof this.statsDOM != "undefined"){
+        this.statsDOM.innerHTML = "";
+        for(const s of Object.keys(this.stats)){
+          if(s == "time"){
+            const t = new Date(this.stats[s]);
+            const time = t.getHours()+":"+t.getMinutes()+":"+t.getSeconds();
+            this.statsDOM.innerHTML += s +": "+time+"<br />";    
+            continue;
+          }
+          this.statsDOM.innerHTML += s +": "+this.stats[s]+"<br />";
+        }
+      }
+    }
+  }
+  if(new URLSearchParams(window.location.search).get("dev") == "on"){
+    dev.init();
+  }
+</script>

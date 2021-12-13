@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocketChecker</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <pre></pre>
+
+  <script>
+    let plName = "Newbie";
+    let srh = searchToObject();
+    if(Object.keys(srh).includes("player")){
+      plName = srh.player;
+    }
+    let protocol = "ws:";
+    if(window.location.protocol == "https:"){protocol = "wss:"}
+    const ws = new WebSocket(protocol+"//"+window.location.host+"/fetch/?name="+plName,'echo-protocol');
+    ws.onopen = () => {
+      ws.send(JSON.stringify({"name":plName,"controls":[],"target":false}));
+      ws.onmessage = (msg) => {
+        let data = JSON.stringify(msg.data);
+        data = data.replaceAll("\\n","<br />&nbsp;");
+        data = data.replaceAll("\\","");
+        document.querySelector("pre").innerHTML = data;
+        // console show
+        for(const key of Object.keys(JSON.parse(msg.data))){
+          console.log(key+":");
+          console.log(JSON.parse(msg.data)[key]);
+        }
+        ws.CLOSED;
+      }
+
+    }
+
+
+
+
+  function searchToObject() {
+    var pairs = window.location.search.substring(1).split("&"),
+      obj = {},
+      pair,
+      i;
+
+    for ( i in pairs ) {
+      if ( pairs[i] === "" ) continue;
+
+      pair = pairs[i].split("=");
+      obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+    }
+
+    return obj;
+  }
+  </script>
+
+</body>
+</html>

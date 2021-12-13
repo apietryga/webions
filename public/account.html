@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{name}} account</title>
+  <link rel="shortcut icon" href="favicon.ico?version={{version}}" type="image/x-icon">
+  <link rel="stylesheet" href="style/game.css?version={{version}}">
+  <script src="../js/functions.js?version={{version}}"></script>
+  {{js}}
+</head>
+<body class="loginPage">
+  <main>
+    <noscript>
+      You need enable javascript to make this page work.
+    </noscript>
+    <div class="message">{{message}}</div>
+    <form id="login" action="account.html" method="post">
+      <div class="nick">
+        <input type="text" name="nick" placeholder="nick">
+      </div>
+      <div class="pass">
+        <input type="password" name="password" placeholder="password">
+      </div>
+      <input type="submit" value="LOGIN" name="type">  
+    </form>
+    <form id="register" action="account.html" method="post">
+      <div class="nick">
+        <input type="text" placeholder="nick" name="nick">
+      </div>
+      <div class="pass">
+        <input type="password" name="password" placeholder="password">
+      </div>
+      <div class="pass">
+        <input type="text" placeholder="email" name="email">
+      </div>
+      <div class="pass">
+        <div class="sex">
+          <legend>
+            <input type="radio" name="sex" value="male" id="male">
+            <label for="male">male</label>
+          </legend>
+          <legend>
+            <input type="radio" name="sex" value="female" id="female">  
+            <label for="female">female</label>
+          </legend>
+        </div>
+      </div>
+      <input type="submit" value="REGISTER" name="type">
+    </form>
+    <form id="forgot" action="account.html" method="post">
+      <div class="email">
+        <input type="text" placeholder="nick" name="nick">
+      </div>
+      <input type="submit" value="REMIND" name="type">
+    </form>
+    <form id="newpass" action="account.html" method="post">
+      <input type="hidden" name="passToken">
+      <div class="pass">
+        <input type="password" placeholder="new&nbsp;password" name="newpass">
+      </div>
+      <input type="submit" value="CHANGE" name="type">
+    </form>
+    <form id="result" action="account.html" method="get">
+      {{message}}
+    </form>
+    <form id="logout" action="account.html" method="get">
+      <input type="hidden" name="logout" value="true">
+    </form>
+    <div class="additional">
+      <a href="?action=login">Login</a>
+      <a href="?action=forgot">Forgot</a>
+      <a href="?action=register">Register</a>
+      <a href="/">Home</a>
+    </div>
+  </main>
+  <script>
+    const acc = {
+      urlVals:'login',
+      init(){
+        this.formPicker();
+        this.messDisplayer();
+        for(const submit of document.querySelectorAll("input[type=submit]")){
+          submit.addEventListener("click",this.formValidator);
+        }
+      },
+      formPicker(){
+        // FORM PICKER [from URL]
+        let isForm = false;
+        // let urlVals;    
+        if("{{action}}" == "game"){
+          document.cookie = "token={{message}}";
+          window.location.replace("game.html");
+        }
+        if("{{action}}" == "logout"){
+          for(const cookie of document.cookie.split(";")){
+            const c = cookie.split("=");
+            if(c[0] == "token"){
+              document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+          }
+          window.location.replace("/account.html?action=login");
+
+        }
+        if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){
+          this.urlVals = "{{action}}";
+        }else{
+          this.urlVals = window.location.search.split(/=|&/);
+        }
+        for(const f of document.querySelectorAll("form")){
+          if(this.urlVals.includes(f.id)){
+            f.style.display = "flex";
+            isForm = true;
+          }
+        }
+        if(!isForm){
+          document.querySelector("#login").style.display = "flex";
+        }
+      },
+      messDisplayer(){
+        // MESSAGE DISPLAYER
+        const message = document.querySelector(".message");
+        if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){
+          message.style.display = "none";
+        }
+        if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){
+          for(const nickField of document.querySelectorAll(".nick > input")){
+            nickField.value = "{{nick}}";
+          }
+        }
+      },
+      formValidator(e){
+        // FORM VALIDATOR
+        let valid = true;
+        let isRadio = false;
+        // let action = false;
+        let message = "";
+        let radioValue;
+        // get current form
+        for(const form of document.querySelectorAll("form")){
+          if(form.style.display == "flex"){
+            // get all inputs
+            for(const input of form.querySelectorAll("input")){
+              input.style.border = "none";
+              input.style.outline = "none";
+              if(["text","password"].includes(input.type)){
+                if(input.value == ""){
+                  valid = false;
+                  message = "Fill up all fields.";
+                  input.style.border = "2px solid red";
+                }
+              }
+              if(input.name == "email"){
+                // console.log(input)
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if(!re.test(String(input.value).toLowerCase())){
+                  valid = false;
+                  message = "Re-type your real email adress. It'll be helpful when you forget your pass.";
+                  input.style.border = "2px solid red";
+                  console.log("none...");
+                }
+              }
+              if(input.type == "radio"){
+                isRadio = true;
+                if(input.checked == true){
+                  radioValue = input.value;
+                }
+              }
+              if(input.name == "passToken"){
+                input.value = window.location.search.split("passToken=")[1];
+              }
+            }
+            // check radio input
+            for(const input of form.querySelectorAll("input")){
+              if(input.type == "radio" && !isSet(radioValue) && isRadio){
+                input.style.outline = "2px solid red";
+                valid = false;
+              }
+            }
+          }
+        }
+        if(message != ""){
+          const messField = document.querySelector(".message");
+          messField.innerHTML = "<b style='color:red;'>"+message+"</b>";
+          messField.style.display = "flex";
+        }
+        if(!valid){
+          e.preventDefault();
+        }
+      }
+    }
+    acc.init();
+  </script>
+<!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
+<script>
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('serviceWorker.js'
+    );
+  }  
+</script>
+</body>
+</html>
