@@ -256,23 +256,28 @@ const mobileControls = {
   css: document.querySelector("#mobileCSS"),
   validate(){
     let panel = document.querySelectorAll(".mobileControls");
+    const consoleInput = document.querySelector(".messagesInput");
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       console.log("Detected mobile device, setting controls.");
-      
       panel[0].style.display = "flex";
       panel[1].style.display = "flex";
       this.set();
       this.preventZoom();
       this.ev = 'touchstart';
       this.css.disabled = false;
+      consoleInput.placeholder = "Click here to type.";
     }else{
       this.css.disabled = true;
-      // if(this.css.parentNode != null){
-      //   this.css.parentNode.removeChild(this.css);
-      // }
       panel[0].style.display = "none";
       panel[1].style.display = "none";
+      consoleInput.placeholder = "Click enter to type.";
     }
+    // update css's callout
+    const stylesheet = document.createElement('link');
+    stylesheet.href = 'style/nocallout.css';
+    stylesheet.rel = 'stylesheet';
+    stylesheet.type = 'text/css';
+    document.head.append(stylesheet);
   },
   set(){
     // resolution - window width & height
@@ -359,7 +364,8 @@ const mobileControls = {
     for(const n of document.querySelectorAll('*')){
       if(!mobileControls.allowClick.includes(n.tagName || n.className)){
         n.addEventListener("touchstart",(e)=>{
-          if(this.iOS()){e.preventDefault();}
+          // if(this.iOS()){e.preventDefault();}
+          // if(this.iOS()){e.returnValue = false;}
           e.stopPropagation && e.stopPropagation();
           e.cancelBubble = true;
         },{passive:false});

@@ -1,15 +1,15 @@
 * {
-  box-sizing: border-box;
   -webkit-touch-callout: none;
   /* iOS Safari */
+  -webkit-user-drag: none;
   /* Safari */
   /* Konqueror HTML */
   /* Old versions of Firefox */
   /* Internet Explorer/Edge */
   user-select: none;
-  /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
+  /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
   touch-action: none;
+  box-sizing: border-box;
 }
 
 body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 button:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar, .loginPage main form, .loginPage main form input, .loginPage main form div .sex input[type=radio]:checked::after, .loginPage main .message, .loginPage main .additional {

@@ -74,9 +74,6 @@ const log = {
     }
   }
 }
-if(game.dev == true){
-  log.ged.push({nick:"GM",token:"123"})
-}
 function public(req, res, playersList) {
   const {url} = req;
   const href = "https://"+req.rawHeaders[1];
@@ -315,10 +312,6 @@ function public(req, res, playersList) {
               if(value == logged.token){
                 player = logged.nick;
               }
-            }   
-            // set default GM when is game dev  
-            if(game.dev && !player){
-              player = "GM"
             }
             if(player){
               path = "./public/game.html";
