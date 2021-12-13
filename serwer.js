@@ -160,7 +160,7 @@ const cm = { // creatures managment
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1,"player");
         // save player login token
-        if(servRequest){
+        if(servRequest && typeof servRequest.headers != 'undefined' && typeof servRequest.headers.cookie != 'undefined' ){
           for(const cookie of servRequest.headers.cookie.split("; ")){
             const [key,value] = cookie.split("=");
             if(key == "token"){newPlayer.token = value;}
@@ -233,7 +233,7 @@ dbc.init(()=>{
   const date = new Date();
   game.startServerTime = date.getTime();
   console.log("SERWER IS RUNNING");
-  console.log("MAILGUN API KEY: " + process.env.MAILGUN_API_KEY);
+  // console.log("MAILGUN API KEY: " + process.env.MAILGUN_API_KEY);
   // WEBSOCKET
   new WebSocketServer({httpServer : server})
   .on('request', (req)=>{
@@ -302,7 +302,7 @@ const extendConsole = (val) => {
   const time = date.getHours()+":"+date.getMinutes(); 
   args = [time,val];
   const content = JSON.parse(fs.readFileSync('./public/logs.json','utf-8'));
-  content.push({time : val});
+  content.push({"log" : time+": "+val});
   fs.writeFileSync('./public/logs.json',stringify(content));
 }
 console.log = (val) => {     
