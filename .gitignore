@@ -2,4 +2,3 @@ node_modules/
 dump.rdb
 Redis/
 sprite_pack/
-public/logs.json
