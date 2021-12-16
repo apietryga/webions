@@ -183,3 +183,13 @@ body footer .options a:nth-child(1) {
     padding-bottom: 50px;
   }
 }
+
+@media (orientation: landscape) {
+  body {
+    flex-direction: row-reverse;
+  }
+  body footer {
+    display: flex;
+    align-items: flex-end;
+  }
+}

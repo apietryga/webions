@@ -127,3 +127,12 @@ body{
     }
   }
 }
+@media(orientation:landscape){
+  body{
+    flex-direction: row-reverse;
+    footer{
+      display:flex;
+      align-items: flex-end;
+    }
+  }
+}
