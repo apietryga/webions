@@ -127,7 +127,7 @@ body{
     }
   }
 }
-@media(orientation:landscape){
+@media(orientation:landscape) and (max-width: 720px){
   body{
     flex-direction: row-reverse;
     footer{
