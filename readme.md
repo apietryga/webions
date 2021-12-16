@@ -3,11 +3,7 @@
   You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "server.js" by nodejs. I will make instructions for this in future versions.
 
 ## TESTING NOW
-  - IOS clicking compatibility
-  - in console placeholder write "click enter to type" on pc 
-  - eq view in landscape mobile
-  - mobile item stats
-  - upperwalls
+  - replace courier with mailgun - **to make repository public**
 
 ## WORKIN' ON
   - make subpages for libary
@@ -17,7 +13,6 @@
   - disable players updating on serv start.
   - fix doubled console message on sent
   - repair player kick (once - now 6 times...)
-  - replace courier with mailgun - **to make repository public**
   - fix get hitting without def (from eq) when kicked (most on train's)
   - base mana regen
   - strict register names (no numbers and monsters names)

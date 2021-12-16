@@ -493,5 +493,7 @@ body .cookiesPopUp span {
   nav, aside {
     flex-direction: column;
     max-height: 20vh;
+    position: sticky;
+    top: 0;
   }
 }

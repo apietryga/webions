@@ -14,7 +14,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -52,7 +52,7 @@
       "fist_summary": 2017,
       "dist_summary": 1213
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -197,7 +197,7 @@
       "dist_summary": null,
       "fist_summary": null
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -258,7 +258,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1208,
+    "mana": 1212,
     "maxMana": 4910,
     "redTarget": false
   },
@@ -277,7 +277,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
@@ -362,7 +362,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "male",
@@ -454,7 +454,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -493,7 +493,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
     "email": "a@ad.pl",
     "sex": "female",
@@ -535,7 +535,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -574,7 +574,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -625,7 +625,7 @@
       "dist_summary": 0
     },
     "type": "player",
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "text": "",
     "game": {
       "time": "2021-10-17T11:04:50.826Z",
@@ -666,24 +666,24 @@
   },
   {
     "name": "GM",
-    "position": [0, 13, 1],
+    "position": [-1, 13, 1],
     "speed": 2.2,
-    "health": 1330,
+    "health": 1383,
     "maxHealth": 380,
     "sprite": "gm",
     "skills": {
       "level": 28,
-      "exp": 20910,
+      "exp": 21695,
       "fist": 312,
       "dist": 115,
       "healing": 119,
-      "fist_summary": 97317,
-      "dist_summary": 13176
+      "fist_summary": 97336,
+      "dist_summary": 13198
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639618815507,
+    "lastFrame": 1639651174623,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -699,7 +699,22 @@
         "pickable": true,
         "health": 1000
       },
-      "bp": false,
+      "bp": {
+        "name": "Random Item",
+        "sprite": "items",
+        "spriteNr": 15,
+        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
+        "pickable": true,
+        "randStats": [
+          {"speed": "0 - 3"},
+          {"mana": "0 - 100"},
+          {"manaRegen": "0 - 50"},
+          {"health": "0 - 200"},
+          {"def": "0 - 100"}
+        ],
+        "health": 163,
+        "def": 40
+      },
       "nc": false,
       "ch": {
         "name": "Magic Armor",
@@ -844,6 +859,8 @@
       "ladder",
       "Random Item",
       "Random Item",
+      "Random Item",
+      "ladder",
       "Random Item"
     ],
     "mana": 580,
@@ -960,7 +977,7 @@
         "actionType": "pickUp"
       }
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "lastDeaths": [
       {
         "when": "2021-11-14T11:11:20.518Z",
@@ -1084,7 +1101,7 @@
         "field": "ft"
       }
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "lastDeaths": [
       {
         "when": "2021-11-16T01:12:52.298Z",
@@ -1186,7 +1203,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "lastDeaths": [
       {
         "when": "2021-11-17T15:19:20.685Z",
@@ -1264,7 +1281,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639618062813,
+    "lastFrame": 1639650835247,
     "sprite": "male_oriental",
     "quests": [],
     "mana": 150,

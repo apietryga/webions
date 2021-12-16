@@ -4,8 +4,14 @@ const {URL} = require('url');
 const dbConnect = require("./dbconnect");
 const dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
-const  {CourierClient} = require("@trycourier/courier");
-const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5R6HYK6W"});  
+
+// const  {CourierClient} = require("@trycourier/courier");
+// const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5R6HYK6W"});  
+
+const Mailgun = require("mailgun").Mailgun;
+const mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
+
+
 const Creature = require("./server_components")[0];
 const MarkdownIt = require('markdown-it'),
 md = new MarkdownIt();
@@ -232,16 +238,34 @@ function public(req, res, playersList) {
         dbc[game.db].load({name:data.nick},(dbres)=>{
           if(dbres){
             if(func.isSet(dbres.email)){
-              courier.send ({
-                eventId: "F2N3F5QTN0MZRDHVPGK4RSQAXQE6",
-                recipientId: "webionsgame@gmail.com",
-                profile: {
-                  email: dbres.email
-                },
-                data: {
-                  passToken: "https://webions.herokuapp.com/account.html?action=newpass&passToken="+passTokens.generate(data.nick).passToken
-                }
-              })
+
+              console.log(process.env)
+              // courier.send ({
+              //   eventId: "F2N3F5QTN0MZRDHVPGK4RSQAXQE6",
+              //   recipientId: "webionsgame@gmail.com",
+              //   profile: {
+              //     email: dbres.email
+              //   },
+              //   data: {
+              //     passToken: "https://webions.herokuapp.com/account.html?action=newpass&passToken="+passTokens.generate(data.nick).passToken
+              //   }
+              // })
+
+              mailgun.sendRaw(
+                'webionsgame@gmail.com',
+                ['antek.pietryga@gmail.com'],
+                'From: sender@example.com' +
+                  '\nTo: ' + 'recipient1@example.com' +
+                  '\nContent-Type: text/html; charset=utf-8' +
+                  '\nSubject: I Love Email' +
+                  '\n\nBecause it\'s just so awesome',
+                function(err) { err && console.log(err) }
+              )
+              
+
+
+
+
               .then(()=>{
                 vals.action = "result";
                 vals.message = "<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.</b>";

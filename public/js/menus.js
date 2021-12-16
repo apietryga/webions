@@ -48,12 +48,12 @@ const menus = {
           onclick: () => {gamePlane.stop();}
         },
         { title: "MAIN PAGE",
-          innerHTML: "🏠",
+          innerHTML: "🏡",
           type: "button",
           onclick: () => {window.location.replace("/")}
         },
         { title: "LOGOUT",
-          innerHTML: "📤",
+          innerHTML: "🚪",
           type: "button",
           onclick: () => {window.location.replace("/account.html?action=logout")}
         }
