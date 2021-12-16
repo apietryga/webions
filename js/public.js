@@ -237,14 +237,15 @@ function public(req, res, playersList) {
                 [dbres.email],
                 'From: '+process.env.MAILGUN_SMTP_LOGIN +
                 '\nTo: ' + dbres.email +
-                '\nContent-Type: text/html; charset=utf-8' +
+                '\nMIME-Version: 1.0' +
+                '\nContent-Type: text/html; charset=UTF-8' +
                 '\nSubject: Forgotten Password - '+game.name +
-                '\n\n<style>.wrapper{border:2px solid rgba(0, 0, 0, 0.8);background-color: #000000cc;}img{background-color:rgba(0, 0, 0, 0.8);}header{display:flex;align-items: center;padding:10px;}header img{width:4em;height:4em;margin-right:1em;}.wrapper > a{text-decoration:none;color:#fff;}.main,footer{padding:20px;}.main a{color:blue;}.main{background-color:#fff;}footer,footer a{color:#fff;}</style><div class="wrapper">'+
+                '\n\n<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><style>.wrapper{border:2px solid rgba(0, 0, 0, 0.8);background-color: #000000cc;}img{background-color:rgba(0, 0, 0, 0.8);}header{display:flex;align-items: center;padding:10px;}header img{width:4em;height:4em;margin-right:1em;}.wrapper > a{text-decoration:none;color:#fff;}.main,footer{padding:20px;}.main a{color:blue;}.main{background-color:#fff;}footer,footer a{color:#fff;}</style></head><body><div class="wrapper">'+
                 '<a href="'+myURL.origin+'"><header><img src="'+myURL.origin+'/apple-touch-icon.png">'+
                 '<h1>'+game.name+'</h1></header></a><div class="main">Hello, <br /> You see this mail, because probably u forgot password,<br />- If its true, <a href="'+
                 passToken+'">click here</a> to reset it.<br />- If smthing wrong, retype link below to your browser: <br />'+
                 passToken+'<br /><br />- If you never seen '+game.name+' game, please ignore this mail, or contact in our support - probably somebody make account on your email.<br /></div><footer>Best regards<br />'+
-                game.name +'team.  <br /><a href="'+myURL.origin+'">'+myURL.origin+'</a></footer></div>',
+                game.name +'team.  <br /><a href="'+myURL.origin+'">'+myURL.origin+'</a></footer></div></body></html>',
                 (err) => {
                   console.error(err) 
                   vals.action = "result";
