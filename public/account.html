@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{name}} account</title>
   <link rel="shortcut icon" href="favicon.ico?version={{version}}" type="image/x-icon">
-  <link rel="stylesheet" href="style/game.css?version={{version}}">
+  <link rel="stylesheet" href="style/account.css?version={{version}}">
   <script src="../js/functions.js?version={{version}}"></script>
   {{js}}
 </head>
-<body class="loginPage">
+<body>
   <main>
     <noscript>
       You need enable javascript to make this page work.
@@ -68,13 +68,16 @@
     <form id="logout" action="account.html" method="get">
       <input type="hidden" name="logout" value="true">
     </form>
-    <div class="additional">
+  </main>
+  
+  <footer>
+    <div class="options">
       <a href="?action=login">Login</a>
       <a href="?action=forgot">Forgot</a>
       <a href="?action=register">Register</a>
-      <a href="/">Home</a>
+      <a href="/">Home</a>  
     </div>
-  </main>
+  </footer>
   <script>
     const acc = {
       urlVals:'login',

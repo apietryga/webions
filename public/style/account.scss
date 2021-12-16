@@ -1,0 +1,129 @@
+@import 'both.scss';
+$formBG: #2f2f2fb4;
+a{text-decoration: none;color:#fff;}
+body{
+  margin:0;
+  background-color:rgba(0, 0, 0, 0.9);
+  height:100vh;
+  display:flex;
+  flex-direction: column;
+  background-image: url("../logo.webp");
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center 50%;
+  main{
+    flex:4;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    >*{
+      width:50%;
+      background-color:rgba(0, 0, 0, 0.6);
+      padding:5%;
+    }
+    form{
+      @extend %inFrame;
+      background-color:$formBG;
+      border-top:0;
+      padding-top:0;
+      display:none;
+      flex-direction: column;
+      input{
+        padding:5px 10px;
+        margin:5px;
+        background-color:$formBG;
+        @extend %inFrame;
+        &:focus{
+          outline:0;
+        }
+      }
+      input[type=submit]{
+        @extend %onFrameButt;
+        cursor:pointer;
+      }
+      div{
+        display:flex;
+        justify-content: space-between;        
+        gap:5px;
+        >*{width:100%;}
+        >b{text-align: right;}
+        .sex{
+          background-color: transparent;
+          display:flex;
+          flex-direction: column;
+          padding:0;
+          legend{
+            padding:0;
+            width:100%;
+            display:flex;
+          }
+          input[type=radio]{
+            position:relative;
+            &:after{
+              content:"";
+              width:100%;
+              height:100%;
+              position:absolute;
+              left:-2px;
+              top:-2px;
+              border-radius:50%;
+              @extend %onFrame;
+              padding:0;
+            }
+            &:checked::after{
+              @extend %inFrame;
+              padding:0;
+            }
+          }
+          margin-left:5px;
+        }
+      }
+    }
+    .message{
+      @extend %inFrame;
+      background-color:$formBG;
+      // padding:3%;
+      // width:100%;
+      border-bottom:0;
+      text-align:center;
+      padding-bottom:0;
+    }
+   
+  }
+  footer{
+    flex:1;
+    padding:5px;
+    .options{
+      @extend %onFrame;
+      padding:10px 15px;
+      display:flex;
+      flex-direction: column;
+      width:fit-content;
+      a{
+        @extend %onFrameButt;
+        padding:2px 20px;
+        text-align: center;
+        margin-top:5px;
+        &:nth-child(1){
+          margin-top:0;
+        }
+      }
+    }
+  }
+}
+
+@media(min-width:720px){
+  body{
+    background-size:30%;
+    main{
+      >*{
+        width:20%;
+      }
+    }
+    footer{
+      padding-left:50px;
+      padding-bottom:50px;
+    }
+  }
+}

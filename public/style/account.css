@@ -1,0 +1,185 @@
+body main form input:active[type=submit], body footer .options a:active, .eq .itemContainer .label, body main form, body main form input, body main form div .sex input[type=radio]:checked::after, body main .message {
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+body main form div .sex input[type=radio]:after, body footer .options {
+  border: 2px solid;
+  border-color: #737373 #444444 #444444 #737373;
+  padding: 2px;
+  background-color: #2f2f2f;
+  color: #AEAEAC;
+}
+
+body main form input[type=submit], body footer .options a {
+  border: 2px solid;
+  border-color: #737373 #444444 #444444 #737373;
+  padding: 2px;
+  color: #AEAEAC;
+}
+
+.eq .itemContainer {
+  position: relative;
+}
+
+.eq .itemContainer .label {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  min-width: 80px;
+  font-size: 0.7em;
+  display: none;
+  padding: 5px;
+  z-index: 1;
+  text-align: left;
+  background-color: #2f2f2fb6 !important;
+}
+
+.eq .itemContainer:hover > .label {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+body {
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../logo.webp");
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center 50%;
+}
+
+body main {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body main > * {
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5%;
+}
+
+body main form {
+  background-color: #2f2f2fb4;
+  border-top: 0;
+  padding-top: 0;
+  display: none;
+  flex-direction: column;
+}
+
+body main form input {
+  padding: 5px 10px;
+  margin: 5px;
+  background-color: #2f2f2fb4;
+}
+
+body main form input:focus {
+  outline: 0;
+}
+
+body main form input[type=submit] {
+  cursor: pointer;
+}
+
+body main form div {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+body main form div > * {
+  width: 100%;
+}
+
+body main form div > b {
+  text-align: right;
+}
+
+body main form div .sex {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin-left: 5px;
+}
+
+body main form div .sex legend {
+  padding: 0;
+  width: 100%;
+  display: flex;
+}
+
+body main form div .sex input[type=radio] {
+  position: relative;
+}
+
+body main form div .sex input[type=radio]:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  border-radius: 50%;
+  padding: 0;
+}
+
+body main form div .sex input[type=radio]:checked::after {
+  padding: 0;
+}
+
+body main .message {
+  background-color: #2f2f2fb4;
+  border-bottom: 0;
+  text-align: center;
+  padding-bottom: 0;
+}
+
+body footer {
+  flex: 1;
+  padding: 5px;
+}
+
+body footer .options {
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+body footer .options a {
+  padding: 2px 20px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+body footer .options a:nth-child(1) {
+  margin-top: 0;
+}
+
+@media (min-width: 720px) {
+  body {
+    background-size: 30%;
+  }
+  body main > * {
+    width: 20%;
+  }
+  body footer {
+    padding-left: 50px;
+    padding-bottom: 50px;
+  }
+}

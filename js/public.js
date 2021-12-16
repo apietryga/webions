@@ -119,7 +119,6 @@ function public(req, res, playersList) {
           }
         }
       }
-      // console.log(path)
       fs.readFile(path,"utf8",(e,content) => {
         if(e == null){
           if(func.isSet(vals.content)){content = content.split('{{content}}').join(vals.content);}
@@ -232,58 +231,27 @@ function public(req, res, playersList) {
         dbc[game.db].load({name:data.nick},(dbres)=>{
           if(dbres){
             if(func.isSet(dbres.email)){
-              //  MAILGUN_DOMAIN 'sandboxb72821a6d07242b49d6c0cfbb9c2ef22.mailgun.org',
-              // MAILGUN_SMTP_PORT: '587',
-              //  MAILGUN_PUBLIC_KEY: 'pubkey-e92bcca562988ce12c9e45fccdee7c31',
-              // MAILGUN_SMTP_PASSWORD: '8cbb583aeca7c05f8a456903490a6894-7005f37e-5436ab11',
-              // MAILGUN_SMTP_LOGIN: 'postmaster@sandboxb72821a6d07242b49d6c0cfbb9c2ef22.mailgun.org',
-              // console.log(process.env)
-              // courier.send ({
-              //   eventId: "F2N3F5QTN0MZRDHVPGK4RSQAXQE6",
-              //   recipientId: "webionsgame@gmail.com",
-              //   profile: {
-              //     email: dbres.email
-              //   },
-              //   data: {
-              //     passToken: "https://webions.herokuapp.com/account.html?action=newpass&passToken="+passTokens.generate(data.nick).passToken
-              //   }
-              // })
-
+              const passToken = myURL.origin+"/account.html?action=newpass&passToken="+passTokens.generate(data.nick).passToken;
               mailgun.sendRaw(
-                // 'webionsgame@gmail.com',
                 process.env.MAILGUN_SMTP_LOGIN,
-                // ['antek.pietryga@gmail.com'],
                 [dbres.email],
-                // 'From: sender@example.com' +
                 'From: '+process.env.MAILGUN_SMTP_LOGIN +
-                  // '\nTo: ' + 'recipient1@example.com' +
-                  '\nTo: ' + dbres.email +
-                  '\nContent-Type: text/html; charset=utf-8' +
-                  '\nSubject: I Love Email' +
-                  '\n\nBecause it\'s just so awesome',
+                '\nTo: ' + dbres.email +
+                '\nContent-Type: text/html; charset=utf-8' +
+                '\nSubject: Forgotten Password - '+game.name +
+                '<style>.wrapper{border:2px solid rgba(0, 0, 0, 0.8);background-color: #000000cc;}img{background-color:rgba(0, 0, 0, 0.8);}header{display:flex;align-items: center;padding:10px;}header img{width:4em;height:4em;margin-right:1em;}.wrapper > a{text-decoration:none;color:#fff;}.main,footer{padding:20px;}.main a{color:blue;}.main{background-color:#fff;}footer,footer a{color:#fff;}</style><div class="wrapper">'+
+                '<a href="'+myURL.origin+'"><header><img src="'+myURL.origin+'/apple-touch-icon.png">'+
+                '<h1>'+game.name+'</h1></header></a><div class="main">Hello, <br /> You see this mail, because probably u forgot password,<br />- If its true, <a href="'+
+                passToken+'">click here</a> to reset it.<br />- If smthing wrong, retype link below to your browser: <br />'+
+                passToken+'<br /><br />- If you never seen '+game.name+' game, please ignore this mail, or contact in our support - probably somebody make account on your email.<br /></div><footer>Best regards<br />'+
+                game.name +'team.  <br /><a href="'+myURL.origin+'">'+myURL.origin+'</a></footer></div>',
                 (err) => {
-                  // err && 
-                  console.log(err) 
+                  console.error(err) 
                   vals.action = "result";
-                  if(err == null){
-                    vals.message = "<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.</b>";
-                    callback();
-                  }else{
-                    vals.message = "<b style='color:red;'>Something went wrong. If you're server owner, find mailgun settings in docs</b>";
-                  }
+                  vals.message = err == null?"<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.<br />Check your spam folder</b>":"<b style='color:red;'>Something went wrong. If you're server owner, find mailgun settings in docs</b>";
                   callback();
                 }
               )
-              
-
-
-
-
-              // .then(()=>{
-              //   vals.action = "result";
-              //   vals.message = "<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.</b>";
-              //   callback();
-              // })
             }else{
               vals.action = "result";
               vals.message = "<b style='color:red;'>Player "+data.nick+" have no email setted.</b>";
@@ -454,11 +422,7 @@ function public(req, res, playersList) {
     <a href="/players.html?lastdeaths=true">Last deaths</a>`;
     if(myURL.pathname == "/"){myURL.pathname = "/index.html"}
     path = myURL.pathname;
-    // vals.message = game.whatsNew;
-    // const readme = fs.readFileSync("readme.md", "utf8");
-    // console.log(readme);
     const result = md.render(fs.readFileSync("readme.md", "utf8"));
-
     vals.message = result;
     serveChangedContent();
   }else{

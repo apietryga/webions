@@ -1,11 +1,11 @@
-body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 button:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .eq .itemContainer .label, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar, .loginPage main form, .loginPage main form input, .loginPage main form div .sex input[type=radio]:checked::after, .loginPage main .message, .loginPage main .additional {
+body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 button:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .eq .itemContainer .label, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
-body ::-webkit-scrollbar-thumb, body .wrapper .gameAndConsole .gamePlane .outFitContainer, body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar, body .wrapper > .mainMenu > div > div, body .popupParent .popup, body .popupParent .popup .closeBar, body .popupParent .popup .closeBar div, .loginPage main form input[type=submit], .loginPage main form div .sex input[type=radio]:after {
+body ::-webkit-scrollbar-thumb, body .wrapper .gameAndConsole .gamePlane .outFitContainer, body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar, body .wrapper > .mainMenu > div > div, body .popupParent .popup, body .popupParent .popup .closeBar, body .popupParent .popup .closeBar div {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -521,121 +521,4 @@ body .popupParent .popup .closeBar div {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.loginPage {
-  height: 100vh;
-  padding: 10%;
-  font-size: 0.9em;
-}
-
-.loginPage a {
-  text-decoration: none;
-  color: #fff;
-}
-
-.loginPage main {
-  background-image: url("../logo.webp");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.loginPage main > * {
-  width: 50%;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 5%;
-}
-
-.loginPage main form {
-  background-color: #2f2f2fb4;
-  border-top: 0;
-  border-bottom: 0;
-  display: none;
-  flex-direction: column;
-}
-
-.loginPage main form input {
-  padding: 5px 10px;
-  margin: 5px;
-  background-color: #2f2f2fb4;
-}
-
-.loginPage main form input:focus {
-  outline: 0;
-}
-
-.loginPage main form input[type=submit] {
-  cursor: pointer;
-}
-
-.loginPage main form div {
-  display: flex;
-  justify-content: space-between;
-  gap: 5px;
-}
-
-.loginPage main form div > * {
-  width: 100%;
-}
-
-.loginPage main form div > b {
-  text-align: right;
-}
-
-.loginPage main form div .sex {
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin-left: 5px;
-}
-
-.loginPage main form div .sex legend {
-  padding: 0;
-  width: 100%;
-  display: flex;
-}
-
-.loginPage main form div .sex input[type=radio] {
-  position: relative;
-}
-
-.loginPage main form div .sex input[type=radio]:after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: -2px;
-  top: -2px;
-  border-radius: 50%;
-  padding: 0;
-}
-
-.loginPage main form div .sex input[type=radio]:checked::after {
-  padding: 0;
-}
-
-.loginPage main .message {
-  background-color: #2f2f2fb4;
-  padding: 3%;
-  border-bottom: 0;
-  text-align: center;
-  padding-bottom: 0;
-}
-
-.loginPage main .additional {
-  background-color: #2f2f2fb4;
-  padding: 3%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  justify-content: space-between;
-  border-top: 0;
-  padding-top: 0;
 }
