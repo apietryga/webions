@@ -344,6 +344,25 @@ body{
     position:sticky;
     top:0;
   }
+  .cookiesPopUp{
+    @extend %onFrame;
+    display:flex;
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:2% 5%;
+    justify-content:space-between;
+    align-items:center;
+    p{
+      margin:0;
+    }
+    span{
+      cursor:pointer;
+      @extend %onFrameButt;
+      padding:5px 10px
+    }
+  }
 }
 
 @media (max-width:720px){

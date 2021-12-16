@@ -126,6 +126,7 @@ body{
           @extend %onFrameButt;
           cursor:pointer;
           position:absolute;
+          background-color: #2f2f2f;
           &.mainMenu{
             right:0;
           }

@@ -35,7 +35,7 @@ const passTokens = {
   }
 }
 const bcrypt = require('bcrypt');
-password = {
+const password = {
   cryptPassword : (password, callback) => {
     bcrypt.genSalt(10, function(err, salt) {
      if (err){

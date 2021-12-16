@@ -14,7 +14,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -39,20 +39,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [55, -21, -1],
+    "position": [29, -25, 0],
     "speed": 2.7,
-    "health": 810,
-    "maxHealth": 840,
+    "health": 850,
+    "maxHealth": 850,
     "skills": {
-      "level": 74,
-      "exp": 403457,
-      "fist": 44,
-      "dist": 33,
+      "level": 75,
+      "exp": 406237,
+      "fist": 45,
+      "dist": 35,
       "healing": 5011,
-      "fist_summary": 1900,
-      "dist_summary": 1082
+      "fist_summary": 2017,
+      "dist_summary": 1213
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -176,8 +176,8 @@
     ],
     "sprite": "male_citizen",
     "quests": ["ladder"],
-    "mana": 1240,
-    "maxMana": 840,
+    "mana": 1250,
+    "maxMana": 850,
     "token": "myrizlkica",
     "redTarget": false
   },
@@ -197,7 +197,7 @@
       "dist_summary": null,
       "fist_summary": null
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -258,7 +258,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1036,
+    "mana": 1208,
     "maxMana": 4910,
     "redTarget": false
   },
@@ -277,7 +277,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
@@ -362,7 +362,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "male",
@@ -454,7 +454,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -493,7 +493,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
     "email": "a@ad.pl",
     "sex": "female",
@@ -535,7 +535,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -574,7 +574,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -625,7 +625,7 @@
       "dist_summary": 0
     },
     "type": "player",
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "text": "",
     "game": {
       "time": "2021-10-17T11:04:50.826Z",
@@ -666,24 +666,24 @@
   },
   {
     "name": "GM",
-    "position": [44, 2, 1],
+    "position": [0, 13, 1],
     "speed": 2.2,
-    "health": 1360,
-    "maxHealth": 360,
+    "health": 1330,
+    "maxHealth": 380,
     "sprite": "gm",
     "skills": {
-      "level": 26,
-      "exp": 15890,
+      "level": 28,
+      "exp": 20910,
       "fist": 312,
       "dist": 115,
       "healing": 119,
-      "fist_summary": 97218,
-      "dist_summary": 13093
+      "fist_summary": 97317,
+      "dist_summary": 13176
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618815507,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -714,7 +714,7 @@
       "lh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [55, -28, -1],
+        "position": [-72, 11, 2],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -722,9 +722,7 @@
         "manaRegen": 100,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "lh"
+        "actionType": "pickUp"
       },
       "rh": {
         "type": "item",
@@ -836,10 +834,20 @@
       "Random Item",
       "Random Item",
       "The Crown",
-      "The Crown"
+      "The Crown",
+      "ladder",
+      "ladder",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "ladder",
+      "ladder",
+      "Random Item",
+      "Random Item",
+      "Random Item"
     ],
-    "mana": 560,
-    "maxMana": 360,
+    "mana": 580,
+    "maxMana": 380,
     "redTarget": false,
     "token": "dnfvwxnuwef"
   },
@@ -952,7 +960,7 @@
         "actionType": "pickUp"
       }
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "lastDeaths": [
       {
         "when": "2021-11-14T11:11:20.518Z",
@@ -1076,7 +1084,7 @@
         "field": "ft"
       }
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "lastDeaths": [
       {
         "when": "2021-11-16T01:12:52.298Z",
@@ -1178,7 +1186,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "lastDeaths": [
       {
         "when": "2021-11-17T15:19:20.685Z",
@@ -1256,7 +1264,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639420145135,
+    "lastFrame": 1639618062813,
     "sprite": "male_oriental",
     "quests": [],
     "mana": 150,

@@ -8,11 +8,13 @@
   - eq view in landscape mobile
   - mobile item stats
   - upperwalls
-  
+
 ## WORKIN' ON
   - make subpages for libary
+  - fix token - not saving in base.
   - landscape map control mobile [planeclicking]
-  - display lastframe hour - minutes break.
+  - display lastframe hour - minutes break. improve months 
+  - disable players updating on serv start.
   - fix doubled console message on sent
   - repair player kick (once - now 6 times...)
   - replace courier with mailgun - **to make repository public**
@@ -29,6 +31,10 @@
   - add shielding
   - add magic lvl
   - SSL 
+  - secure websocket
+  - secure public
+  - all map image on index
+  - improve succesfully login animation [no form and wait for map load.]
 
 ## TO CATCH
   - Unexpected server crash (when?, why?) [8.12.2021]

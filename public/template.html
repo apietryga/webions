@@ -58,18 +58,8 @@
   if(!document.cookie.split("; ").includes("popup=false")){
     const popup = document.createElement("div");
     popup.className = "cookiesPopUp";
-    popup.style.cssText = `
-      display:flex;
-      position:fixed;
-      bottom:0;
-      background-color:#333;
-      width:100%;
-      padding:2% 5%;
-      justify-content:space-between;
-      align-items:center;
-    `;
-    popup.innerHTML = "<span>Ta strona używa plików cookies.<span>";
-    popup.innerHTML += "<span style='cursor:pointer;border:2px solid #fff;border-radius:5px;padding:5px 10px' onclick='accept()'>OK</span>";
+    popup.innerHTML = "<p>This page uses cookie files</p>";
+    popup.innerHTML += "<span onclick='accept()'>OK</span>";
     document.body.append(popup);
   }
   const accept = () => {

@@ -32,7 +32,7 @@ this.list = [
   },
   // TOWER 
   { name:"staticBox",
-    position:[48,-37,4],
+    position:[44,-38,4],
     spriteNr:2,
     inItem: "Random Item"
   },
@@ -58,8 +58,13 @@ this.list = [
     position:[32,-23,0],
   },
   { name:"ladder",
-    position:[33,-25,1],
+    position:[33,-24,1],
   },
+  // CASTLEGATE NORTH 
+  { name:"ladder",
+    position:[33,-47,1],
+  },
+
   // CYCLOPS QUEST
   { name:"staticBox",
     position:[90,4,1],
