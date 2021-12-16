@@ -251,7 +251,7 @@ function public(req, res, playersList) {
 
               mailgun.sendRaw(
                 // 'webionsgame@gmail.com',
-                process.env.MAILGUN_SMTP_LOGIN
+                process.env.MAILGUN_SMTP_LOGIN,
                 // ['antek.pietryga@gmail.com'],
                 [dbres.email],
                 // 'From: sender@example.com' +
