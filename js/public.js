@@ -4,14 +4,8 @@ const {URL} = require('url');
 const dbConnect = require("./dbconnect");
 const dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
-
-// const  {CourierClient} = require("@trycourier/courier");
-// const courier = CourierClient({authorizationToken:"pk_prod_34BBVC7TP6476APWH0SN5R6HYK6W"});  
-
 const Mailgun = require("mailgun").Mailgun;
 const mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
-
-
 const Creature = require("./server_components")[0];
 const MarkdownIt = require('markdown-it'),
 md = new MarkdownIt();
@@ -238,8 +232,12 @@ function public(req, res, playersList) {
         dbc[game.db].load({name:data.nick},(dbres)=>{
           if(dbres){
             if(func.isSet(dbres.email)){
-
-              console.log(process.env)
+              //  MAILGUN_DOMAIN 'sandboxb72821a6d07242b49d6c0cfbb9c2ef22.mailgun.org',
+              // MAILGUN_SMTP_PORT: '587',
+              //  MAILGUN_PUBLIC_KEY: 'pubkey-e92bcca562988ce12c9e45fccdee7c31',
+              // MAILGUN_SMTP_PASSWORD: '8cbb583aeca7c05f8a456903490a6894-7005f37e-5436ab11',
+              // MAILGUN_SMTP_LOGIN: 'postmaster@sandboxb72821a6d07242b49d6c0cfbb9c2ef22.mailgun.org',
+              // console.log(process.env)
               // courier.send ({
               //   eventId: "F2N3F5QTN0MZRDHVPGK4RSQAXQE6",
               //   recipientId: "webionsgame@gmail.com",
@@ -252,25 +250,40 @@ function public(req, res, playersList) {
               // })
 
               mailgun.sendRaw(
-                'webionsgame@gmail.com',
-                ['antek.pietryga@gmail.com'],
-                'From: sender@example.com' +
-                  '\nTo: ' + 'recipient1@example.com' +
+                // 'webionsgame@gmail.com',
+                process.env.MAILGUN_SMTP_LOGIN
+                // ['antek.pietryga@gmail.com'],
+                [dbres.email],
+                // 'From: sender@example.com' +
+                'From: '+process.env.MAILGUN_SMTP_LOGIN +
+                  // '\nTo: ' + 'recipient1@example.com' +
+                  '\nTo: ' + dbres.email +
                   '\nContent-Type: text/html; charset=utf-8' +
                   '\nSubject: I Love Email' +
                   '\n\nBecause it\'s just so awesome',
-                function(err) { err && console.log(err) }
+                (err) => {
+                  // err && 
+                  console.log(err) 
+                  vals.action = "result";
+                  if(err == null){
+                    vals.message = "<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.</b>";
+                    callback();
+                  }else{
+                    vals.message = "<b style='color:red;'>Something went wrong. If you're server owner, find mailgun settings in docs</b>";
+                  }
+                  callback();
+                }
               )
               
 
 
 
 
-              .then(()=>{
-                vals.action = "result";
-                vals.message = "<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.</b>";
-                callback();
-              })
+              // .then(()=>{
+              //   vals.action = "result";
+              //   vals.message = "<b style='color:green;'>Check your email for details.<br />You have 5 minutes for it.</b>";
+              //   callback();
+              // })
             }else{
               vals.action = "result";
               vals.message = "<b style='color:red;'>Player "+data.nick+" have no email setted.</b>";
@@ -353,7 +366,7 @@ function public(req, res, playersList) {
         vals.nick = player;
       }else{
         path = "./public/account.html";
-        vals.message = "Please log in:";
+        // vals.message = "Please log in:";
       }
       if(!isWaiting){
         serveChangedContent(path);

@@ -122,7 +122,7 @@
         // MESSAGE DISPLAYER
         const message = document.querySelector(".message");
         if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){
-          message.style.display = "none";
+          message.innerHTML = "";
         }
         if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){
           for(const nickField of document.querySelectorAll(".nick > input")){
