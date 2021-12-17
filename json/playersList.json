@@ -14,7 +14,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -39,20 +39,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [29, -25, 0],
+    "position": [55, -21, -1],
     "speed": 2.7,
-    "health": 850,
-    "maxHealth": 850,
+    "health": 740,
+    "maxHealth": 820,
     "skills": {
-      "level": 75,
-      "exp": 406237,
-      "fist": 45,
-      "dist": 35,
+      "level": 72,
+      "exp": 368822,
+      "fist": 47,
+      "dist": 37,
       "healing": 5011,
-      "fist_summary": 2017,
-      "dist_summary": 1213
+      "fist_summary": 2141,
+      "dist_summary": 1343
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704688312,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -144,18 +144,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-11-14T11:27:12.836Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 82
-      },
-      {
-        "when": "2021-11-14T11:27:25.661Z",
-        "who": "GM",
-        "whoType": "player",
-        "level": 79
-      },
-      {
         "when": "2021-11-18T16:31:13.922Z",
         "who": "Cyclops",
         "whoType": "monster",
@@ -172,12 +160,24 @@
         "who": "Cyclops",
         "whoType": "monster",
         "level": 74
+      },
+      {
+        "when": "2021-12-16T16:38:17.268Z",
+        "who": "Barbarian",
+        "whoType": "monster",
+        "level": 73
+      },
+      {
+        "when": "2021-12-16T21:09:11.162Z",
+        "who": "Dragon",
+        "whoType": "monster",
+        "level": 72
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder"],
-    "mana": 1250,
-    "maxMana": 850,
+    "mana": 1220,
+    "maxMana": 820,
     "token": "myrizlkica",
     "redTarget": false
   },
@@ -197,7 +197,7 @@
       "dist_summary": null,
       "fist_summary": null
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
@@ -258,7 +258,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1236,
+    "mana": 1464,
     "maxMana": 4910,
     "redTarget": false
   },
@@ -277,7 +277,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "female",
@@ -362,7 +362,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
     "email": "a@a.pl",
     "sex": "male",
@@ -454,7 +454,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -493,7 +493,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "password": "$2b$10$MxYyKemBtD6ZD3APk7.eVu/uhg4.KY2Lfz8Zjp61eMo/s5NnDkVgi",
     "email": "a@ad.pl",
     "sex": "female",
@@ -535,7 +535,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -574,7 +574,7 @@
       "fist_summary": 0,
       "dist_summary": 0
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -625,7 +625,7 @@
       "dist_summary": 0
     },
     "type": "player",
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "text": "",
     "game": {
       "time": "2021-10-17T11:04:50.826Z",
@@ -666,7 +666,7 @@
   },
   {
     "name": "GM",
-    "position": [-1, 13, 1],
+    "position": [0, 13, 1],
     "speed": 2.2,
     "health": 1383,
     "maxHealth": 380,
@@ -683,7 +683,7 @@
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -977,7 +977,7 @@
         "actionType": "pickUp"
       }
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "lastDeaths": [
       {
         "when": "2021-11-14T11:11:20.518Z",
@@ -1101,7 +1101,7 @@
         "field": "ft"
       }
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "lastDeaths": [
       {
         "when": "2021-11-16T01:12:52.298Z",
@@ -1203,7 +1203,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "lastDeaths": [
       {
         "when": "2021-11-17T15:19:20.685Z",
@@ -1281,7 +1281,7 @@
         "speed": 2
       }
     },
-    "lastFrame": 1639660853247,
+    "lastFrame": 1639704655067,
     "sprite": "male_oriental",
     "quests": [],
     "mana": 150,

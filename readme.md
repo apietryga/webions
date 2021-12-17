@@ -1,11 +1,15 @@
 # WEBIONS
   Webions is a MMORPG game working on browsers. 
-  You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "server.js" by nodejs. I will make instructions for this in future versions.
+  You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "serwer.js" by nodejs. I will make instructions for this in future versions.
 
 ## TESTING NOW
   - replace courier with mailgun - **to make repository public**
+  - SIGTERM uncaughtException at /app/js/public.js:136:13
+  - secure public
 
 ## WORKIN' ON
+  - firefox compatibility [gameplane order rendering suck]
+  - Uncaught TypeError: Cannot read properties of undefined (reading 'empty') [game.html:17]
   - make subpages for libary
   - fix token - not saving in base.
   - landscape map control mobile [planeclicking]
@@ -16,7 +20,7 @@
   - fix get hitting without def (from eq) when kicked (most on train's)
   - base mana regen
   - strict register names (no numbers and monsters names)
-  - remove this.skills.healing opt, and improve healing with mana
+  - remove Creature.skills.healing, and improve healing with mana
   - walking throught static items/monsters (not players and empty boxes, hmm?)
   - NPC's staying on saying and speaking
   - backpacks and depos
@@ -27,9 +31,16 @@
   - add magic lvl
   - SSL 
   - secure websocket
-  - secure public
-  - all map image on index
-  - improve succesfully login animation [no form and wait for map load.]
+  - entire map image on index
+  - improve succesfully login animation [no form and wait for map load
+  - protection zone
+  - house zone
+  - first remove item from eq, then drop them. 
+  - in register, fill checked sex value
+  - controls 168
+  - if user write space in mail, remove it.
+  - online list - not kicking players
+  - make downcase letters in login (can rozin login as Rozin)
 
 ## TO CATCH
   - Unexpected server crash (when?, why?) [8.12.2021]

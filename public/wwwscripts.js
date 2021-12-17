@@ -4,12 +4,20 @@ if(Object.keys(searchToObject()).includes("online")){
 }else{
   getWhat = "playersList";
 }
-// LOAD SPRITES [PLAYERS AFTER LOAD.]
-const map = new Map();
-map.loadSprites(()=>{
-  if(typeof items != "undefined"){jsToTable("items",items);}
-  if(typeof monsters != "undefined"){jsToTable("monsters",monsters);}
-})
+// LOAD SPRITES
+let map;
+console.log(location.search.split("=")[0])
+if(('/players.html' == location.pathname && location.search.split("=")[0] == "?player")
+|| ('/libary.html' == location.pathname)
+){
+  map = new Map();
+  console.log("ładuje")
+  map.loadSprites(()=>{
+    if(typeof items != "undefined"){jsToTable("items",items);}
+    if(typeof monsters != "undefined"){jsToTable("monsters",monsters);}
+  })
+  
+}
 // PLAYERS
 const main = document.querySelector("main");
 if(typeof main != null && typeof playersList != "undefined"){
@@ -248,7 +256,6 @@ if(typeof main != null && typeof playersList != "undefined"){
         table.append(row);
       }
     }else{
-      table.style.cursor = "pointer";
       // SKILLS && PLAYERS & ONLINE LIST 
       const tbHead = ["lp.","Player name","level"];
       if(typeof skills != "undefined"){

@@ -1,14 +1,13 @@
 const fs = require('fs');
 const func = require("../public/js/functions");
-const {URL} = require('url');
-const dbConnect = require("./dbconnect");
-const dbc = new dbConnect();dbc.init(()=>{});
+const URL = require('url').URL;
+const dbConnect = require("./dbconnect"), dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
-const Mailgun = require("mailgun").Mailgun;
-const mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
+const Mailgun = require("mailgun").Mailgun, mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
 const Creature = require("./server_components")[0];
-const MarkdownIt = require('markdown-it'),
-md = new MarkdownIt();
+const MarkdownIt = require('markdown-it'), md = new MarkdownIt();
+const bcrypt = require('bcrypt');
+const mime = require('mime-types');
 const passTokens = {
   vals : [],
   generate(pName){
@@ -34,25 +33,21 @@ const passTokens = {
     return valid;
   }
 }
-const bcrypt = require('bcrypt');
 const password = {
   cryptPassword : (password, callback) => {
     bcrypt.genSalt(10, function(err, salt) {
      if (err){
       console.error(err);
-       return callback(err);
-     } 
-  
+      return callback(err);
+     }
      bcrypt.hash(password, salt, function(err, hash) {
        return callback(err, hash);
      });
    });
   },
   comparePassword : (plainPass, hashword, callback) => {
-    bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {   
-        return err == null ?
-            callback(null, isPasswordMatch) :
-            callback(err);
+    bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {
+      return err == null ? callback(null, isPasswordMatch) : callback(err);
     });
   }
 }
@@ -75,9 +70,7 @@ const log = {
   }
 }
 function public(req, res, playersList) {
-  const {url} = req;
-  const href = "https://"+req.rawHeaders[1];
-  const myURL = new URL(href+url);
+  const myURL = new URL("https://"+req.rawHeaders[1]+req.url);
   const vals = {
     name: game.name,
     version: game.version,
@@ -87,37 +80,41 @@ function public(req, res, playersList) {
     aside: "",
     js:""
   }
-  const fromTemplate = ["",'index','players','libary','rules','404','4devs'];
-  let fileName = myURL.pathname.split("/")[1].split(".")[0] == ""?'index':myURL.pathname.split("/")[1].split(".")[0];
-  let fileExtension = myURL.pathname.split(".")[myURL.pathname.split(".").length-1] == "/"?'html': myURL.pathname.split(".")[myURL.pathname.split(".").length-1];
-  fileExtension == 'js' ? fileExtension = 'javascript':'';
-  const allowedFileTypes = ["webp","png","gif","jpg","jpeg","ico"];
-  const fileType = allowedFileTypes.includes(fileExtension)?'image':fileExtension == 'json'?'application':'text';
-  let contentType = fileType+'/'+fileExtension;
+  const fromTemplate = [''];
+  let fileName = myURL.pathname.split("/")[1].split(".")[0] == "" ? 'index' : myURL.pathname.split("/")[1].split(".")[0];
+  const allContents = fs.readFileSync("./public/contents.html", "utf8");
+  for(const titleAndContent of allContents.split("<!--| ")){
+    const [title,content] = titleAndContent.split(" |-->");
+    fromTemplate.push(title);
+    if(title == fileName){
+      vals.content = content;
+    }
+    if(title == "404"){
+      vals.e404 = content;
+    }
+  }
+  let contentType = mime.contentType(myURL.pathname.split(".")[myURL.pathname.split(".").length-1]);
+  contentType == "/" ? contentType = 'text/html':'';
   const serveChangedContent = (path = myURL.pathname) =>{
     if(!path.split("/").includes("public")){
-      path = "./public/"+path;
+      path = "./public"+path;
     }
-    if(!fs.existsSync(path) 
-    && !fromTemplate.includes(fileName) 
-    || !allowedFileTypes.concat(['html','css','javascript','json']).includes(fileExtension)){
-      fileExtension = "html";
-      fileName = "404";
+    if(!fs.existsSync(path)
+    && !fromTemplate.includes(fileName)
+    || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))
+    ){
       contentType = "text/html";
+      vals.content = vals.e404;
+      path = "./public/template.html"
     }
     // serve content with message
     res.writeHead(200, { 'Content-Type': contentType });
-    if(fileType == 'text'){
+    if(['image'].includes(req.headers['sec-fetch-dest'])){
+      fs.createReadStream(path).pipe(res);
+    }else{
       // dynamically generate page by combine template.html and contents.html
       if(fromTemplate.includes(fileName)){
         path = "./public/template.html";
-        const allContents = fs.readFileSync("./public/contents.html", "utf8");
-        for(const titleAndContent of allContents.split("<!--| ")){
-          const [title,content] = titleAndContent.split(" |-->");
-          if(title == fileName){
-            vals.content = content;
-          }
-        }
       }
       fs.readFile(path,"utf8",(e,content) => {
         if(e == null){
@@ -134,12 +131,9 @@ function public(req, res, playersList) {
         }
         res.end(content);
       })
-    }else{
-      // images
-      fs.createReadStream(path).pipe(res);
     }
   }
-  if(["/account.html"].includes(myURL.pathname)){  // account page
+  if(["/account.html"].includes(myURL.pathname)){
     path = "/account.html";
     let body = '';req.on("data",(chunk)=>{body += chunk;});
     const processRequest = (callback) => {
@@ -235,11 +229,11 @@ function public(req, res, playersList) {
               mailgun.sendRaw(
                 process.env.MAILGUN_SMTP_LOGIN,
                 [dbres.email],
-                'From: '+process.env.MAILGUN_SMTP_LOGIN +
-                '\nTo: ' + dbres.email +
+                'From: '+game.name+' <' + process.env.MAILGUN_SMTP_LOGIN+'>' +
+                '\nTo: '+data.nick+' <' + dbres.email + '>' +
                 '\nMIME-Version: 1.0' +
                 '\nContent-Type: text/html; charset=UTF-8' +
-                '\nSubject: Forgotten Password - '+game.name +
+                '\nSubject: '+data.nick+' - Forgotten Password in '+game.name +
                 '\n\n<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><style>.wrapper{border:2px solid rgba(0, 0, 0, 0.8);background-color: #000000cc;}img{background-color:rgba(0, 0, 0, 0.8);}header{display:flex;align-items: center;padding:10px;}header img{width:4em;height:4em;margin-right:1em;}.wrapper > a{text-decoration:none;color:#fff;}.main,footer{padding:20px;}.main a{color:blue;}.main{background-color:#fff;}footer,footer a{color:#fff;}</style></head><body><div class="wrapper">'+
                 '<a href="'+myURL.origin+'"><header><img src="'+myURL.origin+'/apple-touch-icon.png">'+
                 '<h1>'+game.name+'</h1></header></a><div class="main">Hello, <br /> You see this mail, because probably u forgot password,<br />- If its true, <a href="'+
@@ -294,7 +288,7 @@ function public(req, res, playersList) {
       }
     }
     req.on("end", ()=>{processRequest(serveChangedContent)});
-  }else if(["/game.html"].includes(myURL.pathname)){     // game page
+  }else if(["/game.html"].includes(myURL.pathname)){
     if(func.isSet(req.headers.cookie)){
       let player = false;
       // wait for connect to db and find player's token.

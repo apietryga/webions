@@ -21,6 +21,9 @@
   &:active{
     @extend %inFrame;
   }
+  &:hover{
+    background-color:rgb(68, 67, 67)!important;
+  }
 }
 .eq{
   .itemContainer{

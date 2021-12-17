@@ -7,8 +7,6 @@
 @keyframes walk {
   0%   {background-position:-18px -98px;}
   50%  {background-position:-98px -98px;}
-  // 25%  {background-position:-98px -98px;}
-  // 50%  {background-position:-178px -98px;}
   100% { background-position: -178px -98px;}
 }
 $tw:rgba(255, 255, 255, 0.096);
@@ -84,9 +82,6 @@ body{
       align-items: center;
       @extend %onFrameButt;
       color:inherit;
-      &:hover{
-        background-color:rgb(68, 67, 67);
-      }
     }
   }
   .wrapper{
@@ -117,6 +112,7 @@ body{
         }
         .listBody{
           @extend %onFrameButt;
+          cursor:pointer;
         }
         // Player list
         .listBody,.listHead{ // tr's from lists

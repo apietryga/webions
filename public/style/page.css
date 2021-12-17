@@ -20,6 +20,10 @@ body > header .logo, body > header .play a, body nav a, body aside a, body foote
   color: #AEAEAC;
 }
 
+body > header .logo:hover, body > header .play a:hover, body nav a:hover, body aside a:hover, body footer a:hover, body .wrapper main > table .listBody:hover, body .cookiesPopUp span:hover {
+  background-color: #444343 !important;
+}
+
 .eq .itemContainer {
   position: relative;
 }
@@ -154,10 +158,6 @@ body nav a, body aside a, body footer a {
   color: inherit;
 }
 
-body nav a:hover, body aside a:hover, body footer a:hover {
-  background-color: #444343;
-}
-
 body .wrapper {
   position: relative;
   display: flex;
@@ -193,6 +193,10 @@ body .wrapper main > table {
 
 body .wrapper main > table th {
   background-color: rgba(0, 0, 0, 0.493);
+}
+
+body .wrapper main > table .listBody {
+  cursor: pointer;
 }
 
 body .wrapper main > table .listBody, body .wrapper main > table .listHead {

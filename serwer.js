@@ -294,22 +294,22 @@ function shutdown(signal) {
 // END OF TESTING DETECTION
 
 
-// SAVING LOGS FROM CONSOLE
-const log = console.log;
-const err = console.error;
-const extendConsole = (val) => {
-  const date = new Date();
-  const time = date.getHours()+":"+date.getMinutes(); 
-  args = [time,val];
-  const content = JSON.parse(fs.readFileSync('./public/logs.json','utf-8'));
-  content.push({"log" : time+": "+val});
-  fs.writeFileSync('./public/logs.json',stringify(content));
-}
-console.log = (val) => {     
-  extendConsole(val);
-  log.apply(console, args);
-}
-console.error = (val) => {     
-  extendConsole(val);
-  err.apply(console, args);
-}
+// CATCH ALL CONSOLE LOGS AND ERRORS
+// const log = console.log;
+// const err = console.error;
+// const extendConsole = (val) => {
+//   const date = new Date();
+//   const time = date.getHours()+":"+date.getMinutes(); 
+//   args = [time,val];
+//   const content = JSON.parse(fs.readFileSync('./public/logs.json','utf-8'));
+//   content.push({"log" : time+": "+val});
+//   fs.writeFileSync('./public/logs.json',stringify(content));
+// }
+// console.log = (val) => {     
+//   extendConsole(val);
+//   log.apply(console, args);
+// }
+// console.error = (val) => {     
+//   extendConsole(val);
+//   err.apply(console, args);
+// }
