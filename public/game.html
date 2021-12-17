@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-title" content="{{name}}">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   </head>
-  <body  onselect = "document.selection.empty()">
+  <body onselect="typeof document.selection != 'undefined' ? document.selection.empty():'';">
     <noscript>
       This game will not apear without JavaScript - turn it on to play.
     </noscript>
@@ -34,7 +34,8 @@
         <div class="handler"></div>
       </div>
       <div class="handlerVertical"></div>
-      <div class="mainMenu"></div>
+      <div class="mainMenu">
+      </div>
       <div class="mobileControls leftPanel"></div>
       <div class="mobileControls rightPanel"></div>
     </div>
@@ -160,7 +161,6 @@
         load.both("Loading Game Plane",90);
         gamePlane.init();
         setResolution();
-        document.querySelector(".loader").style.display = "none";
       })
     })
   });
@@ -180,7 +180,6 @@
     // }
     );
   }
-  
 </script>
 <!--| DEVELOPER BUTTONS & STATS |-->
 <script>
@@ -254,5 +253,35 @@
   }
   if(new URLSearchParams(window.location.search).get("dev") == "on"){
     dev.init();
+  }
+</script>
+
+<!-- DELAY BEFORE RELOAD - FOR FIREFOX -->
+<script>
+  if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+    // GET GOTO LOCATION
+    // let whereLocation = "./game.html";
+    // console.log("firefox detected")
+    // setTimeout(()=>{
+    //   const allA = document.querySelectorAll("a");
+    //   console.log(allA)
+    //   for(const a of allA){
+    //     console.log(a)
+    //     a.onclick = (e) => {
+    //       // e.preventDefault();
+    //       whereLocation = e.explicitOriginalTarget.href;
+    //     }
+    //   }
+    // },5000)
+
+    onbeforeunload = (e) => {
+      // console.log(whereLocation)
+      // e.preventDefault();
+      // setTimeout(()=>{
+      //   console.log("ASD");
+      //   // return confirm("Your progress has been saved.");
+      // },500)
+      return "Your progress has been saved.";      
+    }
   }
 </script>

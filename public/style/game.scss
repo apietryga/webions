@@ -221,9 +221,14 @@ body{
       display:flex;
       height:2em;
       min-width: 30%;
-      button{
+      a{
         flex:1;
         @extend %onFrameButt;
+        display:grid;
+        place-items: center;
+        cursor:pointer;
+        font-size:0.8em;
+        text-decoration: none;
       }
     }
     // HEALTH & MANA BARS

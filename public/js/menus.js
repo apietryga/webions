@@ -44,18 +44,18 @@ const menus = {
     doms : [
       [{ title: "PAUSE GAME",
           innerHTML: "⏸",
-          type: "button",
+          type: "a",
           onclick: () => {gamePlane.stop();}
         },
         { title: "MAIN PAGE",
           innerHTML: "🏡",
-          type: "button",
-          onclick: () => {window.location.replace("/")}
+          type: "a",
+          href: "./"
         },
         { title: "LOGOUT",
           innerHTML: "🚪",
-          type: "button",
-          onclick: () => {window.location.replace("/account.html?action=logout")}
+          type: "a",
+          href: "./account.html?action=logout"
         }
       ],
       [{ title:"HEALTH",

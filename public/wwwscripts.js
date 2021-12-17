@@ -6,12 +6,10 @@ if(Object.keys(searchToObject()).includes("online")){
 }
 // LOAD SPRITES
 let map;
-console.log(location.search.split("=")[0])
 if(('/players.html' == location.pathname && location.search.split("=")[0] == "?player")
 || ('/libary.html' == location.pathname)
 ){
   map = new Map();
-  console.log("ładuje")
   map.loadSprites(()=>{
     if(typeof items != "undefined"){jsToTable("items",items);}
     if(typeof monsters != "undefined"){jsToTable("monsters",monsters);}
@@ -99,7 +97,7 @@ if(typeof main != null && typeof playersList != "undefined"){
               order = 2;
               const currentDate = new Date().getTime();
               const lf = new Date(player.lastFrame);
-              const frameToString = lf.getDate()+"."+lf.getMonth()+"."+lf.getFullYear()+", "+lf.getHours()+":"+lf.getMinutes();
+              const frameToString = (lf.getDate()<10?'0':'')+lf.getDate()+"."+((lf.getMonth()+1)<10?'0':'')+(lf.getMonth()+1)+"."+lf.getFullYear()+", "+(lf.getHours()<10?'0':'')+lf.getHours()+":"+(lf.getMinutes()<10?'0':'')+lf.getMinutes();
               if(currentDate - lf < 3000){
                 td2.innerHTML = "<span style='color:#fff;'>Online now</span>";
               }else{

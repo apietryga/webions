@@ -13,16 +13,12 @@
   color:#AEAEAC;
 }
 %onFrameButt{
-  border: 2px solid;
-  border-color: #737373 #444444 #444444 #737373;
-  padding:2px;
-  // background-color: rgb(47, 47, 47);
-  color:#AEAEAC;
+  @extend %onFrame;
   &:active{
     @extend %inFrame;
   }
   &:hover{
-    background-color:rgb(68, 67, 67)!important;
+    background-color:rgb(68, 67, 67);
   }
 }
 .eq{

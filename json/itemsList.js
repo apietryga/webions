@@ -129,9 +129,9 @@ this.list = [
     position:[32,-13,1],
     spriteNr:11
   },
-  { name:"King Armor",
-    position:[57,-13,1]
-  },
+  // { name:"King Armor",
+  //   position:[57,-13,1]
+  // },
   { name:"Wand of Destiny",
     position:[-72,11,2]
   },

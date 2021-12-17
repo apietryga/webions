@@ -5,19 +5,16 @@ body main form input:active[type=submit], body footer .options a:active, .eq .it
   color: #AEAEAC;
 }
 
-body main form div .sex input[type=radio]:after, body footer .options {
-  border: 2px solid;
-  border-color: #737373 #444444 #444444 #737373;
+body main form input[type=submit], body footer .options a, body main form div .sex input[type=radio]:after, body footer .options {
+  border: 2px solid !important;
+  border-color: #737373 #444444 #444444 #737373 !important;
   padding: 2px;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
-body main form input[type=submit], body footer .options a {
-  border: 2px solid;
-  border-color: #737373 #444444 #444444 #737373;
-  padding: 2px;
-  color: #AEAEAC;
+body main form input:hover[type=submit], body footer .options a:hover {
+  background-color: #444343 !important;
 }
 
 .eq .itemContainer {
@@ -85,6 +82,7 @@ body main form input {
   padding: 5px 10px;
   margin: 5px;
   background-color: #2f2f2fb4;
+  filter: none !important;
 }
 
 body main form input:focus {

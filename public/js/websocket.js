@@ -86,9 +86,8 @@ const serv = {
             }
           }
           // update console
-          if(creature.name == player.name && creature.text != ""){
+          if(creature.name == player.name && creature.text != "" && isSet(creature.text)){
             inGameConsole.text = creature.text;
-            // console.log(creature.text);
           }
         }
         // updating values

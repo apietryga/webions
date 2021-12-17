@@ -27,6 +27,53 @@ class Creature {
     this.isTarget = false;
     this.currentExshoust = false;
     this.fistExhoust = 15;
+    this.nick = {
+      draw: () => {
+        let ctx = gamePlane.context;
+        // draw name and health bar & update mana bar
+        if(this.health > 0 && this.position[2] == player.position[2]){
+          // menus health bar update
+          let maxBarWidth = 28;
+          let barWidth = (maxBarWidth * this.health) / this.totalHealth;
+          let percHealth = (100 * this.health) / this.totalHealth;
+          if(percHealth > 100){
+            barWidth = 28;
+          }
+          // UPDATE DOM BARS IN MENUS
+          if(this.type == "player"){
+            // barWidth = (maxBarWidth * this.health) / this.totalHealth;
+            // percHealth = (100 * this.health) / this.totalHealth;
+            for(const key of ["healthBar","manaBar"]){
+              const DOMBar = document.querySelector("."+key);
+              if(DOMBar != null && DOMBar.style.display != "none"){
+              if(key == "healthBar"){
+                  DOMBar.querySelector("div").style.width = percHealth+"%";
+                  DOMBar.querySelector("div").style.backgroundColor = hpColor(percHealth>75?75:percHealth);
+                  DOMBar.querySelector("label").innerHTML = this.health+"/"+this.totalHealth;
+                }else{
+                  const percMana = (100 * this.mana) / this.totalMana;
+                  DOMBar.querySelector("div").style.width = percMana+"%";
+                  DOMBar.querySelector("div").style.backgroundColor = 'blue';
+                  DOMBar.querySelector("label").innerHTML = this.mana+"/"+this.totalMana;  
+                }
+              }
+            }
+          }
+          // CANVAS RENDER
+          ctx.fillStyle = hpColor(percHealth);
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 1.5;
+          ctx.font = '900 20px Tahoma';
+          ctx.textAlign = "center";
+          ctx.fillText(this.name, this.x + 5, this.y - 22);
+          ctx.strokeText(this.name, this.x + 5, this.y - 22);
+          ctx.beginPath();
+          ctx.rect(this.x - 11, this.y - 18, 30, 5);
+          ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
+          ctx.stroke();
+        }
+      }
+    }
   }
   update(){
     // ITEMS UPDATE
@@ -207,10 +254,12 @@ class Creature {
       this.x = (this.position[0] - player.position[0] + 5) * 40;
       this.y = (this.position[1] - player.position[1] + 5) * 40;  
     }
+    
+
+
   }
   draw(){
     let ctx = gamePlane.context;
- 
     // SAYING
     if(this.name == player.name){
       // RENDER ALL SAYS NEAR
@@ -293,46 +342,6 @@ class Creature {
       ctx.lineTo(this.x + 40, this.y + 40);
       ctx.lineTo(this.x + 40, this.y -1);
       ctx.stroke();  
-    }
-    // draw name and health bar & update mana bar
-    if(this.health > 0 && this.position[2] == player.position[2]){
-      // menus health bar update
-      let maxBarWidth = 28;
-      let barWidth = (maxBarWidth * this.health) / this.totalHealth;
-      let percHealth = (100 * this.health) / this.totalHealth;
-        
-      // UPDATE DOM BARS IN MENUS
-      if(this.type == "player"){
-        // barWidth = (maxBarWidth * this.health) / this.totalHealth;
-        // percHealth = (100 * this.health) / this.totalHealth;
-        for(const key of ["healthBar","manaBar"]){
-          const DOMBar = document.querySelector("."+key);
-          if(DOMBar != null && DOMBar.style.display != "none"){
-           if(key == "healthBar"){
-              DOMBar.querySelector("div").style.width = percHealth+"%";
-              DOMBar.querySelector("div").style.backgroundColor = hpColor(percHealth>75?75:percHealth);
-              DOMBar.querySelector("label").innerHTML = this.health+"/"+this.totalHealth;
-            }else{
-              const percMana = (100 * this.mana) / this.totalMana;
-              DOMBar.querySelector("div").style.width = percMana+"%";
-              DOMBar.querySelector("div").style.backgroundColor = 'blue';
-              DOMBar.querySelector("label").innerHTML = this.mana+"/"+this.totalMana;  
-            }
-          }
-        }
-      }
-      // CANVAS RENDER
-      ctx.fillStyle = hpColor(percHealth);
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 1.5;
-      ctx.font = '900 20px Tahoma';
-      ctx.textAlign = "center";
-      ctx.fillText(this.name, this.x + 5, this.y - 22);
-      ctx.strokeText(this.name, this.x + 5, this.y - 22);
-      ctx.beginPath();
-      ctx.rect(this.x - 11, this.y - 18, 30, 5);
-      ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
-      ctx.stroke();
     }
     // draw hits and healing value
     if(isSet(this.oldHealth) && this.oldHealth != this.health){

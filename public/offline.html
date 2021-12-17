@@ -51,9 +51,11 @@
     }
     .reconnect{
       padding-bottom:20px;
+      padding-right:20px;
       font-size:0.6em;
       position:fixed;
       bottom:0;
+      right:0;
     }
   </style>
 </head>
@@ -71,7 +73,6 @@
 <script>
   // SERVICE WORKER FOR OFFLINE DISPLAY
   if('serviceWorker' in navigator) {navigator.serviceWorker.register('serviceWorker.js');}
-
   const offNav = {
     params: new URLSearchParams(window.location.search),
     init(){
@@ -108,12 +109,10 @@
     pushB(url,color = "#fff"){
       const b = document.querySelector("b");
       b.style.color = color;
-      // b.onclick = () => {window.location.replace(url);}
       b.onclick = () => {location.replace(offNav.url);}
     }
   }
   offNav.init();
-
   // AUTO RECONECTING
   const reconnectDOM = document.createElement("div");
   reconnectDOM.className = "reconnect";
@@ -134,8 +133,6 @@
       reconnectDOM.innerHTML = "Server offline, trying again ...";
     })
   },3000)
-
-
 </script>
 </body>
 </html>

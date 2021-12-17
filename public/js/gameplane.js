@@ -1,3 +1,4 @@
+let fistIteration = true;
 let inGameConsole;
 const gamePlane = {
   fps : game.fps,
@@ -7,14 +8,12 @@ const gamePlane = {
     list: [],
     ids: []
   },
-  // sprites: [],
   canvas : document.querySelector(".gamePlaneCanvas"),
   init () {
     this.canvas.width = 440;
     this.canvas.height = this.canvas.width;
     this.gridSize = this.canvas.width/11;
     this.context = this.canvas.getContext("2d");
-
     inGameConsole = new Text();
     this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
@@ -25,74 +24,60 @@ const gamePlane = {
     serv.load(()=>{
       menus.update();
       gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
-      if(player.update.constructor === Function){
+      if(isSet(player.update) && player.update.constructor === Function){
         player.update();
-      }else{
-        console.error(player.update());
       }
+      if(!isSet(player.newPos)){player.newPos = player.position;}
       map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
       const drawStack = [];
-      // update grids
-      for(const g of map.grids){
-        g.update();
-        drawStack.push(g);
+      const nicksStack = [];
+      const allElements = map.grids.concat(gamePlane.creatures.list).concat(gamePlane.items);
+      for(const el of allElements){
+        el.update();
+        drawStack.push(el);
+        if(el.constructor === Creature){
+          nicksStack.push(el.nick);
+        }
       }
-      // update creatures
-      for(const c of gamePlane.creatures.list){
-        if(c.id != player.id){c.update();}
-        drawStack.push(c);
-      }
-      // update items
-      for(const i of gamePlane.items){i.update();drawStack.push(i);}
-      // sort it in order of rendering.
+      const downEls = ['floors','halffloors'];
+      const upperEls = ['upperwalls','doors','walls'];
       drawStack.sort((a,b)=>{
-        // player above items
-        // if(b.type == "player" && a.type == "item"){return -1;}
-        let keyA = "position"; 
-        let keyB = "position"; 
-        const staticElements = ['doors','walls','floors','halffloors','item','stairs'];
-        const movingElements = ['monster','player','npc'];
-        if(a.position[2]*1 > b.position[2]*1){
-          return 1;        
-        }else if(a.position[2]*1 < b.position[2]*1){
-          return -1;
-        }else if(movingElements.includes(b.type) && movingElements.includes(a.type)){
-            keA = "newPos";
-            keB = "newPos";
-          
-        }else if(movingElements.includes(b.type) && !movingElements.includes(a.type)){
-            keA = "position";
-            keB = "newPos";
-          
-        }else if(!movingElements.includes(b.type) && movingElements.includes(a.type)){
-            keA = "newPos";
-            keB = "position";
-        }
-        // dead body down.
-        if( typeof a.health != "undefined" && a.health <= 0 ||  typeof b.health != "undefined" && b.health <= 0 ){
-          if((a.health <= 0 && b.health > 0) || (b.health <= 0 && a.health > 0)){
-            return -1;
+        a.pos = [a.position[0]*1,a.position[1]*1,a.position[2]*1];
+        b.pos = [b.position[0]*1,b.position[1]*1,b.position[2]*1];
+        if(a.pos[2] < b.pos[2]){ return -1 }
+        else if(a.pos[2] > b.pos[2]) { return 1 }
+        else{
+          // floors down
+          if(downEls.includes(a.type)){return -1;}if(downEls.includes(b.type)){return 1;}
+          // the same position
+          if(a.pos[0] == b.pos[0] && a.pos[1] == b.pos[1]){
+            // items above walls
+            if(['item'].includes(a.type) && upperEls.includes(b.type)){return 1;}
+            if(['item'].includes(b.type) && upperEls.includes(a.type)){return -1;}
+            // upperwalls top
+            if(upperEls.includes(a.type)){return 1;}if(upperEls.includes(b.type)){return -1;}
+            // items down
+            if(['item'].includes(a.type)){return -1;}if(['item'].includes(b.type)){return 1;}
+            // dead body down
+            if(a.constructor === Creature && b.constructor == Creature){
+              if(a.health < 1){return -1;}
+              if(b.health < 1){return 1;}
+            }
           }
-          return 1;
+          if(a.pos[0] > b.pos[0]){return  1}
+          if(a.pos[0] < b.pos[0]){return -1}
+          if(a.pos[1] > b.pos[1]){return  1}
+          if(a.pos[1] < b.pos[1]){return -1}
+          return -1
         }
-        // items down
-        if(staticElements.includes(a.type) && movingElements.includes(b.type)){
-          return -1;
-        }
-        if(staticElements.includes(b.type) && movingElements.includes(a.type)){
-          return 1;
-        }
-        if(a[keyA][1] >= b[keyB][1]){return 1;}
-        if(a[keyA][0] <= b[keyB][0]){return 1;}
       })
       // draw all in order
-      for(const e of drawStack){
-        e.draw();
-      }
+      for(const e of drawStack.concat(nicksStack)){ e.draw(); }
       // update actions
-      // console.log(gamePlane.actions.length);
       for(const a of gamePlane.actions){a.update();}
       inGameConsole.update();
+      if(fistIteration){document.querySelector(".loader").style.display = "none";}
+      fistIteration = false;
     });
   },
   stop(title = "GAME PAUSED."){

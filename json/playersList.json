@@ -39,20 +39,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [55, -21, -1],
+    "position": [31, -10, 0],
     "speed": 2.7,
-    "health": 740,
-    "maxHealth": 820,
+    "health": 810,
+    "maxHealth": 810,
     "skills": {
-      "level": 72,
-      "exp": 368822,
+      "level": 71,
+      "exp": 350905,
       "fist": 47,
-      "dist": 37,
+      "dist": 38,
       "healing": 5011,
-      "fist_summary": 2141,
-      "dist_summary": 1343
+      "fist_summary": 2203,
+      "dist_summary": 1384
     },
-    "lastFrame": 1639704688312,
+    "lastFrame": 1639761894479,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -123,7 +123,7 @@
         "handle": ["lg"],
         "pickable": true,
         "manaRegen": 10,
-        "position": [55, -29, -1],
+        "position": [56, -22, -1],
         "actionType": "pickUp",
         "visibleFloor": -1,
         "field": "lg"
@@ -143,12 +143,6 @@
       }
     },
     "lastDeaths": [
-      {
-        "when": "2021-11-18T16:31:13.922Z",
-        "who": "Cyclops",
-        "whoType": "monster",
-        "level": 77
-      },
       {
         "when": "2021-12-07T22:18:53.349Z",
         "who": "Minotaur",
@@ -172,12 +166,18 @@
         "who": "Dragon",
         "whoType": "monster",
         "level": 72
+      },
+      {
+        "when": "2021-12-17T15:12:18.148Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 71
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder"],
-    "mana": 1220,
-    "maxMana": 820,
+    "mana": 1210,
+    "maxMana": 810,
     "token": "myrizlkica",
     "redTarget": false
   },
@@ -666,24 +666,24 @@
   },
   {
     "name": "GM",
-    "position": [0, 13, 1],
+    "position": [41, -19, 0],
     "speed": 2.2,
-    "health": 1383,
-    "maxHealth": 380,
+    "health": 1553,
+    "maxHealth": 390,
     "sprite": "gm",
     "skills": {
-      "level": 28,
-      "exp": 21695,
-      "fist": 312,
-      "dist": 115,
+      "level": 29,
+      "exp": 23230,
+      "fist": 313,
+      "dist": 116,
       "healing": 119,
-      "fist_summary": 97336,
-      "dist_summary": 13198
+      "fist_summary": 97783,
+      "dist_summary": 13259
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639704655067,
+    "lastFrame": 1639765914875,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -700,6 +700,7 @@
         "health": 1000
       },
       "bp": {
+        "type": "item",
         "name": "Random Item",
         "sprite": "items",
         "spriteNr": 15,
@@ -713,10 +714,16 @@
           {"def": "0 - 100"}
         ],
         "health": 163,
-        "def": 40
+        "def": 40,
+        "position": [50, -13, 1],
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "lh",
+        "zIndex": 0
       },
       "nc": false,
       "ch": {
+        "type": "item",
         "name": "Magic Armor",
         "sprite": "items",
         "spriteNr": 14,
@@ -724,12 +731,17 @@
         "pickable": true,
         "def": 50,
         "mana": 200,
-        "manaRegen": 25
+        "manaRegen": 25,
+        "position": [50, -10, 1],
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "ch",
+        "zIndex": 0
       },
       "lh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [-72, 11, 2],
+        "position": [50, -12, 1],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -737,30 +749,40 @@
         "manaRegen": 100,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "actionType": "pickUp"
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "lh",
+        "zIndex": 0
       },
       "rh": {
         "type": "item",
         "name": "Blessed Shield",
-        "position": [-70, 11, 2],
+        "position": [38, -32, 0],
         "sprite": "items",
         "spriteNr": 12,
         "handle": ["lh", "rh"],
         "pickable": true,
         "def": 100,
-        "actionType": "pickUp"
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "rh",
+        "zIndex": 0,
+        "pos": [38, -32, 0]
       },
       "lg": {
         "type": "item",
         "name": "King Legs",
-        "position": [64, -15, 2],
+        "position": [52, -9, 1],
         "sprite": "items",
         "spriteNr": 8,
         "handle": ["lg"],
         "pickable": true,
         "def": 100,
         "speed": 2,
-        "actionType": "pickUp"
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "lg",
+        "zIndex": 0
       },
       "ft": {
         "type": "item",
@@ -863,8 +885,8 @@
       "ladder",
       "Random Item"
     ],
-    "mana": 580,
-    "maxMana": 380,
+    "mana": 590,
+    "maxMana": 390,
     "redTarget": false,
     "token": "dnfvwxnuwef"
   },

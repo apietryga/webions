@@ -95,45 +95,45 @@ const cm = { // creatures managment
   players: {
     init(db){
       // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
-      const skipKeys = [
-        "healthValue",
-        "text",
-        "game",
-        "shotTarget",
-        "bulletOnTarget",
-        "cyle",
-      ];
-      db.loadAll((res)=>{
-        for(const plr of res){
-          // make instance of player
-          const player = new Creature(plr.name,0,"player");
-          // rewrite
-          for(const key of Object.keys(plr)){
-            if(skipKeys.includes(key)){continue;}
-            if(plr[key].constructor === Object){
-            // if it's object
-              player[key] = {};
-              for(const keyIn of Object.keys(plr[key])){
-                player[key][keyIn] = plr[key][keyIn];
-              }
-            }else if(plr[key].constructor === Array){
-            // if it's array
-              player[key] = [];
-              for(const keyIn of Object.keys(plr[key])){
-                player[key][keyIn] = plr[key][keyIn];
-              }
-            }else{
-              player[key] = plr[key];
-            }
-          }
-          // update player
-          player.update({name:player.name},db,[],{itemsInArea:[]});
-          // update player skills
-          player.skills.level = -1;
-          // player is update in db there:
-          player.updateSkills(db);
-        }
-      });
+      // const skipKeys = [
+      //   "healthValue",
+      //   "text",
+      //   "game",
+      //   "shotTarget",
+      //   "bulletOnTarget",
+      //   "cyle",
+      // ];
+      // db.loadAll((res)=>{
+      //   for(const plr of res){
+      //     // make instance of player
+      //     const player = new Creature(plr.name,0,"player");
+      //     // rewrite
+      //     for(const key of Object.keys(plr)){
+      //       if(skipKeys.includes(key)){continue;}
+      //       if(plr[key].constructor === Object){
+      //       // if it's object
+      //         player[key] = {};
+      //         for(const keyIn of Object.keys(plr[key])){
+      //           player[key][keyIn] = plr[key][keyIn];
+      //         }
+      //       }else if(plr[key].constructor === Array){
+      //       // if it's array
+      //         player[key] = [];
+      //         for(const keyIn of Object.keys(plr[key])){
+      //           player[key][keyIn] = plr[key][keyIn];
+      //         }
+      //       }else{
+      //         player[key] = plr[key];
+      //       }
+      //     }
+      //     // update player
+      //     player.update({name:player.name},db,[],{itemsInArea:[]});
+      //     // update player skills
+      //     player.skills.level = -1;
+      //     // player is update in db there:
+      //     player.updateSkills(db);
+      //   }
+      // });
     },
     list:[],
     inArea:[],
@@ -233,7 +233,6 @@ dbc.init(()=>{
   const date = new Date();
   game.startServerTime = date.getTime();
   console.log("SERWER IS RUNNING");
-  // console.log("MAILGUN API KEY: " + process.env.MAILGUN_API_KEY);
   // WEBSOCKET
   new WebSocketServer({httpServer : server})
   .on('request', (req)=>{

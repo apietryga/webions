@@ -1,4 +1,4 @@
-body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 button:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .eq .itemContainer .label, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar {
+body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 a:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .eq .itemContainer .label, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   background-color: #2f2f2f;
@@ -13,11 +13,15 @@ body ::-webkit-scrollbar-thumb, body .wrapper .gameAndConsole .gamePlane .outFit
   color: #AEAEAC;
 }
 
-body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 button, body .popupParent .popup .closeBar div, body .popupParent .popup button {
+body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 a, body .popupParent .popup .closeBar div, body .popupParent .popup button {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
   color: #AEAEAC;
+}
+
+body .wrapper .gameAndConsole .gamePlane .menusButtons:hover, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:hover, body .wrapper .menuItem0 a:hover, body .popupParent .popup .closeBar div:hover, body .popupParent .popup button:hover {
+  background-color: #444343 !important;
 }
 
 .eq .itemContainer {
@@ -282,8 +286,13 @@ body .wrapper .menuItem0 {
   min-width: 30%;
 }
 
-body .wrapper .menuItem0 button {
+body .wrapper .menuItem0 a {
   flex: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 0.8em;
+  text-decoration: none;
 }
 
 body .wrapper .menuItem1, body .wrapper .menuItem2 {

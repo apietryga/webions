@@ -99,10 +99,9 @@ function public(req, res, playersList) {
     if(!path.split("/").includes("public")){
       path = "./public"+path;
     }
-    if(!fs.existsSync(path)
-    && !fromTemplate.includes(fileName)
-    || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))
-    ){
+    if(!fs.existsSync(path) && !fromTemplate.includes(fileName)
+    || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))){
+      console.error(myURL.pathname+" not exists, send 404");
       contentType = "text/html";
       vals.content = vals.e404;
       path = "./public/template.html"
