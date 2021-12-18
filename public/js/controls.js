@@ -270,7 +270,9 @@ const mobileControls = {
       this.css.disabled = true;
       panel[0].style.display = "none";
       panel[1].style.display = "none";
-      consoleInput.placeholder = "Click enter to type.";
+      if(consoleInput != null){
+        consoleInput.placeholder = "Click enter to type.";
+      }
     }
     // update css's callout
     const stylesheet = document.createElement('link');

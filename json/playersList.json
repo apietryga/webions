@@ -39,20 +39,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [31, -10, 0],
+    "position": [37, -11, 0],
     "speed": 2.7,
-    "health": 810,
+    "health": 725,
     "maxHealth": 810,
     "skills": {
       "level": 71,
-      "exp": 350905,
-      "fist": 47,
+      "exp": 351230,
+      "fist": 48,
       "dist": 38,
       "healing": 5011,
-      "fist_summary": 2203,
-      "dist_summary": 1384
+      "fist_summary": 2223,
+      "dist_summary": 1415
     },
-    "lastFrame": 1639761894479,
+    "lastFrame": 1639787581896,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -683,7 +683,7 @@
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639765914875,
+    "lastFrame": 1639766133271,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],

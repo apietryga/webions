@@ -5,7 +5,7 @@ body > header .logo:active, body > header .play a:active, body nav a:active, bod
   color: #AEAEAC;
 }
 
-body > header, body > header .play, body nav, body aside, body footer, body .wrapper main, body .wrapper main .content, body .wrapper main > table, body .wrapper main > table th, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4, body .cookiesPopUp {
+body > header .logo, body > header .play a, body nav a, body aside a, body footer a, body .wrapper main > table .listBody, body .cookiesPopUp span, body > header, body > header .play, body nav, body aside, body footer, body .wrapper main, body .wrapper main .content, body .wrapper main > table, body .wrapper main > table th, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4, body .cookiesPopUp {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -13,15 +13,8 @@ body > header, body > header .play, body nav, body aside, body footer, body .wra
   color: #AEAEAC;
 }
 
-body > header .logo, body > header .play a, body nav a, body aside a, body footer a, body .wrapper main > table .listBody, body .cookiesPopUp span {
-  border: 2px solid;
-  border-color: #737373 #444444 #444444 #737373;
-  padding: 2px;
-  color: #AEAEAC;
-}
-
 body > header .logo:hover, body > header .play a:hover, body nav a:hover, body aside a:hover, body footer a:hover, body .wrapper main > table .listBody:hover, body .cookiesPopUp span:hover {
-  background-color: #444343 !important;
+  background-color: #444343;
 }
 
 .eq .itemContainer {

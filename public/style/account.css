@@ -5,16 +5,16 @@ body main form input:active[type=submit], body footer .options a:active, .eq .it
   color: #AEAEAC;
 }
 
-body main form input[type=submit], body footer .options a, body main form div .sex input[type=radio]:after, body footer .options {
-  border: 2px solid !important;
-  border-color: #737373 #444444 #444444 #737373 !important;
+body main form input[type=submit], body footer .options a, body main form div .sex input[type=radio]::after, body footer .options {
+  border: 2px solid;
+  border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
 body main form input:hover[type=submit], body footer .options a:hover {
-  background-color: #444343 !important;
+  background-color: #444343;
 }
 
 .eq .itemContainer {
@@ -125,10 +125,10 @@ body main form div .sex input[type=radio] {
   position: relative;
 }
 
-body main form div .sex input[type=radio]:after {
+body main form div .sex input[type=radio]::after {
   content: "";
-  width: 100%;
-  height: 100%;
+  width: 12px;
+  height: 12px;
   position: absolute;
   left: -2px;
   top: -2px;
@@ -138,6 +138,18 @@ body main form div .sex input[type=radio]:after {
 
 body main form div .sex input[type=radio]:checked::after {
   padding: 0;
+}
+
+body main form div .sex input[type=radio]:checked::before {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 1;
+  content: '';
+  border: 2px solid #7c7c7cb4;
+  background-color: #aaaaaa;
+  width: 6px;
+  height: 6px;
+  margin: 1px;
 }
 
 body main .message {

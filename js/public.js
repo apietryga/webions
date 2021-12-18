@@ -94,13 +94,12 @@ function public(req, res, playersList) {
     }
   }
   let contentType = mime.contentType(myURL.pathname.split(".")[myURL.pathname.split(".").length-1]);
-  contentType == "/" ? contentType = 'text/html':'';
+  if(contentType == "/"){contentType = 'text/html';}
   const serveChangedContent = (path = myURL.pathname) =>{
     if(!path.split("/").includes("public")){
       path = "./public"+path;
     }
-    if(!fs.existsSync(path) && !fromTemplate.includes(fileName)
-    || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))){
+    if(!fs.existsSync(path) && !fromTemplate.includes(fileName) || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))){
       console.error(myURL.pathname+" not exists, send 404");
       contentType = "text/html";
       vals.content = vals.e404;
@@ -108,7 +107,7 @@ function public(req, res, playersList) {
     }
     // serve content with message
     res.writeHead(200, { 'Content-Type': contentType });
-    if(['image'].includes(req.headers['sec-fetch-dest'])){
+    if(['image'].includes(contentType.split("/")[0])){
       fs.createReadStream(path).pipe(res);
     }else{
       // dynamically generate page by combine template.html and contents.html
@@ -127,6 +126,11 @@ function public(req, res, playersList) {
           }
         }else{
           console.error(e);
+        }
+
+        // SCRIPT USES IN ALL HTML's
+        if(['text/html; charset=utf-8','text/html'].includes(contentType)){
+          content += "<script src='./js/scriptEverywhere.js'></script>";
         }
         res.end(content);
       })

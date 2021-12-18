@@ -9,7 +9,6 @@
   - player above redtarget
   - nick always top
   - firefox compatibility buttons LO MP
-  - [GAMEPLANE.JS]
   - ingameconsole - disable undefined message
   - improve succesfully login animation [no form and wait for map load]
   - replace courier with mailgun - **to make repository public**
@@ -18,21 +17,33 @@
   - secure public
   - Uncaught TypeError: Cannot read properties of undefined (reading 'empty') [game.html:17]
   - firefox compatibility gameplane order rendering
-
-## WORKIN' ON
-  - [PUBLIC.JS]
-  - strict register names (no numbers and monsters names)
+  - MIME types - wtf is going on with https://webions.herokuapp.com/apple-touch-icon-precomposed.png , https://webions.herokuapp.com/apple-touch-icon.png ?
+  - force HTTPS not HTTP
+  - sprites.js:141 Uncaught SyntaxError: Unexpected identifier
+  - manifest.json:29 Manifest: Line: 29, column: 1, Unexpected data after root element.
+  - Uncaught TypeError: consoleInput is null controls:273
+  - halffloors upper than floors
+  - render windows above floors (temple)
   - in register, fill checked sex value
-  - if user write space in mail, remove it.
-  - make downcase letters in login (can rozin login as Rozin)
-  - [OTHERS]
+## WORKIN' ON
   - make subpages for libary
-  - fix token - not saving in base [only JSON, Redis work i guess].
+  - online list [public] - not kicking players 
+  - disable heroku Idling (serv reload)
+  - opt auto shooter
+  - one exhoust to shot, heal and mwall 
+  - on public skills, set totalFist, total dist ect. ex( 100 + 20 )
+  - improve public health and mana %
+  - strict url's like http://localhost/libary/elo
+  - fix token - not saving in base [only JSON, Redis work i guess, or not ...].
+  - improve token cookie (samesite)
+  - strict register names (no numbers and monsters names)
+  - if user has write space in mail, remove it.
+  - make downcase letters in login (can rozin login as Rozin)
   - landscape map control mobile [planeclicking]
   - fix doubled console message on sent
   - repair player kick (once - now 6 times...)
   - fix get hitting without def (from eq) when kicked (most on train's)
-  - base mana regen
+  - base mana regen [replace simple legs with simple helmet]
   - remove Creature.skills.healing, and improve healing with mana
   - walking throught static items/monsters (not players and empty boxes, hmm?)
   - monsters and nps's walking around doors, windows, staticItems
@@ -47,8 +58,8 @@
   - house zone
   - first remove item from eq, then drop them. 
   - controls 168
-  - online list - not kicking players 
-  - SSL 
+  - mwalls
+  - toggle mobile controls
 
 ## TO CATCH
   - bug with doubled characters (creatures.update in gameplane? - when, how?) [8.12.2021]

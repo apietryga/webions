@@ -39,7 +39,7 @@ const gamePlane = {
           nicksStack.push(el.nick);
         }
       }
-      const downEls = ['floors','halffloors'];
+      // const downEls = ['floors','halffloors'];
       const upperEls = ['upperwalls','doors','walls'];
       drawStack.sort((a,b)=>{
         a.pos = [a.position[0]*1,a.position[1]*1,a.position[2]*1];
@@ -47,8 +47,12 @@ const gamePlane = {
         if(a.pos[2] < b.pos[2]){ return -1 }
         else if(a.pos[2] > b.pos[2]) { return 1 }
         else{
+          // nofloors down
+          if(['nofloors'].includes(a.type)){return -1;}if(['nofloors'].includes(b.type)){return 1;}
           // floors down
-          if(downEls.includes(a.type)){return -1;}if(downEls.includes(b.type)){return 1;}
+          if(['floors'].includes(a.type)){return -1;}if(['floors'].includes(b.type)){return 1;}
+          // halffloors after down
+          if(['halffloors'].includes(a.type)){return -1;}if(['halffloors'].includes(b.type)){return 1;}
           // the same position
           if(a.pos[0] == b.pos[0] && a.pos[1] == b.pos[1]){
             // items above walls
