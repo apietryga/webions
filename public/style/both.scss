@@ -26,26 +26,20 @@
   position:relative;
   .label{
     pointer-events: none;
-    // border:2px dashed red;
     position:absolute;
     top:50%;
-    // width:150px!important;
-    // left:-150px;
     right:50%;
     min-width:80px;
     @extend %inFrame;
-    // background-color:red;
     font-size:0.7em;
     display:none;
     padding:5px;
     z-index:1;
     text-align:left;
     background-color: #2f2f2fb6!important;
-    // background-opa
   }
   &:hover > .label{
     display:block;
-    // border:2px dashed yellow!important;      
   }
 
   // .label:hover:after{

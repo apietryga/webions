@@ -67,54 +67,56 @@ class Creature {
     this.baseSpeed = this.speed;
   }
   getHit = (db,from,type = 'fist') =>{
-    let hit = from.skills[type];
-    if(type == 'dist' && func.isSet(from.totalDist)){
-      hit = from.totalDist;
-    }
-    if(type == 'fist' && func.isSet(from.totalFist)){
-      hit = from.totalFist;
-    }
-    if(func.isSet(this.totalDef) && this.totalDef > 0){
-      hit -= this.totalDef;
-    }
-    // KILLING SHOT
-    if(this.health <= hit){
-      this.health = 0;
-      from.redTarget = false;
-      if(this.type == "player"){
-        // downgrade exp
-        this.skills.exp = Math.floor(this.skills.exp*0.95);
-        this.updateSkills(db);
-        this.text = "You're dropped level to "+this.skills.level;
-        // save dead
-        const deadLog = {
-          when: new Date(),
-          who: from.name,
-          whoType : from.type,
-          level: this.skills.level
-        };
-        if(func.isSet(this.lastDeaths)){
-          if(this.lastDeaths.length >= 5){this.lastDeaths.shift()}
-          this.lastDeaths.push(deadLog)
-        }else{
-          this.lastDeaths = [deadLog];
+    if(this.type != "player" || func.isSet(this.totalDef)){
+      let hit = from.skills[type];
+      if(type == 'dist' && func.isSet(from.totalDist)){
+        hit = from.totalDist;
+      }
+      if(type == 'fist' && func.isSet(from.totalFist)){
+        hit = from.totalFist;
+      }
+      if(this.totalDef > 0){
+        hit -= this.totalDef;
+      }
+      // KILLING SHOT
+      if(this.health <= hit){
+        this.health = 0;
+        from.redTarget = false;
+        if(this.type == "player"){
+          // downgrade exp
+          this.skills.exp = Math.floor(this.skills.exp*0.95);
+          this.updateSkills(db);
+          this.text = "You're dropped level to "+this.skills.level;
+          // save dead
+          const deadLog = {
+            when: new Date(),
+            who: from.name,
+            whoType : from.type,
+            level: this.skills.level
+          };
+          if(func.isSet(this.lastDeaths)){
+            if(this.lastDeaths.length >= 5){this.lastDeaths.shift()}
+            this.lastDeaths.push(deadLog)
+          }else{
+            this.lastDeaths = [deadLog];
+          }
+        }
+      }else{
+        if(hit > 0){
+          this.health -= hit;
+          this.text = from.name+" takes u "+hit+" hp";
         }
       }
-    }else{
-      if(hit > 0){
-        this.health -= hit;
-        this.text = from.name+" takes u "+hit+" hp";
+      // COUNT SKILLS
+      if(['fist','dist'].includes(type) && from.type == "player" && !isNaN(hit)){
+        from.skills[type+'_summary']++;
+        from.updateSkills(db);
       }
-    }
-    // COUNT SKILLS
-    if(['fist','dist'].includes(type) && from.type == "player" && !isNaN(hit)){
-      from.skills[type+'_summary']++;
-      from.updateSkills(db);
-    }
-    // GIVE EXP TO KILLER! 
-    if(this.type == "monster" && this.health <= 0){
-      from.skills.exp += this.skills.exp;
-      from.updateSkills(db);
+      // GIVE EXP TO KILLER! 
+      if(this.type == "monster" && this.health <= 0){
+        from.skills.exp += this.skills.exp;
+        from.updateSkills(db);
+      }
     }
   }
   updateSkills(db, keys = ['fist','dist']){

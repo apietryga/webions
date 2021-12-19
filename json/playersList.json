@@ -39,9 +39,9 @@
   },
   {
     "name": "Tosiek",
-    "position": [37, -11, 0],
+    "position": [40, -26, 0],
     "speed": 2.7,
-    "health": 725,
+    "health": 790,
     "maxHealth": 810,
     "skills": {
       "level": 71,
@@ -52,7 +52,7 @@
       "fist_summary": 2223,
       "dist_summary": 1415
     },
-    "lastFrame": 1639787581896,
+    "lastFrame": 1639951437355,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -66,7 +66,7 @@
       "hd": {
         "type": "item",
         "name": "Magic Hat",
-        "position": [53, -14, -1],
+        "position": [55, -8, 1],
         "sprite": "items",
         "spriteNr": 13,
         "handle": ["hd"],
@@ -74,8 +74,9 @@
         "mana": 400,
         "manaRegen": 50,
         "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "hd"
+        "visibleFloor": 7,
+        "field": "hd",
+        "pos": [55, -8, 1]
       },
       "bp": false,
       "nc": false,
@@ -87,15 +88,30 @@
         "handle": ["ch"],
         "pickable": true,
         "def": 25,
-        "position": [55, -29, -1],
+        "position": [42, 2, -1],
         "actionType": "pickUp",
         "visibleFloor": -1,
-        "field": "ch"
+        "field": "ch",
+        "pos": [42, 2, -1]
       },
       "lh": {
         "type": "item",
-        "name": "Wand of Destiny",
+        "name": "Simple Shield",
+        "sprite": "items",
+        "spriteNr": 11,
+        "handle": ["lh", "rh"],
+        "pickable": true,
+        "def": 20,
         "position": [43, 1, -1],
+        "actionType": "pickUp",
+        "visibleFloor": -1,
+        "field": "rh",
+        "pos": [43, 1, -1]
+      },
+      "rh": {
+        "type": "item",
+        "name": "Wand of Destiny",
+        "position": [54, -7, 1],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -104,16 +120,9 @@
         "handle": ["lh", "rh"],
         "pickable": true,
         "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "lh"
-      },
-      "rh": {
-        "name": "Simple Shield",
-        "sprite": "items",
-        "spriteNr": 11,
-        "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 20
+        "visibleFloor": 7,
+        "field": "rh",
+        "pos": [54, -7, 1]
       },
       "lg": {
         "type": "item",
@@ -123,10 +132,11 @@
         "handle": ["lg"],
         "pickable": true,
         "manaRegen": 10,
-        "position": [56, -22, -1],
+        "position": [55, -7, 1],
         "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "lg"
+        "visibleFloor": 7,
+        "field": "lg",
+        "pos": [55, -7, 1]
       },
       "ft": {
         "type": "item",
@@ -178,7 +188,7 @@
     "quests": ["ladder"],
     "mana": 1210,
     "maxMana": 810,
-    "token": "myrizlkica",
+    "token": "8ehcjxp9li",
     "redTarget": false
   },
   {
@@ -666,24 +676,24 @@
   },
   {
     "name": "GM",
-    "position": [87, 5, 1],
+    "position": [54, -23, -1],
     "speed": 2.2,
-    "health": 1303,
-    "maxHealth": 390,
+    "health": 543,
+    "maxHealth": 380,
     "sprite": "gm",
     "skills": {
-      "level": 29,
-      "exp": 23430,
+      "level": 28,
+      "exp": 20144,
       "fist": 313,
       "dist": 116,
       "healing": 119,
-      "fist_summary": 97788,
-      "dist_summary": 13267
+      "fist_summary": 97794,
+      "dist_summary": 13274
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639864738189,
+    "lastFrame": 1639954910817,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -692,12 +702,18 @@
     },
     "eq": {
       "hd": {
+        "type": "item",
         "name": "The Crown",
         "sprite": "items",
         "spriteNr": 6,
         "handle": ["hd"],
         "pickable": true,
-        "health": 1000
+        "health": 1000,
+        "position": [54, -23, -1],
+        "actionType": "pickUp",
+        "visibleFloor": -1,
+        "field": "hd",
+        "pos": [54, -23, -1]
       },
       "bp": {
         "type": "item",
@@ -732,16 +748,27 @@
         "def": 50,
         "mana": 200,
         "manaRegen": 25,
-        "position": [50, -10, 1],
+        "position": [-63, 13, -1],
         "actionType": "pickUp",
-        "visibleFloor": 7,
+        "visibleFloor": -1,
         "field": "ch",
-        "zIndex": 0
+        "zIndex": 0,
+        "pos": [-63, 13, -1]
       },
       "lh": {
+        "name": "Rod",
+        "sprite": "items",
+        "spriteNr": 1,
+        "fist": 15,
+        "dist": 20,
+        "manaRegen": 2,
+        "handle": ["lh", "rh"],
+        "pickable": true
+      },
+      "rh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [50, -12, 1],
+        "position": [-62, 13, -1],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -750,39 +777,18 @@
         "handle": ["lh", "rh"],
         "pickable": true,
         "actionType": "pickUp",
-        "visibleFloor": 7,
+        "visibleFloor": -1,
         "field": "lh",
-        "zIndex": 0
-      },
-      "rh": {
-        "type": "item",
-        "name": "Blessed Shield",
-        "position": [38, -32, 0],
-        "sprite": "items",
-        "spriteNr": 12,
-        "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 100,
-        "actionType": "pickUp",
-        "visibleFloor": 7,
-        "field": "rh",
         "zIndex": 0,
-        "pos": [38, -32, 0]
+        "pos": [-62, 13, -1]
       },
       "lg": {
-        "type": "item",
         "name": "King Legs",
-        "position": [52, -9, 1],
         "sprite": "items",
         "spriteNr": 8,
         "handle": ["lg"],
         "pickable": true,
-        "def": 100,
-        "speed": 2,
-        "actionType": "pickUp",
-        "visibleFloor": 7,
-        "field": "lg",
-        "zIndex": 0
+        "def": 50
       },
       "ft": {
         "type": "item",
@@ -798,24 +804,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-09T21:55:46.829Z",
-        "who": "Orange Wizard",
-        "whoType": "monster",
-        "level": 26
-      },
-      {
-        "when": "2021-12-09T21:57:06.098Z",
-        "who": "Orange Wizard",
-        "whoType": "monster",
-        "level": 26
-      },
-      {
-        "when": "2021-12-10T00:00:03.353Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 25
-      },
-      {
         "when": "2021-12-10T00:02:04.318Z",
         "who": "Minotaur",
         "whoType": "monster",
@@ -826,6 +814,24 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 25
+      },
+      {
+        "when": "2021-12-19T22:06:39.644Z",
+        "who": "Maggot",
+        "whoType": "monster",
+        "level": 29
+      },
+      {
+        "when": "2021-12-19T22:21:16.606Z",
+        "who": "Maggot",
+        "whoType": "monster",
+        "level": 28
+      },
+      {
+        "when": "2021-12-19T22:30:32.642Z",
+        "who": "Maggot",
+        "whoType": "monster",
+        "level": 28
       }
     ],
     "quests": [
@@ -883,12 +889,17 @@
       "Random Item",
       "Random Item",
       "ladder",
-      "Random Item"
+      "Random Item",
+      "King Legs",
+      "Blessed Shield",
+      "Rod",
+      "Rod",
+      "Simple Helmet"
     ],
-    "mana": 590,
-    "maxMana": 390,
+    "mana": 580,
+    "maxMana": 380,
     "redTarget": false,
-    "token": "dnfvwxnuwef"
+    "token": "y5xfqibkl7g"
   },
   {
     "name": "Niko",

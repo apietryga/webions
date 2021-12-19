@@ -1,11 +1,11 @@
-body main form input:active[type=submit], body footer .options a:active, .eq .itemContainer .label, body main form, body main form input, body main form div .sex input[type=radio]:checked::after, body main .message {
+body main form input:active[type=submit], body footer .options a:active, .itemContainer .label, body ::-webkit-scrollbar-track, body main form, body main form input, body main form div .sex input[type=radio]:checked::after, body main .message {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
-body main form input[type=submit], body footer .options a, body main form div .sex input[type=radio]::after, body footer .options {
+body main form input[type=submit], body footer .options a, body ::-webkit-scrollbar-thumb, body main form div .sex input[type=radio]::after, body footer .options {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -13,15 +13,19 @@ body main form input[type=submit], body footer .options a, body main form div .s
   color: #AEAEAC;
 }
 
+body main form input[type=submit], body footer .options a {
+  cursor: pointer;
+}
+
 body main form input:hover[type=submit], body footer .options a:hover {
   background-color: #444343;
 }
 
-.eq .itemContainer {
+.itemContainer {
   position: relative;
 }
 
-.eq .itemContainer .label {
+.itemContainer .label {
   pointer-events: none;
   position: absolute;
   top: 50%;
@@ -35,8 +39,16 @@ body main form input:hover[type=submit], body footer .options a:hover {
   background-color: #2f2f2fb6 !important;
 }
 
-.eq .itemContainer:hover > .label {
+.itemContainer:hover > .label {
   display: block;
+}
+
+body ::-webkit-scrollbar {
+  width: 10px;
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 a {

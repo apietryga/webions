@@ -93,8 +93,6 @@ body{
         @extend %onFrame;
         background-color: rgba(255, 255, 255, 0.11);
         img{max-width:100%;}
-
-
       }
       // players 
       >table{
@@ -203,8 +201,13 @@ body{
                 }
               }
             }
-            .healthBar{background-color: rgb(32, 97, 19);}
-            .manaBar{background-color: rgb(12, 49, 129);}
+            .label{
+              background-color:rgba(0, 0, 0, 0.534);
+              
+            }
+            // .healthBar{background-color: rgb(32, 97, 19);}
+            // .manaBar
+            // .manaBar{background-color: #0c3181;}
             &:nth-child(1){
               width:30%;
               background-color:$sc;
@@ -250,9 +253,6 @@ body{
             @extend %onFrame;
             border-spacing: 0;
             width:100%;
-            // thead{
-            //   position:sticky;
-            // }
             th{
               &:not(th:nth-child(1)){
                 @extend %onFrameButt;
@@ -283,7 +283,6 @@ body{
               }
             }
             &.monsters td:nth-child(1){min-height:80px;}
-  
           }
         }
         &.items .sprite{height:46px;}
@@ -302,89 +301,6 @@ body{
           margin-bottom:5px;
         }
       }
-
-
-      // .cont{
-      //   padding:5px;
-      //   h2{
-      //     padding:5px 10px;
-      //     @extend %onFrame;
-      //     cursor:pointer;
-      //   }
-      //   h3{
-      //     cursor:pointer;
-      //     @extend %onFrame;
-      //     padding-left:20px;
-      //     margin:5px;
-      //   }
-      //   div > div{
-      //     padding-left:30px;
-      //   }
-      //   img{
-      //     width:80%;
-      //     // margin-left:10%;
-      //     // margin-right:10%;
-      //     margin:5% 10%;
-      //   }
-      //   .items,.monsters{
-      //     @extend %inFrame;
-      //     background-color: transparent;
-      //     .row{
-      //       @extend %inFrame;
-      //       margin-bottom: 1em;
-          
-      //       // border:2px dashed red;
-      //       display:flex;
-      //       justify-content: flex-end;
-      //       // justify-content: space-around;
-      //       align-items: center;
-      //       .preview{
-      //         @extend %inFrame;
-
-      //         position:relative;
-      //         margin:11px;
-      //         // width:30px;
-              
-      //       }
-      //       position:relative;
-      //       $titleSize:2em;
-      //       padding-top:$titleSize;
-      //       h4{
-      //         position:absolute;
-      //         display:flex;
-      //         align-items: center;
-      //         padding-left:0.8em;
-      //         width:100%;
-      //         @extend %onFrame;
-      //         left:0;
-      //         top:0;
-      //         height:$titleSize;
-      //       }
-      //       ul{
-      //         flex:1;
-      //         margin:0;
-      //         // border:2px dashed red;
-      //         @extend %inFrame;
-      //         list-style-type: none;
-      //         // padding:1em;
-      //         padding:0.5em;
-      //         // li{
-      //         // }
-      //       }
-
-      //     }
-      //     .stats{
-      //       padding:5px 20px;
-      //       // flex:1;
-      //     }
-      //     >div{
-      //       display: flex;
-      //       flex-direction: row-reverse;
-  
-      //     }
-      //   }        
-
-      // }
     }
   }
   nav,aside,footer{

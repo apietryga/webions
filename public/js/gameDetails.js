@@ -1,7 +1,7 @@
 const game = {
   name:"Webions",
   time : new Date(),
-  version : 0.39,
+  version : 0.4,
   fps: 16,
   db:"redis",
   lastUpdate: 1633895983384,

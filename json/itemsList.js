@@ -9,9 +9,9 @@ this.list = [
   },
   { name:"staticBox",
     position:[32,-6,-1],
-    inItem: "Simple Helmet"
+    inItem: "Rod"
   },
-  { name:"Simple Helmet",
+  { name:"Rod",
     position:[31,-6,-1]
   },
   // DEPO - TRAINS
@@ -40,9 +40,9 @@ this.list = [
   { name:"staticBox",
     position:[56,-20,-1],
     spriteNr:2,
-    inItem: "Rod"
+    inItem: "Simple Helmet"
   },
-  { name:"Rod",
+  { name:"Simple Helmet",
     position:[57,-20,-1]
   },
   { name:"staticBox",

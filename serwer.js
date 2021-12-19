@@ -13,6 +13,7 @@ const inGameMonsters = require("./json/monstersList").data;
 const game = require("./public/js/gameDetails");
 const public = require("./js/public");
 const itemsList = require("./json/itemsList").list;
+const { db } = require('./public/js/gameDetails');
 let servRequest = false;
 // filter data on websocket send
 const disallowKeys = [
@@ -151,7 +152,7 @@ const cm = { // creatures managment
           break;
         }
       }
-      // push player to list
+      // push player to online list
       if(isPlayer == false && !this.inLoading.includes(param.name)){
         this.inLoading.push(param.name);
         //  make new unique id
@@ -171,6 +172,7 @@ const cm = { // creatures managment
             // merge it with newPlayer
             const defaultPosition = newPlayer.position;
             for(const k of Object.keys(res)){
+              if(['token'].includes(k)){continue;}
               newPlayer[k] = res[k];
             }
             if(newPlayer.lastFrame < game.lastUpdate){
@@ -178,9 +180,10 @@ const cm = { // creatures managment
             }
           }
           newPlayer.type = "player";
-          // newPlayer.lastFrame = game.time.getTime();
           this.inLoading.splice(this.inLoading.indexOf(param.name),1);     
           this.list.push(newPlayer);
+          // update player loading info (token etc)
+          dbc[game.db].update(newPlayer);
           callback(newPlayer);
         }); 
       }
@@ -195,9 +198,18 @@ const cm = { // creatures managment
       }, 1000);
     },
     kick(player){
-      console.log(player.name+" KICKED")
-      this.list.splice(this.list.indexOf(player),1);
-      dbc[game.db].update(player);
+      let isThisPlayerOlnine = false;
+      for(const singlePlayer of this.list){
+        if(singlePlayer.name == player.name){
+          isThisPlayerOlnine = true;
+          break;
+        }
+      }
+      if(isThisPlayerOlnine){
+        this.list.splice(this.list.indexOf(player),1);
+        dbc[game.db].update(player);
+        console.log(player.name+" KICKED")
+      }
     }
   }
 }

@@ -93,7 +93,8 @@
         let isForm = false;
         // let urlVals;    
         if("{{action}}" == "game"){
-          document.cookie = "token={{message}}";
+          // document.cookie = "token={{message}}";
+          document.cookie = "token={{message}}; SameSite=None; Secure";
           window.location.replace("game.html");
         }
         if("{{action}}" == "logout"){
@@ -204,8 +205,3 @@
 </script>
 </body>
 </html>
-
-<script>
-  console.log(document.cookie);
-
-</script>

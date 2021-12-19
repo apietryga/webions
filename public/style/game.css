@@ -1,11 +1,11 @@
-body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 a:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .itemContainer .label, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar {
+body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 a:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .itemContainer .label, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
-body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 a, body .popupParent .popup .closeBar div, body .popupParent .popup button, body .wrapper .gameAndConsole .gamePlane .outFitContainer, body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar, body .wrapper > .mainMenu > div > div, body .popupParent .popup, body .popupParent .popup .closeBar {
+body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 a, body .popupParent .popup .closeBar div, body .popupParent .popup button, body ::-webkit-scrollbar-thumb, body .wrapper .gameAndConsole .gamePlane .outFitContainer, body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar, body .wrapper > .mainMenu > div > div, body .popupParent .popup, body .popupParent .popup .closeBar {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -41,6 +41,14 @@ body .wrapper .gameAndConsole .gamePlane .menusButtons:hover, body .wrapper .gam
 
 .itemContainer:hover > .label {
   display: block;
+}
+
+body ::-webkit-scrollbar {
+  width: 10px;
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 * {

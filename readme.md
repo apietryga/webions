@@ -1,7 +1,6 @@
 # WEBIONS
   Webions is a MMORPG game working on browsers. 
   You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "serwer.js" by nodejs. I will make instructions for this in future versions.
-
 ## TESTING NOW
   - display lastFrame correctly - improve minutes, hours and months 
   - disable players updating on serv start.
@@ -28,33 +27,31 @@
   - make subpages for libary
   - sorting items and monsters 
   - add overflows for small devices in items & monsters
-## ISSUES
+  - fix token - not saving in base [only JSON, Redis work i guess, or not ...].
   - fix get hitting without def (from eq) when kicked (most on train's)
   - repair player kick (once - now 6 times...)
   - online list [public] - not kicking players 
-  - disable heroku Idling (serv reload)
-  - one exhoust to shot, heal and mwall 
+  - improve token cookie (samesite)
   - on public skills, set totalFist, total dist ect. ex( 100 + 20 )
   - improve public health and mana %
-  - strict url's like http://localhost/libary/elo
-  - fix token - not saving in base [only JSON, Redis work i guess, or not ...].
-  - improve token cookie (samesite)
-  - strict register names (no numbers and monsters names)
-  - if user has write space in mail, remove it.
-  - make downcase letters in login (can rozin login as Rozin)
-  - landscape map control mobile [planeclicking]
-  - fix doubled console message on sent
   - base mana regen [replace simple legs with simple helmet]
-  - remove Creature.skills.healing, and improve healing with mana
+## ISSUES
+  - improve healing with mana
+  - restore totalHealth and totalMana after death
   - walking throught static items/monsters (not players and empty boxes, hmm?)
   - monsters and nps's walking around doors, windows, staticItems
+  - strict url's like http://localhost/libary/elo
+  - strict register names (no numbers and monsters names)
+  - landscape map control mobile [planeclicking]
+  - fix doubled console message on sent
+  - replace Creature.skills.healing, to skills.def 
   - secure websocket
   - first remove item from eq, then drop them. 
-  - controls 168
   - toggle mobile controls
+  - disable heroku Idling (serv reload)
+  - one exhoust to shot, heal and mwall 
   - cyclop and dragon sprites update.
-
-# FEATURES
+## FEATURES
   - auto shooter
   - NPC's staying on saying and speaking
   - backpacks and depos
@@ -65,10 +62,8 @@
   - protection zone
   - mwalls
   - house zone
-
 ## TO CATCH
   - bug with doubled characters (creatures.update in gameplane? - when, how?) [8.12.2021]
-
 ## STORAGE
   By default the data store in simple redis server as JSON stringify, but it automatically changed to storing in JSON file ***/json/playersList.json***, if redis connection is not set.
   Remember, that if you would host game server on heroku - JSON files will be cleared once a day - redis db not. 

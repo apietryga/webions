@@ -310,12 +310,8 @@ body .wrapper main > table .detailsBody > td .healthBar div:nth-child(2), body .
   align-items: center;
 }
 
-body .wrapper main > table .detailsBody > td .healthBar, body .wrapper main > table .detailsHead > td .healthBar {
-  background-color: #206113;
-}
-
-body .wrapper main > table .detailsBody > td .manaBar, body .wrapper main > table .detailsHead > td .manaBar {
-  background-color: #0c3181;
+body .wrapper main > table .detailsBody > td .label, body .wrapper main > table .detailsHead > td .label {
+  background-color: rgba(0, 0, 0, 0.534);
 }
 
 body .wrapper main > table .detailsBody > td:nth-child(1), body .wrapper main > table .detailsHead > td:nth-child(1) {

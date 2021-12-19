@@ -45,7 +45,6 @@ if(document.querySelector("."+searchObj.page)!= null){
   document.querySelector("."+searchObj.page).style.display = "block";
 }
 
-
 // PLAYERS
 if(typeof main != null && typeof playersList != "undefined"){
   const dt = (typeof playersList == "string")?JSON.parse(playersList):playersList;
@@ -88,7 +87,6 @@ if(typeof main != null && typeof playersList != "undefined"){
       if(player){
         h1.innerHTML = player.name;
         const data = [];
-        // update total vals
         player.type = "player";
         setTotalVals(player);
         for(const s of Object.keys(player)){if(dToShow.includes(s)){
@@ -138,7 +136,9 @@ if(typeof main != null && typeof playersList != "undefined"){
               const healthProgress = document.createElement("div");
               const progress = (player.health*100)/player.totalHealth;
               healthProgress.style.width = progress+"%";
+              healthProgress.style.backgroundColor = hpColor(progress);
               const label = document.createElement("div");
+              label.className = "label";
               label.innerHTML = player.health+" / "+player.totalHealth;
               healthBar.append(healthProgress);
               healthBar.append(label);
@@ -150,7 +150,9 @@ if(typeof main != null && typeof playersList != "undefined"){
               const manaProgress = document.createElement("div");
               const progress = (player.mana*100)/player.totalMana;
               manaProgress.style.width = progress+"%";
+              manaProgress.style.backgroundColor = "#0c3181";
               const label = document.createElement("div");
+              label.className = "label";
               label.innerHTML = player.mana+" / "+player.totalMana;
               manaBar.append(manaProgress);
               manaBar.append(label);
@@ -184,7 +186,16 @@ if(typeof main != null && typeof playersList != "undefined"){
                   const sTd1 = document.createElement("td");
                   const sTd2 = document.createElement("td");
                   sTd1.innerHTML = k;
-                  sTd2.innerHTML = player.skills[k];
+                  const totalThis = player['total'+capitalizeFirstLetter(k)];
+                  sTd2.innerHTML = "";
+                  if(isSet(totalThis)){
+                    sTd2.innerHTML += "<b>"+totalThis+"</b> ( ";
+                  }
+                  sTd2.innerHTML += player.skills[k];
+                  if(isSet(totalThis)){
+                    sTd2.innerHTML += " <i>+"+(totalThis - player.skills[k])+"</i> )";
+                  }
+
                   sTr.append(sTd1);
                   sTr.append(sTd2);
                   skillsTbl.append(sTr);
@@ -192,9 +203,10 @@ if(typeof main != null && typeof playersList != "undefined"){
               }
               td2.append(skillsTbl);
             }else if(s == "speed"){
-              player.skills.speed = player.totalSpeed;
+              player.skills.speed = player.speed;
               continue;
-            }else if(s == "quests" && player.name != "GM"){
+            }else if(s == "quests"){
+              if(player.name == "GM"){continue;}
               if(player.quests.length == 0 || player.quests.constructor != Array){continue;}
               order = 4;
               td2.className = "quests";
@@ -342,7 +354,6 @@ if(typeof main != null && typeof playersList != "undefined"){
   }
 }
 
-
 // LIBARY
 if('/libary.html' == location.pathname){
   const pureInfo = [];
@@ -359,33 +370,30 @@ if('/libary.html' == location.pathname){
   // Scrollbars top and bottom of table
   const d1 = document.createElement("div");
   const wrp1 = document.createElement("div");
+  wrp1.style.display = "none";
   const d2 = document.createElement("div");
   const setTopScrollBar = (e) => {
-      const tblWidth = getComputedStyle(table).width;
-      d1.style.width = tblWidth;
-      d1.style.width = "200px";
-      if(d2.scrollWidth > 0){
-        wrp1.style.display = "block";
-      }else{
-        wrp1.style.display = "none";
-      }
-  };(() => {
-    const wrp2 = document.createElement("div");
-    wrp1.style.display = "none";
-    wrp1.className = "scrollWrapper";
-    wrp2.className = "scrollWrapper";
-    d1.innerHTML = "";
-    d1.style.height = "1px";
-    d2.append(table);
-    wrp1.onscroll = () => {wrp2.scrollLeft = wrp1.scrollLeft}
-    wrp2.onscroll = () => {wrp1.scrollLeft = wrp2.scrollLeft}
-    
-    window.onresize = (e) => {setTopScrollBar(e);}
-    dom.append(wrp1);
-    dom.append(wrp2);
-    wrp1.append(d1);
-    wrp2.append(d2);  
-  })();
+    const tblWidth = getComputedStyle(table).width;
+    d1.style.width = tblWidth;
+    console.log(tblWidth)
+    if(d2.scrollWidth > 0){
+      wrp1.style.display = "block";
+    }else{
+      wrp1.style.display = "none";
+    }
+  }; 
+  const wrp2 = document.createElement("div");
+  wrp1.className = "scrollWrapper";
+  wrp2.className = "scrollWrapper";
+  d1.style.height = "1px";
+  d2.append(table);
+  wrp1.onscroll = () => {wrp2.scrollLeft = wrp1.scrollLeft}
+  wrp2.onscroll = () => {wrp1.scrollLeft = wrp2.scrollLeft}
+  window.onresize = (e) => {setTopScrollBar(e);}
+  dom.append(wrp1);
+  dom.append(wrp2);
+  wrp1.append(d1);
+  wrp2.append(d2);  
   const elementSprite = {};
   let sortOrder = 1;
   const fillTableWithContent = () => {
@@ -534,6 +542,3 @@ if('/libary.html' == location.pathname){
     }
   })
 }
-
-
-
