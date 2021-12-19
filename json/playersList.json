@@ -666,24 +666,24 @@
   },
   {
     "name": "GM",
-    "position": [41, -19, 0],
+    "position": [87, 5, 1],
     "speed": 2.2,
-    "health": 1553,
+    "health": 1303,
     "maxHealth": 390,
     "sprite": "gm",
     "skills": {
       "level": 29,
-      "exp": 23230,
+      "exp": 23430,
       "fist": 313,
       "dist": 116,
       "healing": 119,
-      "fist_summary": 97783,
-      "dist_summary": 13259
+      "fist_summary": 97788,
+      "dist_summary": 13267
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639766133271,
+    "lastFrame": 1639864738189,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],

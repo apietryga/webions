@@ -1,23 +1,52 @@
-let getWhat;
-if(Object.keys(searchToObject()).includes("online")){
-  getWhat = "onlineList";
-}else{
-  getWhat = "playersList";
-}
-// LOAD SPRITES
-let map;
-if(('/players.html' == location.pathname && location.search.split("=")[0] == "?player")
-|| ('/libary.html' == location.pathname)
-){
-  map = new Map();
-  map.loadSprites(()=>{
-    if(typeof items != "undefined"){jsToTable("items",items);}
-    if(typeof monsters != "undefined"){jsToTable("monsters",monsters);}
-  })
-  
-}
-// PLAYERS
+// CONFIG VALS
+const map = new Map();
 const main = document.querySelector("main");
+const searchToObject = () => {
+  var pairs = window.location.search.substring(1).split("&"),
+    obj = {},
+    pair,
+    i;
+  for ( i in pairs ) {
+    if ( pairs[i] === "" ) continue;
+    pair = pairs[i].split("=");
+    obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+  }
+  return obj;
+}
+const searchObj = isSet(searchToObject().page) ? searchToObject(): { page: 'index' } ;
+// signs for health, manaRegen etc.
+const sign = {
+  names: ['fist','dist','mana','manaRegen','def','health','healing','speed','exp'],
+  render(name, opt = { size : 25 }){
+    if(this.names.includes(name)){
+      this.dom = document.createElement("div");
+      this.dom.className = "itemContainer";
+      this.dom.style.cssText = `
+        width:${opt.size}px;
+        height:${opt.size}px;
+        background-image: url(./img/signs.svg);
+        background-size:auto 100%;
+        margin:auto;
+        background-position: -${ (opt.size) * this.names.indexOf(name)}px 0;
+      `;  
+      const label = document.createElement("div");
+      label.className = "label";
+      label.innerHTML = name;
+      this.dom.append(label);
+      return this.dom;
+    }else{
+      return name;
+    }
+  }
+}
+
+// dispay searched page
+if(document.querySelector("."+searchObj.page)!= null){
+  document.querySelector("."+searchObj.page).style.display = "block";
+}
+
+
+// PLAYERS
 if(typeof main != null && typeof playersList != "undefined"){
   const dt = (typeof playersList == "string")?JSON.parse(playersList):playersList;
   if(typeof dt.length != "undefined"){
@@ -62,8 +91,7 @@ if(typeof main != null && typeof playersList != "undefined"){
         // update total vals
         player.type = "player";
         setTotalVals(player);
-        for(const s of Object.keys(player)){
-          if(dToShow.includes(s)){
+        for(const s of Object.keys(player)){if(dToShow.includes(s)){
             let order = 0;
             const tr = document.createElement("tr");
             tr.className = "detailsBody";
@@ -206,8 +234,7 @@ if(typeof main != null && typeof playersList != "undefined"){
             tr.append(td1);
             tr.append(td2);          
             data.push([order,tr])
-          }
-        }
+        }}
         // append doms in order
         data.sort();
         for(const d of data){
@@ -314,151 +341,199 @@ if(typeof main != null && typeof playersList != "undefined"){
     }
   }
 }
-function searchToObject() {
-  var pairs = window.location.search.substring(1).split("&"),
-    obj = {},
-    pair,
-    i;
 
-  for ( i in pairs ) {
-    if ( pairs[i] === "" ) continue;
 
-    pair = pairs[i].split("=");
-    obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
-  }
-
-  return obj;
-}
 // LIBARY
-const jsToTable = (typename,type) =>{
-  const dom = document.querySelector("."+typename);
-  if(dom != null){
-    const notDisplayingItems = ["staticBox","backpack","coins"];
-    for(const typ of type){
-      if(notDisplayingItems.includes(typ.name)){continue;}
-      if(!typ.pickable&&typ.type == "item"){continue;}
-      const row = document.createElement("div");
-      row.className = "row";
-            
-      // DISPLAY STATS
-      const stats = document.createElement("div");
-      stats.className = "stats";
-      
-      const li = document.createElement("ul");
-      const notDisplayingKeys = ["sprite","spriteNr","handle","pickable","walkThrow"];
-      for(const key of Object.keys(typ)){
-        row.append(li)
-        // li.innerHTML = "<h4>"+typ[key]+"</h4>";
-        if(!notDisplayingKeys.includes(key)){
-          if(['desc'].includes(key)){
-            // display without key
-            li.innerHTML += "<i>"+typ[key]+"</i><br />";
-          }else if(['name'].includes(key)){
-            // console.log(typ)
-            li.innerHTML += "<h4>"+typ[key]+"</h4>";
+if('/libary.html' == location.pathname){
+  const pureInfo = [];
+  const dom = document.querySelector(".content");
+  dom.className += " "+searchObj.page;
+  const table = document.createElement("table"); 
 
-          }else if(['skills'].includes(key)){
-            // const li = document.createElement("ul");stats.append(li);
-            // li.innerHTML = "<h4>Stats</h4>";
-            for(const stat of Object.keys(typ[key])){
-              if(typ.skills[stat] > 0){
-                li.innerHTML += "<li><b>"+stat+"</b> : "+typ.skills[stat]+"</li>";
-              }
-
-            }
-
-          }else if(['randStats'].includes(key)){
-            // items random stats
-            for(const randStat of typ[key]){
-              const randKey = Object.keys(randStat);
-              const randValue = randStat[randKey];
-              li.innerHTML += "<li><b>"+randKey+"</b> : "+randValue+"</li>";
+  // DISPLAY SEARCHED PAGE
+  document.querySelector("."+searchObj.page).style.display = "block";
+  if(searchObj.page != "index"){
+    document.querySelector("h1").append(" ▸ "+capitalizeFirstLetter(searchObj.page))
+  }
+  
+  // Scrollbars top and bottom of table
+  const d1 = document.createElement("div");
+  const wrp1 = document.createElement("div");
+  const d2 = document.createElement("div");
+  const setTopScrollBar = (e) => {
+      const tblWidth = getComputedStyle(table).width;
+      d1.style.width = tblWidth;
+      d1.style.width = "200px";
+      if(d2.scrollWidth > 0){
+        wrp1.style.display = "block";
+      }else{
+        wrp1.style.display = "none";
+      }
+  };(() => {
+    const wrp2 = document.createElement("div");
+    wrp1.style.display = "none";
+    wrp1.className = "scrollWrapper";
+    wrp2.className = "scrollWrapper";
+    d1.innerHTML = "";
+    d1.style.height = "1px";
+    d2.append(table);
+    wrp1.onscroll = () => {wrp2.scrollLeft = wrp1.scrollLeft}
+    wrp2.onscroll = () => {wrp1.scrollLeft = wrp2.scrollLeft}
+    
+    window.onresize = (e) => {setTopScrollBar(e);}
+    dom.append(wrp1);
+    dom.append(wrp2);
+    wrp1.append(d1);
+    wrp2.append(d2);  
+  })();
+  const elementSprite = {};
+  let sortOrder = 1;
+  const fillTableWithContent = () => {
+    if(table.querySelector('tbody') != null){table.querySelector('tbody').remove();}
+    const tbody = document.createElement("tbody"); table.append(tbody);
+    for(const element of pureInfo){
+      const tr = document.createElement("tr"); tbody.append(tr);
+      if(isSet(element.desc)){
+        const td0 = document.createElement('td'); tr.append(td0);
+        td0.className = "sprite";
+        td0.dataset.sprite = element.sprite;
+        td0.dataset.name = element.name;
+        if(isSet(element['spriteNr'])){td0.dataset.spriteNr = element['spriteNr'];}
+        if(Object.keys(elementSprite).length > 0){
+          td0.append(elementSprite[element.name]);
+        }
+        const td1 = document.createElement('td'); tr.append(td1);
+        td1.innerHTML = element.name;
+        const td2 = document.createElement('td'); tr.append(td2);
+        td2.innerHTML = "<div>"+element.desc+"</div>";
+        td2.colSpan = tableKeys.length-1;
+      }else{
+        for(const templateKey of tableKeys){
+          const td = document.createElement('td'); tr.append(td);
+          if(templateKey == "sprite"){
+            td.className = "sprite";
+            td.dataset.sprite = element[templateKey];
+            td.dataset.name = element.name;
+            if(isSet(element['spriteNr'])){td.dataset.spriteNr = element['spriteNr'];}
+            if(Object.keys(elementSprite).length > 0){
+              td.append(elementSprite[element.name]);
             }
           }else{
-            li.innerHTML += "<li>"+key+" <b>"+typ[key]+"</b></li>";
+            td.innerHTML = isSet(element[templateKey]) && element[templateKey] ? element[templateKey] : '-' ;
           }
-        }else{
-          if(!notDisplayingKeys.includes(key)){
-            li.innerHTML += key+"<br />";
-            for(const k of Object.keys(typ[key])){
-              li.innerHTML += "&nbsp;&nbsp;&nbsp;"+k+"  <b>"+typ[key][k]+"</b><br />";
-            }
-            li.innerHTML += "<br />";
-          }
-
         }
       }
-      // DISPLAY SPRITE
+    }
+  }
+  const tableKeys = [];
+  const jsToTable = (type) =>{
+    const notDisplayingItems = ["staticBox","backpack","coins"];
+    const typename = Object.keys(type);
+    if(dom != null){
+      // GET PURE INFO ARRAY
+      for(const element of type[typename]){
+        // exceptions
+        if(notDisplayingItems.includes(element.name)){continue;}
+        if(!element.pickable && element.type == "item"){continue;} 
+        const notDisplayingKeys = ["amount","handle","pickable","walkThrow"];
+        const notTHkeys = ['desc', 'spriteNr','skills'];
+        const pureInfoElement = {};
+        for(const key of Object.keys(element)){
+          if(!notDisplayingKeys.includes(key)){
+            if(key == "randStats"){
+              for(const randStats of element[key]){
+                pureInfoElement[Object.keys(randStats)] = randStats[Object.keys(randStats)];
+              }
+            }else if(key == "skills"){
+              for(const skill of Object.keys(element[key])){
+                pureInfoElement[skill] = element[key][skill];
+                if(!notTHkeys.includes(skill) && !tableKeys.includes(skill)){tableKeys.push(skill)};
+              }
+            }else{
+              if(!notTHkeys.includes(key) && !tableKeys.includes(key)){tableKeys.push(key)};
+              pureInfoElement[key] = element[key];
+            }
+          }
+        }
+        pureInfo.push(pureInfoElement);
+      }
+      // SORT TABLEKEYS 
+      tableKeys.sort((a,b)=>{
+        // sprite first
+        if(a == "sprite"){return -1;}if(b == "sprite"){return 1;}
+  
+      })
+      // MAKE TABLE FROM PUREINFO
+      const thead = document.createElement("thead"); table.append(thead);
+      const doNotDisplayText = ['sprite'];
+      for(const key of tableKeys){
+        const th = document.createElement("th"); thead.append(th);
+        th.className = searchObj.page;
+        th.onclick = () => {
+          sortOrder = sortOrder == 1 ? -1 : 1;
+          pureInfo.sort((a,b) => {
+            let result = -1;
+            let aKey = !isSet(a[key]) || ["-",''].includes(a[key]) ? 0 : a[key] ;
+            let bKey = !isSet(b[key]) || ["-",''].includes(b[key]) ? 0 : b[key];
+            aKey = typeof aKey == "string" ? aKey.split("-")[1]*1 : aKey;
+            bKey = typeof bKey == "string" ? bKey.split("-")[1]*1 : bKey;
+            if(sortOrder == 1){
+              if(aKey > bKey){result = 1;}
+              if(aKey < bKey){result = -1;}
+            }else{
+              if(aKey < bKey){result = 1;}
+              if(aKey > bKey){result = -1;}
+            }
+            return result;
+          })
+          fillTableWithContent();
+        }
+        if(doNotDisplayText.includes(key)){continue;}
+        th.append(sign.render(key));
+      }
+      fillTableWithContent();
+    }
+    setTopScrollBar();
+  }
+  if(isSet(items) && searchObj.page == "items"){jsToTable({items});}
+  if(isSet(monsters) && searchObj.page == "monsters"){jsToTable({monsters});}
+  // SPRITES LOADER
+  map.loadSprites(()=>{
+  // DISPLAY SPRITES
+  // console.log(sprites)
+    for(const spriteField of document.querySelectorAll(".sprite")){
+      const element = spriteField.dataset;
+      // console.log(sprites);
+      // console.log(element)
       for(const sprite of sprites){
-        if(sprite.name == typ.sprite){
-          const ab = map.sprites[typ.sprite].height;
-          const w = map.sprites[typ.sprite].width;
+        if(sprite.name == element.sprite){
+          const ab = map.sprites[element.sprite].height;
+          const w = map.sprites[element.sprite].width;
           const img = document.createElement("div");
           img.style.height = ((ab)/5)+"px";
           img.style.backgroundImage = "url("+sprite.src+")";
-          row.append(img);
-          if(typeof typ.spriteNr != "undefined"){
+          if(typeof element.spriteNr != "undefined"){
             hw = 40;
-            // img.style.backgroundRepeat = "no-repeat";
             img.className = "item preview"
-            img.style.backgroundPosition = "-"+(hw*typ.spriteNr)+"px 0px";
+            img.style.backgroundPosition = "-"+(hw*element.spriteNr)+"px 0px";
             img.style.backgroundSize = ((hw)*(w/(ab)))+"px 100%";
             img.style.width = hw+"px";
             img.style.height = hw+"px";
-
           }else{
             img.className = "monster preview"
             img.style.width = (ab/5)+"px";
             img.style.height = (ab/5)+"px";
             img.style.backgroundPosition = (3*(ab)/5)+"px -"+(1*(ab)/5)+"px";
           }
+          spriteField.append(img);
+          elementSprite[element.name] = img;
           break;
         }
-      }
-      dom.append(row);
-    }
-  }
-}
-// COLLAPSING LIBARY
-const contentControl = (h) =>{
-  if(h.id != ""){
-    const h1 = document.querySelector("#"+h.id);
-    const dom = document.querySelector("."+h.id);
-    if(dom != null){ 
-      dom.style.display = "none";
-      h1.onclick = () => {
-        if(h.tagName == "H3"){
-          window.location.hash = h.parentNode.className+"_"+h.id;
-        }else{
-          window.location.hash = h.id;
-        }
-        if(dom.style.display == "block"){
-          // if(window.location.hash == h.id){
-            dom.style.display = "none"
-          // }
-        }else{
-          dom.style.display = "block"
-        }
+        // console.log(elementSprite);
       }
     }
-  }
+  })
 }
-for(const h of document.querySelectorAll("h2,h3")){
-  contentControl(h);
-}
-// DISPLAY CHAPTER FROM HASH ON PAGE LOAD
-const fadeOnHash = () =>{
-  const hashVal = window.location.hash.split("#")[1];
-  if(typeof hashVal != "undefined"){
-    const splitted = hashVal.split("_");
-    for(const name of splitted){
-      const cls = document.querySelector("."+name);
-      if(cls.style.display == "none"){
-        cls.style.display = "block";
-      }else{
-        cls.style.display = "none";
-      }
-    }  
-  }
-}
-fadeOnHash();
+
+
+

@@ -431,7 +431,7 @@ class Creature {
       if(this.type == "player"){
         for(const item of items.itemsInArea){
           // up
-          if(func.compareTables(item.position,this.position) && item.name == "ladder"){
+          if(func.compareTables(item.position,this.position) && item.name == "Ladder"){
             // check if's floor between
             let isBetween = false;
             for(const grid of map.getGrid([phantomPos[0],phantomPos[1],phantomPos[2]+1])){
@@ -463,7 +463,7 @@ class Creature {
           }
           // down
           if(func.compareTables([item.position[0]-1,item.position[1]-1,item.position[2]+1],phantomPos)
-          && item.name == "ladder"){
+          && item.name == "Ladder"){
             // check if's floor between
             let isBetween = false;
             for(const grid of map.getGrid(phantomPos)){

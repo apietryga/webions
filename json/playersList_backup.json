@@ -340,7 +340,7 @@
         "in": [
           {
             "type": "item",
-            "name": "ladder",
+            "name": "Ladder",
             "sprite": "action_items",
             "spriteNr": 4,
             "handle": ["lh", "rh"],
@@ -367,7 +367,7 @@
       },
       "rh": {
         "type": "item",
-        "name": "ladder",
+        "name": "Ladder",
         "sprite": "action_items",
         "spriteNr": 4,
         "handle": ["lh", "rh"],
@@ -623,7 +623,7 @@
       },
       "bp": {
         "type": "item",
-        "name": "ladder",
+        "name": "Ladder",
         "position": [53, -26, 0],
         "sprite": "action_items",
         "spriteNr": 4,

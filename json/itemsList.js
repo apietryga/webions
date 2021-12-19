@@ -28,7 +28,7 @@ this.list = [
   { name:"staticBox",
     position:[50,-40,0],
     spriteNr:2,
-    inItem: "ladder"
+    inItem: "Ladder"
   },
   // TOWER 
   { name:"staticBox",
@@ -54,14 +54,14 @@ this.list = [
     position:[56,-25,-2]
   },
   // CASTLEGATE
-  { name:"ladder",
+  { name:"Ladder",
     position:[32,-23,0],
   },
-  { name:"ladder",
+  { name:"Ladder",
     position:[33,-24,1],
   },
   // CASTLEGATE NORTH 
-  { name:"ladder",
+  { name:"Ladder",
     position:[33,-47,1],
   },
 

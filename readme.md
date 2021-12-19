@@ -25,11 +25,14 @@
   - halffloors upper than floors
   - render windows above floors (temple)
   - in register, fill checked sex value
-## WORKIN' ON
   - make subpages for libary
+  - sorting items and monsters 
+  - add overflows for small devices in items & monsters
+## ISSUES
+  - fix get hitting without def (from eq) when kicked (most on train's)
+  - repair player kick (once - now 6 times...)
   - online list [public] - not kicking players 
   - disable heroku Idling (serv reload)
-  - opt auto shooter
   - one exhoust to shot, heal and mwall 
   - on public skills, set totalFist, total dist ect. ex( 100 + 20 )
   - improve public health and mana %
@@ -41,25 +44,27 @@
   - make downcase letters in login (can rozin login as Rozin)
   - landscape map control mobile [planeclicking]
   - fix doubled console message on sent
-  - repair player kick (once - now 6 times...)
-  - fix get hitting without def (from eq) when kicked (most on train's)
   - base mana regen [replace simple legs with simple helmet]
   - remove Creature.skills.healing, and improve healing with mana
   - walking throught static items/monsters (not players and empty boxes, hmm?)
   - monsters and nps's walking around doors, windows, staticItems
+  - secure websocket
+  - first remove item from eq, then drop them. 
+  - controls 168
+  - toggle mobile controls
+  - cyclop and dragon sprites update.
+
+# FEATURES
+  - auto shooter
   - NPC's staying on saying and speaking
   - backpacks and depos
   - dead body as item + LOOTING
   - add shielding
   - add magic lvl
-  - secure websocket
   - entire map image on index
   - protection zone
-  - house zone
-  - first remove item from eq, then drop them. 
-  - controls 168
   - mwalls
-  - toggle mobile controls
+  - house zone
 
 ## TO CATCH
   - bug with doubled characters (creatures.update in gameplane? - when, how?) [8.12.2021]

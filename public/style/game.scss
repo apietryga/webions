@@ -10,21 +10,6 @@
   touch-action: none;                              
   box-sizing: border-box;
 }
-// scrollbars
-body{
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    @extend %inFrame;
-  }
-  ::-webkit-scrollbar-thumb {
-    @extend %onFrame;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }  
-}
 body{
   color:#fff;
   font-size:20px;

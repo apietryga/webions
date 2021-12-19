@@ -1,11 +1,11 @@
-body > header .logo:active, body > header .play a:active, body nav a:active, body aside a:active, body footer a:active, body .wrapper main > table .listBody:active, body .cookiesPopUp span:active, .eq .itemContainer .label, body, body .wrapper main > table .detailsBody .eq .allFields > div, body .wrapper main > table .detailsHead .eq .allFields > div, body .wrapper main > table .detailsBody > td, body .wrapper main > table .detailsHead > td, body .wrapper main .cont .items, body .wrapper main .cont .monsters, body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row, body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview, body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
+body > header .logo:active, body > header .play a:active, body .wrapper main > table .listBody:active, body .wrapper main .content.items table th:active:not(th:nth-child(1)), body .wrapper main .content.monsters table th:active:not(th:nth-child(1)), body nav a:active, body aside a:active, body footer a:active, body .cookiesPopUp span:active, .itemContainer .label, body ::-webkit-scrollbar-track, body, body .wrapper main > table .detailsBody .eq .allFields > div, body .wrapper main > table .detailsHead .eq .allFields > div, body .wrapper main > table .detailsBody > td, body .wrapper main > table .detailsHead > td {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
-body > header .logo, body > header .play a, body nav a, body aside a, body footer a, body .wrapper main > table .listBody, body .cookiesPopUp span, body > header, body > header .play, body nav, body aside, body footer, body .wrapper main, body .wrapper main .content, body .wrapper main > table, body .wrapper main > table th, body .wrapper main .cont h2, body .wrapper main .cont h3, body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4, body .cookiesPopUp {
+body > header .logo, body > header .play a, body .wrapper main > table .listBody, body .wrapper main .content.items table th:not(th:nth-child(1)), body .wrapper main .content.monsters table th:not(th:nth-child(1)), body nav a, body aside a, body footer a, body .cookiesPopUp span, body ::-webkit-scrollbar-thumb, body > header, body > header .play, body .wrapper main, body .wrapper main .content, body .wrapper main > table, body .wrapper main > table th, body .wrapper main .content.items table, body .wrapper main .content.monsters table, body .wrapper main article, body nav, body aside, body footer, body .cookiesPopUp {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -13,15 +13,19 @@ body > header .logo, body > header .play a, body nav a, body aside a, body foote
   color: #AEAEAC;
 }
 
-body > header .logo:hover, body > header .play a:hover, body nav a:hover, body aside a:hover, body footer a:hover, body .wrapper main > table .listBody:hover, body .cookiesPopUp span:hover {
+body > header .logo, body > header .play a, body .wrapper main > table .listBody, body .wrapper main .content.items table th:not(th:nth-child(1)), body .wrapper main .content.monsters table th:not(th:nth-child(1)), body nav a, body aside a, body footer a, body .cookiesPopUp span {
+  cursor: pointer;
+}
+
+body > header .logo:hover, body > header .play a:hover, body .wrapper main > table .listBody:hover, body .wrapper main .content.items table th:hover:not(th:nth-child(1)), body .wrapper main .content.monsters table th:hover:not(th:nth-child(1)), body nav a:hover, body aside a:hover, body footer a:hover, body .cookiesPopUp span:hover {
   background-color: #444343;
 }
 
-.eq .itemContainer {
+.itemContainer {
   position: relative;
 }
 
-.eq .itemContainer .label {
+.itemContainer .label {
   pointer-events: none;
   position: absolute;
   top: 50%;
@@ -35,8 +39,16 @@ body > header .logo:hover, body > header .play a:hover, body nav a:hover, body a
   background-color: #2f2f2fb6 !important;
 }
 
-.eq .itemContainer:hover > .label {
+.itemContainer:hover > .label {
   display: block;
+}
+
+body ::-webkit-scrollbar {
+  width: 10px;
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 * {
@@ -106,6 +118,12 @@ body > header .logo {
   font-size: 0.6em;
 }
 
+body > header .logo p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 2em;
+}
+
 body > header .play {
   flex: 1;
   justify-content: center;
@@ -138,19 +156,6 @@ body > header a img {
   margin-right: 1em;
 }
 
-body nav, body aside, body footer {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-body nav a, body aside a, body footer a {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: inherit;
-}
-
 body .wrapper {
   position: relative;
   display: flex;
@@ -177,6 +182,10 @@ body .wrapper main .content {
 
 body .wrapper main .content h1 {
   padding: 0;
+}
+
+body .wrapper main .content img {
+  max-width: 100%;
 }
 
 body .wrapper main > table {
@@ -346,106 +355,103 @@ body .wrapper main h1 {
 }
 
 body .wrapper main h1 a {
-  font-size: 0.5em;
-  color: #ababeb;
+  color: inherit;
 }
 
-body .wrapper main .tos {
-  padding: 2%;
-  padding-bottom: 5%;
+body .wrapper main .content .scrollWrapper {
+  overflow-x: auto;
 }
 
-body .wrapper main .tos .H0 {
-  margin: -2em;
+body .wrapper main .content.items table, body .wrapper main .content.monsters table {
+  border-spacing: 0;
+  width: 100%;
 }
 
-body .wrapper main .tos .H1 {
-  margin: -1em;
+body .wrapper main .content.items table th, body .wrapper main .content.monsters table th {
+  background-color: #2f2f2f;
+  padding: 0 !important;
 }
 
-body .wrapper main .tos .H2 {
-  margin: 0em;
+body .wrapper main .content.items table th.items:nth-child(1), body .wrapper main .content.monsters table th.items:nth-child(1) {
+  min-width: 44px;
 }
 
-body .wrapper main .tos .H3 {
-  margin: 1em;
+body .wrapper main .content.items table th.monsters:nth-child(1), body .wrapper main .content.monsters table th.monsters:nth-child(1) {
+  width: 84px;
 }
 
-body .wrapper main .tos .H4 {
-  margin: 2em;
-}
-
-body .wrapper main .tos .H5 {
-  margin: 3em;
-}
-
-body .wrapper main .cont {
-  padding: 5px;
-}
-
-body .wrapper main .cont h2 {
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-body .wrapper main .cont h3 {
-  cursor: pointer;
-  padding-left: 20px;
-  margin: 5px;
-}
-
-body .wrapper main .cont div > div {
-  padding-left: 30px;
-}
-
-body .wrapper main .cont img {
-  width: 80%;
-  margin: 5% 10%;
-}
-
-body .wrapper main .cont .items, body .wrapper main .cont .monsters {
+body .wrapper main .content.items table th:nth-child(1), body .wrapper main .content.monsters table th:nth-child(1) {
+  border: 0;
   background-color: transparent;
 }
 
-body .wrapper main .cont .items .row, body .wrapper main .cont .monsters .row {
-  margin-bottom: 1em;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  position: relative;
-  padding-top: 2em;
+body .wrapper main .content.items table td, body .wrapper main .content.monsters table td {
+  border: 2px solid #585555;
 }
 
-body .wrapper main .cont .items .row .preview, body .wrapper main .cont .monsters .row .preview {
-  position: relative;
-  margin: 11px;
+body .wrapper main .content.items table td:not(td:nth-child(2)), body .wrapper main .content.monsters table td:not(td:nth-child(2)) {
+  text-align: center;
 }
 
-body .wrapper main .cont .items .row h4, body .wrapper main .cont .monsters .row h4 {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  padding-left: 0.8em;
-  width: 100%;
-  left: 0;
-  top: 0;
-  height: 2em;
+body .wrapper main .content.items table td:not(td:nth-child(1)), body .wrapper main .content.monsters table td:not(td:nth-child(1)) {
+  border-left: 0;
 }
 
-body .wrapper main .cont .items .row ul, body .wrapper main .cont .monsters .row ul {
-  flex: 1;
+body .wrapper main .content.items table td:not(td:nth-last-child(1)), body .wrapper main .content.monsters table td:not(td:nth-last-child(1)) {
+  border-right: 0;
+}
+
+body .wrapper main .content.items table td div, body .wrapper main .content.monsters table td div {
+  text-align: center;
+  font-style: italic;
+}
+
+body .wrapper main .content.items table.monsters td:nth-child(1), body .wrapper main .content.monsters table.monsters td:nth-child(1) {
+  min-height: 80px;
+}
+
+body .wrapper main .content.items .sprite {
+  height: 46px;
+}
+
+body .wrapper main .content.monsters .sprite {
+  height: 86px;
+}
+
+body .wrapper main .content.monsters .sprite div {
+  margin: 0 !important;
+}
+
+body .wrapper main article {
+  padding: 10px;
+}
+
+body .wrapper main article > a {
+  font-size: 1.5em;
+}
+
+body .wrapper main article p {
   margin: 0;
-  list-style-type: none;
-  padding: 0.5em;
 }
 
-body .wrapper main .cont .items .stats, body .wrapper main .cont .monsters .stats {
-  padding: 5px 20px;
+body .wrapper main article:not(article:nth-last-child(1)) {
+  margin-bottom: 5px;
 }
 
-body .wrapper main .cont .items > div, body .wrapper main .cont .monsters > div {
+body nav, body aside, body footer {
   display: flex;
-  flex-direction: row-reverse;
+  justify-content: space-evenly;
+}
+
+body nav a, body aside a, body footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+}
+
+body footer a {
+  flex: 1;
 }
 
 body aside {
@@ -480,6 +486,12 @@ body .cookiesPopUp span {
   nav {
     order: 1;
   }
+  aside {
+    flex-wrap: wrap;
+  }
+  nav a, aside a {
+    flex: 1;
+  }
 }
 
 @media (min-width: 720px) {
@@ -487,10 +499,21 @@ body .cookiesPopUp span {
     width: 60%;
     margin-left: 20%;
   }
+  .wrapper .items table th, .wrapper .monsters table th {
+    top: 0 !important;
+  }
   nav, aside {
     flex-direction: column;
-    max-height: 20vh;
+    height: fit-content;
+    justify-content: flex-start !important;
     position: sticky;
     top: 0;
+  }
+  nav a, aside a {
+    padding: 10px 15px !important;
+    margin: 5px;
+  }
+  nav a:not(a:nth-last-child(1)), aside a:not(a:nth-last-child(1)) {
+    margin-bottom: 0px;
   }
 }

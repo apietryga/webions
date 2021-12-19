@@ -397,10 +397,11 @@ function public(req, res, playersList) {
     }
   }else if(["/libary.html"].includes(myURL.pathname)){
     vals.aside = `
-    <a href="/libary.html#install">Install</a>
-    <a href="/libary.html#controls">Controls</a>
-    <a href="/libary.html#monsters">Monsters</a>
-    <a href="/libary.html#items">Items</a>
+    <a href="/libary.html?page=install">Install</a>
+    <a href="/libary.html?page=controls">Controls</a>
+    <a href="/libary.html?page=monsters">Monsters</a>
+    <a href="/libary.html?page=items">Items</a>
+    <a href="/libary.html?page=about">About</a>
     `;
     // filter creatures to monsters only
     const creatures = require("./monstersTypes");
