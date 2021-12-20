@@ -657,13 +657,40 @@ const menus = {
   },
   console:{
     parent: document.querySelector(".gameAndConsole"),
+    lastPharses: [],
+    currentPharse: 0,
     init(){
       this.dom = document.createElement("div");
       this.dom.className = "console";
       this.messages = document.createElement("div");
       this.messages.className = "messages";
       this.log("Welcome in {{name}} v"+game.version,{color:"#0f0"})
-      this.dom.innerHTML = `<input class='messagesInput'>`;
+      this.input = document.createElement("input");
+      this.input.className = 'messagesInput';
+      // this.input.attr('spellcheck:false')
+      this.input.setAttribute('spellcheck', 'false');
+      this.input.onkeydown = (e) => {
+        if((e.key == 'ArrowUp' || e.key == 'ArrowDown') && menus.console.lastPharses.length > 0){
+          if(e.key == 'ArrowUp'){
+            if(!menus.console.currentPharse){
+              menus.console.currentPharse = menus.console.lastPharses.length - 1;
+            }else{
+              menus.console.currentPharse -= 1;
+            }
+          }else{
+            if(menus.console.currentPharse >= menus.console.lastPharses.length -1){
+              menus.console.currentPharse = 0;
+            }else{
+              menus.console.currentPharse += 1;
+            }
+          }
+          menus.console.input.value = menus.console.lastPharses[menus.console.currentPharse];
+        }
+        if(e.key == "Enter"){
+          menus.console.currentPharse = 0;
+        }
+      }
+      this.dom.append(this.input);
       this.dom.prepend(this.messages);
       this.parent.append(this.dom);
     },

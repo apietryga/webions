@@ -30,7 +30,6 @@ class Creature {
       fist_summary:1,
       dist:1,
       dist_summary:1,
-      // healing:1,
     }
     if(type == "player"){
       this.lastFrame = 0;
@@ -163,12 +162,12 @@ class Creature {
         barbarian:[4,-33,1],
         depo:[43,0,0],
         castlegate:[40,-23,0],
-        castletower:[47,-41,4],
+        castletower:[44,-37,4],
         playground:[40,20,0],
       };
       if(this.name == "GM"){
         const command = param.says.split(" ");
-        if(command[0] == "!move"){
+        if(['!move'].includes(command[0])){
           if(func.isSet(command[1])){ 
             const dim = ["x","y","z"];
             let sign = false;
@@ -202,6 +201,12 @@ class Creature {
           }
           if(func.isSet(command[2])){ this.position[1] = command[2];}
           if(func.isSet(command[3])){ this.position[2] = command[3];}
+        }
+        if(['!health','!mana'].includes(command[0])){
+          this[command[0].replace('!','')] = command[1]*1;
+        }
+        if(['!exp','!fist_summary','!dist_summary','!level','!fist','!dist'].includes(command[0])){
+          this.skills[command[0].replace('!','')] = command[1]*1;
         }
       }
       // TP to temple
@@ -268,9 +273,14 @@ class Creature {
         this.totalSpeed = this.baseSpeed;
       }
     }
-    // CHECK HEALTH ON HEALTH ITEM DROP
-    if(this.health > this.totalHealth && this.type == "player"){
-      this.health = this.totalHealth;
+    // CHECK HEALTH, MANA ON ITEM DROP
+    if(this.type == "player"){
+      if(this.health > this.totalHealth){
+        this.health = this.totalHealth;
+      }
+      if(this.mana > this.totalMana){
+        this.mana = this.totalMana;
+      }
     }
     // MANA REGEN
     if(func.isSet(this.totalManaRegen) && this.manaRegenExhoust < game.time.getTime() && this.totalManaRegen > 0 && this.type == "player"){
@@ -346,7 +356,6 @@ class Creature {
             }
           }
         }
-        
         // walking modes
         if(this.type == "npc"){
           if(func.isSet(this.talking)){
@@ -363,9 +372,6 @@ class Creature {
             }
           }  
         }
-        
-
-
         // move monster
         if(walkingMode == "follow"){
           if(Math.abs(this.position[0] - playerInArea.position[0]) > 1
@@ -627,7 +633,8 @@ class Creature {
         this.restore = game.time.getTime() + 60000;
       }
       if(this.type == "npc"){
-        this.restore = game.time.getTime();}
+        this.restore = game.time.getTime();
+      }
       if(this.name == param.name){
         this.direction = 4;
         game.dead = true;
@@ -636,41 +643,27 @@ class Creature {
     // RESTORING [monster]
     if(this.restore && game.time.getTime() >= this.restore){
       this.health = this.maxHealth;
-      // this.cyle = 0;
-      // this.direction = this.defaultDirection;
       this.restore = false;
       this.direction = 1;
       if(!this.type == "npc"){
         this.position = this.startPosition;
         this.cyle = this.defaultCyle;
-  
       }
     } 
     // HEALING [player]
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
-      let healValue = Math.floor(this.totalHealth/10);
-      if(this.health + healValue > this.totalHealth){
-        const difference = (this.health + healValue) - this.totalHealth;
-        if(this.mana > difference && difference != 0){
-          this.mana -= difference; 
+      const healValue = Math.floor(this.totalHealth/10);
+      const manaSpend = 50;
+      if(this.mana >= manaSpend){
+        this.mana -= manaSpend; 
+        if(this.health + healValue >= this.totalHealth){
           this.health = this.totalHealth;
-        }
-
-      }else if(this.mana > healValue){
-        this.mana -= healValue;
-        this.health = this.totalHealth;
-        if(this.health + this.skills.healing <= this.totalHealth){
-          this.mana -= healValue
+        }else{
           this.health += healValue;
         }
       }else{
-        if(this.mana > 0){
-          this.health += this.mana;
-          this.mana = 0;
-        }else{
-          this.text = "You have no mana."
-        }
+        this.text = "You have no mana."
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }
@@ -731,6 +724,7 @@ class Creature {
             for(const p of trace){
               for(const g of map.getGrid([p[0],p[1],this.position[2]])){
                 if(g[4] == "walls"){
+                // if(map.notAvalibleGrids.includes(g[4])){
                   isWall = true;
                   break;
                 }  

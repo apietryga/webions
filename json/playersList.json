@@ -39,20 +39,20 @@
   },
   {
     "name": "Tosiek",
-    "position": [40, -26, 0],
-    "speed": 2.7,
-    "health": 790,
-    "maxHealth": 810,
+    "position": [35, -9, -1],
+    "speed": 2.6,
+    "health": 780,
+    "maxHealth": 780,
     "skills": {
-      "level": 71,
-      "exp": 351230,
+      "level": 68,
+      "exp": 301134,
       "fist": 48,
       "dist": 38,
       "healing": 5011,
       "fist_summary": 2223,
       "dist_summary": 1415
     },
-    "lastFrame": 1639951437355,
+    "lastFrame": 1639964885072,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -154,24 +154,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-07T22:18:53.349Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 76
-      },
-      {
-        "when": "2021-12-13T16:49:18.776Z",
-        "who": "Cyclops",
-        "whoType": "monster",
-        "level": 74
-      },
-      {
-        "when": "2021-12-16T16:38:17.268Z",
-        "who": "Barbarian",
-        "whoType": "monster",
-        "level": 73
-      },
-      {
         "when": "2021-12-16T21:09:11.162Z",
         "who": "Dragon",
         "whoType": "monster",
@@ -182,13 +164,31 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 71
+      },
+      {
+        "when": "2021-12-20T01:44:48.074Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 70
+      },
+      {
+        "when": "2021-12-20T01:45:15.075Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 69
+      },
+      {
+        "when": "2021-12-20T01:46:07.669Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 68
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder"],
-    "mana": 1210,
-    "maxMana": 810,
-    "token": "8ehcjxp9li",
+    "mana": 1180,
+    "maxMana": 780,
+    "token": "qgae4knb0e",
     "redTarget": false
   },
   {
@@ -676,24 +676,24 @@
   },
   {
     "name": "GM",
-    "position": [54, -23, -1],
-    "speed": 2.2,
-    "health": 543,
-    "maxHealth": 380,
+    "position": [-70, 11, 2],
+    "speed": 2,
+    "health": 1088,
+    "maxHealth": 160,
     "sprite": "gm",
     "skills": {
-      "level": 28,
-      "exp": 20144,
+      "level": 6,
+      "exp": 170,
       "fist": 313,
-      "dist": 116,
+      "dist": 1001,
       "healing": 119,
-      "fist_summary": 97794,
-      "dist_summary": 13274
+      "fist_summary": 97954,
+      "dist_summary": 1000030
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1639954910817,
+    "lastFrame": 1640023077155,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -709,34 +709,13 @@
         "handle": ["hd"],
         "pickable": true,
         "health": 1000,
-        "position": [54, -23, -1],
+        "position": [-64, 13, -1],
         "actionType": "pickUp",
         "visibleFloor": -1,
         "field": "hd",
-        "pos": [54, -23, -1]
+        "pos": [-64, 13, -1]
       },
-      "bp": {
-        "type": "item",
-        "name": "Random Item",
-        "sprite": "items",
-        "spriteNr": 15,
-        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
-        "pickable": true,
-        "randStats": [
-          {"speed": "0 - 3"},
-          {"mana": "0 - 100"},
-          {"manaRegen": "0 - 50"},
-          {"health": "0 - 200"},
-          {"def": "0 - 100"}
-        ],
-        "health": 163,
-        "def": 40,
-        "position": [50, -13, 1],
-        "actionType": "pickUp",
-        "visibleFloor": 7,
-        "field": "lh",
-        "zIndex": 0
-      },
+      "bp": false,
       "nc": false,
       "ch": {
         "type": "item",
@@ -748,47 +727,53 @@
         "def": 50,
         "mana": 200,
         "manaRegen": 25,
-        "position": [-63, 13, -1],
+        "position": [-64, 13, -1],
         "actionType": "pickUp",
         "visibleFloor": -1,
         "field": "ch",
-        "zIndex": 0,
-        "pos": [-63, 13, -1]
+        "pos": [-64, 13, -1]
       },
       "lh": {
-        "name": "Rod",
+        "type": "item",
+        "name": "Blessed Shield",
         "sprite": "items",
-        "spriteNr": 1,
-        "fist": 15,
-        "dist": 20,
-        "manaRegen": 2,
+        "spriteNr": 12,
         "handle": ["lh", "rh"],
-        "pickable": true
+        "pickable": true,
+        "def": 100,
+        "position": [30, -36, 1],
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "rh",
+        "pos": [30, -36, 1]
       },
       "rh": {
         "type": "item",
-        "name": "Wand of Destiny",
-        "position": [-62, 13, -1],
+        "name": "Blessed Shield",
         "sprite": "items",
-        "fist": 100,
-        "dist": 100,
-        "spriteNr": 10,
-        "manaRegen": 100,
+        "spriteNr": 12,
         "handle": ["lh", "rh"],
         "pickable": true,
+        "def": 100,
+        "position": [31, -36, 1],
         "actionType": "pickUp",
-        "visibleFloor": -1,
+        "visibleFloor": 7,
         "field": "lh",
-        "zIndex": 0,
-        "pos": [-62, 13, -1]
+        "pos": [31, -36, 1]
       },
       "lg": {
+        "type": "item",
         "name": "King Legs",
         "sprite": "items",
         "spriteNr": 8,
         "handle": ["lg"],
         "pickable": true,
-        "def": 50
+        "def": 50,
+        "position": [29, -37, 1],
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "lg",
+        "pos": [29, -37, 1]
       },
       "ft": {
         "type": "item",
@@ -804,34 +789,34 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-10T00:02:04.318Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 25
-      },
-      {
-        "when": "2021-12-13T16:27:25.015Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 25
-      },
-      {
-        "when": "2021-12-19T22:06:39.644Z",
-        "who": "Maggot",
-        "whoType": "monster",
-        "level": 29
-      },
-      {
-        "when": "2021-12-19T22:21:16.606Z",
-        "who": "Maggot",
-        "whoType": "monster",
-        "level": 28
-      },
-      {
         "when": "2021-12-19T22:30:32.642Z",
         "who": "Maggot",
         "whoType": "monster",
         "level": 28
+      },
+      {
+        "when": "2021-12-20T01:46:22.593Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 27
+      },
+      {
+        "when": "2021-12-20T01:47:23.007Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 27
+      },
+      {
+        "when": "2021-12-20T01:50:03.339Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 26
+      },
+      {
+        "when": "2021-12-20T03:24:49.604Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 26
       }
     ],
     "quests": [
@@ -894,12 +879,17 @@
       "Blessed Shield",
       "Rod",
       "Rod",
-      "Simple Helmet"
+      "Simple Helmet",
+      "Random Item",
+      "Blessed Shield",
+      "Blessed Shield",
+      "King Armor",
+      "Magic Armor"
     ],
-    "mana": 580,
-    "maxMana": 380,
+    "mana": 360,
+    "maxMana": 160,
     "redTarget": false,
-    "token": "y5xfqibkl7g"
+    "token": "42xoq94jzfi"
   },
   {
     "name": "Niko",

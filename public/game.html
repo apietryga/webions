@@ -15,17 +15,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   </head>
   <body onselect="typeof document.selection != 'undefined' ? document.selection.empty():'';">
+    <script src="js/gameDetails.js?v={{version}}"></script>
+    <script src="./js/accountgame.js?v={{version}}"></script>
     <noscript>
       This game will not apear without JavaScript - turn it on to play.
     </noscript>
-    <div class="loader">
-      <img src="logo.webp" alt="{{name}} Game">
-      <h1>{{name}}</h1>
-      <div class="loadProgress">
-        <div class="progressBar"></div>
-      </div>
-      <div class="loadDetails"></div>
-    </div>
     <div class="wrapper">
       <div class="gameAndConsole">
         <div class="gamePlane">
@@ -41,7 +35,6 @@
     </div>
   </body>
 </html>
-<script src="js/gameDetails.js?v={{version}}"></script>
 <script src="js/functions.js?v={{version}}"></script>
 <script src="js/sprites.js?v={{version}}"></script>
 <script src="js/map.js?v={{version}}"></script>

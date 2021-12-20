@@ -12,9 +12,6 @@
 $tw:rgba(255, 255, 255, 0.096);
 $bodyBg:rgb(90, 27, 27);
 $hbg:rgba(0, 0, 0, 0.5);
-$sc:#9a01013f;  // for tables second color
-$tc:#b7990038;  // for tables thirth color
-
 html{height:100%;}
 body{
   @extend %inFrame;

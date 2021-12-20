@@ -165,7 +165,7 @@ const controls = {
           // player.itemAction.field = ".backpack in"
         }else{
           player.itemAction.field = picked.parentElement.parentElement.className;
-          console.log(player.itemAction.field)
+          // console.log(player.itemAction.field)
         }
       }else{
         // pick up item

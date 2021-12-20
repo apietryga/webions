@@ -1,4 +1,10 @@
 this.list = [
+  // testmap
+  // { name:"staticBox",
+  //   position:[0,0,0],
+  //   inItem:"Simple Boots"
+  // },
+
   // TEMPLE
   { name:"staticBox",
     position:[32,-12,-1],

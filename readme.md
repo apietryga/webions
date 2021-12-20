@@ -2,55 +2,33 @@
   Webions is a MMORPG game working on browsers. 
   You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "serwer.js" by nodejs. I will make instructions for this in future versions.
 ## TESTING NOW
-  - display lastFrame correctly - improve minutes, hours and months 
-  - disable players updating on serv start.
-  - gameplane.js:28:10 player.update is undefined
-  - player above redtarget
-  - nick always top
-  - firefox compatibility buttons LO MP
-  - ingameconsole - disable undefined message
+  - manifest.json doesn't work on android
   - improve succesfully login animation [no form and wait for map load]
-  - replace courier with mailgun - **to make repository public**
-  - Unexpected server crash (when?, why?) [8.12.2021] - it might be for this two:
-  - SIGTERM uncaughtException at /app/js/public.js:136:13
-  - secure public
-  - Uncaught TypeError: Cannot read properties of undefined (reading 'empty') [game.html:17]
-  - firefox compatibility gameplane order rendering
-  - MIME types - wtf is going on with https://webions.herokuapp.com/apple-touch-icon-precomposed.png , https://webions.herokuapp.com/apple-touch-icon.png ?
-  - force HTTPS not HTTP
-  - sprites.js:141 Uncaught SyntaxError: Unexpected identifier
-  - manifest.json:29 Manifest: Line: 29, column: 1, Unexpected data after root element.
-  - Uncaught TypeError: consoleInput is null controls:273
-  - halffloors upper than floors
-  - render windows above floors (temple)
-  - in register, fill checked sex value
-  - make subpages for libary
-  - sorting items and monsters 
-  - add overflows for small devices in items & monsters
-  - fix token - not saving in base [only JSON, Redis work i guess, or not ...].
-  - fix get hitting without def (from eq) when kicked (most on train's)
+  - replace courier with mailgun [48h blocked -.-]
   - repair player kick (once - now 6 times...)
-  - online list [public] - not kicking players 
-  - improve token cookie (samesite)
-  - on public skills, set totalFist, total dist ect. ex( 100 + 20 )
-  - improve public health and mana %
-  - base mana regen [replace simple legs with simple helmet]
-## ISSUES
+  - make icons for mana, health, etc
   - improve healing with mana
+  - decrease mana after item drop
+  - fix token - not saving in base [only JSON, Redis work i guess, or not ...].
+  - console - get last writing pharse by up/down arrows
+## ISSUES
+  - make offline as loader
   - restore totalHealth and totalMana after death
   - walking throught static items/monsters (not players and empty boxes, hmm?)
-  - monsters and nps's walking around doors, windows, staticItems
   - strict url's like http://localhost/libary/elo
   - strict register names (no numbers and monsters names)
   - landscape map control mobile [planeclicking]
   - fix doubled console message on sent
   - replace Creature.skills.healing, to skills.def 
-  - secure websocket
+  - health on [public] (base + eq) [mana the same]
   - first remove item from eq, then drop them. 
   - toggle mobile controls
   - disable heroku Idling (serv reload)
   - one exhoust to shot, heal and mwall 
   - cyclop and dragon sprites update.
+  - monsters and nps's walking around windows, stairs
+  - public <720px bottom body bar wtf?
+  - secure websocket
 ## FEATURES
   - auto shooter
   - NPC's staying on saying and speaking

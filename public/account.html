@@ -7,10 +7,13 @@
   <title>{{name}} account</title>
   <link rel="shortcut icon" href="favicon.ico?version={{version}}" type="image/x-icon">
   <link rel="stylesheet" href="style/account.css?version={{version}}">
-  <script src="../js/functions.js?version={{version}}"></script>
+  <link rel="stylesheet" href="style/both.css?version={{version}}">
+  <script src="./js/functions.js?version={{version}}"></script>
   {{js}}
 </head>
 <body>
+  <script src="./js/gameDetails.js?v={{version}}"></script>
+  <script src="./js/accountgame.js?version={{version}}"></script>
   <main>
     <noscript>
       You need enable javascript to make this page work.
@@ -69,7 +72,6 @@
       <input type="hidden" name="logout" value="true">
     </form>
   </main>
-  
   <footer>
     <div class="options">
       <a href="?action=login">Login</a>
@@ -80,6 +82,7 @@
   </footer>
   <script>
     const acc = {
+      hideLoader:true,
       urlVals:'login',
       init(){
         this.formPicker();
@@ -87,12 +90,16 @@
         for(const submit of document.querySelectorAll("input[type=submit]")){
           submit.addEventListener("click",this.formValidator);
         }
+        if(this.hideLoader){
+          document.querySelector(".loader").style.display = "none";
+        }
       },
       formPicker(){
         // FORM PICKER [from URL]
         let isForm = false;
         // let urlVals;    
         if("{{action}}" == "game"){
+          acc.hideLoader = false;
           // document.cookie = "token={{message}}";
           document.cookie = "token={{message}}; SameSite=None; Secure";
           window.location.replace("game.html");
@@ -121,6 +128,7 @@
         if(!isForm){
           document.querySelector("#login").style.display = "flex";
         }
+
       },
       messDisplayer(){
         // MESSAGE DISPLAYER

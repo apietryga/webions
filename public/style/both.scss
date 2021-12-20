@@ -1,4 +1,5 @@
-
+$sc:#9a01013f;  // for tables second color
+$tc:#b7990038;  // for tables thirth color
 %inFrame{
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
@@ -55,7 +56,6 @@
     // border:2px dashed red;
   // }
 }
-
 // scrollbars
 body{
   ::-webkit-scrollbar {
@@ -70,4 +70,84 @@ body{
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }  
+}
+.loader{
+  position:fixed;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color:rgb(24, 24, 24);
+  z-index:2;
+  h1{
+    color:#fff;
+  }
+  .imgField{
+    // border:2px dashed red;
+    position: relative;
+    height:fit-content;
+    padding:10px;
+    img{
+      position:relative;
+      width:100%;
+      height:100%;
+      z-index:2;
+    }
+    &:before{
+      box-sizing: border-box;
+      content:'';
+      position:absolute;
+      border: 16px solid $sc;
+      border-top: 16px solid $tc;
+      border-bottom: 16px solid $tc;
+      border-radius: 50%;
+      width:100%;
+      height: 100%;
+      left:0;
+      top:0;
+      animation: spin 2s linear infinite;
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    }
+
+  }
+  .loadProgress{
+    border:1px solid #fff;
+    border-radius:3px;
+    // width:70%;
+    height:14px;
+    .progressBar{
+      background-color:rgb(145, 32, 32);
+      width:0;
+      height:100%;
+    }
+  }
+  .loadDetails{
+    font-size:0.4em;
+    height:25px;
+  }
+}
+@media (orientation:portrait){
+  .loader .imgField{
+    width:30vw;
+    height:30vw;
+  }
+  .loadProgress,.loadDetails{
+    width:50vw;
+  }
+}
+@media (orientation:landscape){
+  .loadProgress,.loadDetails{
+    width:50vh;
+  }
+  .loader .imgField{
+    width:30vh;
+    height:30vh;
+  }
 }

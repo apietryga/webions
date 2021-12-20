@@ -264,11 +264,12 @@ class Creature {
     if(this.name == player.name){
       // RENDER ALL SAYS NEAR
       for(const creature of gamePlane.creatures.list){
-        // console.log(creature);
         if(isSet(creature.says) && creature.says != ""){
-          // console.log(creature.says)
           if(["player","enemy"].includes(creature.type)){
             menus.console.log(creature.name+"["+creature.skills.level+"]: "+creature.says);
+            if(creature.type == "player"){
+              menus.console.lastPharses.push(creature.says);
+            }
           }else if(creature.type == "npc"){
             menus.console.log(creature.name+": "+creature.says);
           }
@@ -601,13 +602,6 @@ class Item{
       item.spriteNr * img.height, 0, img.height, img.height,
       0, 0, img.height, img.height
     );
-    // Item's skills preview
-    let dataset = "<b>"+sq.name+"</b><br />";
-    for(const key of Object.keys(item)){
-      if(['def','speed','health','mana','manaRegen','fist','dist','atk'].includes(key)){
-        dataset += key+": "+item[key]+'<br />';
-      }
-    }
     sq.onclick = () => {
       if(sq.classList.contains("picked")){
         sq.classList.remove("picked");
@@ -620,16 +614,23 @@ class Item{
         sq.classList.add("picked");
       }
     }
-
     const itemContainer = document.createElement("div");
     itemContainer.className = "itemContainer";
-
+    // Item's skills preview
     const label = document.createElement("div");
     label.className = "label";
-    label.innerHTML = dataset;
+    label.innerHTML = "";
+    for(const key of Object.keys(item)){
+      if(['def','speed','health','mana','manaRegen','fist','dist','atk'].includes(key)){
+        const wrapper = document.createElement("div");
+        wrapper.style.cssText = "display:flex;align-items:center;"
+        wrapper.append(sign.render(key));
+        wrapper.innerHTML += "<span style='flex:1;text-align:center'>"+item[key]+"</span>";
+        label.append(wrapper)
+      }
+    }
     itemContainer.append(label);
     itemContainer.append(sq);
-
     return itemContainer;
   }
   update(){

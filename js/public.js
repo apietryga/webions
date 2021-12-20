@@ -152,7 +152,6 @@ function public(req, res, playersList) {
                 password.comparePassword(data.password,dbres.password,(e,h)=>{
                   if(e != null){console.error(e);}
                   if(h){
-                    // path = "./public/game.html"
                     vals.action = "game";
                     vals.message = log.in(dbres.name);
                   }else{
@@ -332,7 +331,7 @@ function public(req, res, playersList) {
         vals.nick = player;
       }else{
         path = "./public/account.html";
-        // vals.message = "Please log in:";
+        vals.message = "Please log in :";
       }
       if(!isWaiting){
         serveChangedContent(path);
@@ -348,6 +347,7 @@ function public(req, res, playersList) {
       <a href="/players.html?skills=fist">Fist</a>
       <a href="/players.html?skills=dist">Dist</a>
       <a href="/players.html?online=true">Online</a>
+      <a href="/players.html?lastdeaths=true">Last&nbsp;Deaths</a>
     `;
     vals.js += "<script src='./js/components.js?version="+game.version+"'></script>";
     const [key,value] = myURL.search.split("=");

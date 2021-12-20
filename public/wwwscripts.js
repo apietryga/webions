@@ -14,31 +14,6 @@ const searchToObject = () => {
   return obj;
 }
 const searchObj = isSet(searchToObject().page) ? searchToObject(): { page: 'index' } ;
-// signs for health, manaRegen etc.
-const sign = {
-  names: ['fist','dist','mana','manaRegen','def','health','healing','speed','exp'],
-  render(name, opt = { size : 25 }){
-    if(this.names.includes(name)){
-      this.dom = document.createElement("div");
-      this.dom.className = "itemContainer";
-      this.dom.style.cssText = `
-        width:${opt.size}px;
-        height:${opt.size}px;
-        background-image: url(./img/signs.svg);
-        background-size:auto 100%;
-        margin:auto;
-        background-position: -${ (opt.size) * this.names.indexOf(name)}px 0;
-      `;  
-      const label = document.createElement("div");
-      label.className = "label";
-      label.innerHTML = name;
-      this.dom.append(label);
-      return this.dom;
-    }else{
-      return name;
-    }
-  }
-}
 
 // dispay searched page
 if(document.querySelector("."+searchObj.page)!= null){
