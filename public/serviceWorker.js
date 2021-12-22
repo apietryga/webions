@@ -1,40 +1,40 @@
-const OFFLINE_VERSION = 1;
-const CACHE_NAME = 'offline';
-const OFFLINE_URL = 'offline.html';
+const cacheVersion = "v5";
 self.addEventListener('install', (event) => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    await cache.add(new Request(OFFLINE_URL, {cache: 'reload'}));
-  })());
+  event.waitUntil(
+    caches.open(cacheVersion).then((cache) => {
+      return cache.addAll([
+        './offline.html',
+        './style/both.css',
+        './logo.webp',
+        './favicon.ico'
+      ]);
+    })
+  );
 });
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil((async () => {
-    if ('navigationPreload' in self.registration) {
-      await self.registration.navigationPreload.enable();
-    }
-  })());
-  self.clients.claim();
-});
-
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const preloadResponse = await event.preloadResponse;
-        if (preloadResponse) {
-          return preloadResponse;
-        }
-
-        const networkResponse = await fetch(event.request);
-        return networkResponse;
-      } catch (error) {
-        console.log('Fetch failed; returning offline page instead.', error);
-        const cache = await caches.open(CACHE_NAME);
-        const cachedResponse = await cache.match(OFFLINE_URL);
-        return cachedResponse;
-      }
-    })());
-  }
+  event.respondWith(
+    caches.match(event.request).then((resp) => {
+      return resp || fetch(event.request).then((response) => {
+        // let responseClone = response.clone();
+        // caches.open(cacheVersion).then((cache) => {
+        //   cache.put(event.request, responseClone);
+        // });
+        return response;
+      }).catch(() => {
+        return caches.match('./offline.html');
+      })
+    })
+  );
 });
-
+self.addEventListener('activate', (event) => {
+  const cacheKeeplist = [cacheVersion];
+  event.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(keyList.map((key) => {
+        if (cacheKeeplist.indexOf(key) === -1) {
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
+});

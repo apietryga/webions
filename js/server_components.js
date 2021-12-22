@@ -655,7 +655,7 @@ class Creature {
       // 72 is "H" key
       const healValue = Math.floor(this.totalHealth/10);
       const manaSpend = 50;
-      if(this.mana >= manaSpend){
+      if(this.mana >= manaSpend && this.health < this.totalHealth){
         this.mana -= manaSpend; 
         if(this.health + healValue >= this.totalHealth){
           this.health = this.totalHealth;
@@ -663,7 +663,11 @@ class Creature {
           this.health += healValue;
         }
       }else{
-        this.text = "You have no mana."
+        if(this.mana >= manaSpend){
+          this.text = "You have no mana.";
+        }else{
+          this.text = "You're full of health";
+        }
       }
       this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
     }

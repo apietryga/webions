@@ -11,15 +11,16 @@
   - decrease mana after item drop
   - fix token - not saving in base [only JSON, Redis work i guess, or not ...].
   - console - get last writing pharse by up/down arrows
-## ISSUES
   - make offline as loader
+  - improve offline detection
   - restore totalHealth and totalMana after death
-  - walking throught static items/monsters (not players and empty boxes, hmm?)
+## ISSUES
   - strict url's like http://localhost/libary/elo
+  - walking throught static items/monsters (not players and empty boxes, hmm?)
   - strict register names (no numbers and monsters names)
   - landscape map control mobile [planeclicking]
   - fix doubled console message on sent
-  - replace Creature.skills.healing, to skills.def 
+  - remove Creature.skills.healing from players 
   - health on [public] (base + eq) [mana the same]
   - first remove item from eq, then drop them. 
   - toggle mobile controls
@@ -34,7 +35,7 @@
   - NPC's staying on saying and speaking
   - backpacks and depos
   - dead body as item + LOOTING
-  - add shielding
+  - add shielding (def)
   - add magic lvl
   - entire map image on index
   - protection zone

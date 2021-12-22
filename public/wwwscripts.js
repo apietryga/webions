@@ -333,7 +333,9 @@ if(typeof main != null && typeof playersList != "undefined"){
 if('/libary.html' == location.pathname){
   const pureInfo = [];
   const dom = document.querySelector(".content");
-  dom.className += " "+searchObj.page;
+  if(dom!=null){
+    dom.className += " "+searchObj.page;
+  }
   const table = document.createElement("table"); 
 
   // DISPLAY SEARCHED PAGE

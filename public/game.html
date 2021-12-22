@@ -163,17 +163,6 @@
     setResolution();
   }
 </script>
-<!--| SERVICE WORKER FOR OFFLINE DISPLAY |-->
-<script>
-  if('serviceWorker' in navigator) {
-    // serviceWorkerRegistration.update();
-    navigator.serviceWorker.register('serviceWorker.js?v={{version}}'
-    // , {scope: 'serviceWorker'}).then(function(registration) {
-    //   registration.update();
-    // }
-    );
-  }
-</script>
 <!--| DEVELOPER BUTTONS & STATS |-->
 <script>
   const dev = {

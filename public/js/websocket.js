@@ -1,6 +1,7 @@
 const serv = {
   init(){
-    (window.location.protocol == "https:")?this.protocol = "wss:":this.protocol = "ws:";
+    this.protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
+    // (window.location.protocol == "https:")?this.protocol = "wss:":this.protocol = "ws:";
     // this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
     this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
     this.ws.onopen = () => {this.connected = true;console.log("WS open.");}

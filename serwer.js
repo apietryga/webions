@@ -85,7 +85,9 @@ const cm = { // creatures managment
       if(typeof game.dead != "undefined"){
         delete game.dead;
         player.position = player.startPosition;
-        player.health = player.maxHealth;
+        // player.health = player.maxHealth;
+        player.health = player.totalHealth;
+        player.mana = player.totalMana;
         player.cyle = 0;
         player.direction = 1;
         this.players.kick(player);   

@@ -5,3 +5,7 @@ if(location.host != "localhost"){
     window.location.replace(location.href.replace("http","https"));
   }
 }
+// SERVICE WORKER
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('../serviceWorker.js')
+// }

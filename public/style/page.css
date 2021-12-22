@@ -66,36 +66,79 @@ body ::-webkit-scrollbar-thumb:hover {
 }
 
 .loader h1 {
-  margin-bottom: 0;
+  color: #fff;
+}
+
+.loader .imgField {
+  position: relative;
+  height: fit-content;
+  padding: 10px;
+}
+
+.loader .imgField img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.loader .imgField:before {
+  box-sizing: border-box;
+  content: '';
+  position: absolute;
+  border: 16px solid #9a01013f;
+  border-top: 16px solid #b7990038;
+  border-bottom: 16px solid #b7990038;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loader .loadProgress {
-  border: 1px solid #fff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 3px;
-  width: 70%;
   height: 14px;
 }
 
 .loader .loadProgress .progressBar {
+  border-radius: 3px;
   background-color: #912020;
   width: 0;
   height: 100%;
 }
 
 .loader .loadDetails {
-  width: 70%;
-  font-size: 0.75em;
+  font-size: 0.4em;
+  height: 25px;
 }
 
 @media (orientation: portrait) {
-  .loader img {
+  .loader .imgField {
     width: 30vw;
     height: 30vw;
+  }
+  .loadProgress, .loadDetails {
+    width: 50vw;
   }
 }
 
 @media (orientation: landscape) {
-  .loader img {
+  .loadProgress, .loadDetails {
+    width: 50vh;
+  }
+  .loader .imgField {
     width: 30vh;
     height: 30vh;
   }

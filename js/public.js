@@ -81,7 +81,7 @@ function public(req, res, playersList) {
     js:""
   }
   const fromTemplate = [''];
-  let fileName = myURL.pathname.split("/")[1].split(".")[0] == "" ? 'index' : myURL.pathname.split("/")[1].split(".")[0];
+  const fileName = myURL.pathname.split("/")[1].split(".")[0] == "" ? 'index' : myURL.pathname.split("/")[1].split(".")[0];
   const allContents = fs.readFileSync("./public/contents.html", "utf8");
   for(const titleAndContent of allContents.split("<!--| ")){
     const [title,content] = titleAndContent.split(" |-->");
@@ -94,17 +94,41 @@ function public(req, res, playersList) {
     }
   }
   let contentType = mime.contentType(myURL.pathname.split(".")[myURL.pathname.split(".").length-1]);
+  // let contentType = mime.contentType(path.split(".")[path.split(".").length-1]);
   if(contentType == "/"){contentType = 'text/html';}
   const serveChangedContent = (path = myURL.pathname) =>{
     if(!path.split("/").includes("public")){
       path = "./public"+path;
     }
+
     if(!fs.existsSync(path) && !fromTemplate.includes(fileName) || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))){
-      console.error(myURL.pathname+" not exists, send 404");
-      contentType = "text/html";
-      vals.content = vals.e404;
-      path = "./public/template.html"
+      // change url
+      // let newPath = "./public"; 
+      // for(const splittedPath of path.split("/")){
+      //   if(fs.existsSync(newPath+"/"+splittedPath) && ![".","public"].includes(splittedPath)){
+      //     newPath += "/"+splittedPath;
+      //   }
+      // }
+      // if(newPath != "./public"){
+      //   path = newPath;
+      // }
+
+      // console.log("newPath:");
+      // console.log(newPath);
+      // console.log(splittedPath);
+      // console.log(fs.readdirSync())
+      // console.log(fs.readdirSync())
+      // if(!fs.existsSync(path) && !fromTemplate.includes(fileName) || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))){
+      // if(!fs.existsSync(path) 
+      //   && !fromTemplate.includes(fileName) || (fromTemplate.includes(fileName) && !['text/html; charset=utf-8','text/html'].includes(contentType))
+      //  ){
+        console.error(path + " not exists, send 404");
+        contentType = "text/html";
+        vals.content = vals.e404;
+        path = "./public/template.html"
+      // }
     }
+
     // serve content with message
     res.writeHead(200, { 'Content-Type': contentType });
     if(['image'].includes(contentType.split("/")[0])){
@@ -127,10 +151,9 @@ function public(req, res, playersList) {
         }else{
           console.error(e);
         }
-
         // SCRIPT USES IN ALL HTML's
-        if(['text/html; charset=utf-8','text/html'].includes(contentType)){
-          content += "<script src='./js/scriptEverywhere.js'></script>";
+        if(['text/html; charset=utf-8','text/html'].includes(contentType) && path != "/offline.html"){
+          content += "<script src='./js/scriptEverywhere.js?v="+game.version+"'></script>";
         }
         res.end(content);
       })
