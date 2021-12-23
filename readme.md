@@ -1,4 +1,4 @@
-# WEBIONS
+## WEBIONS
   Webions is a MMORPG game working on browsers. 
   You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "serwer.js" by nodejs. I will make instructions for this in future versions.
 ## TESTING NOW
@@ -14,35 +14,39 @@
   - make offline as loader
   - improve offline detection
   - restore totalHealth and totalMana after death
-## ISSUES
   - strict url's like http://localhost/libary/elo
-  - walking throught static items/monsters (not players and empty boxes, hmm?)
-  - strict register names (no numbers and monsters names)
-  - landscape map control mobile [planeclicking]
-  - fix doubled console message on sent
-  - remove Creature.skills.healing from players 
-  - health on [public] (base + eq) [mana the same]
-  - first remove item from eq, then drop them. 
-  - toggle mobile controls
-  - disable heroku Idling (serv reload)
-  - one exhoust to shot, heal and mwall 
-  - cyclop and dragon sprites update.
-  - monsters and nps's walking around windows, stairs
-  - public <720px bottom body bar wtf?
-  - secure websocket
+  - [wwwscripts] health on (base + eq) [mana the same]
+  - [wwwscripts] math round in skills (Zuzia case)
+  - [wwwscripts] make Players > nickname (like in libary)
+  - [wwwscripts] <720px bottom body bar wtf?
+  - [server_components] first remove item from eq, then drop them. 
+  - [server_components] one exhoust to shot and heal
+## ISSUES
+  - [server_components] monsters following around windows, stairs
+  - [menus] fix doubled console message on sent
+  - [controls] landscape map control mobile [planeclicking]
+  - [controls] toggle mobile controls
+  - [serwer] remove player.skills.healing 
+  - [serwer] disable heroku Idling (serv reload)
+  - [serwer] secure websocket
+  - [public] strict register names (no numbers and monsters names)
+  - [graphic] cyclop and dragon sprites update.
 ## FEATURES
   - auto shooter
+  - shielding (def)
+  - magic lvl
+  - mwalls
   - NPC's staying on saying and speaking
   - backpacks and depos
   - dead body as item + LOOTING
-  - add shielding (def)
-  - add magic lvl
   - entire map image on index
   - protection zone
-  - mwalls
   - house zone
 ## TO CATCH
   - bug with doubled characters (creatures.update in gameplane? - when, how?) [8.12.2021]
-## STORAGE
+  - [serwer_components] walking throught monsters / npc's (when, how?)
+  - 
+
+## STORAGE  
   By default the data store in simple redis server as JSON stringify, but it automatically changed to storing in JSON file ***/json/playersList.json***, if redis connection is not set.
   Remember, that if you would host game server on heroku - JSON files will be cleared once a day - redis db not. 

@@ -33,28 +33,15 @@ $tc:#b7990038;  // for tables thirth color
     min-width:80px;
     @extend %inFrame;
     font-size:0.7em;
-    display:none;
     padding:5px;
     z-index:1;
     text-align:left;
     background-color: #2f2f2fb6!important;
+    display:none!important;
   }
   &:hover > .label{
-    display:block;
+    display:block!important;
   }
-
-  // .label:hover:after{
-    // content:attr(data-info);
-    // white-space: pre-wrap;
-    // position:absolute;
-    // left:-100%;
-    // top:100%;
-    // background-color:red;
-    // z-index:2;
-    // font-size:0.6em;
-    // // content:'elo';
-    // border:2px dashed red;
-  // }
 }
 // scrollbars
 body{

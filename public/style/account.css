@@ -108,11 +108,12 @@ body ::-webkit-scrollbar-thumb:hover {
 
 .loader .loadProgress {
   border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 3px;
+  border-radius: 5px;
   height: 14px;
 }
 
 .loader .loadProgress .progressBar {
+  border-radius: 5px;
   background-color: #912020;
   width: 0;
   height: 100%;

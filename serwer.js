@@ -142,6 +142,7 @@ const cm = { // creatures managment
     inArea:[],
     inLoading:[],
     update(param,callback){
+      console.log(this.list)
       // TO DO MAKE inArea PLAYERS LIST!
       // check if player is on the list (in the game).
       let isPlayer = false;

@@ -47,10 +47,10 @@ if(typeof main != null && typeof playersList != "undefined"){
     ];
     // display single player
     if(Object.keys(params).includes("player")){
-      const backer = document.createElement("a");
-      backer.onclick = () => {window.history.back()};
-      backer.innerHTML="< BACK";
-      main.prepend(backer);
+      // const backer = document.createElement("a");
+      // backer.onclick = () => {window.history.back()};
+      // backer.innerHTML="< BACK";
+      // main.prepend(backer);
       // get player
       let player = false;
       for(const plr of dt){
@@ -60,7 +60,7 @@ if(typeof main != null && typeof playersList != "undefined"){
         }
       }
       if(player){
-        h1.innerHTML = player.name;
+        h1.innerHTML = "<a href='/players.html?skills=level'>Players</a> ▸ " + player.name;
         const data = [];
         player.type = "player";
         setTotalVals(player);
@@ -114,7 +114,8 @@ if(typeof main != null && typeof playersList != "undefined"){
               healthProgress.style.backgroundColor = hpColor(progress);
               const label = document.createElement("div");
               label.className = "label";
-              label.innerHTML = player.health+" / "+player.totalHealth;
+              label.innerHTML = Math.round(player.health)+"&nbsp;/&nbsp;<b>"+Math.round(player.totalHealth)+"</b>&nbsp;";
+              label.innerHTML += "("+Math.round(player.maxHealth)+" + "+Math.round(player.totalHealth - player.maxHealth)+")";
               healthBar.append(healthProgress);
               healthBar.append(label);
               td2.append(healthBar);
@@ -128,7 +129,8 @@ if(typeof main != null && typeof playersList != "undefined"){
               manaProgress.style.backgroundColor = "#0c3181";
               const label = document.createElement("div");
               label.className = "label";
-              label.innerHTML = player.mana+" / "+player.totalMana;
+              label.innerHTML = Math.round(player.mana)+"&nbsp;/&nbsp;<b>"+Math.round(player.totalMana)+"</b>&nbsp;";
+              label.innerHTML += "("+Math.round(player.maxMana)+" + "+Math.round(player.totalMana - player.maxMana)+")";
               manaBar.append(manaProgress);
               manaBar.append(label);
               td2.append(manaBar);
@@ -164,11 +166,11 @@ if(typeof main != null && typeof playersList != "undefined"){
                   const totalThis = player['total'+capitalizeFirstLetter(k)];
                   sTd2.innerHTML = "";
                   if(isSet(totalThis)){
-                    sTd2.innerHTML += "<b>"+totalThis+"</b> ( ";
+                    sTd2.innerHTML += "<b>"+Math.round(totalThis)+"</b> ( ";
                   }
-                  sTd2.innerHTML += player.skills[k];
+                  sTd2.innerHTML += Math.round(player.skills[k]);
                   if(isSet(totalThis)){
-                    sTd2.innerHTML += " <i>+"+(totalThis - player.skills[k])+"</i> )";
+                    sTd2.innerHTML += " <i>+"+Math.round(totalThis - player.skills[k])+"</i> )";
                   }
 
                   sTr.append(sTd1);
@@ -352,7 +354,6 @@ if('/libary.html' == location.pathname){
   const setTopScrollBar = (e) => {
     const tblWidth = getComputedStyle(table).width;
     d1.style.width = tblWidth;
-    console.log(tblWidth)
     if(d2.scrollWidth > 0){
       wrp1.style.display = "block";
     }else{

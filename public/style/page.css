@@ -32,15 +32,15 @@ body > header .logo:hover, body > header .play a:hover, body .wrapper main > tab
   right: 50%;
   min-width: 80px;
   font-size: 0.7em;
-  display: none;
   padding: 5px;
   z-index: 1;
   text-align: left;
   background-color: #2f2f2fb6 !important;
+  display: none !important;
 }
 
 .itemContainer:hover > .label {
-  display: block;
+  display: block !important;
 }
 
 body ::-webkit-scrollbar {
@@ -108,12 +108,12 @@ body ::-webkit-scrollbar-thumb:hover {
 
 .loader .loadProgress {
   border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 3px;
+  border-radius: 5px;
   height: 14px;
 }
 
 .loader .loadProgress .progressBar {
-  border-radius: 3px;
+  border-radius: 5px;
   background-color: #912020;
   width: 0;
   height: 100%;
@@ -451,9 +451,20 @@ body .wrapper main .content .scrollWrapper {
   overflow-x: auto;
 }
 
-body .wrapper main .content.items table, body .wrapper main .content.monsters table {
-  border-spacing: 0;
+body .wrapper main .content .scrollWrapper div {
   width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+body .wrapper main .content.items, body .wrapper main .content.monsters {
+  width: 100%;
+}
+
+body .wrapper main .content.items table, body .wrapper main .content.monsters table {
+  flex: 1;
+  border-spacing: 0;
+  max-width: 100%;
 }
 
 body .wrapper main .content.items table th, body .wrapper main .content.monsters table th {
@@ -568,7 +579,7 @@ body .cookiesPopUp span {
   padding: 5px 10px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 719px) {
   body .wrapper {
     flex-direction: column-reverse;
   }
@@ -583,10 +594,12 @@ body .cookiesPopUp span {
   }
 }
 
-@media (min-width: 720px) {
+@media (min-width: 719px) {
   .wrapper {
-    width: 60%;
-    margin-left: 20%;
+    width: 100%;
+  }
+  .wrapper .items table, .wrapper .monsters table {
+    flex: none !important;
   }
   .wrapper .items table th, .wrapper .monsters table th {
     top: 0 !important;
@@ -604,5 +617,11 @@ body .cookiesPopUp span {
   }
   nav a:not(a:nth-last-child(1)), aside a:not(a:nth-last-child(1)) {
     margin-bottom: 0px;
+  }
+}
+
+@media (min-width: 1150px) {
+  .wrapper {
+    padding: 0 20%;
   }
 }

@@ -16,9 +16,11 @@ class Creature {
     this.health = 100;
     this.maxHealth = this.health;
     this.totalHealth = this.maxHealth;
-    this.healthExhoust = 0;
-    this.exhoustHeal = 1000;
-    this.shotExhoust = 0;
+    this.exhoust = 0;
+    this.exhoustTime = 1000;
+    // this.healthExhoust = 0;
+    // this.shotExhoust = 0;
+    // this.exhoustHeal = 1000;
     this.redTarget = false;
     this.fistExhoust = false;
     this.restore = false;
@@ -651,7 +653,8 @@ class Creature {
       }
     } 
     // HEALING [player]
-    if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
+    // if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
+    if(typeof param.controls != "undefined" && param.controls.includes(72) && this.exhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
       const healValue = Math.floor(this.totalHealth/10);
       const manaSpend = 50;
@@ -663,23 +666,26 @@ class Creature {
           this.health += healValue;
         }
       }else{
-        if(this.mana >= manaSpend){
+        if(this.mana < manaSpend){
           this.text = "You have no mana.";
         }else{
           this.text = "You're full of health";
         }
       }
-      this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
+      // this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
+      this.exhoust =  game.time.getTime() + this.exhoustTime;
     }
     // HEALING [monster]
-    if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.healthExhoust <= game.time.getTime() && this.health > 0){
+    // if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.healthExhoust <= game.time.getTime() && this.health > 0){
+    if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.exhoust <= game.time.getTime() && this.health < (0.5*this.maxHealth) && this.health > 0){
       if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
       }else{
         if(!func.isSet(this.skills.healing)){this.skills.healing = 100;}
         this.health += this.skills.healing;
       }
-      this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
+      // this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
+      this.exhoust =  game.time.getTime() + this.exhoustTime;
     }
     // SHOTS
     if(this.redTarget){
@@ -692,7 +698,8 @@ class Creature {
             c.getHit(db,this);
           }
           // DISTANCE SHOT - 68 is "D" key [players]
-          if(typeof param.controls != "undefined" && this.shotExhoust <= game.time.getTime() && ((this.type == "player" && param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
+          // if(typeof param.controls != "undefined" && this.shotExhoust <= game.time.getTime() && ((this.type == "player" && param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
+          if(typeof param.controls != "undefined" && this.exhoust <= game.time.getTime() && ((this.type == "player" && param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
             // check bulletTrace
             const traces = {x : [], y : []};
             // X POSITION
@@ -737,7 +744,8 @@ class Creature {
             // SHOT IF THERE'S NO WALL
             if(!isWall){
               this.shotTarget = c.id;
-              this.shotExhoust = game.time.getTime() + 1500;
+              // this.shotExhoust = game.time.getTime() + 1500;
+              this.exhoust = game.time.getTime() + this.exhoustTime;
               this.bulletOnTarget = game.time.getTime()+300;
               setTimeout(() => { c.getHit(db,this,'dist'); }, 300);
             }
@@ -827,32 +835,30 @@ class Item{
           if(isPos){break;} 
         }
         if(isPos){
-          // DELETE IT FROM EQ
-          creature.eq[this.field] = false;
-          // ADD IT TO MAP
-          items.allItems.push(this);
-          creature.text = "You dropped out a "+this.name+".";
+          // CHECK IF ITEM IS REALLY IN THIS EQ FIELD
+          let isInField = false;
+          for(const field of Object.keys(creature.eq)){
+            if(field == this.field){
+              isInField = true;
+              break;
+            }
+          }
+          if(isInField){
+            // DELETE IT FROM EQ
+            creature.eq[this.field] = false;
+            // ADD IT TO MAP
+            items.allItems.push(this);
+            creature.text = "You dropped out a "+this.name+".";
+          }else{
+            creature.text = "Sorry, it not possible.";
+          }
         }else{
           creature.text = "Sorry, it not possible.";
         }
       }else if( itemAction.field == ""){
-
-        // if(isPos){
-          // DELETE IT FROM BACKPACK
-          // for()
-          let nr = 0;
-          for([nr = 0,inBp] in creature.eq.bp.in.entries()){
-
-          }
-          // creature.eq.bp.in[nr] = false;
-          creature.eq.bp.in.splice(nr,1);
-
           // ADD IT TO MAP
           items.allItems.push(this);
           creature.text = "You dropped out a "+this.name+".";
-        // }else{
-        //   creature.text = "Sorry, it not possible.";
-        // }
       }else{
         creature.text = "You can't drop this out.";
       }

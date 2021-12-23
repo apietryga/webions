@@ -61,11 +61,11 @@ const controls = {
   // KEYS ANIMATIONS:
     let action = false;
     // distance shot
-    if(params[0] == 68 && params[1] && (!player.redTarget || (serv.time < player.shotExhoust))){
+    if(params[0] == 68 && params[1] && (!player.redTarget || (serv.time < player.exhoust))){
       action = new Action("misc",player.x,player.y,40,40,0);
     }
     // health
-    if(params[0] == 72 && params[1] && (player.health == player.maxHealth || (serv.time < player.healthExhoust))){
+    if(params[0] == 72 && params[1] && (player.health == player.maxHealth || (serv.time < player.exhoust))){
       action = new Action("misc",player.x,player.y,40,40,0);
     }    
     if(action){
