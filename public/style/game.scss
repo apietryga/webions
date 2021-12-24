@@ -85,6 +85,10 @@ body{
           &.outfit{
             left:0;
           }
+          &.toggleControls{
+            bottom:0;
+            transform: rotate(90deg);
+          }
         }
         .outFitContainer{
           padding:10px;

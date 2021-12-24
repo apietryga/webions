@@ -48,7 +48,6 @@
       "exp": 301134,
       "fist": 48,
       "dist": 38,
-      "healing": 5011,
       "fist_summary": 2223,
       "dist_summary": 1415
     },
@@ -203,7 +202,6 @@
       "exp": 110718924,
       "fist": 0,
       "dist": 0,
-      "healing": 11143,
       "dist_summary": null,
       "fist_summary": null
     },
@@ -268,7 +266,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1464,
+    "mana": 1508,
     "maxMana": 4910,
     "redTarget": false
   },
@@ -283,7 +281,6 @@
       "exp": 273,
       "fist": 0,
       "dist": 0,
-      "healing": 104,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -368,7 +365,6 @@
       "exp": 180670,
       "fist": 0,
       "dist": 0,
-      "healing": 1900,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -460,7 +456,6 @@
       "exp": 21,
       "fist": 0,
       "dist": 0,
-      "healing": 101,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -499,7 +494,6 @@
       "exp": 186,
       "fist": 0,
       "dist": 0,
-      "healing": 102,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -541,7 +535,6 @@
       "exp": 51,
       "fist": 0,
       "dist": 0,
-      "healing": 100,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -580,7 +573,6 @@
       "exp": 41,
       "fist": 0,
       "dist": 0,
-      "healing": 100,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -630,7 +622,6 @@
       "exp": 40211,
       "fist": 0,
       "dist": 0,
-      "healing": 100,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -676,24 +667,23 @@
   },
   {
     "name": "GM",
-    "position": [52, -8, 1],
+    "position": [21, -4, 0],
     "speed": 2.9,
-    "health": 2040,
-    "maxHealth": 1040,
+    "health": 2090,
+    "maxHealth": 1090,
     "sprite": "gm",
     "skills": {
-      "level": 94,
-      "exp": 814926,
-      "fist": 33,
-      "dist": 33,
-      "healing": 119,
-      "fist_summary": 1039,
-      "dist_summary": 1058
+      "level": 99,
+      "exp": 950156,
+      "fist": 39,
+      "dist": 35,
+      "fist_summary": 1464,
+      "dist_summary": 1174
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640223384105,
+    "lastFrame": 1640350909253,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -715,7 +705,14 @@
         "field": "hd",
         "pos": [-64, 13, -1]
       },
-      "bp": false,
+      "bp": {
+        "name": "Ladder",
+        "sprite": "action_items",
+        "spriteNr": 4,
+        "handle": ["lh", "rh", "bp"],
+        "pickable": true,
+        "desc": "You can use it to move between floors."
+      },
       "nc": false,
       "ch": {
         "type": "item",
@@ -732,20 +729,32 @@
         "actionType": "pickUp"
       },
       "lh": {
+        "type": "item",
         "name": "Blessed Shield",
         "sprite": "items",
         "spriteNr": 12,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "def": 100
+        "def": 100,
+        "position": [0, -4, 1],
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "lh",
+        "pos": [0, -4, 1]
       },
       "rh": {
+        "type": "item",
         "name": "Blessed Shield",
         "sprite": "items",
         "spriteNr": 12,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "def": 100
+        "def": 100,
+        "position": [-3, 0, 0],
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "rh",
+        "pos": [-3, 0, 0]
       },
       "lg": {
         "name": "King Legs",
@@ -766,18 +775,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-22T14:21:53.137Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 6
-      },
-      {
-        "when": "2021-12-22T14:53:51.284Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 99
-      },
-      {
         "when": "2021-12-22T14:56:42.712Z",
         "who": "Minotaur",
         "whoType": "monster",
@@ -794,6 +791,18 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 94
+      },
+      {
+        "when": "2021-12-23T10:03:40.348Z",
+        "who": "Dragon",
+        "whoType": "monster",
+        "level": 92
+      },
+      {
+        "when": "2021-12-23T16:03:30.711Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 99
       }
     ],
     "quests": [
@@ -865,10 +874,11 @@
       "King Boots",
       "King Legs",
       "Blessed Shield",
-      "Blessed Shield"
+      "Blessed Shield",
+      "Ladder"
     ],
-    "mana": 1240,
-    "maxMana": 1040,
+    "mana": 1290,
+    "maxMana": 1090,
     "redTarget": false,
     "token": "6wzy2vnpy1"
   },
@@ -883,7 +893,6 @@
       "exp": 133,
       "fist": 0,
       "dist": 0,
-      "healing": 102,
       "fist_summary": 0,
       "dist_summary": 0
     },
@@ -1007,7 +1016,6 @@
       "exp": 3062,
       "fist": 28,
       "dist": 25,
-      "healing": 101,
       "dist_summary": 597,
       "fist_summary": 780
     },
@@ -1150,8 +1158,7 @@
       "fist": 0,
       "fist_summary": 0,
       "dist": 7,
-      "dist_summary": 45,
-      "healing": 1
+      "dist_summary": 45
     },
     "password": "$2b$10$E5O7m1BFDu1Bp/44ghZ9yuUVSeC3e/dI6Dd4XrGlbs9orcaWo0zXe",
     "email": "a@a.pl",

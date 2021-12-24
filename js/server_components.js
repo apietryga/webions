@@ -261,7 +261,7 @@ class Creature {
       }
     }
     // UPDATE LASTFRAME || KEEP PLAYER IN GAME || save player on logout
-    if(typeof game.startServerTime != "undefined"){
+    if(typeof game.startServerTime != "undefined" && param.type != 'initUpdate'){
       this.lastFrame = game.time.getTime();
     }
     // GET EQ VALUES (totalHealth, totalMana etc.)
@@ -427,15 +427,15 @@ class Creature {
       let isWall = false;
       let doorAvalible = true;
       // check grids 
-      const avalibleGrids = (map.avalibleGrids);
-      const notAvalibleGrids = map.notAvalibleGrids;
+      const avalibleGrids = func.equalArr(map.avalibleGrids);
+      const notAvalibleGrids = func.equalArr(map.notAvalibleGrids);
       if(this.type == "player" && !avalibleGrids.includes("stairs")){
         avalibleGrids.push("stairs");
         avalibleGrids.push("actionfloors");
         notAvalibleGrids.splice(notAvalibleGrids.indexOf("stairs"),1);
       }else if(this.type != "player" && avalibleGrids.includes("stairs")){
         notAvalibleGrids.push("stairs");
-        avalibleGrids.splice(avalibleGrids.indexOf("stairs"),1);
+        // avalibleGrids.splice(avalibleGrids.indexOf("stairs"),1);
       }
       // ladder 
       if(this.type == "player"){
@@ -735,7 +735,6 @@ class Creature {
             for(const p of trace){
               for(const g of map.getGrid([p[0],p[1],this.position[2]])){
                 if(g[4] == "walls"){
-                // if(map.notAvalibleGrids.includes(g[4])){
                   isWall = true;
                   break;
                 }  

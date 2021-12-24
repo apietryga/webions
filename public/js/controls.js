@@ -135,15 +135,12 @@ const controls = {
     get(e){
       let ox,oy;
       if(isSet(e.offsetX)){
-        const g = e.target.clientWidth/11;
-        ox = Math.floor((e.clientX - e.target.offsetLeft)/g);
-        oy = Math.floor((e.clientY - e.target.offsetTop)/g);
-      }else{
-        // CHECKIT !!! 
-        const g = e.touches[0].target.clientWidth/11;
-        ox = Math.floor((e.touches[0].clientX - e.touches[0].target.offsetLeft)/g);
-        oy = Math.floor((e.touches[0].clientY - e.touches[0].target.offsetTop)/g);
+        const gY = e.target.offsetWidth/11;
+        const gX = e.target.offsetHeight/11;
+        ox = Math.floor(e.layerX/gX);
+        oy = Math.floor(e.layerY/gY);
       }
+
       // GET X Y pos.
       const x = ox+player.newPos[0]-5;
       const y = oy+player.newPos[1]-5;
@@ -259,6 +256,8 @@ const mobileControls = {
     const consoleInput = document.querySelector(".messagesInput");
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       console.log("Detected mobile device, setting controls.");
+      // mobilecontrols toggler
+      document.querySelector(".toggleControls").style.display = "flex";
       panel[0].style.display = "flex";
       panel[1].style.display = "flex";
       this.set();
@@ -267,6 +266,8 @@ const mobileControls = {
       this.css.disabled = false;
       consoleInput.placeholder = "Click here to type.";
     }else{
+      // mobilecontrols toggler
+      document.querySelector(".toggleControls").style.display = "none";
       this.css.disabled = true;
       panel[0].style.display = "none";
       panel[1].style.display = "none";

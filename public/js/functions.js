@@ -55,9 +55,11 @@ this.setRoute = (sPos,fPos,map,creatures = [],possibilities = 200) => {
         if((map.avalibleGrids.includes(g[4])) && !this.includesArr([pX,pY],gridsAround)){
           // check if someone stay there
           isFloor = true;
-          for(const c of creatures){if(this.compareTables(c.position,[pX,pY,sPos[2]]) && c.health > 0){
+          for(const c of creatures){
+            if(this.compareTables(c.position,[pX,pY,sPos[2]]) && c.health > 0){
             someBodyIsThere = true;
-          }}
+            }
+          }
         }
         if(map.notAvalibleGrids.includes(g[4])){
           isWall = true;
@@ -154,7 +156,6 @@ function everyInterval(n){
 }
 function setResolution(){
   mobileControls.validate();  
-  menus.resize();
 }
 function hpColor(perc){
   let green = Math.round((255*perc)/100);

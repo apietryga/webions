@@ -8,7 +8,7 @@ const menus = {
   buttons:[],
   init(){
     // CREATING VISIBLE BUTTONS TO OPEN MENUS
-    for(const m of ['outfit','mainMenu']){
+    for(const m of ['outfit','mainMenu','toggleControls']){
       const dom = document.createElement("div");
       dom.className = "menusButtons "+m;
       // dom.innerHTML = m;
@@ -16,11 +16,15 @@ const menus = {
       document.querySelector(".gamePlane").append(dom);
       if(m == 'outfit'){
         dom.innerHTML = "&blacktriangleright;";
+      }else if(m == 'mainMenu'){
+        dom.innerHTML = "&blacktriangleright;";
       }else{
         dom.innerHTML = "&blacktriangleright;";
+        dom.style.display = "none";
+        // dom.className = "mobileControlsToggler";
       }
       dom.onclick = () => {
-        const displayedMenu = document.querySelector(".wrapper >."+m);
+        const displayedMenu = m == 'toggleControls' ? document.querySelector(".wrapper >.mobileControls") : document.querySelector(".wrapper >."+m);
         if(displayedMenu == null){
           this[m].show(m);
         }else if(displayedMenu.style.display == "none"){
@@ -31,13 +35,35 @@ const menus = {
           this[m].close(m);
         }
       }
+      // show/hide menu on cookies
+      if(m == 'mainMenu' && document.cookie.match("mainMenu") != null){
+        for(const cookie of document.cookie.split("; ")){
+          const [k,v] = cookie.split("=");
+          if(k == "mainMenu"){
+            if(v == "hide"){
+              this[m].close(m);
+            }
+          }
+        }
+
+      }
     }
-    
     // initialize menus
     for(const menu of this.menus){this[menu].init();}
   },
-  resize(){
-    this.mainMenu.resize();
+  toggleControls:{
+    show(){
+      const doms = document.querySelectorAll(".wrapper >.mobileControls");
+      for(const dom of doms){
+        dom.style.display = "flex";
+      }
+    },
+    close(){
+      const doms = document.querySelectorAll(".wrapper >.mobileControls");
+      for(const dom of doms){
+        dom.style.display = "none";
+      }
+    }
   },
   mainMenu:{
     parent: document.querySelector(".mainMenu"),
@@ -309,6 +335,7 @@ const menus = {
       }
     },
     show(DOMClassName){
+      document.cookie = "mainMenu=show;";
       const oFC = document.querySelector(".wrapper >."+DOMClassName);
       const gameAndConsole = document.querySelector(".gameAndConsole");
       if(oFC != null){
@@ -317,6 +344,7 @@ const menus = {
       }
     },
     close(menuName){
+      document.cookie = "mainMenu=hide;";
       const dom = document.querySelector(".wrapper >."+menuName);
       const gameAndConsole = document.querySelector(".gameAndConsole");
       if(dom != null){
@@ -667,7 +695,6 @@ const menus = {
       this.log("Welcome in {{name}} v"+game.version,{color:"#0f0"})
       this.input = document.createElement("input");
       this.input.className = 'messagesInput';
-      // this.input.attr('spellcheck:false')
       this.input.setAttribute('spellcheck', 'false');
       this.input.onkeydown = (e) => {
         if((e.key == 'ArrowUp' || e.key == 'ArrowDown') && menus.console.lastPharses.length > 0){
