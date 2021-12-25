@@ -116,6 +116,32 @@ this.setTotalVals = (where) => {
     }
   }
 }
+this.getNamesFromObjArr = (objArr) => {
+  const result = [];
+  for(const obj of objArr){
+    if(typeof obj.name != 'undefined'){
+      result.push(obj.name);
+    }
+  }
+  return result;  
+}
+this.validateNick = (nick, forbiddenNicks) => {
+  if(nick.split("+").length > 2){
+    nick = nick.replace(/[+]/g, ' ');
+  }else{
+    nick = nick.replace('+',' ');
+  }
+  if(/\d/.test(nick)){return [false, 'Nick cannot contains numbers']}
+  if(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(nick)){return [false, 'Nick contains illegal chars']}
+  for(const fNick of forbiddenNicks){
+    if(fNick == nick){
+      return [false,"This nickname is forbidden"];
+    }
+  }  
+  return [true, nick];
+}
+
+
 function recolorImage(img, fresh = {head:[50,50,50],chest:[50,50,50],legs:[50,50,50],foots:[50,50,50]}){
   if(!isSet(img)){return 0;}
   const c = document.createElement('canvas');

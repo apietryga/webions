@@ -27,13 +27,14 @@
   - [controls] toggle mobile controls
   - [serwer] improve updating players without changing their's lastFrame 
   - [serwer] remove player.skills.healing 
-## ISSUES
+  - [menus] fix doubled console message on sent [loging on server and client]
   - [serwer] disable heroku Idling (serv reload)
+  - [public] strict register names (no numbers, monsters and npc's names)
+  - split monsterTypes and npc's types.
+## ISSUES
+
+## FEATURES TO v0.50
   - [serwer] secure websocket
-  - [public] strict register names (no numbers and monsters names)
-  - [menus] fix doubled console message on sent
-  - [graphic] cyclop and dragon sprites update.
-## FEATURES
   - [server_components] auto shooter
   - [server_components] shielding (def)
   - [server_components] magic lvl
@@ -45,6 +46,8 @@
   - [map_editor] deleting grids
   - protection zone
   - house zone
+  - [graphic] cyclops sprite update.
+  - [graphic] dragon sprite update.
 ## TO CATCH
   - bug with doubled characters (creatures.update in gameplane? - when, how?) [8.12.2021]
   - [serwer_components] walking throught monsters / npc's (when, how?)

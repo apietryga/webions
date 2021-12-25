@@ -7,6 +7,7 @@ const stringify = require("json-stringify-pretty-compact");
 const WebSocketServer = require("websocket").server;
 const [Creature,Item] = require("./js/server_components");
 const monstersTypes = require("./js/monstersTypes");
+const npcs = require("./js/npcs").npcs;
 const dbConnect = require("./js/dbconnect");
 const dbc = new dbConnect();
 const inGameMonsters = require("./json/monstersList").data;
@@ -22,18 +23,31 @@ const disallowKeys = [
   "password",
   "lastDeaths"
 ];
-const cm = { // creatures managment
+const cm = { // creatures managment [monsters = monsters & npc's]
   allMonsters: [],
   monstersInArea: [],
   loadMonsters(){
     for(const m of inGameMonsters){
-      const monster = new Creature(m.name,this.allMonsters.length,"monster");
+      let monster;
+      if(typeof m.type != "undefined"){
+        monster = new Creature(m.name,this.allMonsters.length,"monster");
+        // monster.type = m.type;
+      }else{
+        monster = new Creature(m.name,this.allMonsters.length,m.type);
+        // monster.type = "monster";
+      }
+
       for(const k of Object.keys(m)){
         monster[k] = m[k];
       }
       monster.startPosition = m.position;
-      monster.type = "monster";
-      for(const sm of monstersTypes){ // single monster
+      // if(typeof m.type != "undefined"){
+      //   monster.type = m.type;
+      // }else{
+      //   monster.type = "monster";
+      // }
+      
+      for(const sm of monstersTypes.concat(npcs)){ // single monster
         if(sm.name == m.name){
           for(const md of Object.keys(sm)){ // monster details
             monster[md] = sm[md];
@@ -311,49 +325,40 @@ process.on('SIGTERM', shutdown('SIGTERM')).on('SIGINT', shutdown('SIGINT')).on('
 
 
 // CATCH ALL CONSOLE LOGS AND ERRORS
-// const log = console.log;
-// const err = console.error;
-// const extendConsole = (val) => {
-//   const date = new Date();
-//   const time = date.getHours()+":"+date.getMinutes(); 
-//   args = [time,val];
+const log = console.log;
+const err = console.error;
+const extendConsole = (val) => {
+  const date = new Date();
+  const time = date.getHours()+":"+date.getMinutes(); 
+  args = [time,val];
 //   const content = JSON.parse(fs.readFileSync('./public/logs.json','utf-8'));
 //   content.push({"log" : time+": "+val});
 //   fs.writeFileSync('./public/logs.json',stringify(content));
-// }
-// console.log = (val) => {     
-//   extendConsole(val);
-//   log.apply(console, args);
-// }
-// console.error = (val) => {     
-//   extendConsole(val);
-//   err.apply(console, args);
-// }
+}
+console.log = (val) => {     
+  extendConsole(val);
+  log.apply(console, args);
+}
+console.error = (val) => {     
+  extendConsole(val);
+  err.apply(console, args);
+}
 
 
 
-// HEROKU IDLING
-// Tested and working on my own Heroku app using Node.js 0.10.x on 6/28/2013
-// var http = require('http'); //importing http
-// function startKeepAlive() {
-//     setInterval(function() {
-//         var options = {
-//             host: 'your_app_name.herokuapp.com',
-//             port: 80,
-//             path: '/'
-//         };
-//         http.get(options, function(res) {
-//             res.on('data', function(chunk) {
-//                 try {
-//                     // optional logging... disable after it's working
-//                     console.log("HEROKU RESPONSE: " + chunk);
-//                 } catch (err) {
-//                     console.log(err.message);
-//                 }
-//             });
-//         }).on('error', function(err) {
-//             console.log("Error: " + err.message);
-//         });
-//     }, 20 * 60 * 1000); // load every 20 minutes
-// }
-// startKeepAlive();
+// HEROKU ANTI IDLING SCRIPT
+const antiIdlingScript = () => {
+  setInterval(() => {
+    http.get({}, (res) => {
+      res.on('data', (chunk) => {
+        try {
+          console.log("ANTI IDLING CALL");
+        } catch (err) {
+          console.error("ANTI IDLIG ERROR " + err.message);
+        }
+      });
+    }).on('error', (err) => {
+      console.error("ANTI IDLIG ERROR " + err.message);
+    });
+  }, 20 * 60 * 1000); // load every 20 minutes
+};antiIdlingScript();

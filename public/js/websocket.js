@@ -19,7 +19,10 @@ const serv = {
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
     if(player.itemAction){this.param.itemAction = player.itemAction;delete player.itemAction}
-    if(player.says){this.param.says = player.says;}
+    if(player.says){
+      console.log("set this.param.says = "+player.says)
+      this.param.says = player.says;
+    }
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     return this.param;
   },
@@ -171,7 +174,10 @@ const serv = {
       // release clicked 
       controls.falseQueneCall();
       if(isSet(this.param.itemAction)){delete this.param.itemAction;}
-      if(isSet(this.param.says)){delete this.param.says;}
+      if(isSet(this.param.says)){
+        console.log("deleting: " +this.param.says);
+        delete this.param.says;
+      }
       if(isSet(this.param.outfit)){delete this.param.outfit;}
       if(isSet(this.param.target)){delete this.param.target;}
       this.ws.onmessage = (msg) => {res(msg,()=>{cb();})};     

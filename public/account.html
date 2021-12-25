@@ -154,8 +154,17 @@
           if(form.style.display == "flex"){
             // get all inputs
             for(const input of form.querySelectorAll("input")){
-              input.style.border = "none";
+              // input.style.border = "none";
               input.style.outline = "none";
+              if(input.name == 'nick' && form.id == "register"){
+                console.log("VALIDATE NICKNAME!")
+                if(!validateNick(input.value, monstersNames)[0]){
+                  valid = false;
+                  message = validateNick(input.value, monstersNames)[1];
+                  input.style.border = "2px solid red";
+                }
+              }
+
               if(["text","password"].includes(input.type)){
                 if(input.value == ""){
                   valid = false;
@@ -164,13 +173,11 @@
                 }
               }
               if(input.name == "email"){
-                // console.log(input)
                 const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 if(!re.test(String(input.value).toLowerCase())){
                   valid = false;
                   message = "Re-type your real email adress. It'll be helpful when you forget your pass.";
                   input.style.border = "2px solid red";
-                  console.log("none...");
                 }
               }
               if(input.type == "radio"){

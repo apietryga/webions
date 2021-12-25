@@ -153,6 +153,7 @@ class Creature {
     // SAY'n
     if(func.isSet(this.says)){delete this.says;}
     if(func.isSet(param.says) && param.says != ""){
+      console.log(param.says);
       // CONSOLE FOR GM
       const places = {
         temple:[35,-9,-1],
@@ -260,6 +261,7 @@ class Creature {
         }
       }
     }
+
     // UPDATE LASTFRAME || KEEP PLAYER IN GAME || save player on logout
     if(typeof game.startServerTime != "undefined" && param.type != 'initUpdate'){
       this.lastFrame = game.time.getTime();

@@ -8,6 +8,15 @@ const Creature = require("./server_components")[0];
 const MarkdownIt = require('markdown-it'), md = new MarkdownIt();
 const bcrypt = require('bcrypt');
 const mime = require('mime-types');
+// filter creatures to monsters only
+const creatures = require("./monstersTypes");
+const npcs = require("./npcs").npcs;
+const monsters = [];
+for(const creature of creatures){
+  if(typeof creature.type == "undefined" && creature.sprite != "tourets"){
+    monsters.push(creature);
+  }
+}
 const passTokens = {
   vals : [],
   generate(pName){
@@ -141,9 +150,11 @@ function public(req, res, playersList) {
       })
     }
   }
+  const monstersNames = func.getNamesFromObjArr(monsters).concat(func.getNamesFromObjArr(npcs));
   if(["/account.html"].includes(myURL.pathname)){
     path = "/account.html";
     let body = '';req.on("data",(chunk)=>{body += chunk;});
+    vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
     const processRequest = (callback) => {
       const data = (body == '')?{type:"LOGIN"}:JSON.parse('{"' + decodeURI(body).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace(/\s/g,'') + '"}');
       if(data.type == "LOGIN"){
@@ -181,7 +192,7 @@ function public(req, res, playersList) {
           })
         }else{
           if(myURL.search == "?action=logout"){
-            vals.js = "<script>delete_cookie('token')</script>";
+            vals.js += "<script>delete_cookie('token')</script>";
             vals.action = "logout";
             vals.message = "<b style='color:green;'>You're succesfully logout.</b>";
           }
@@ -189,6 +200,7 @@ function public(req, res, playersList) {
         }
       }else if(data.type == "REGISTER"){
         dbc[game.db].load({name:data.nick},(dbres)=>{
+          // vals.js += "ELOOOOO";
           if(dbres){
           // if player is set in db
             if(func.isSet(dbres.password)){
@@ -196,6 +208,10 @@ function public(req, res, playersList) {
               vals.action = "register";
               vals.message = "<b style='color:red;'>This account arleady exsits.</b>"
               callback();                
+            // }else if(func.validateNick(data.nick,monstersNames)[0]){
+            //   vals.action = "register";
+            //   vals.message = "<b style='color:red;'>"+func.validateNick(data.nick,monstersNames)[1]+"</b>";
+            //   callback();                
             }else{
               // CRYPT PASSWORD
               password.cryptPassword(data.password,(e,h)=>{
@@ -212,20 +228,28 @@ function public(req, res, playersList) {
               });
             }
           }else{
-          // making new player
-            const newPlayer = new Creature(data.nick);
-            password.cryptPassword(data.password,(e,h)=>{
-              if(e != null){console.error(e);}
-              newPlayer.password = h;
-              newPlayer.email = data.email.replace("%40","@");
-              newPlayer.sex = data.sex;
-              dbc[game.db].update(newPlayer);
-              vals.action = "result";
-              vals.message = "<b style='color:green;'>You're succesfully created your account.</b>";
-              vals.message += "<br />";
-              vals.message += "<a href='account.html?action=login'>Click here to login.</a>";
-              callback();
-            });
+            const validNick = func.validateNick(data.nick,monstersNames);
+            if(!validNick[0]){
+              vals.action = "register";
+              // vals.message = "<b style='color:red;'>"+func.validateNick(data.nick,monstersNames)[1]+"</b>";
+              vals.message = "<b style='color:red;'>"+validNick[1]+"</b>";
+              callback();                
+            }else{
+            // making new player
+              const newPlayer = new Creature(validNick[1]);
+              password.cryptPassword(data.password,(e,h)=>{
+                if(e != null){console.error(e);}
+                newPlayer.password = h;
+                newPlayer.email = data.email.replace("%40","@");
+                newPlayer.sex = data.sex;
+                dbc[game.db].update(newPlayer);
+                vals.action = "result";
+                vals.message = "<b style='color:green;'>You're succesfully created your account.</b>";
+                vals.message += "<br />";
+                vals.message += "<a href='account.html?action=login'>Click here to login.</a>";
+                callback();
+              });
+            }
           }
         }) 
       }else if(data.type == "REMIND"){
@@ -296,6 +320,7 @@ function public(req, res, playersList) {
     }
     req.on("end", ()=>{processRequest(serveChangedContent)});
   }else if(["/game.html"].includes(myURL.pathname)){
+    vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
     if(func.isSet(req.headers.cookie)){
       let player = false;
       // wait for connect to db and find player's token.
@@ -408,15 +433,7 @@ function public(req, res, playersList) {
     <a href="/libary.html?page=items">Items</a>
     <a href="/libary.html?page=about">About</a>
     `;
-    // filter creatures to monsters only
-    const creatures = require("./monstersTypes");
-    const monsters = [];
-    for(const creature of creatures){
-      if(typeof creature.type == "undefined" && creature.sprite != "tourets"){
-        monsters.push(creature);
-      }
-    }
-    vals.js = `<script>
+    vals.js += `<script>
         const monsters = ${JSON.stringify(monsters)};
         const items = ${JSON.stringify(require("./itemsTypes").types)};
     </script>`;
