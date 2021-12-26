@@ -92,6 +92,9 @@ const serv = {
           // update console
           if(creature.name == player.name && creature.text != "" && isSet(creature.text)){
             inGameConsole.text = creature.text;
+            if(creature.text == "There's no way."){
+              joyPad.vibrate(0.2,100);
+            }
           }
         }
         // updating values

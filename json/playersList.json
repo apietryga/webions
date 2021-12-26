@@ -465,14 +465,14 @@
   },
   {
     "name": "GM",
-    "position": [35, -9, -1],
+    "position": [33, -7, -1],
     "speed": 2.9,
-    "health": 2070,
-    "maxHealth": 1070,
+    "health": 2060,
+    "maxHealth": 1060,
     "sprite": "gm",
     "skills": {
-      "level": 97,
-      "exp": 903294,
+      "level": 96,
+      "exp": 858129,
       "fist": 41,
       "dist": 37,
       "fist_summary": 1610,
@@ -481,7 +481,7 @@
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640551037285,
+    "lastFrame": 1640551913261,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -560,12 +560,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-22T14:57:40.499Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 95
-      },
-      {
         "when": "2021-12-22T14:57:58.198Z",
         "who": "Minotaur",
         "whoType": "monster",
@@ -588,6 +582,12 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 97
+      },
+      {
+        "when": "2021-12-26T20:48:00.087Z",
+        "who": "Cyclops",
+        "whoType": "monster",
+        "level": 96
       }
     ],
     "quests": [
@@ -662,8 +662,8 @@
       "Blessed Shield",
       "Ladder"
     ],
-    "mana": 1270,
-    "maxMana": 1070,
+    "mana": 1260,
+    "maxMana": 1060,
     "redTarget": false,
     "token": "r6a9ojje8y"
   },

@@ -403,8 +403,6 @@ const joyPad = {
     if(!joyPadInterval){
       joyPadInterval = setInterval(joyPad.update,150);
     }
-    // gamepadHapticActuatorInstance.pulse(0.5, 100).then((result)=>{console.log(" done ;> ")});
-    this.vibrate();
   },
   update(){
     const clickedKeys = [];
@@ -412,7 +410,6 @@ const joyPad = {
     const gamepads = navigator.getGamepads ? navigator.getGamepads():(navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
     for(const gamepad of gamepads){if(gamepad){
       joyPad.gamePad = gamepad;
-
       // buttons
       for(const [id,button] of gamepad.buttons.entries()){
         if(button.pressed){
@@ -461,13 +458,12 @@ const joyPad = {
     this.state = false;
   },
   vibrate(strength = 0.2, time = 100){
+    console.log(this.gamePad)
     if(this.state && this.gamePad && isSet(this.gamePad.hapticActuators)){
-      console.log(this.gamePad)
-      // Gamepad.hapticActuators
-    strength = Math.round(strength*10)/10;
-    if(strength > 1){strength = 1;}
-    // gamepadInstance.hapticActuators;
-      this.gamePad.hapticActuators.pulse(0.5, 100).catch((err)=>{console.error(err)});
+      strength = Math.round(strength*10)/10;
+      if(strength > 1){strength = 1;}
+      // this.gamePad.hapticActuators.pulse(0.5, 100).catch((err)=>{console.error(err)});
+      this.gamePad.vibrationActuator.pulse(0.5, 100).catch((err)=>{console.error(err)});
       // gamepadHapticActuatorInstance.pulse(0.5, 100).catch((err)=>{console.error(err)});
     }
   }
