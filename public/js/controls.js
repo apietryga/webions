@@ -396,7 +396,8 @@ const mobileControls = {
 let joyPadInterval;
 const joyPad = {
   state:false,
-  init(ev){
+  gamePad:false,
+  init(){
     this.state = true;
     console.log("JoyPad connected.");
     if(!joyPadInterval){
@@ -410,6 +411,7 @@ const joyPad = {
     const upd = (key) => {controls.update([key,true]);clickedKeys.push(key)}
     const gamepads = navigator.getGamepads ? navigator.getGamepads():(navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
     for(const gamepad of gamepads){if(gamepad){
+      joyPad.gamePad = gamepad;
 
       // buttons
       for(const [id,button] of gamepad.buttons.entries()){
@@ -459,10 +461,14 @@ const joyPad = {
     this.state = false;
   },
   vibrate(strength = 0.2, time = 100){
+    if(this.state && this.gamePad && isSet(this.gamePad.hapticActuators)){
+      console.log(this.gamePad)
+      // Gamepad.hapticActuators
     strength = Math.round(strength*10)/10;
     if(strength > 1){strength = 1;}
-    if(this.state){
-      gamepadHapticActuatorInstance.pulse(0.5, 100).catch((err)=>{console.error(err)});
+    // gamepadInstance.hapticActuators;
+      this.gamePad.hapticActuators.pulse(0.5, 100).catch((err)=>{console.error(err)});
+      // gamepadHapticActuatorInstance.pulse(0.5, 100).catch((err)=>{console.error(err)});
     }
   }
 }
