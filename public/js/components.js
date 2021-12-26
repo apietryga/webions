@@ -348,6 +348,9 @@ class Creature {
     if(isSet(this.oldHealth) && this.oldHealth != this.health){
       const hitValue = this.oldHealth - this.health;
       gamePlane.actions.push(new Action("hitText",this.position[0],this.position[1],100,200,hitValue));
+      if(this.type == "player" && hitValue > 0){
+        joyPad.vibrate((hitValue/this.totalHealth),10);
+      }
     }
     // draw exp value     
     if(isSet(this.skills) && isSet(this.skills.oldExp) && this.skills.exp != this.skills.oldExp && this.type == "player"){

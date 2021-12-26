@@ -67,6 +67,7 @@ const controls = {
     // health
     if(params[0] == 72 && params[1] && (player.health == player.maxHealth || (serv.time < player.exhoust))){
       action = new Action("misc",player.x,player.y,40,40,0);
+      joyPad.vibrate();
     }    
     if(action){
       let pushIt = true;
@@ -394,14 +395,15 @@ const mobileControls = {
 // TESTED ON XBOX CONTROLLER
 let joyPadInterval;
 const joyPad = {
-  ev: false,
+  state:false,
   init(ev){
+    this.state = true;
     console.log("JoyPad connected.");
-    this.ev = ev;
     if(!joyPadInterval){
       joyPadInterval = setInterval(joyPad.update,150);
     }
-    gamepadHapticActuatorInstance.pulse(0.5, 100).then((result)=>{console.log(" done ;> ")});
+    // gamepadHapticActuatorInstance.pulse(0.5, 100).then((result)=>{console.log(" done ;> ")});
+    this.vibrate();
   },
   update(){
     const clickedKeys = [];
@@ -454,6 +456,14 @@ const joyPad = {
   close(){
     console.log("JoyPad disconnected.");
     clearInterval(joyPadInterval);
+    this.state = false;
+  },
+  vibrate(strength = 0.2, time = 100){
+    strength = Math.round(strength*10)/10;
+    if(strength > 1){strength = 1;}
+    if(this.state){
+      gamepadHapticActuatorInstance.pulse(0.5, 100).catch((err)=>{console.error(err)});
+    }
   }
 }
 window.addEventListener("gamepaddisconnected", (ev) => {joyPad.close(ev);});
