@@ -2,11 +2,8 @@
   Webions is a MMORPG game working on browsers. 
   You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "serwer.js" by nodejs. I will make instructions for this in future versions.
 ## TESTING NOW
-  - UNSET THIS : [serwer] remove player.skills.healing 
-  - 13:9 ANTI IDLIG ERROR connect ECONNREFUSED 127.0.0.1:80, but works (logging)
   - joypad controls (xbox & windows logging (looks it must be via https))
-  - eq squares resize
-  - replace courier with mailgun (logging);
+  - 13:9 ANTI IDLIG ERROR connect ECONNREFUSED 127.0.0.1:80, but works (logging)
 ## ISSUES
   - manifest.json doesn't work on android (no install option) - https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Installable_PWAs
   - [wwwscript] Tosiek case - to many squares in eq?
@@ -14,6 +11,7 @@
   - console - get last writing pharse by up/down arrows (must twice push)
   - [menus] fix doubled console message on sent [twice on serwer, once on client]
   - improve offline detection
+  - MAILGUN [tikcet send, waiting for response]
 ## FEATURES TO v0.50
   - [serwer] secure websocket
   - [server_components] auto shooter

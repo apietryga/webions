@@ -14,8 +14,6 @@ const controls = {
     }
   },
   update(params){
-    // console.log(params)
-    if(params[0] == 7 && params[1] == false){xboxController.init();}
     // WRITING MESSAGE [13] is enter
     if(params[0] == 13 && !params[1] && this.vals.includes(13)){
       // if()
@@ -393,20 +391,70 @@ const mobileControls = {
 
 
 
-// XBOX CONTROLLER
-const xboxController = {
-  init(){
+// TESTED ON XBOX CONTROLLER
+let joyPadInterval;
+const joyPad = {
+  ev: false,
+  init(ev){
+    console.log("JoyPad connected.");
+    this.ev = ev;
+    if(!joyPadInterval){
+      joyPadInterval = setInterval(joyPad.update,150);
+    }
+    gamepadHapticActuatorInstance.pulse(0.5, 100).then((result)=>{console.log(" done ;> ")});
+  },
+  update(){
+    const clickedKeys = [];
+    const upd = (key) => {controls.update([key,true]);clickedKeys.push(key)}
+    const gamepads = navigator.getGamepads ? navigator.getGamepads():(navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+    for(const gamepad of gamepads){if(gamepad){
 
-    console.log(navigator.getGamepads());
+      // buttons
+      for(const [id,button] of gamepad.buttons.entries()){
+        if(button.pressed){
+          // console.log(id);
+          if(id == 12){upd(38);}  // top
+          if(id == 13){upd(40);}  // bottom
+          if(id == 14){upd(37);}  // left
+          if(id == 15){upd(39);}  // right
+          if(id == 4){upd(84);} // white target
+          if(id == 5){upd(83);} // redtarget
+          if(id == 1){upd(68);} // shot
+          if(id == 0){upd(72);} // healing
+          if(id == 7){
+            const mainMenu = document.querySelector(".wrapper >.mainMenu");
+            if(mainMenu.style.display == "none"){
+              menus.mainMenu.show('mainMenu');
+            }else{
+              menus.mainMenu.close('mainMenu');
+            }
+          }
+        }
+      }
+
+      // axes
+      const [a1x, a1y, a2x, a2y] = gamepad.axes;
+      if(Math.abs(a1x) > 0.5){
+        if(a1x < 0){upd(37)}
+        if(a1x > 0){upd(39)}
+      }
+      if(Math.abs(a1y) > 0.5){
+        if(a1y < 0){upd(38)}
+        if(a1y > 0){upd(40)}
+      }
+
+      // clear controls vals
+      for(const ctrlVal of controls.vals){
+        if(!clickedKeys.includes(ctrlVal)){
+          controls.update([ctrlVal,false]);
+        }
+      }    
+    }}
+  },
+  close(){
+    console.log("JoyPad disconnected.");
+    clearInterval(joyPadInterval);
   }
-
 }
-window.addEventListener("gamepadconnected", (event) => {
-  console.log("A gamepad connected:");
-  console.log(event.gamepad);
-});
-
-window.addEventListener("gamepaddisconnected", (event) => {
-  console.log("A gamepad disconnected:");
-  console.log(event.gamepad);
-});
+window.addEventListener("gamepaddisconnected", (ev) => {joyPad.close(ev);});
+window.addEventListener("gamepadconnected", (ev) => {joyPad.init(ev);});

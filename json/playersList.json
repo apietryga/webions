@@ -465,23 +465,23 @@
   },
   {
     "name": "GM",
-    "position": [55, -31, -1],
+    "position": [-1, -5, 1],
     "speed": 2.9,
     "health": 2090,
     "maxHealth": 1090,
     "sprite": "gm",
     "skills": {
       "level": 99,
-      "exp": 950156,
-      "fist": 39,
-      "dist": 35,
-      "fist_summary": 1464,
-      "dist_summary": 1174
+      "exp": 950836,
+      "fist": 41,
+      "dist": 37,
+      "fist_summary": 1610,
+      "dist_summary": 1336
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640434813586,
+    "lastFrame": 1640547293225,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -526,20 +526,7 @@
         "pos": [-71, 11, 2],
         "actionType": "pickUp"
       },
-      "lh": {
-        "type": "item",
-        "name": "Blessed Shield",
-        "sprite": "items",
-        "spriteNr": 12,
-        "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 100,
-        "position": [0, -4, 1],
-        "actionType": "pickUp",
-        "visibleFloor": 7,
-        "field": "lh",
-        "pos": [0, -4, 1]
-      },
+      "lh": false,
       "rh": {
         "type": "item",
         "name": "Blessed Shield",

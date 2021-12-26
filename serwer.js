@@ -260,9 +260,6 @@ const im = { // items management
 }
 let param;cm.init();im.init();
 dbc.init(()=>{
-  console.log(process)
-  console.log("_____________________________________");
-  console.log(process.env)
   cm.players.init(dbc[game.db]);
   const server = http.createServer((req,res)=>{
     servRequest = req;
@@ -355,21 +352,16 @@ console.error = (val) => {
 console.log("Origin: "+process.env.ORIGIN)
 const antiIdlingScript = () => {
   setInterval(() => {
-    // if( servRequest ){
-      http.get(process.env.ORIGIN, (res) => {
-        res.on('data', () => {
-          try {
-            console.log("ANTI IDLING CALL");
-          } catch (err) {
-            console.error("ANTI IDLIG ERROR 1: " + err.message);
-          }
-        });
-      }).on('error', (err) => {
-        console.error("ANTI IDLIG ERROR 2: " + err.message);
+    http.get(process.env.ORIGIN, (res) => {
+      res.on('data', () => {
+        try {
+          console.log("ANTI IDLING CALL");
+        } catch (err) {
+          console.error("ANTI IDLIG ERROR 1: " + err.message);
+        }
       });
-    // }else{
-    //   console.error("There's no servRequest.")
-    // }
+    }).on('error', (err) => {
+      console.error("ANTI IDLIG ERROR 2: " + err.message);
+    });
   }, 20 * 60 * 1000); // load every 20 minutes
-  // },1000); // load every 20 minutes
 };antiIdlingScript();
