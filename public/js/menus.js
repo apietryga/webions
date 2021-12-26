@@ -358,6 +358,9 @@ const menus = {
       }
     },
   },
+  resize(){
+    this.mainMenu.resize();
+  },
   outfit:{
     div:document.createElement("div"),
     init(){

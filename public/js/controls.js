@@ -14,6 +14,8 @@ const controls = {
     }
   },
   update(params){
+    // console.log(params)
+    if(params[0] == 7 && params[1] == false){xboxController.init();}
     // WRITING MESSAGE [13] is enter
     if(params[0] == 13 && !params[1] && this.vals.includes(13)){
       // if()
@@ -388,3 +390,23 @@ const mobileControls = {
     || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   }
 }
+
+
+
+// XBOX CONTROLLER
+const xboxController = {
+  init(){
+
+    console.log(navigator.getGamepads());
+  }
+
+}
+window.addEventListener("gamepadconnected", (event) => {
+  console.log("A gamepad connected:");
+  console.log(event.gamepad);
+});
+
+window.addEventListener("gamepaddisconnected", (event) => {
+  console.log("A gamepad disconnected:");
+  console.log(event.gamepad);
+});

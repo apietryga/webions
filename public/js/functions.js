@@ -182,6 +182,7 @@ function everyInterval(n){
 }
 function setResolution(){
   mobileControls.validate();  
+  menus.resize();
 }
 function hpColor(perc){
   let green = Math.round((255*perc)/100);

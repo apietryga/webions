@@ -1,9 +1,9 @@
 {
   "name": "Webions",
-  "start_url": "/",
   "short_name": "Webions",
-  "background_color": "black",
   "description": "Webions game",
+  "start_url": "/",
+  "background_color": "black",
   "author": "Antek Pietryga",
   "display": "standalone",
   "icons": [

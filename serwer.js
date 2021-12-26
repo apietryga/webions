@@ -110,53 +110,53 @@ const cm = { // creatures managment [monsters = monsters & npc's]
   },
   players: {
     init(db){
-      // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
-      const skipKeys = [
-        "healthValue",
-        "text",
-        "game",
-        "shotTarget",
-        "bulletOnTarget",
-        "cyle",
-      ];
-      const deleteKeys = ['healing'];
-      db.loadAll((res)=>{
-        for(const plr of res){
-          // make instance of player
-          const player = new Creature(plr.name,0,"player");
-          // rewrite
-          for(const key of Object.keys(plr)){
-            // console.log(key)
-            // if(deleteKeys.includes(key)){console.log(key)}
-            if(skipKeys.includes(key)){continue;}
-            if(plr[key].constructor === Object){
-            // if it's object
-              player[key] = {};
-              for(const keyIn of Object.keys(plr[key])){
-                if(deleteKeys.includes(keyIn)){
-                  console.error("deleting "+keyIn+" from "+plr.name+" "+key)
-                }else{
-                  player[key][keyIn] = plr[key][keyIn];
-                }
-              }
-            }else if(plr[key].constructor === Array){
-            // if it's array
-              player[key] = [];
-              for(const keyIn of Object.keys(plr[key])){
-                player[key][keyIn] = plr[key][keyIn];
-              }
-            }else{
-              player[key] = plr[key];
-            }
-          }
-          // update player
-          player.update({name:player.name,type: 'initUpdate'},db,[],{itemsInArea:[]});
-          // update player skills
-          player.skills.level = -1;
-          // player is update in db there:
-          player.updateSkills(db);
-        }
-      });
+      // // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
+      // const skipKeys = [
+      //   "healthValue",
+      //   "text",
+      //   "game",
+      //   "shotTarget",
+      //   "bulletOnTarget",
+      //   "cyle",
+      // ];
+      // const deleteKeys = ['healing'];
+      // db.loadAll((res)=>{
+      //   for(const plr of res){
+      //     // make instance of player
+      //     const player = new Creature(plr.name,0,"player");
+      //     // rewrite
+      //     for(const key of Object.keys(plr)){
+      //       // console.log(key)
+      //       // if(deleteKeys.includes(key)){console.log(key)}
+      //       if(skipKeys.includes(key)){continue;}
+      //       if(plr[key].constructor === Object){
+      //       // if it's object
+      //         player[key] = {};
+      //         for(const keyIn of Object.keys(plr[key])){
+      //           // if(deleteKeys.includes(keyIn)){
+      //           //   console.error("deleting "+keyIn+" from "+plr.name+" "+key)
+      //           // }else{
+      //           //   player[key][keyIn] = plr[key][keyIn];
+      //           // }
+      //         }
+      //       }else if(plr[key].constructor === Array){
+      //       // if it's array
+      //         player[key] = [];
+      //         for(const keyIn of Object.keys(plr[key])){
+      //           player[key][keyIn] = plr[key][keyIn];
+      //         }
+      //       }else{
+      //         player[key] = plr[key];
+      //       }
+      //     }
+      //     // update player
+      //     player.update({name:player.name,type: 'initUpdate'},db,[],{itemsInArea:[]});
+      //     // update player skills
+      //     player.skills.level = -1;
+      //     // player is update in db there:
+      //     player.updateSkills(db);
+      //   }
+      // });
     },
     list:[],
     inArea:[],
@@ -260,11 +260,16 @@ const im = { // items management
 }
 let param;cm.init();im.init();
 dbc.init(()=>{
+  console.log(process)
+  console.log("_____________________________________");
+  console.log(process.env)
   cm.players.init(dbc[game.db]);
   const server = http.createServer((req,res)=>{
     servRequest = req;
+    servResponse = res;
     public(req,res,cm.players.list)
   }).listen(process.env.PORT || 80);
+  // }).listen(process.env.PORT || 443);
   const date = new Date();
   game.startServerTime = date.getTime();
   console.log("SERWER IS RUNNING");
@@ -347,18 +352,24 @@ console.error = (val) => {
 
 
 // HEROKU ANTI IDLING SCRIPT
+console.log("Origin: "+process.env.ORIGIN)
 const antiIdlingScript = () => {
   setInterval(() => {
-    http.get({}, (res) => {
-      res.on('data', (chunk) => {
-        try {
-          console.log("ANTI IDLING CALL");
-        } catch (err) {
-          console.error("ANTI IDLIG ERROR " + err.message);
-        }
+    // if( servRequest ){
+      http.get(process.env.ORIGIN, (res) => {
+        res.on('data', () => {
+          try {
+            console.log("ANTI IDLING CALL");
+          } catch (err) {
+            console.error("ANTI IDLIG ERROR 1: " + err.message);
+          }
+        });
+      }).on('error', (err) => {
+        console.error("ANTI IDLIG ERROR 2: " + err.message);
       });
-    }).on('error', (err) => {
-      console.error("ANTI IDLIG ERROR " + err.message);
-    });
+    // }else{
+    //   console.error("There's no servRequest.")
+    // }
   }, 20 * 60 * 1000); // load every 20 minutes
+  // },1000); // load every 20 minutes
 };antiIdlingScript();
