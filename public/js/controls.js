@@ -67,7 +67,6 @@ const controls = {
     // health
     if(params[0] == 72 && params[1] && (player.health == player.maxHealth || (serv.time < player.exhoust))){
       action = new Action("misc",player.x,player.y,40,40,0);
-      joyPad.vibrate();
     }    
     if(action){
       let pushIt = true;
@@ -457,14 +456,25 @@ const joyPad = {
     clearInterval(joyPadInterval);
     this.state = false;
   },
-  vibrate(strength = 0.2, time = 100){
-    console.log(this.gamePad)
-    if(this.state && this.gamePad && isSet(this.gamePad.hapticActuators)){
+  vibrate(strength = 0.5, time = 50){
+    // console.log(this.gamePad)
+    if(this.state && this.gamePad 
+      // && isSet(this.gamePad.hapticActuators)
+    ){
       strength = Math.round(strength*10)/10;
       if(strength > 1){strength = 1;}
       // this.gamePad.hapticActuators.pulse(0.5, 100).catch((err)=>{console.error(err)});
-      this.gamePad.vibrationActuator.pulse(0.5, 100).catch((err)=>{console.error(err)});
+      // navigator.
       // gamepadHapticActuatorInstance.pulse(0.5, 100).catch((err)=>{console.error(err)});
+
+      // this.gamePad.vibrationActuator.pulse(0.5, 100).catch((err)=>{console.error(err)});
+      this.gamePad.vibrationActuator.playEffect("dual-rumble", {
+        // startDelay: 0,
+        duration: time,
+        // weakMagnitude: 0.5,
+        strongMagnitude: strength
+      });
+
     }
   }
 }

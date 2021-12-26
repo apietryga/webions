@@ -350,6 +350,8 @@ class Creature {
       gamePlane.actions.push(new Action("hitText",this.position[0],this.position[1],100,200,hitValue));
       if(this.type == "player" && hitValue > 0){
         joyPad.vibrate((hitValue/this.totalHealth),10);
+      }else if(this.type == "player"){
+        joyPad.vibrate();
       }
     }
     // draw exp value     
