@@ -51,7 +51,7 @@
       "fist_summary": 2223,
       "dist_summary": 1415
     },
-    "lastFrame": 1640434291612,
+    "lastFrame": 1640601345196,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -187,7 +187,7 @@
     "quests": ["ladder"],
     "mana": 1180,
     "maxMana": 780,
-    "token": "qgae4knb0e",
+    "token": "9dm8puwsv9",
     "redTarget": false
   },
   {
@@ -266,7 +266,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1756,
+    "mana": 1772,
     "maxMana": 4910,
     "redTarget": false
   },
@@ -465,23 +465,23 @@
   },
   {
     "name": "GM",
-    "position": [33, -7, -1],
+    "position": [47, -1, 0],
     "speed": 2.9,
     "health": 2060,
     "maxHealth": 1060,
     "sprite": "gm",
     "skills": {
       "level": 96,
-      "exp": 858129,
-      "fist": 41,
-      "dist": 37,
-      "fist_summary": 1610,
-      "dist_summary": 1336
+      "exp": 858379,
+      "fist": 42,
+      "dist": 38,
+      "fist_summary": 1683,
+      "dist_summary": 1434
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640551913261,
+    "lastFrame": 1640599942151,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],

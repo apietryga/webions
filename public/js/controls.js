@@ -16,14 +16,14 @@ const controls = {
   update(params){
     // WRITING MESSAGE [13] is enter
     if(params[0] == 13 && !params[1] && this.vals.includes(13)){
-      // if()
       const input = document.querySelector(".messagesInput");
       const isFocused = (document.activeElement === input);
       if(isFocused){
         input.blur();
         this.writingNow = false;
         if(input.value != ""){
-          player.says = input.value;
+          // player.says = input.value;
+          player.sayToServ = input.value;
         }
         input.value = "";
       }else{
@@ -457,24 +457,13 @@ const joyPad = {
     this.state = false;
   },
   vibrate(strength = 0.5, time = 50){
-    // console.log(this.gamePad)
-    if(this.state && this.gamePad 
-      // && isSet(this.gamePad.hapticActuators)
-    ){
+    if(this.state && this.gamePad){
       strength = Math.round(strength*10)/10;
       if(strength > 1){strength = 1;}
-      // this.gamePad.hapticActuators.pulse(0.5, 100).catch((err)=>{console.error(err)});
-      // navigator.
-      // gamepadHapticActuatorInstance.pulse(0.5, 100).catch((err)=>{console.error(err)});
-
-      // this.gamePad.vibrationActuator.pulse(0.5, 100).catch((err)=>{console.error(err)});
       this.gamePad.vibrationActuator.playEffect("dual-rumble", {
-        // startDelay: 0,
         duration: time,
-        // weakMagnitude: 0.5,
         strongMagnitude: strength
       });
-
     }
   }
 }

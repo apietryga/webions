@@ -19,9 +19,16 @@ const serv = {
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
     if(player.itemAction){this.param.itemAction = player.itemAction;delete player.itemAction}
-    if(player.says){
-      console.log("set this.param.says = "+player.says)
-      this.param.says = player.says;
+    // if(player.says){
+      // console.log("set this.param.says = "+player.says)
+      // this.param.says = player.says;
+    if(player.sayToServ){
+      // console.log("set this.param.says = "+player.sayToServ)
+      this.param.says = player.sayToServ;
+      // clear sayin'
+      // player.sayToServ = false;
+      delete player.sayToServ;
+
     }
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     return this.param;
@@ -35,7 +42,6 @@ const serv = {
       this.datetime = data.game.time;
       this.time = new Date(this.datetime).getTime();
       gamePlane.fps = data.game.fps;
-      // clear sayin'
 
 
       // player died
@@ -178,7 +184,6 @@ const serv = {
       controls.falseQueneCall();
       if(isSet(this.param.itemAction)){delete this.param.itemAction;}
       if(isSet(this.param.says)){
-        console.log("deleting: " +this.param.says);
         delete this.param.says;
       }
       if(isSet(this.param.outfit)){delete this.param.outfit;}
