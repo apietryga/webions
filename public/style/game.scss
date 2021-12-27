@@ -338,6 +338,31 @@ body{
           }
         }
       }
+      // AUTOMATION CONTAINER
+      .automationContainer{
+        // border:2px dashed red;
+        display:flex;
+        justify-content: space-between;
+        div{
+          flex:1;
+          font-size:.5em;
+          display:grid;
+          place-items:center;
+          &.enable{
+            @extend %onFrameButt;
+          }
+          &.disable{
+            @extend %inFrame;
+            background-color:rgb(104, 104, 104);
+            color:rgba(255, 255, 255, 0.301);
+          }
+          &.active{
+            // @extend %inFrame;
+            border-color: #444444 #737373 #737373 #444444;
+            background-color: rgb(47, 47, 47);
+          }
+        }
+      }
     }
     .mobileControls{
       // position:absolute;

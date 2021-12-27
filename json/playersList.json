@@ -35,23 +35,24 @@
     },
     "mana": 100,
     "maxMana": 150,
-    "redTarget": false
+    "redTarget": false,
+    "autoShot": false
   },
   {
     "name": "Tosiek",
-    "position": [37, -11, -1],
+    "position": [42, 1, -1],
     "speed": 2.6,
-    "health": 565,
-    "maxHealth": 780,
+    "health": 745,
+    "maxHealth": 760,
     "skills": {
-      "level": 68,
-      "exp": 301134,
-      "fist": 48,
-      "dist": 38,
-      "fist_summary": 2223,
-      "dist_summary": 1415
+      "level": 66,
+      "exp": 286649,
+      "fist": 134,
+      "dist": 149,
+      "fist_summary": 17690,
+      "dist_summary": 21966
     },
-    "lastFrame": 1640601345196,
+    "lastFrame": 1640645099934,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -153,12 +154,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-16T21:09:11.162Z",
-        "who": "Dragon",
-        "whoType": "monster",
-        "level": 72
-      },
-      {
         "when": "2021-12-17T15:12:18.148Z",
         "who": "Minotaur",
         "whoType": "monster",
@@ -181,14 +176,21 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 68
+      },
+      {
+        "when": "2021-12-27T14:37:45.145Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 66
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder"],
-    "mana": 1180,
-    "maxMana": 780,
-    "token": "9dm8puwsv9",
-    "redTarget": false
+    "mana": 1160,
+    "maxMana": 760,
+    "token": "povj1c0ym9",
+    "redTarget": 6,
+    "autoShot": true
   },
   {
     "name": "Zuzia",
@@ -266,9 +268,10 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1772,
+    "mana": 1816,
     "maxMana": 4910,
-    "redTarget": false
+    "redTarget": false,
+    "autoShot": false
   },
   {
     "name": "Marcel",
@@ -358,7 +361,8 @@
     "quests": [],
     "mana": 100,
     "maxMana": 670,
-    "redTarget": false
+    "redTarget": false,
+    "autoShot": false
   },
   {
     "name": "Maja",
@@ -396,7 +400,8 @@
     },
     "mana": 100,
     "maxMana": 140,
-    "redTarget": false
+    "redTarget": false,
+    "autoShot": false
   },
   {
     "name": "JanCio",
@@ -461,7 +466,8 @@
     "lastDeaths": [],
     "quests": [],
     "mana": 100,
-    "maxMana": 450
+    "maxMana": 450,
+    "autoShot": false
   },
   {
     "name": "GM",
@@ -665,7 +671,8 @@
     "mana": 1260,
     "maxMana": 1060,
     "redTarget": false,
-    "token": "r6a9ojje8y"
+    "token": "r6a9ojje8y",
+    "autoShot": false
   },
   {
     "name": "Niko",
@@ -788,6 +795,47 @@
     "quests": [],
     "mana": 100,
     "maxMana": 160,
-    "redTarget": false
+    "redTarget": false,
+    "autoShot": false
+  },
+  {
+    "name": "Newbie",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 100,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "skills": {
+      "level": 0,
+      "exp": 0,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 1,
+      "dist_summary": 1
+    },
+    "autoShot": false,
+    "lastFrame": 1640628939532,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 100,
+    "token": "9dm8puwsv9"
   }
 ]

@@ -1,14 +1,11 @@
 const serv = {
   init(){
     this.protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
-    // (window.location.protocol == "https:")?this.protocol = "wss:":this.protocol = "ws:";
-    // this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+urlParams.get('player'),'echo-protocol');
     this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
     this.ws.onopen = () => {this.connected = true;console.log("WS open.");}
     this.param.focus = true;
     window.onfocus = () => {this.param.focus = true;};
     window.onblur  = () => {this.param.focus = false;};
-
   },
   connected:false,
   param : {},
@@ -19,17 +16,7 @@ const serv = {
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
     if(player.itemAction){this.param.itemAction = player.itemAction;delete player.itemAction}
-    // if(player.says){
-      // console.log("set this.param.says = "+player.says)
-      // this.param.says = player.says;
-    if(player.sayToServ){
-      // console.log("set this.param.says = "+player.sayToServ)
-      this.param.says = player.sayToServ;
-      // clear sayin'
-      // player.sayToServ = false;
-      delete player.sayToServ;
-
-    }
+    if(player.sayToServ){this.param.says = player.sayToServ;delete player.sayToServ;}
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     return this.param;
   },
@@ -42,8 +29,6 @@ const serv = {
       this.datetime = data.game.time;
       this.time = new Date(this.datetime).getTime();
       gamePlane.fps = data.game.fps;
-
-
       // player died
       if(typeof data.game.dead != "undefined"){
         gamePlane.stop("You are dead.");
@@ -153,22 +138,17 @@ const serv = {
         gamePlane.items.push(new Item(item));
       }
       // update dev info
-      // if(game.dev){
-        // dev.stats = data.game;
-        dev.stats.fps = dev.counterFPS+"/"+data.game.fps;
-        dev.stats.time = serv.time;
-        dev.stats.db = data.game.db;
-        dev.stats.player = player.name;
-        // dev.stats.health = player.health;
-        dev.stats.position = player.position;
-        dev.stats.grids = map.grids.length;
-        // dev.stats.url = urlParams.get('player');
-        dev.stats.ping = this.time - player.lastFrame;
-        dev.stats.cpu = data.game.cpu;
-        dev.stats.redTarget = player.redTarget;
-        // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
-        dev.update();
-      // }
+      dev.stats.fps = dev.counterFPS+"/"+data.game.fps;
+      dev.stats.time = serv.time;
+      dev.stats.db = data.game.db;
+      dev.stats.player = player.name;
+      dev.stats.position = player.position;
+      dev.stats.grids = map.grids.length;
+      dev.stats.ping = this.time - player.lastFrame;
+      dev.stats.cpu = data.game.cpu;
+      dev.stats.redTarget = player.redTarget;
+      // dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
+      dev.update();
       callback();
     }
     this.ws.onclose = () => {             // set connection
@@ -182,12 +162,20 @@ const serv = {
       this.ws.send(JSON.stringify(this.paramUpdate()));
       // release clicked 
       controls.falseQueneCall();
-      if(isSet(this.param.itemAction)){delete this.param.itemAction;}
-      if(isSet(this.param.says)){
-        delete this.param.says;
+      const releaseKeys = [
+        'itemAction',
+        'says',
+        'outfit',
+        'target',
+        'autoShot'
+      ]
+      for(const key of releaseKeys){
+        if(isSet(this.param['key'])){delete this.param['key'];}
       }
-      if(isSet(this.param.outfit)){delete this.param.outfit;}
-      if(isSet(this.param.target)){delete this.param.target;}
+      // if(isSet(this.param.itemAction)){delete this.param.itemAction;}
+      // if(isSet(this.param.says)){delete this.param.says;}
+      // if(isSet(this.param.outfit)){delete this.param.outfit;}
+      // if(isSet(this.param.target)){delete this.param.target;}
       this.ws.onmessage = (msg) => {res(msg,()=>{cb();})};     
     }else{
       cb();

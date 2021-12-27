@@ -1,11 +1,11 @@
-body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 a:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .itemContainer .label, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar {
+body .wrapper .gameAndConsole .gamePlane .menusButtons:active, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:active, body .wrapper .menuItem0 a:active, body .wrapper > .mainMenu .automationContainer div.enable:active, body .popupParent .popup .closeBar div:active, body .popupParent .popup button:active, .itemContainer .label, body ::-webkit-scrollbar-track, body .wrapper .gameAndConsole .console, body .wrapper .gameAndConsole .console .messages, body .wrapper .gameAndConsole .console .messagesInput, body .wrapper .menuItem0, body .wrapper > .mainMenu, body .wrapper > .mainMenu .skills .displaySkills .progressBar, body .wrapper > .mainMenu .automationContainer div.disable {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
   background-color: #2f2f2f;
   color: #AEAEAC;
 }
 
-body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 a, body .popupParent .popup .closeBar div, body .popupParent .popup button, body ::-webkit-scrollbar-thumb, body .wrapper .gameAndConsole .gamePlane .outFitContainer, body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar, body .wrapper > .mainMenu > div > div, body .popupParent .popup, body .popupParent .popup .closeBar {
+body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 a, body .wrapper > .mainMenu .automationContainer div.enable, body .popupParent .popup .closeBar div, body .popupParent .popup button, body ::-webkit-scrollbar-thumb, body .wrapper .gameAndConsole .gamePlane .outFitContainer, body .wrapper .menuItem1 .healthBar, body .wrapper .menuItem1 .manaBar, body .wrapper .menuItem2 .healthBar, body .wrapper .menuItem2 .manaBar, body .wrapper > .mainMenu > div > div, body .popupParent .popup, body .popupParent .popup .closeBar {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
@@ -13,11 +13,11 @@ body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndCo
   color: #AEAEAC;
 }
 
-body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 a, body .popupParent .popup .closeBar div, body .popupParent .popup button {
+body .wrapper .gameAndConsole .gamePlane .menusButtons, body .wrapper .gameAndConsole .gamePlane .outFitContainer button, body .wrapper .menuItem0 a, body .wrapper > .mainMenu .automationContainer div.enable, body .popupParent .popup .closeBar div, body .popupParent .popup button {
   cursor: pointer;
 }
 
-body .wrapper .gameAndConsole .gamePlane .menusButtons:hover, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:hover, body .wrapper .menuItem0 a:hover, body .popupParent .popup .closeBar div:hover, body .popupParent .popup button:hover {
+body .wrapper .gameAndConsole .gamePlane .menusButtons:hover, body .wrapper .gameAndConsole .gamePlane .outFitContainer button:hover, body .wrapper .menuItem0 a:hover, body .wrapper > .mainMenu .automationContainer div.enable:hover, body .popupParent .popup .closeBar div:hover, body .popupParent .popup button:hover {
   background-color: #444343;
 }
 
@@ -507,6 +507,28 @@ body .wrapper > .mainMenu .skills .displaySkills .progressBar .progress {
   left: 0;
   background-color: #501616;
   height: 100%;
+}
+
+body .wrapper > .mainMenu .automationContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+body .wrapper > .mainMenu .automationContainer div {
+  flex: 1;
+  font-size: .5em;
+  display: grid;
+  place-items: center;
+}
+
+body .wrapper > .mainMenu .automationContainer div.disable {
+  background-color: #686868;
+  color: rgba(255, 255, 255, 0.301);
+}
+
+body .wrapper > .mainMenu .automationContainer div.active {
+  border-color: #444444 #737373 #737373 #444444;
+  background-color: #2f2f2f;
 }
 
 body .wrapper .mobileControls {

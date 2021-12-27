@@ -67,6 +67,19 @@ const menus = {
   },
   mainMenu:{
     parent: document.querySelector(".mainMenu"),
+    automation(dom){
+      if(dom.classList.contains("enable")){
+        if("AUTO SHOOTER" == dom.title){
+          if(!dom.classList.contains("active")){
+            serv.param.autoShot = true;
+            dom.classList.add("active");
+          }else{
+            serv.param.autoShot = false;
+            dom.classList.remove("active");
+          }
+        }
+      }
+    },
     doms : [
       [{ title: "PAUSE GAME",
           innerHTML: "⏸",
@@ -94,6 +107,18 @@ const menus = {
           type:"div",
           className:"manaBar",
           innerHTML: "<div class='progressBar'></div><label>NaN</label>",
+        }
+      ],
+      [{title:"AUTOMATION",
+        type:"div",
+        className: "automation",
+        innerHTML : `
+          <div class='title'>Automation</div>
+          <div class='automationContainer'>
+            <div class='shooterDOM enable' title='AUTO SHOOTER' onclick='menus.mainMenu.automation(this)'>SHOOTER</div>
+            <div class='disable' title='AUTO EXPER' onclick='menus.mainMenu.automation(this)'>EXPER</div>
+          </div>
+         `,
         }
       ],
       [{title:"EQUIPMENT",
@@ -135,6 +160,7 @@ const menus = {
       this.build("PAUSE GAME");
       this.build("HEALTH");
       this.build("MANA");
+      this.build("AUTOMATION");
       this.build("EQUIPMENT");
       this.build("SKILLS");
     },
@@ -207,12 +233,24 @@ const menus = {
         const collapseButton = document.createElement("div");
         collapseButton.innerHTML = "&bigtriangleup;"
         title.onclick = () => {
+          console.log("handle:");
+          const menuItem = collapseButton.parentElement.parentElement.parentElement;
+          const mainMenuDOM = collapseButton.parentElement.parentElement.parentElement.parentElement;
           if(collapseButton.parentElement.parentElement.classList.contains("collapsed")){
+            // prepend it
+            collapseButton.parentElement.parentElement.parentElement.remove();
+            mainMenuDOM.prepend(menuItem);
+
             collapseButton.parentElement.parentElement.classList.remove("collapsed");
             collapseButton.innerHTML = "&bigtriangleup;"
           }else{
+            collapseButton.parentElement.parentElement.parentElement.remove();
+            mainMenuDOM.append(menuItem);
+
+            
             collapseButton.parentElement.parentElement.classList.add("collapsed");
             collapseButton.innerHTML = "&bigtriangledown;"
+          
           }
         }
         title.append(collapseButton)

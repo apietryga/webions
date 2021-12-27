@@ -34,6 +34,7 @@ class Creature {
       dist_summary:1,
     }
     if(type == "player"){
+      this.autoShot = false;
       this.lastFrame = 0;
       this.lastDeaths = [];
       this.quests = [];
@@ -146,6 +147,8 @@ class Creature {
   }
   update(param,db,creatures,items){
     this.focus = param.focus;
+    if(func.isSet(param.autoShot) && this.type == "player"){this.autoShot = param.autoShot;}
+
     // clear console
     if(func.isSet(this.console)){
       delete this.console;
@@ -700,8 +703,7 @@ class Creature {
             c.getHit(db,this);
           }
           // DISTANCE SHOT - 68 is "D" key [players]
-          // if(typeof param.controls != "undefined" && this.shotExhoust <= game.time.getTime() && ((this.type == "player" && param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
-          if(typeof param.controls != "undefined" && this.exhoust <= game.time.getTime() && ((this.type == "player" && param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
+          if(typeof param.controls != "undefined" && this.exhoust <= game.time.getTime() && ((this.autoShot || param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
             // check bulletTrace
             const traces = {x : [], y : []};
             // X POSITION

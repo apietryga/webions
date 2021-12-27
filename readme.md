@@ -4,13 +4,12 @@
 ## TESTING NOW
   - ANTI IDLIG ERROR connect ECONNREFUSED 127.0.0.1:80 [logging]
   - improve succesfully login animation (wait for all map draw)
-  - MAILGUN [tikcet send, waiting for response]
   - [menus] fix doubled console message on sent [twice on serwer, once on client]
   - console - get last writing pharse by up/down arrows (must twice push)
   - [wwwscript] Tosiek case - to many squares in eq? (if success, remove player update [server])
-## ISSUES
-  - [server_components] auto shooter
   - [menus] using menu on top.
+  - [server_components] auto shooter
+## ISSUES
   - [server_components] shielding (def)
   - [server_components] magic lvl
   - [server_components] mwalls

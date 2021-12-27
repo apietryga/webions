@@ -80,7 +80,16 @@ const gamePlane = {
       // update actions
       for(const a of gamePlane.actions){a.update();}
       inGameConsole.update();
-      if(fistIteration){document.querySelector(".loader").style.display = "none";}
+      // call only ones
+      if(fistIteration){
+        document.querySelector(".loader").style.display = "none";
+        // automation button update
+        if(isSet(player.autoShot) && player.autoShot){
+          // console.log("CLICKED")
+          const shooterDOM = document.querySelector('.shooterDOM');
+          menus.mainMenu.automation(shooterDOM);
+        }
+      }
       fistIteration = false;
     });
   },

@@ -45,7 +45,8 @@ class dbConnect{
       "mana",
       "maxMana",
       "token",
-      "redTarget"
+      "redTarget",
+      "autoShot"
     ];
     this.json.dataToSave = this.dataToSave;
     this.redis.dataToSave = this.dataToSave;
