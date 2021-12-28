@@ -268,7 +268,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1816,
+    "mana": 1972,
     "maxMana": 4910,
     "redTarget": false,
     "autoShot": false
@@ -471,23 +471,23 @@
   },
   {
     "name": "GM",
-    "position": [47, -1, 0],
-    "speed": 2.9,
-    "health": 2060,
-    "maxHealth": 1060,
+    "position": [57, -7, 1],
+    "speed": 4,
+    "health": 2778,
+    "maxHealth": 2110,
     "sprite": "gm",
     "skills": {
-      "level": 96,
-      "exp": 858379,
-      "fist": 42,
-      "dist": 38,
-      "fist_summary": 1683,
-      "dist_summary": 1434
+      "level": 201,
+      "exp": 8000665,
+      "fist": 34,
+      "dist": 32,
+      "fist_summary": 1094,
+      "dist_summary": 1000
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640599942151,
+    "lastFrame": 1640698403022,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -510,29 +510,55 @@
         "pos": [-64, 13, -1]
       },
       "bp": {
-        "name": "Ladder",
-        "sprite": "action_items",
-        "spriteNr": 4,
-        "handle": ["lh", "rh", "bp"],
-        "pickable": true,
-        "desc": "You can use it to move between floors."
-      },
-      "nc": false,
-      "ch": {
-        "type": "item",
-        "name": "Magic Armor",
-        "position": [-71, 11, 2],
+        "name": "Random Item",
         "sprite": "items",
-        "spriteNr": 14,
+        "spriteNr": 15,
+        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
+        "pickable": true,
+        "randStats": [
+          {"speed": "0 - 3"},
+          {"mana": "0 - 100"},
+          {"manaRegen": "0 - 50"},
+          {"health": "0 - 200"},
+          {"def": "0 - 100"}
+        ],
+        "mana": 16,
+        "health": 8,
+        "def": 95
+      },
+      "nc": {
+        "name": "Random Item",
+        "sprite": "items",
+        "spriteNr": 15,
+        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
+        "pickable": true,
+        "randStats": [
+          {"speed": "0 - 3"},
+          {"mana": "0 - 100"},
+          {"manaRegen": "0 - 50"},
+          {"health": "0 - 200"},
+          {"def": "0 - 100"}
+        ],
+        "speed": 1,
+        "manaRegen": 43,
+        "def": 88
+      },
+      "ch": {
+        "name": "King Armor",
+        "sprite": "items",
+        "spriteNr": 7,
         "handle": ["ch"],
         "pickable": true,
-        "def": 50,
-        "mana": 200,
-        "manaRegen": 25,
-        "pos": [-71, 11, 2],
-        "actionType": "pickUp"
+        "def": 100
       },
-      "lh": false,
+      "lh": {
+        "name": "Blessed Shield",
+        "sprite": "items",
+        "spriteNr": 12,
+        "handle": ["lh", "rh"],
+        "pickable": true,
+        "def": 100
+      },
       "rh": {
         "type": "item",
         "name": "Blessed Shield",
@@ -566,12 +592,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-22T14:57:58.198Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 94
-      },
-      {
         "when": "2021-12-23T10:03:40.348Z",
         "who": "Dragon",
         "whoType": "monster",
@@ -594,6 +614,12 @@
         "who": "Cyclops",
         "whoType": "monster",
         "level": 96
+      },
+      {
+        "when": "2021-12-28T12:55:14.618Z",
+        "who": "Dragon",
+        "whoType": "monster",
+        "level": 94
       }
     ],
     "quests": [
@@ -666,13 +692,22 @@
       "King Legs",
       "Blessed Shield",
       "Blessed Shield",
-      "Ladder"
+      "Ladder",
+      "Blessed Shield",
+      "King Armor",
+      "Ladder",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item",
+      "Random Item"
     ],
-    "mana": 1260,
-    "maxMana": 1060,
-    "redTarget": false,
-    "token": "r6a9ojje8y",
-    "autoShot": false
+    "mana": 2126,
+    "maxMana": 2110,
+    "redTarget": 11,
+    "token": "rzqs75l5xe",
+    "autoShot": true
   },
   {
     "name": "Niko",

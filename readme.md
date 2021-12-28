@@ -9,6 +9,9 @@
   - [wwwscript] Tosiek case - to many squares in eq? (if success, remove player update [server])
   - [menus] using menu on top.
   - [server_components] auto shooter
+  - clear saying
+  - monster's distanceshot
+  - GM Console. 
 ## ISSUES
   - [server_components] shielding (def)
   - [server_components] magic lvl

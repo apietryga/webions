@@ -25,15 +25,16 @@ class Creature {
     this.fistExhoust = false;
     this.restore = false;
     this.sprite = "male_oriental";
-    this.skills = {
-      level:0,
-      exp:0,
-      fist:1,
-      fist_summary:1,
-      dist:1,
-      dist_summary:1,
-    }
     if(type == "player"){
+      this.skills = {
+        level:0,
+        exp:0,
+        fist:1,
+        fist_summary:1,
+        dist:0,
+        dist_summary:0,
+      }
+  
       this.autoShot = false;
       this.lastFrame = 0;
       this.lastDeaths = [];
@@ -146,84 +147,88 @@ class Creature {
     }
   }
   update(param,db,creatures,items){
+    // set focus
     this.focus = param.focus;
+    // update autoshot
     if(func.isSet(param.autoShot) && this.type == "player"){this.autoShot = param.autoShot;}
-
     // clear console
-    if(func.isSet(this.console)){
-      delete this.console;
-    }
+    if(func.isSet(this.console)){delete this.console;}
+
     // SAY'n
-    if(func.isSet(this.says)){delete this.says;}
-    if(func.isSet(param.says) && param.says != ""){
-      console.log(param.says);
-      // CONSOLE FOR GM
-      const places = {
-        temple:[35,-9,-1],
-        castle:[49,-34,1],
-        wizards:[-70,11,2],
-        king:[55,-21,-1],
-        dragon:[135,1,0],
-        kingslegs:[60,-13,2],
-        barbarian:[4,-33,1],
-        depo:[43,0,0],
-        castlegate:[40,-23,0],
-        castletower:[44,-37,4],
-        playground:[40,20,0],
-      };
-      if(this.name == "GM"){
-        const command = param.says.split(" ");
-        if(['!move'].includes(command[0])){
-          if(func.isSet(command[1])){ 
-            const dim = ["x","y","z"];
-            let sign = false;
-            let val = 1;
-            let key = false;
-            if(dim.includes(command[1].split("-")[0])){
-              sign = -1;
-              val = command[1].split("-")[1];
-              key = command[1].split("-")[0];
-            }
-            if(dim.includes(command[1].split("+")[0])){
-              sign = +1;
-              key = command[1].split("+")[0];
-              val = command[1].split("+")[0];
-            }
-            if(sign){
-              for(const [i,d] of dim.entries()){
-                if(key == d){
-                  this.position[i] += (sign*val);
+    if(['player', 'npc'].includes(this.type)){
+      if((func.isSet(param.says) && param.says != "") && (!this.sayExhoust || this.sayExhoust <= game.time.getTime())){
+        // CONSOLE FOR GM
+        const places = {
+          temple:[35,-9,-1],
+          castle:[49,-34,1],
+          wizards:[-70,11,2],
+          king:[55,-21,-1],
+          dragon:[135,1,0],
+          kingslegs:[60,-13,2],
+          barbarian:[4,-33,1],
+          depo:[43,0,0],
+          castlegate:[40,-23,0],
+          castletower:[44,-37,4],
+          playground:[40,20,0],
+        };
+        let isCommand = false;
+        if(this.name == "GM"){
+          const command = param.says.split(" ");
+          if(['!move'].includes(command[0])){
+            if(func.isSet(command[1])){ 
+              const dim = ["x","y","z"];
+              let sign = false;
+              let val = 1;
+              let key = false;
+              if(dim.includes(command[1].split("-")[0])){
+                sign = -1;
+                val = command[1].split("-")[1];
+                key = command[1].split("-")[0];
+              }
+              if(dim.includes(command[1].split("+")[0])){
+                sign = +1;
+                key = command[1].split("+")[0];
+                val = command[1].split("+")[0];
+              }
+              if(sign){
+                for(const [i,d] of dim.entries()){
+                  if(key == d){
+                    this.position[i] += (sign*val);
+                  }
                 }
               }
+              // templates
+              if(Object.keys(places).includes(command[1])){
+                this.position[0] = places[command[1]][0];
+                this.position[1] = places[command[1]][1];
+                this.position[2] = places[command[1]][2];
+              }else{
+                this.position[0] = command[1];
+              }
             }
-            // templates
-            if(Object.keys(places).includes(command[1])){
-              this.position[0] = places[command[1]][0];
-              this.position[1] = places[command[1]][1];
-              this.position[2] = places[command[1]][2];
-            }else{
-              this.position[0] = command[1];
+            if(func.isSet(command[2])){ this.position[1] = command[2];}
+            if(func.isSet(command[3])){ this.position[2] = command[3];}
+            isCommand = true;
+          }
+          if(['!level','!fist','!dist'].includes(command[0])){
+            isCommand = true;
+            const keyToChange = command[0] == '!level' ? 'exp' : command[0].replace('!','')+"_summary";
+            const value = isNaN(Math.pow(command[1],3)) ? false : Math.pow(command[1],3) ;
+            if(value){
+              this.skills[keyToChange] = value;
+              this.updateSkills(db);
             }
           }
-          if(func.isSet(command[2])){ this.position[1] = command[2];}
-          if(func.isSet(command[3])){ this.position[2] = command[3];}
         }
-        if(['!health','!mana'].includes(command[0])){
-          this[command[0].replace('!','')] = command[1]*1;
-        }
-        if(['!exp','!fist_summary','!dist_summary','!level','!fist','!dist'].includes(command[0])){
-          this.skills[command[0].replace('!','')] = command[1]*1;
-        }
-      }
-      // TP to temple
-      if(param.says == "!temple" && this.type == "player"){
-        this.position = [35,-9,-1];
-      }
-      if(!this.sayExhoust || this.sayExhoust <= game.time.getTime()){
         // PLAYER SAY'N
         if(this.type == "player"){
-          this.says = param.says;
-          this.sayExhoust = game.time.getTime() + 1000;
+          // TP to temple
+          if(param.says == "!temple" && this.type == "player"){
+            this.position = [35,-9,-1];
+          }else if(!isCommand){
+            this.says = param.says;
+          }
+          // this.sayExhoust = game.time.getTime() + 1000;
           // saying to npc's
           // if(this.says == "hi"){
           //   if(!func.isSet(this.quests)){this.quests = [];}
@@ -237,10 +242,11 @@ class Creature {
           //   }
           // }  
         }
+        // NPC SAY'N
         if(this.type == "npc"){
           // this.says = "elo"; 
-          this.sayExhoust = game.time.getTime() + 1000;
-
+          // this.sayExhoust = game.time.getTime() + 1000;
+  
           // if(func.isSet(this.says)){
           // this.says = param.says;
           // if()
@@ -262,9 +268,11 @@ class Creature {
           // }
           
         }
+        this.sayExhoust = game.time.getTime() + 1000;
       }
+      // clear says
+      (this.says == this.oldSays) ? delete this.says : this.oldSays = this.says;
     }
-
     // UPDATE LASTFRAME || KEEP PLAYER IN GAME || save player on logout
     if(typeof game.startServerTime != "undefined" && param.type != 'initUpdate'){
       this.lastFrame = game.time.getTime();
@@ -300,17 +308,18 @@ class Creature {
       this.manaRegenExhoust = game.time.getTime()*1 + manaExhoust;
     }
     // SPRITES UPDATE
-    if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
-    if(func.isSet(param.outfit) && this.type == "player"){
-      this.sprite = param.outfit.sprite;
-      this.colors = param.outfit.colors;
-      this.outfitUpdate = true;
-    }else{
-      delete this.outfitUpdate;
+    if(this.type == 'player'){
+      if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
+      if(func.isSet(param.outfit)){
+        this.sprite = param.outfit.sprite;
+        this.colors = param.outfit.colors;
+        this.outfitUpdate = true;
+      }else{
+        delete this.outfitUpdate;
+      }
     }
     // set playerinArea (4 monster walking and targeting)
-    let playerInArea;
-    if(this.type == "monster"){
+    let playerInArea; if(this.type == "monster"){
       for(const c of creatures){
         if(c.type == "player"){
           // add z position
@@ -658,7 +667,6 @@ class Creature {
       }
     } 
     // HEALING [player]
-    // if(typeof param.controls != "undefined" && param.controls.includes(72) && this.healthExhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.exhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
       const healValue = Math.floor(this.totalHealth/10);
@@ -681,7 +689,6 @@ class Creature {
       this.exhoust =  game.time.getTime() + this.exhoustTime;
     }
     // HEALING [monster]
-    // if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.healthExhoust <= game.time.getTime() && this.health > 0){
     if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.exhoust <= game.time.getTime() && this.health < (0.5*this.maxHealth) && this.health > 0){
       if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
@@ -703,7 +710,11 @@ class Creature {
             c.getHit(db,this);
           }
           // DISTANCE SHOT - 68 is "D" key [players]
-          if(typeof param.controls != "undefined" && this.exhoust <= game.time.getTime() && ((this.autoShot || param.controls.includes(68)) || (this.type == "monster" && this.skills.dist > 0))){
+          if( this.exhoust <= game.time.getTime()
+            // && typeof param.controls != "undefined" 
+            && ((this.type == "player" && ((func.isSet(this.autoShot) && this.autoShot) || param.controls.includes(68))) 
+            || (this.type == "monster" && this.skills.dist > 0))
+          ){
             // check bulletTrace
             const traces = {x : [], y : []};
             // X POSITION

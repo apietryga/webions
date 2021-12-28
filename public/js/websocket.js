@@ -16,7 +16,7 @@ const serv = {
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
     if(player.itemAction){this.param.itemAction = player.itemAction;delete player.itemAction}
-    if(player.sayToServ){this.param.says = player.sayToServ;delete player.sayToServ;}
+    if(isSet(player.sayToServ) && player.sayToServ){this.param.says = player.sayToServ;delete player.sayToServ;}
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     return this.param;
   },
@@ -170,8 +170,11 @@ const serv = {
         'autoShot'
       ]
       for(const key of releaseKeys){
-        if(isSet(this.param['key'])){delete this.param['key'];}
+        // console.log(key)
+        // if(key == 'says'){console.log("say: "+this.param[key])}
+        if(isSet(this.param[key])){delete this.param[key];}
       }
+      // if(isSet(player.sayToServ)){delete player.sayToServ;}
       // if(isSet(this.param.itemAction)){delete this.param.itemAction;}
       // if(isSet(this.param.says)){delete this.param.says;}
       // if(isSet(this.param.outfit)){delete this.param.outfit;}
