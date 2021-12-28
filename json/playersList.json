@@ -12,7 +12,11 @@
       "fist": 0,
       "dist": 0,
       "fist_summary": 0,
-      "dist_summary": 0
+      "dist_summary": 0,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "lastFrame": 1639704655067,
     "lastDeaths": [],
@@ -47,10 +51,14 @@
     "skills": {
       "level": 66,
       "exp": 286649,
-      "fist": 134,
-      "dist": 149,
+      "fist": 27,
+      "dist": 29,
       "fist_summary": 17690,
-      "dist_summary": 21966
+      "dist_summary": 21966,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "lastFrame": 1640645099934,
     "email": "antek.pietryga@gmail.com",
@@ -205,7 +213,11 @@
       "fist": 0,
       "dist": 0,
       "dist_summary": null,
-      "fist_summary": null
+      "fist_summary": null,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "lastFrame": 1639704655067,
     "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
@@ -268,7 +280,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 1972,
+    "mana": 2088,
     "maxMana": 4910,
     "redTarget": false,
     "autoShot": false
@@ -285,7 +297,11 @@
       "fist": 0,
       "dist": 0,
       "fist_summary": 0,
-      "dist_summary": 0
+      "dist_summary": 0,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "lastFrame": 1639704655067,
     "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
@@ -377,7 +393,11 @@
       "fist": 0,
       "dist": 0,
       "fist_summary": 0,
-      "dist_summary": 0
+      "dist_summary": 0,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "lastFrame": 1639704655067,
     "lastDeaths": [],
@@ -426,7 +446,11 @@
       "fist": 0,
       "dist": 0,
       "fist_summary": 0,
-      "dist_summary": 0
+      "dist_summary": 0,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "type": "player",
     "lastFrame": 1639704655067,
@@ -471,23 +495,27 @@
   },
   {
     "name": "GM",
-    "position": [57, -7, 1],
-    "speed": 4,
-    "health": 2778,
-    "maxHealth": 2110,
+    "position": [59, -30, -1],
+    "speed": 2.5,
+    "health": 1239,
+    "maxHealth": 600,
     "sprite": "gm",
     "skills": {
-      "level": 201,
-      "exp": 8000665,
-      "fist": 34,
-      "dist": 32,
-      "fist_summary": 1094,
-      "dist_summary": 1000
+      "level": 50,
+      "exp": 125000,
+      "fist": 12,
+      "dist": 11,
+      "fist_summary": 1389,
+      "dist_summary": 1125,
+      "def_summary": 256500,
+      "def": 64,
+      "magic_summary": 4105,
+      "magic": 17
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640698403022,
+    "lastFrame": 1640713812833,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -552,12 +580,18 @@
         "def": 100
       },
       "lh": {
+        "type": "item",
         "name": "Blessed Shield",
         "sprite": "items",
         "spriteNr": 12,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "def": 100
+        "def": 100,
+        "position": [57, -16, -2],
+        "actionType": "pickUp",
+        "visibleFloor": -2,
+        "field": "lh",
+        "pos": [57, -16, -2]
       },
       "rh": {
         "type": "item",
@@ -703,11 +737,11 @@
       "Random Item",
       "Random Item"
     ],
-    "mana": 2126,
-    "maxMana": 2110,
-    "redTarget": 11,
+    "mana": 609,
+    "maxMana": 600,
+    "redTarget": false,
     "token": "rzqs75l5xe",
-    "autoShot": true
+    "autoShot": false
   },
   {
     "name": "Niko",
@@ -721,7 +755,11 @@
       "fist": 0,
       "dist": 0,
       "fist_summary": 0,
-      "dist_summary": 0
+      "dist_summary": 0,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "password": "$2b$10$DbwkFuRdS3/wAMjXqYd24epJF/OGGa8cPeT3KvlhFPcDfaUwfT9um",
     "email": "niko@gmail.com",
@@ -847,7 +885,11 @@
       "fist": 1,
       "fist_summary": 1,
       "dist": 1,
-      "dist_summary": 1
+      "dist_summary": 1,
+      "def_summary": 0,
+      "def": 0,
+      "magic_summary": 0,
+      "magic": 0
     },
     "autoShot": false,
     "lastFrame": 1640628939532,

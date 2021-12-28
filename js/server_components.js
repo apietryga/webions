@@ -18,23 +18,23 @@ class Creature {
     this.totalHealth = this.maxHealth;
     this.exhoust = 0;
     this.exhoustTime = 1000;
-    // this.healthExhoust = 0;
-    // this.shotExhoust = 0;
-    // this.exhoustHeal = 1000;
     this.redTarget = false;
     this.fistExhoust = false;
     this.restore = false;
     this.sprite = "male_oriental";
     if(type == "player"){
       this.skills = {
-        level:0,
-        exp:0,
+        level:1,
+        exp:1,
         fist:1,
         fist_summary:1,
-        dist:0,
+        dist:1,
         dist_summary:0,
+        def:1,
+        def_summary:1,
+        magic:1,
+        magic_summary:1,
       }
-  
       this.autoShot = false;
       this.lastFrame = 0;
       this.lastDeaths = [];
@@ -79,7 +79,13 @@ class Creature {
         hit = from.totalFist;
       }
       if(this.totalDef > 0){
+        if(this.hit >= this.totalDef){
+          this.skills.def_summary += this.totalDef;
+        }else{
+          this.skills.def_summary += hit;
+        }
         hit -= this.totalDef;
+        this.updateSkills(db);
       }
       // KILLING SHOT
       if(this.health <= hit){
@@ -122,12 +128,13 @@ class Creature {
       }
     }
   }
-  updateSkills(db, keys = ['fist','dist']){
+  updateSkills(db, keys = ['fist','dist','def','magic']){
     let smthChanged = false;
     // fist, dist update
     for(const key of keys){
       if(!func.isSet(this.skills[key+"_summary"])){this.skills[key+"_summary"] = 0;}
-      const newValue = Math.ceil(Math.sqrt(this.skills[key+"_summary"]));
+      // const newValue = Math.ceil(Math.sqrt(this.skills[key+"_summary"]));
+      const newValue = Math.ceil(Math.cbrt(this.skills[key+"_summary"]));
       if(this.skills[key] != newValue && newValue != null && !isNaN(newValue) ){
         this.skills[key] = newValue;
         smthChanged = true;
@@ -210,7 +217,13 @@ class Creature {
             if(func.isSet(command[3])){ this.position[2] = command[3];}
             isCommand = true;
           }
-          if(['!level','!fist','!dist'].includes(command[0])){
+          if(['!health','!mana'].includes(command[0])){
+            if(!isNaN(command[1])){
+              this[command[0].replace('!','')] = command[1];
+            }
+            isCommand = true;
+          }
+          if(['!level','!fist','!dist',"!def","!magic"].includes(command[0])){
             isCommand = true;
             const keyToChange = command[0] == '!level' ? 'exp' : command[0].replace('!','')+"_summary";
             const value = isNaN(Math.pow(command[1],3)) ? false : Math.pow(command[1],3) ;
@@ -669,15 +682,17 @@ class Creature {
     // HEALING [player]
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.exhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
       // 72 is "H" key
-      const healValue = Math.floor(this.totalHealth/10);
+      const healValue = Math.floor((this.totalHealth/10) + (this.skills.magic)*1);
+      // const healValue = Math.floor(this.totalHealth/10);
       const manaSpend = 50;
       if(this.mana >= manaSpend && this.health < this.totalHealth){
-        this.mana -= manaSpend; 
-        if(this.health + healValue >= this.totalHealth){
-          this.health = this.totalHealth;
+        if(this.health*1 + healValue*1 >= this.totalHealth){
         }else{
-          this.health += healValue;
+          this.health = this.health*1 + healValue*1;
         }
+        this.mana -= manaSpend; 
+        this.skills.magic_summary = this.skills.magic_summary*1 + healValue*1;
+        this.updateSkills(db);
       }else{
         if(this.mana < manaSpend){
           this.text = "You have no mana.";

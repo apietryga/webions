@@ -11,10 +11,10 @@
   - [server_components] auto shooter
   - clear saying
   - monster's distanceshot
-  - GM Console. 
-## ISSUES
   - [server_components] shielding (def)
   - [server_components] magic lvl
+  - GM Console. 
+## ISSUES
   - [server_components] mwalls
   - [server_components] NPC's staying on saying and speaking
   - [server_components] backpacks and depos

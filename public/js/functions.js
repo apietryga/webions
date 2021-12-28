@@ -96,7 +96,7 @@ this.setTotalVals = (where) => {
   where.totalHealth = where.maxHealth;
   if(where.type == "player"){
     where.totalSpeed = where.speed;
-    where.totalDef = 0;
+    where.totalDef = where.skills.def;
     where.totalFist = where.skills.fist;
     where.totalDist = where.skills.dist;
     where.totalMana = where.maxMana;

@@ -274,12 +274,13 @@ const menus = {
       const forCountingKeys = [
         "exp",
         "fist_summary",
-        "dist_summary"
+        "dist_summary",
+        "def_summary",
+        "magic_summary"
       ]
       const notShowing = [
         "oldExp",
-        "oldLvl",
-        "healing"
+        "oldLvl"
       ];
       
       let refreshSkills = false;
@@ -302,6 +303,11 @@ const menus = {
       const displaySingleSkill = () =>{
         result.innerHTML = "";
         for(const key of Object.keys(this.skills)){
+          // console.log(key)
+          // if(['magic_summary'].includes(key)){
+          //   console.log(this.skills[key])
+
+          // }
           if(notShowing.concat(forCountingKeys).includes(key)){continue;}
           const row = document.createElement("div");
           row.innerHTML = "<div>"+key+"<div>"
@@ -313,9 +319,11 @@ const menus = {
             startThisLevel = Math.pow((this.skills.level-1),3);
             expToLvl = Math.pow((this.skills.level),3);
             secondKey = "exp"
-          }else if(['fist','dist'].includes(key)){
-            startThisLevel = Math.pow((this.skills[key]-1),2);
-            expToLvl = Math.pow((this.skills[key]),2);
+          }else if(['fist','dist','def','magic'].includes(key)){
+            // startThisLevel = Math.pow((this.skills[key]-1),2);
+            // expToLvl = Math.pow((this.skills[key]),2);
+            startThisLevel = Math.pow((this.skills[key]-1),3);
+            expToLvl = Math.pow((this.skills[key]),3);
             secondKey = key+"_summary";
           }
           const percent = ((this.skills[secondKey]-startThisLevel)*100)/(expToLvl-startThisLevel);
