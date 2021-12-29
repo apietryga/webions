@@ -18,6 +18,7 @@ const serv = {
     if(player.itemAction){this.param.itemAction = player.itemAction;delete player.itemAction}
     if(isSet(player.sayToServ) && player.sayToServ){this.param.says = player.sayToServ;delete player.sayToServ;}
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
+    if(isSet(player.mwallDrop) && player.mwallDrop){this.param.mwallDrop = player.mwallDrop;delete player.mwallDrop;}
     return this.param;
   },
   // every frame load:
@@ -29,6 +30,16 @@ const serv = {
       this.datetime = data.game.time;
       this.time = new Date(this.datetime).getTime();
       gamePlane.fps = data.game.fps;
+
+      // magic walls
+      // gamePlane.mwalls = data.walls;
+      gamePlane.mwalls = [];
+      for(const mwall of data.walls){
+
+        gamePlane.mwalls.push(new Grid([0,mwall[0]*1,mwall[1]*1,mwall[2]*1,'mwalls']));
+
+      }
+      // console.log(gamePlane.mwalls)
       // player died
       if(typeof data.game.dead != "undefined"){
         gamePlane.stop("You are dead.");
@@ -167,7 +178,8 @@ const serv = {
         'says',
         'outfit',
         'target',
-        'autoShot'
+        'autoShot',
+        'mwallDrop'
       ]
       for(const key of releaseKeys){
         // console.log(key)

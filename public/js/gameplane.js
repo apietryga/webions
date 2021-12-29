@@ -31,7 +31,11 @@ const gamePlane = {
       map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
       const drawStack = [];
       const nicksStack = [];
-      const allElements = map.grids.concat(gamePlane.creatures.list).concat(gamePlane.items);
+      const allElements = map.grids
+        .concat(gamePlane.creatures.list)
+        .concat(gamePlane.items)
+        // ;
+        .concat(gamePlane.mwalls);
       for(const el of allElements){
         el.update();
         drawStack.push(el);
@@ -39,6 +43,8 @@ const gamePlane = {
           nicksStack.push(el.nick);
         }
       }
+
+
       // const downEls = ['floors','halffloors'];
       const upperEls = ['upperwalls','doors','walls'];
       drawStack.sort((a,b)=>{

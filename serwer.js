@@ -90,11 +90,11 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         }
         filteredCreatures.push(filteredCreature);
       }
-      const newData = {
+      const output = {
         game: game,
         creatures: filteredCreatures
       }
-      callback(newData,player);
+      callback(output,player);
       // retrive died player
       if(typeof game.dead != "undefined"){
         delete game.dead;
@@ -179,13 +179,13 @@ const cm = { // creatures managment [monsters = monsters & npc's]
     update(param,callback){
       // console.log(this.list)
       // TO DO MAKE inArea PLAYERS LIST!
-      // check if player is on the list (in the game).
+      // check if player is on the list (in the game), and update it
       let isPlayer = false;
       for(const p of this.list){
         // update player is playing
         if(p.name == param.name){
           isPlayer = p;
-          isPlayer.update(param,dbc[game.db],cm.monstersInArea.concat(this.list),im);
+          isPlayer.update(param,dbc[game.db],cm.monstersInArea.concat(this.list),im,wm.list);
           callback(isPlayer);
           break;
         }
@@ -260,7 +260,7 @@ const im = { // items management
         this.allItems.push(new Item(item));
     }
   },
-  update(newData,player,callback){
+  update(output,player,callback){
     this.itemsInArea = [];
     for(const item of this.allItems){
       if(Math.abs(player.position[0] - item.position[0]) <= 6
@@ -269,8 +269,29 @@ const im = { // items management
         this.itemsInArea.push(new Item(item));
       }
     }
-    newData.items = this.itemsInArea;
-    callback(newData);
+    output.items = this.itemsInArea;
+    callback(output);
+  }
+}
+const wm = { // walls management
+  list : [],
+  update(output,callback){
+    for(const [i,mwall] of this.list.entries()){
+      if(mwall[3] <= game.time.getTime()){
+        this.list.splice(i,1);
+      }
+    }
+
+    // console.log('walls management')
+    // console.log(this.list);
+    // output.push(walls);
+    output.walls = this.list;
+    // if(typeof output.walls != 'undefined'){
+
+    // }else{
+
+    // }
+    callback(output);
   }
 }
 let param;cm.init();im.init();
@@ -295,9 +316,11 @@ dbc.init(()=>{
       if(Object.keys(param).includes("name")){
         game.time = new Date();
         game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%";
-        cm.update(param,(newData,player)=>{
-          im.update(newData,player,(newData)=>{
-            connection.sendUTF(stringify(newData,null,2));
+        cm.update(param,(output,player)=>{
+          im.update(output,player,(output)=>{
+            wm.update(output, (output)=>{
+              connection.sendUTF(stringify(output,null,2));
+            })
           })
         })
       }

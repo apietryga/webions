@@ -14,6 +14,7 @@ const controls = {
     }
   },
   update(params){
+    // console.log(params);
     // WRITING MESSAGE [13] is enter
     if(params[0] == 13 && !params[1] && this.vals.includes(13)){
       const input = document.querySelector(".messagesInput");
@@ -32,6 +33,20 @@ const controls = {
       }
     }
     if(this.writingNow){return 0;}
+
+    // MWALL
+    // clear wall pointer
+    if(params[0] != 87 || (params[0] == 87 && params[1]) ){
+      document.body.style.cursor = "auto";
+      player.mwall = false;
+      // console.log("mwall release");
+    }
+
+    if(params[0] == 87 && params[1]){
+      document.body.style.cursor = "cell";
+      // console.log("mwall picked");
+      player.mwall = true;
+    }
 
     // abort route when do something 
     this.planeClicking.route = [];
@@ -140,10 +155,20 @@ const controls = {
         ox = Math.floor(e.layerX/gX);
         oy = Math.floor(e.layerY/gY);
       }
-
       // GET X Y pos.
       const x = ox+player.newPos[0]-5;
       const y = oy+player.newPos[1]-5;
+
+      // MWALL CLICKING
+      if(player.mwall){
+        document.body.style.cursor = "auto";
+        player.mwall = false;
+        // console.log("set mwall on ["+x+", "+y+"]");
+        player.mwallDrop = [x,y,player.position[2]];
+        return 0;
+      }
+
+
       // ITEM CLICKING
       let isAction = false;
       // drop item
@@ -342,7 +367,7 @@ const mobileControls = {
         [" ",0],
         ["H",72],
         [" ",0],
-        [" ",0]
+        ["W",87]
       ];
       for(const b of buttons){
         const butt = document.createElement("div");

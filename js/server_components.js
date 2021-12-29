@@ -154,7 +154,19 @@ class Creature {
       db.update(this);
     }
   }
-  update(param,db,creatures,items){
+  update(param,db,creatures,items, walls = []){
+  // update(param,db,output){
+    // const items = output.items;
+    // const creatures = output.creatures;
+
+    // MWALLS 
+    if(func.isSet(param.mwallDrop)){
+      // console.log(param.mwallDrop)
+      walls.push(param.mwallDrop.concat([game.time.getTime() + 15000]))
+      // game.walls = true;
+    }
+
+
     // set focus
     this.focus = param.focus;
     // update autoshot

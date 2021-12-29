@@ -434,14 +434,42 @@ class Grid {
     let phantomPlayer = (typeof player === 'undefined')?plr:player; 
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
+
     const w = (typeof map.sprites[this.type] != "undefined")?map.sprites[this.type].dataset.w:40;
     if(this.type == 'doors' && compareTables(this.position,phantomPlayer.newPos)){
       this.cyle = 1;
     }
+    if(this.type == "mwalls"){
+      // console.log(this.cyle);
+      // this.cyle = 2;
+      // if(this.cyle == 1)
+      
+      // if(this.cyle == 0){
+      //   this.cyle = 1;
+      // }else{
+      //   this.cyle = 0;
+      // }
+      if(serv.time %2 == 0){
+        this.cyle = 1;
+      }else{
+        this.cyle = 0;
+        
+      }
+      // this.cyle = this.cyle == 0 ? 2 : 1; 
+      // console.log(this)
+      // console.log(this)
+      // console.log(map.sprites[this.type])
+    }
     if(this.type != 'delete'){
-      ctx.drawImage(map.sprites[this.type],
-      this.texture * w, this.cyle*w, w, w,
-      (this.position[0] - phantomPlayer.position[0] + 6)*40-w, (this.position[1] - phantomPlayer.position[1] + 6)*40-w, w, w);
+      // console.log(map.sprites[this.type])
+      if(typeof map.sprites[this.type] != 'undefined'){
+        ctx.drawImage(map.sprites[this.type],
+          this.texture * w, this.cyle*w, w, w,
+          (this.position[0] - phantomPlayer.position[0] + 6)*40-w, (this.position[1] - phantomPlayer.position[1] + 6)*40-w, w, w);
+    
+      }else{
+        // console.log(this);
+      }
     }
     if (this.checked) {
       ctx.fillStyle = "rgba(255,0,0,0.3)";
