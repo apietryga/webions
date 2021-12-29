@@ -46,21 +46,21 @@
     "name": "Tosiek",
     "position": [42, 1, -1],
     "speed": 2.6,
-    "health": 745,
+    "health": 760,
     "maxHealth": 760,
     "skills": {
       "level": 66,
-      "exp": 286649,
-      "fist": 27,
-      "dist": 29,
-      "fist_summary": 17690,
-      "dist_summary": 21966,
-      "def_summary": 0,
-      "def": 0,
-      "magic_summary": 0,
-      "magic": 0
+      "exp": 286674,
+      "fist": 33,
+      "dist": 31,
+      "fist_summary": 32864,
+      "dist_summary": 27541,
+      "def_summary": 1680,
+      "def": 12,
+      "magic_summary": 2774,
+      "magic": 15
     },
-    "lastFrame": 1640645099934,
+    "lastFrame": 1640771234077,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -88,34 +88,8 @@
       },
       "bp": false,
       "nc": false,
-      "ch": {
-        "type": "item",
-        "name": "Simple Armor",
-        "sprite": "items",
-        "spriteNr": 3,
-        "handle": ["ch"],
-        "pickable": true,
-        "def": 25,
-        "position": [42, 2, -1],
-        "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "ch",
-        "pos": [42, 2, -1]
-      },
-      "lh": {
-        "type": "item",
-        "name": "Simple Shield",
-        "sprite": "items",
-        "spriteNr": 11,
-        "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 20,
-        "position": [43, 1, -1],
-        "actionType": "pickUp",
-        "visibleFloor": -1,
-        "field": "rh",
-        "pos": [43, 1, -1]
-      },
+      "ch": false,
+      "lh": false,
       "rh": {
         "type": "item",
         "name": "Wand of Destiny",
@@ -196,7 +170,7 @@
     "quests": ["ladder"],
     "mana": 1160,
     "maxMana": 760,
-    "token": "povj1c0ym9",
+    "token": "kkxse7mvc7",
     "redTarget": 6,
     "autoShot": true
   },
@@ -280,7 +254,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 2088,
+    "mana": 2116,
     "maxMana": 4910,
     "redTarget": false,
     "autoShot": false
@@ -495,27 +469,27 @@
   },
   {
     "name": "GM",
-    "position": [59, -30, -1],
+    "position": [44, 1, -1],
     "speed": 2.5,
-    "health": 1239,
+    "health": 1600,
     "maxHealth": 600,
     "sprite": "gm",
     "skills": {
       "level": 50,
-      "exp": 125000,
-      "fist": 12,
-      "dist": 11,
-      "fist_summary": 1389,
-      "dist_summary": 1125,
-      "def_summary": 256500,
-      "def": 64,
-      "magic_summary": 4105,
-      "magic": 17
+      "exp": 119752,
+      "fist": 351,
+      "dist": 351,
+      "fist_summary": 42892217,
+      "dist_summary": 42891510,
+      "def_summary": 386320,
+      "def": 73,
+      "magic_summary": 18201,
+      "magic": 27
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640713812833,
+    "lastFrame": 1640771176758,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -538,21 +512,12 @@
         "pos": [-64, 13, -1]
       },
       "bp": {
-        "name": "Random Item",
-        "sprite": "items",
-        "spriteNr": 15,
-        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
+        "name": "Ladder",
+        "sprite": "action_items",
+        "spriteNr": 4,
+        "handle": ["lh", "rh", "bp"],
         "pickable": true,
-        "randStats": [
-          {"speed": "0 - 3"},
-          {"mana": "0 - 100"},
-          {"manaRegen": "0 - 50"},
-          {"health": "0 - 200"},
-          {"def": "0 - 100"}
-        ],
-        "mana": 16,
-        "health": 8,
-        "def": 95
+        "desc": "You can use it to move between floors."
       },
       "nc": {
         "name": "Random Item",
@@ -626,12 +591,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-23T10:03:40.348Z",
-        "who": "Dragon",
-        "whoType": "monster",
-        "level": 92
-      },
-      {
         "when": "2021-12-23T16:03:30.711Z",
         "who": "Minotaur",
         "whoType": "monster",
@@ -654,6 +613,12 @@
         "who": "Dragon",
         "whoType": "monster",
         "level": 94
+      },
+      {
+        "when": "2021-12-29T09:13:05.830Z",
+        "who": "Minotaur",
+        "whoType": "monster",
+        "level": 50
       }
     ],
     "quests": [
@@ -735,13 +700,15 @@
       "Random Item",
       "Random Item",
       "Random Item",
-      "Random Item"
+      "Random Item",
+      "Ladder",
+      "King Boots"
     ],
-    "mana": 609,
+    "mana": 600,
     "maxMana": 600,
-    "redTarget": false,
-    "token": "rzqs75l5xe",
-    "autoShot": false
+    "redTarget": 6,
+    "token": "gujc3uiwvh",
+    "autoShot": true
   },
   {
     "name": "Niko",
@@ -873,7 +840,7 @@
   },
   {
     "name": "Newbie",
-    "position": [35, -9, -1],
+    "position": [34, -10, -1],
     "speed": 2,
     "health": 100,
     "maxHealth": 100,
@@ -892,7 +859,7 @@
       "magic": 0
     },
     "autoShot": false,
-    "lastFrame": 1640628939532,
+    "lastFrame": 1640771148750,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -913,6 +880,9 @@
     },
     "mana": 100,
     "maxMana": 100,
-    "token": "9dm8puwsv9"
+    "token": "s1jeze75ttg",
+    "password": "$2b$10$55dlTUJ5S3Is3I../ZN/TefDOxYNMqdRaq36H7eG2WK7rrwqHkoTS",
+    "email": "a@a.pl",
+    "sex": "female"
   }
 ]

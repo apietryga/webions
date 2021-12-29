@@ -10,7 +10,7 @@ class Creature {
     this.type = type;
     this.position = [35,-9,-1];
     this.walk = false;
-    this.speed = 2; // grids per second
+    this.speed = 3; // grids per second
     this.totalSpeed = this.speed;
     this.direction = 1;
     this.health = 100;
@@ -118,7 +118,8 @@ class Creature {
       }
       // COUNT SKILLS
       if(['fist','dist'].includes(type) && from.type == "player" && !isNaN(hit)){
-        from.skills[type+'_summary']++;
+        // from.skills[type+'_summary']++;
+        from.skills[type+'_summary'] = from.skills[type+'_summary'] + hit;
         from.updateSkills(db);
       }
       // GIVE EXP TO KILLER! 
@@ -687,6 +688,7 @@ class Creature {
       const manaSpend = 50;
       if(this.mana >= manaSpend && this.health < this.totalHealth){
         if(this.health*1 + healValue*1 >= this.totalHealth){
+          this.health = this.totalHealth;
         }else{
           this.health = this.health*1 + healValue*1;
         }

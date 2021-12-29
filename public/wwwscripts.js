@@ -43,7 +43,9 @@ if(typeof main != null && typeof playersList != "undefined"){
     ];
     const skillsToNotShow = [
       "dist_summary",
-      "fist_summary"
+      "fist_summary",
+      "def_summary",
+      "magic_summary"
     ];
     // display single player
     if(Object.keys(params).includes("player")){

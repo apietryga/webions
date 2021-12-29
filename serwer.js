@@ -117,7 +117,9 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         "game",
         "shotTarget",
         "bulletOnTarget",
-        "cyle",
+        "cyle"
+        // ,
+        // "speed"
       ];
       const deleteKeys = ['healing'];
       db.loadAll((res)=>{
@@ -131,7 +133,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
             if(skipKeys.includes(key)){continue;}
 
             // deleting weird eq fields
-            if(key == 'eq' && plr.name == "Tosiek"){
+            if(key == 'eq'){
               for(const eqKey of Object.keys(plr[key])){
                 if(!Object.keys(player.eq).includes(eqKey)){
                   console.log("DELETING: "+eqKey);
@@ -158,6 +160,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
                 player[key][keyIn] = plr[key][keyIn];
               }
             }else{
+              // if(key == 'speed' & player[key] != )
               player[key] = plr[key];
             }
           }

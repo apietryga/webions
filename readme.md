@@ -10,10 +10,13 @@
   - [menus] using menu on top.
   - [server_components] auto shooter
   - clear saying
-  - monster's distanceshot
+  - improve monster's distanceshot
   - [server_components] shielding (def)
   - [server_components] magic lvl
   - GM Console. 
+  - updating fist dist skills counter
+  - update players skills on serv start
+  - improve speed (new players)
 ## ISSUES
   - [server_components] mwalls
   - [server_components] NPC's staying on saying and speaking

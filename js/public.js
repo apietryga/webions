@@ -376,6 +376,8 @@ function public(req, res, playersList) {
       <a href="/players.html?skills=level">Level</a>
       <a href="/players.html?skills=fist">Fist</a>
       <a href="/players.html?skills=dist">Dist</a>
+      <a href="/players.html?skills=def">Def</a>
+      <a href="/players.html?skills=magic">Magic</a>
       <a href="/players.html?online=true">Online</a>
       <a href="/players.html?lastdeaths=true">Last&nbsp;Deaths</a>
     `;
