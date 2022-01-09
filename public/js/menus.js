@@ -78,6 +78,15 @@ const menus = {
             dom.classList.remove("active");
           }
         }
+        if("AUTO WALLER" == dom.title){
+          if(!dom.classList.contains("active")){
+            serv.param.autoMWDrop = true;
+            dom.classList.add("active");
+          }else{
+            serv.param.autoMWDrop = false;
+            dom.classList.remove("active");
+          }
+        }
       }
     },
     doms : [
@@ -116,7 +125,7 @@ const menus = {
           <div class='title'>Automation</div>
           <div class='automationContainer'>
             <div class='shooterDOM enable' title='AUTO SHOOTER' onclick='menus.mainMenu.automation(this)'>SHOOTER</div>
-            <div class='disable' title='AUTO EXPER' onclick='menus.mainMenu.automation(this)'>EXPER</div>
+            <div class='wallerDOM enable' title='AUTO WALLER' onclick='menus.mainMenu.automation(this)'>WALLER</div>
           </div>
          `,
         }

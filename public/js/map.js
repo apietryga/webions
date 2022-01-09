@@ -21,7 +21,7 @@ class Map{
     this.path = "./json/map.json";
     // this.path = "./json/testmap.json";
     this.avalibleGrids = ['floors','halffloors'];
-    this.notAvalibleGrids = ['walls','stairs','windows'];
+    this.notAvalibleGrids = ['walls','stairs','windows','mwalls'];
     this.template = [];
     this.grids = [];
     this.sprites = [];
@@ -67,7 +67,6 @@ class Map{
         callback(dt);
       }
     });
-
   }
   generate(callback){
     this.update();
@@ -78,6 +77,7 @@ class Map{
       g.draw();
     }
   }
+  // update view
   update([x,y,z] = [0,0,0],how = 'default'){ // player x y z - update all grids in player Area.
     this.grids = [];
     const minY = (how == 'default')?y-6:y-10;

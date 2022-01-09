@@ -238,7 +238,12 @@ const controls = {
         }
         // if click is focused on floor - try set route to it.
         if(!isWall && isFloor){
-          this.route = setRoute(player.newPos,[x,y,player.newPos[2]],map,gamePlane.creatures.list,5000);
+          // get mwalls
+          let mwalls = [];
+          for(const getWall of gamePlane.mwalls){
+            mwalls.push( getWall.position);
+          }
+          this.route = setRoute(player.newPos,[x,y,player.newPos[2]],map,gamePlane.creatures.list,5000,mwalls);
           if(this.route.length > 0){
             this.route.push([x,y]);
           }

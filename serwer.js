@@ -15,6 +15,7 @@ const game = require("./public/js/gameDetails");
 const public = require("./js/public");
 const itemsList = require("./json/itemsList").list;
 const { db } = require('./public/js/gameDetails');
+const func = require('./public/js/functions')
 let servRequest = false;
 // filter data on websocket send
 const disallowKeys = [
@@ -69,7 +70,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
     }
     for(const c of this.monstersInArea){
       // 0 because of monsters don't upgrades skills
-      c.update(param,0,this.monstersInArea.concat(this.players.list),im);
+      c.update(param,0,this.monstersInArea.concat(this.players.list),im,wm.list);
     }
   },
   init(){
@@ -277,7 +278,7 @@ const wm = { // walls management
   list : [],
   update(output,callback){
     for(const [i,mwall] of this.list.entries()){
-      if(mwall[3] <= game.time.getTime()){
+      if(!func.isSet(mwall[3]) || mwall[3] <= game.time.getTime()){
         this.list.splice(i,1);
       }
     }
@@ -375,18 +376,19 @@ const extendConsole = (val) => {
 //   content.push({"log" : time+": "+val});
 //   fs.writeFileSync('./public/logs.json',stringify(content));
 }
-console.log = (val) => {     
-  extendConsole(val);
-  log.apply(console, args);
-}
-console.error = (val) => {     
-  extendConsole(val);
-  err.apply(console, args);
-}
+// console.log = (val) => {     
+//   extendConsole(val);
+//   log.apply(console, args);
+// }
+// console.error = (val) => {     
+//   extendConsole(val);
+//   err.apply(console, args);
+// }
 
 
 
 // HEROKU ANTI IDLING SCRIPT
+
 const antiIdlingScript = () => {
   setInterval(() => {
     http.get(process.env.ORIGIN, (res) => {

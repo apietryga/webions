@@ -521,11 +521,6 @@ body .wrapper > .mainMenu .automationContainer div {
   place-items: center;
 }
 
-body .wrapper > .mainMenu .automationContainer div.disable {
-  background-color: #686868;
-  color: rgba(255, 255, 255, 0.301);
-}
-
 body .wrapper > .mainMenu .automationContainer div.active {
   border-color: #444444 #737373 #737373 #444444;
   background-color: #2f2f2f;

@@ -46,11 +46,11 @@ const monstersTypes = [
   },
   {name:"Cyclops",
     sprite:"cyclops",
-    health:750,
+    health:1200,
     speed:2,
     skills:{
-      fist:250,
-      exp:50,
+      fist:150,
+      exp:120,
       dist:0,
       healing:50
     }
@@ -60,9 +60,9 @@ const monstersTypes = [
     health:1700,
     speed:3,
     skills:{
-      fist:100,
-      exp:70,
-      dist:450,
+      fist:300,
+      exp:300,
+      dist:150,
       healing:100
     }
   },
@@ -72,7 +72,7 @@ const monstersTypes = [
     speed:2,
     skills:{
       fist:200,
-      exp:30,
+      exp:100,
       dist:0,
       healing:50
     }
@@ -103,18 +103,18 @@ const monstersTypes = [
     speed:2.5,
     skills:{
       fist:50,
-      exp:30,
+      exp:40,
       dist:0
     }
   },
   {name:"Barbarian Monk",
     sprite:"barbarian_monk",
-    health:300,
+    health:500,
     speed:3,
     skills:{
       fist:150,
       exp:80,
-      dist:0
+      dist:150
     }
   },
 

@@ -3,6 +3,9 @@ const map = new Map();
 const func = require("../public/js/functions");
 const game = require("../public/js/gameDetails");
 const itemsTypes = require("./itemsTypes").types;
+
+
+
 class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
     this.id = creaturesLength+1; 
@@ -155,24 +158,42 @@ class Creature {
     }
   }
   update(param,db,creatures,items, walls = []){
-  // update(param,db,output){
-    // const items = output.items;
-    // const creatures = output.creatures;
-
-    // MWALLS 
-    if(func.isSet(param.mwallDrop)){
-      // console.log(param.mwallDrop)
-      walls.push(param.mwallDrop.concat([game.time.getTime() + 15000]))
-      // game.walls = true;
-    }
-
-
     // set focus
     this.focus = param.focus;
-    // update autoshot
+    // update automation
     if(func.isSet(param.autoShot) && this.type == "player"){this.autoShot = param.autoShot;}
+    if(func.isSet(param.autoMWDrop) && this.type == "player"){this.autoMWDrop = param.autoMWDrop;}
     // clear console
     if(func.isSet(this.console)){delete this.console;}
+
+    // MWALL DROPPING
+    if((this.autoMWDrop || param.mwallDrop) && this.exhoust <= game.time.getTime()){ 
+      const mwallManaBurn = 150;
+      const wallLifeTime = 15; // seconds
+      const addExhaust = [game.time.getTime() + (wallLifeTime * 1000) ];
+      const dropMWall = (mwallManaBurn,addExhaust) => {
+        this.mana -= mwallManaBurn;
+        this.lastMWall[3] = addExhaust[0];
+        walls.push(this.lastMWall)
+        this.text = "Magic Wall takes "+mwallManaBurn+" mana.";
+        this.skills.magic_summary += mwallManaBurn;
+        this.updateSkills(db);
+      }
+      if(this.mana >= mwallManaBurn){
+        if(func.isSet(param.mwallDrop)){
+          // mwall dropping from key
+          this.lastMWall = param.mwallDrop.concat(addExhaust);
+          dropMWall(mwallManaBurn,addExhaust);
+        }else if(func.isSet(this.lastMWall) && this.autoMWDrop){
+          dropMWall(mwallManaBurn,addExhaust);
+        }else{
+          this.text = "Set the wall first.";
+        }
+      }else{
+        this.text = "You need "+mwallManaBurn+" mana";
+      }
+      this.exhoust = game.time.getTime() + this.exhoustTime;
+    }
 
     // SAY'n
     if(['player', 'npc'].includes(this.type)){
@@ -361,6 +382,7 @@ class Creature {
     // WALKING
     if(this.walk <= game.time.getTime() && this.health > 0 && this.speed !== false){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];
+
       // player walking from pushed keys
       let key;if(this.type == "player"){
         // get clicked key
@@ -418,7 +440,7 @@ class Creature {
         if(walkingMode == "follow"){
           if(Math.abs(this.position[0] - playerInArea.position[0]) > 1
           || Math.abs(this.position[1] - playerInArea.position[1]) > 1){
-            const routeFinded = func.setRoute(this.position,playerInArea.position,map,creatures);
+            const routeFinded = func.setRoute(this.position,playerInArea.position,map,creatures,200,walls);
             if(routeFinded){
               phantomPos[0] = routeFinded[0][0];
               phantomPos[1] = routeFinded[0][1];  
@@ -460,18 +482,19 @@ class Creature {
         if(phantomPos[1] > this.position[1]){this.direction = 1;}        
         if(phantomPos[1] < this.position[1]){this.direction = 0;}
       }
-      // checking if position is availble
+
+      // CHEKCKING IF POSITION IS AVAILBLE
       let isFloor = false;
-      // let isFloor = true;
       let isStairs = false;
-      let isWall = false;
       let doorAvalible = true;
+      let isWall = false;
+
       // check grids 
       const avalibleGrids = func.equalArr(map.avalibleGrids);
       const notAvalibleGrids = func.equalArr(map.notAvalibleGrids);
       if(this.type == "player" && !avalibleGrids.includes("stairs")){
         avalibleGrids.push("stairs");
-        avalibleGrids.push("actionfloors");
+        // avalibleGrids.push("actionfloors");
         notAvalibleGrids.splice(notAvalibleGrids.indexOf("stairs"),1);
       }else if(this.type != "player" && avalibleGrids.includes("stairs")){
         notAvalibleGrids.push("stairs");
@@ -530,51 +553,73 @@ class Creature {
           }
         }
       }
-      const checkGrids = map.getGrid(phantomPos);
-      for(const checkGrid of checkGrids){
-        if(checkGrid){
-          if(avalibleGrids.includes(checkGrid[4])){
-            isFloor = true;
-          }
-          if(notAvalibleGrids.includes(checkGrid[4])){
-            isWall = true;
-          }
-          if(checkGrid[4] == "stairs"){
-            if(["monster","npc"].includes(this.type)){isFloor = false;}
-            if(this.type == "player"){
-              isStairs = true;
-              phantomPos = checkGrid[5];
-            }
-          }
-          if(checkGrid[4] == "doors"){
-            doorAvalible = false;
-            if(["monster","npc"].includes(this.type)){isFloor = false;}
-            if(this.type == "player" && func.isSet(checkGrid[5])){
-              // cases when player can pass through
-              // level gate
-              if(Object.keys(checkGrid[5]).includes("level")){
-                if(this.skills.level >= checkGrid[5].level){
-                  doorAvalible = true;
-                }else{
-                  this.text = "You need "+checkGrid[5].level+" level to open this doors.";
-                }
-              }
-              // property gate
-              if(Object.keys(checkGrid[5]).includes("property")){
-                if(!isNaN(checkGrid[5].property)){
-                  this.text = "This house costs "+checkGrid[5].property+" gold.";
-                }else{
-                  if(checkGrid[5].property == this.name){
-                    doorAvalible = true;
-                  }else{
-                    this.text = checkGrid[5].property+" is the owner of this house";
-                  }
-                }
-              }              
-            }
-          }
+      // check throwing to grid
+
+      // mwall's
+      for(const wall of walls){
+        if(func.compareTables(
+          [wall[0],wall[1],wall[2]],
+          phantomPos
+        )){
+          isWall = true;
+          // isFloor = true;
         }
       }
+
+
+      // const checkGrids = map.getGrid(phantomPos);
+      // const checkGrids = (phantomPos)=>{
+      // for(const checkGrid of checkGrids){
+      for(const checkGrid of map.getGrid(phantomPos)){
+        // for(const checkGrid of map.getGrid(phantomPos)){
+          if(checkGrid){
+            if(avalibleGrids.includes(checkGrid[4])){
+              isFloor = true;
+            }
+            if(notAvalibleGrids.includes(checkGrid[4])){
+              isWall = true;
+            }
+            if(checkGrid[4] == "stairs"){
+              if(["monster","npc"].includes(this.type)){isFloor = false;}
+              if(this.type == "player"){
+                isStairs = true;
+                phantomPos = checkGrid[5];
+              }
+            }
+            if(checkGrid[4] == "doors"){
+              doorAvalible = false;
+              if(["monster","npc"].includes(this.type)){isFloor = false;}
+              if(this.type == "player" && func.isSet(checkGrid[5])){
+                // cases when player can pass through
+                // level gate
+                if(Object.keys(checkGrid[5]).includes("level")){
+                  if(this.skills.level >= checkGrid[5].level){
+                    doorAvalible = true;
+                  }else{
+                    this.text = "You need "+checkGrid[5].level+" level to open this doors.";
+                  }
+                }
+                // property gate
+                if(Object.keys(checkGrid[5]).includes("property")){
+                  if(!isNaN(checkGrid[5].property)){
+                    this.text = "This house costs "+checkGrid[5].property+" gold.";
+                  }else{
+                    if(checkGrid[5].property == this.name){
+                      doorAvalible = true;
+                    }else{
+                      this.text = checkGrid[5].property+" is the owner of this house";
+                    }
+                  }
+                }              
+              }
+            }
+          }
+      }
+      // };
+
+      // checkGrids(phantomPos);
+
+
       if(isWall){isFloor = false;}
       if(!doorAvalible){isFloor = false;}
       // check monsters and players on position
@@ -740,7 +785,6 @@ class Creature {
           }
           // DISTANCE SHOT - 68 is "D" key [players]
           if( this.exhoust <= game.time.getTime()
-            // && typeof param.controls != "undefined" 
             && ((this.type == "player" && ((func.isSet(this.autoShot) && this.autoShot) || param.controls.includes(68))) 
             || (this.type == "monster" && this.skills.dist > 0))
           ){
@@ -774,14 +818,22 @@ class Creature {
                 trace.push([traces[sT][si],traces[lT][li]])
               }
             }
-            // CHECK GRIDS
+            // CHECK WALLS ON TRACE
             let isWall = false;
             for(const p of trace){
+              // map's walls
               for(const g of map.getGrid([p[0],p[1],this.position[2]])){
                 if(g[4] == "walls"){
                   isWall = true;
                   break;
-                }  
+                }
+              }
+              // mwall's
+              for(const wall of walls){
+                if(func.compareTables([wall[0],wall[1],wall[2]],[p[0],p[1],this.position[2]])){
+                  isWall = true;
+                  break;
+                }
               }
             }
             // SHOT IF THERE'S NO WALL
@@ -865,19 +917,38 @@ class Item{
       if(func.isSet(itemAction.field) && itemAction.field != "" ){
       // DROP ITEM
         // SET DROPPING FLOOR [WHEN DROP IS BETWEEN FLOORS]
-        let isPos = false;
-        for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
-          const checkPosition = [this.position[0],this.position[1],floor];
-          for(const grid of map.getGrid(checkPosition)){
-            if(grid[4] == "floors"){
-              isPos = true;
-              this.position = checkPosition;
-              break;
-            }
-          }
-          if(isPos){break;} 
-        }
-        if(isPos){
+        // let isPos = false;
+        // for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
+        //   const checkPosition = [this.position[0],this.position[1],floor];
+        //   for(const grid of map.getGrid(checkPosition)){
+        //     if(grid[4] == "floors"){
+        //       isPos = true;
+        //       this.position = checkPosition;
+        //       break;
+        //     }
+        //   }
+        //   if(isPos){break;} 
+        // }
+        // let isPos = false;
+
+        // CHECK Floor throwing thing
+        // const isPos = () =>{
+        // for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
+        //   const checkPosition = [this.position[0],this.position[1],floor];
+        //   for(const grid of map.getGrid(checkPosition)){
+        //     if(grid[4] == "floors"){
+        //       isPos = true;
+        //       this.position = checkPosition;
+        //       break;
+        //     }
+        //   }
+        //   if(isPos){break;} 
+        // }
+        //   return false;
+        // }
+
+
+        if(func.isPos){
           // CHECK IF ITEM IS REALLY IN THIS EQ FIELD
           let isInField = false;
           for(const field of Object.keys(creature.eq)){

@@ -44,23 +44,23 @@
   },
   {
     "name": "Tosiek",
-    "position": [42, 1, -1],
+    "position": [52, -5, 0],
     "speed": 2.6,
-    "health": 760,
+    "health": 745,
     "maxHealth": 760,
     "skills": {
       "level": 66,
-      "exp": 286674,
+      "exp": 286724,
       "fist": 51,
-      "dist": 50,
-      "fist_summary": 126196,
-      "dist_summary": 120269,
-      "def_summary": 8230,
+      "dist": 58,
+      "fist_summary": 131028,
+      "dist_summary": 194970,
+      "def_summary": 8710,
       "def": 21,
-      "magic_summary": 2774,
-      "magic": 15
+      "magic_summary": 166075,
+      "magic": 55
     },
-    "lastFrame": 1640772031512,
+    "lastFrame": 1641729751686,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -89,11 +89,10 @@
       "bp": false,
       "nc": false,
       "ch": false,
-      "lh": false,
-      "rh": {
+      "lh": {
         "type": "item",
         "name": "Wand of Destiny",
-        "position": [54, -7, 1],
+        "position": [52, -38, 0],
         "sprite": "items",
         "fist": 100,
         "dist": 100,
@@ -102,10 +101,11 @@
         "handle": ["lh", "rh"],
         "pickable": true,
         "actionType": "pickUp",
-        "visibleFloor": 7,
-        "field": "rh",
-        "pos": [54, -7, 1]
+        "visibleFloor": 0,
+        "field": "lh",
+        "pos": [52, -38, 0]
       },
+      "rh": false,
       "lg": {
         "type": "item",
         "name": "Simple Legs",
@@ -170,8 +170,8 @@
     "quests": ["ladder"],
     "mana": 1160,
     "maxMana": 760,
-    "token": "kkxse7mvc7",
-    "redTarget": 6,
+    "token": "v2ljfb8jcg",
+    "redTarget": false,
     "autoShot": true
   },
   {
@@ -254,7 +254,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 2172,
+    "mana": 2624,
     "maxMana": 4910,
     "redTarget": false,
     "autoShot": false
@@ -469,27 +469,27 @@
   },
   {
     "name": "GM",
-    "position": [139, 1, 1],
-    "speed": 2.5,
-    "health": 1171,
-    "maxHealth": 600,
+    "position": [46, 3, -1],
+    "speed": 4,
+    "health": 3100,
+    "maxHealth": 2110,
     "sprite": "gm",
     "skills": {
-      "level": 50,
-      "exp": 123412,
-      "fist": 351,
-      "dist": 351,
-      "fist_summary": 42916636,
-      "dist_summary": 42923198,
-      "def_summary": 8087250,
-      "def": 201,
-      "magic_summary": 1000033668,
-      "magic": 1001
+      "level": 201,
+      "exp": 8002000,
+      "fist": 40,
+      "dist": 261,
+      "fist_summary": 59922,
+      "dist_summary": 17596737,
+      "def_summary": 125392250,
+      "def": 501,
+      "magic_summary": 2543135,
+      "magic": 137
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1640809666792,
+    "lastFrame": 1641747324845,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -505,11 +505,11 @@
         "handle": ["hd"],
         "pickable": true,
         "health": 1000,
-        "position": [-64, 13, -1],
+        "position": [112, 34, 0],
         "actionType": "pickUp",
-        "visibleFloor": -1,
+        "visibleFloor": 7,
         "field": "hd",
-        "pos": [-64, 13, -1]
+        "pos": [112, 34, 0]
       },
       "bp": {
         "name": "Ladder",
@@ -519,23 +519,7 @@
         "pickable": true,
         "desc": "You can use it to move between floors."
       },
-      "nc": {
-        "name": "Random Item",
-        "sprite": "items",
-        "spriteNr": 15,
-        "handle": ["lh", "rh", "bp", "nc", "hd", "ch", "lg", "ft"],
-        "pickable": true,
-        "randStats": [
-          {"speed": "0 - 3"},
-          {"mana": "0 - 100"},
-          {"manaRegen": "0 - 50"},
-          {"health": "0 - 200"},
-          {"def": "0 - 100"}
-        ],
-        "speed": 1,
-        "manaRegen": 43,
-        "def": 88
-      },
+      "nc": false,
       "ch": {
         "name": "King Armor",
         "sprite": "items",
@@ -545,6 +529,7 @@
         "def": 100
       },
       "lh": {
+        "type": "item",
         "name": "Wand of Destiny",
         "sprite": "items",
         "fist": 100,
@@ -552,17 +537,26 @@
         "spriteNr": 10,
         "manaRegen": 100,
         "handle": ["lh", "rh"],
-        "pickable": true
+        "pickable": true,
+        "position": [42, 1, -1],
+        "actionType": "pickUp",
+        "visibleFloor": -1,
+        "field": "lh",
+        "pos": [42, 1, -1]
       },
       "rh": {
-        "name": "Wand of Destiny",
+        "type": "item",
+        "name": "Blessed Shield",
         "sprite": "items",
-        "fist": 100,
-        "dist": 100,
-        "spriteNr": 10,
-        "manaRegen": 100,
+        "spriteNr": 12,
         "handle": ["lh", "rh"],
-        "pickable": true
+        "pickable": true,
+        "def": 100,
+        "position": [138, 0, 1],
+        "actionType": "pickUp",
+        "visibleFloor": 7,
+        "field": "rh",
+        "pos": [138, 0, 1]
       },
       "lg": {
         "name": "King Legs",
@@ -583,24 +577,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-23T16:03:30.711Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 99
-      },
-      {
-        "when": "2021-12-26T20:37:17.230Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 97
-      },
-      {
-        "when": "2021-12-26T20:48:00.087Z",
-        "who": "Cyclops",
-        "whoType": "monster",
-        "level": 96
-      },
-      {
         "when": "2021-12-28T12:55:14.618Z",
         "who": "Dragon",
         "whoType": "monster",
@@ -611,14 +587,38 @@
         "who": "Minotaur",
         "whoType": "monster",
         "level": 50
+      },
+      {
+        "when": "2021-12-30T11:10:36.919Z",
+        "who": "Dragon",
+        "whoType": "monster",
+        "level": 51
+      },
+      {
+        "when": "2021-12-30T11:57:37.819Z",
+        "who": "Dragon",
+        "whoType": "monster",
+        "level": 42
+      },
+      {
+        "when": "2021-12-30T11:57:54.967Z",
+        "who": "Dragon",
+        "whoType": "monster",
+        "level": 41
       }
     ],
-    "quests": ["Wand of Destiny", "Wand of Destiny"],
-    "mana": 600,
-    "maxMana": 600,
-    "redTarget": false,
-    "token": "ymrsutmq62",
-    "autoShot": true
+    "quests": [
+      "Wand of Destiny",
+      "Wand of Destiny",
+      "Blessed Shield",
+      "Blessed Shield",
+      "Wand of Destiny"
+    ],
+    "mana": 2110,
+    "maxMana": 2110,
+    "redTarget": 6,
+    "token": "n60ej7m6rj",
+    "autoShot": false
   },
   {
     "name": "Niko",

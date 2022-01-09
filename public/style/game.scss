@@ -353,8 +353,8 @@ body{
           }
           &.disable{
             @extend %inFrame;
-            background-color:rgb(104, 104, 104);
-            color:rgba(255, 255, 255, 0.301);
+            // background-color:rgb(104, 104, 104);
+            // color:rgba(255, 255, 255, 0.301);
           }
           &.active{
             // @extend %inFrame;

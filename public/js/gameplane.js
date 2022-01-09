@@ -31,11 +31,17 @@ const gamePlane = {
       map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
       const drawStack = [];
       const nicksStack = [];
+      // filter mwalls zIndex
+      const filteredMWalls = [];
+      for(const wall of gamePlane.mwalls){
+        if(wall.position[2] <= map.visibleFloor ){
+          filteredMWalls.push(wall);
+        }
+      }
       const allElements = map.grids
         .concat(gamePlane.creatures.list)
         .concat(gamePlane.items)
-        // ;
-        .concat(gamePlane.mwalls);
+        .concat(filteredMWalls);
       for(const el of allElements){
         el.update();
         drawStack.push(el);
@@ -43,10 +49,7 @@ const gamePlane = {
           nicksStack.push(el.nick);
         }
       }
-
-
-      // const downEls = ['floors','halffloors'];
-      const upperEls = ['upperwalls','doors','walls'];
+      const upperEls = ['upperwalls','doors','walls','mwalls'];
       drawStack.sort((a,b)=>{
         a.pos = [a.position[0]*1,a.position[1]*1,a.position[2]*1];
         b.pos = [b.position[0]*1,b.position[1]*1,b.position[2]*1];
@@ -61,6 +64,9 @@ const gamePlane = {
           if(['halffloors'].includes(a.type)){return -1;}if(['halffloors'].includes(b.type)){return 1;}
           // the same position
           if(a.pos[0] == b.pos[0] && a.pos[1] == b.pos[1]){
+            // mwalls above items
+            if(['mwalls'].includes(a.type)){return 1;}if(['mwalls'].includes(b.type)){return -1;}
+            
             // items above walls
             if(['item'].includes(a.type) && upperEls.includes(b.type)){return 1;}
             if(['item'].includes(b.type) && upperEls.includes(a.type)){return -1;}

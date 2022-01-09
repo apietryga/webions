@@ -168,8 +168,8 @@ const serv = {
       newURL += encodeURIComponent(window.location.href);
       window.location.replace(newURL);
     }
+    // Send to server
     if(this.connected){
-      // send to server
       this.ws.send(JSON.stringify(this.paramUpdate()));
       // release clicked 
       controls.falseQueneCall();
@@ -179,7 +179,8 @@ const serv = {
         'outfit',
         'target',
         'autoShot',
-        'mwallDrop'
+        'mwallDrop',
+        'autoMWDrop'
       ]
       for(const key of releaseKeys){
         // console.log(key)

@@ -38,7 +38,7 @@ this.includesArr = (searchThis,inThis) => {
   }
  return result; 
 }
-this.setRoute = (sPos,fPos,map,creatures = [],possibilities = 200) => {
+this.setRoute = (sPos,fPos,map,creatures = [],possibilities = 200, mwalls = []) => {
   const posibleRoutes = [[[sPos[0],sPos[1]]]];
   let routeFinded = false;
   for(const route of posibleRoutes){
@@ -57,14 +57,25 @@ this.setRoute = (sPos,fPos,map,creatures = [],possibilities = 200) => {
           isFloor = true;
           for(const c of creatures){
             if(this.compareTables(c.position,[pX,pY,sPos[2]]) && c.health > 0){
-            someBodyIsThere = true;
+              someBodyIsThere = true;
+              break;
             }
           }
         }
         if(map.notAvalibleGrids.includes(g[4])){
           isWall = true;
+          break;
         }
       }
+      // check mwalls
+      for(const mwall of mwalls){
+        if(this.compareTables([pX,pY,sPos[2]],[mwall[0],mwall[1],mwall[2]])){
+          isWall = true;
+          break;
+        }
+      }
+      
+
       if(!someBodyIsThere && isFloor && !isWall){
         gridsAround.push([pX,pY]);
       }
@@ -140,8 +151,21 @@ this.validateNick = (nick, forbiddenNicks) => {
   }  
   return [true, nick];
 }
-
-
+this.isPos = () =>{
+  // SET DROPPING FLOOR [WHEN DROP IS BETWEEN FLOORS]
+  for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
+    const checkPosition = [this.position[0],this.position[1],floor];
+    for(const grid of map.getGrid(checkPosition)){
+      if(grid[4] == "floors"){
+        isPos = true;
+        this.position = checkPosition;
+        break;
+      }
+    }
+    if(isPos){return isPos;} 
+  }
+  return false;
+}
 function recolorImage(img, fresh = {head:[50,50,50],chest:[50,50,50],legs:[50,50,50],foots:[50,50,50]}){
   if(!isSet(img)){return 0;}
   const c = document.createElement('canvas');
