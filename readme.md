@@ -15,14 +15,15 @@
   - strict mwalls in player area
   - update waller button on autoMWallDrop
   - improve monsters healing
-## ISSUES
   - merge whitetarget with redtarget
-  - [server_components] dead body as item + LOOTING
+## ISSUES
   - [server_components] backpacks and depos
+  - [server_components] dead body as item + LOOTING
   - [server_components] NPC's staying on saying, speaking and trading
   - monsters between barbarians and maggots
   - protection zone
   - house zone
+  - optimize code...
   - manifest.json doesn't work on android (no install option) [PWA's Manifests](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Installable_PWAs)
   - improve offline detection
   - console messages not always received 

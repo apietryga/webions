@@ -175,14 +175,11 @@ class Creature {
       }
       this.position = this.newPos;
     }
-    // CLEAR WHITE TARGET
+    // CLEAR TARGETS
     if(this.whiteTarget){
       let opp = false;
-      // let isOpp = false;
-      // console.log(gamePlane.creatures.list);
       for(const c of gamePlane.creatures.list){
         if(c.id == this.whiteTarget){
-          // isOpp = true;
           opp = c;
         }
       }
@@ -192,28 +189,23 @@ class Creature {
           || Math.abs(this.position[0] - opp.position[0]) > 5
         ){
           this.whiteTarget = false;
-          // controls.currentTarget = false;
+          controls.currentTarget = -1;
           this.redTarget = "clear";        
         }
       }
     }
     // DEATH
     if(this.health <= 0){
-      if(this.sprite!= "tourets"){
+      if(this.sprite != "tourets"){
         this.cyle = 0;
       }
       this.direction = 4;
       if(player.whiteTarget == this.id){
         player.whiteTarget = false;
-        // controls.targeting('clear');
-    }
+      }
       this.redTarget = false;
-      // controls.currentTarget = false;
-      // controls.targeting('clear');
+      controls.currentTarget = -1;
       controls.whiteTarget = false;
-      // if(this.name == player.name){
-      //   gamePlane.stop("You are dead.");
-      // }
     }
     // SET VISIBLE FLOOR
     if(this.type == "player"){
@@ -254,9 +246,6 @@ class Creature {
       this.x = (this.position[0] - player.position[0] + 5) * 40;
       this.y = (this.position[1] - player.position[1] + 5) * 40;  
     }
-    
-
-
   }
   draw(){
     let ctx = gamePlane.context;

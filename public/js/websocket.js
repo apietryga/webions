@@ -91,9 +91,12 @@ const serv = {
               charId = i;
             }
           }
-          // update console
+          // update ingameconsole
           if(creature.name == player.name && creature.text != "" && isSet(creature.text)){
             inGameConsole.text = creature.text;
+            if(creature.text == "Target lost."){
+              controls.currentTarget = -1;
+            }
             if(creature.text == "There's no way."){
               joyPad.vibrate(0.1,10);
             }

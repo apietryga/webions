@@ -1,5 +1,5 @@
 const controls = {
-  currentTarget : false,
+  currentTarget : -1,
   vals: [],
   init(){
     this.writingNow = false;
@@ -100,44 +100,32 @@ const controls = {
   targeting(param){
     //  TARGET LIST
     const cToTarget = [];
-    // cToTarget update
+    // Get all creatures can target
     for(const c of gamePlane.creatures.list){
-      if(   c.name != player.name 
-         && c.health > 0
-         && c.position[2] == player.position[2]  
+      if(c.health > 0
+         && c.position[2] == player.position[2]
          && Math.abs(c.position[0] - player.position[0]) < 6  
-         && Math.abs(c.position[1] - player.position[1]) < 6  
+         && Math.abs(c.position[1] - player.position[1]) < 6 
+         && ['monster','enemy'].includes(c.type) 
        ){
         cToTarget.push(c);
       }
     }
-    // white targeting ( T key )
+    // WHITE TARGETING ( T key )
     if(param[0] == 84 && param[1] == true){
-      // get target index of list
-      this.currentTarget++;
-      if(this.currentTarget > cToTarget.length){
-        this.currentTarget = 1;
-      }
-      for(let i = 0; i < cToTarget.length; i++){  
-        if(i == this.currentTarget-1){
-          player.whiteTarget = cToTarget[i].id;
-          break;
-        }else{
-          player.whiteTarget = false;
-        }
-      }
+      this.currentTarget = this.currentTarget >= cToTarget.length ? 0 : this.currentTarget += 1;
+      player.whiteTarget = isSet(cToTarget[this.currentTarget]) ? cToTarget[this.currentTarget].id : false;
     }
-    // red targeting (white target + S key)
-    if(param[0] == 83 && param[1] == true &&(isSet(player.whiteTarget) && player.whiteTarget)){
-      if(this.currentTarget && typeof player.redTarget != "undefined" && typeof cToTarget[this.currentTarget-1] != 'undefined'){
-        if(player.redTarget == cToTarget[this.currentTarget-1].id && cToTarget[this.currentTarget-1].health > 0){
-          player.setRedTarget = "clear";
-        }else{
-          player.setRedTarget = cToTarget[this.currentTarget-1].id;
-        }
+    // RED TARGETING ( S key )
+    if(param[0] == 83 && param[1] == true){
+      if(isSet(player.whiteTarget) && player.whiteTarget){
+        // red targeting (white target + S key)
+        player.setRedTarget = player.whiteTarget == player.redTarget ? "clear" : player.whiteTarget;
       }else{
-        player.redTarget = "clear";
-      }
+        // red targeting without whiteTargeting
+        this.currentTarget = this.currentTarget >= cToTarget.length ? 0 : this.currentTarget += 1;
+        player.setRedTarget = isSet(cToTarget[this.currentTarget]) ? cToTarget[this.currentTarget].id : "clear";
+      } 
     }
   },
   planeClicking: {
@@ -208,10 +196,11 @@ const controls = {
       // TARGET CLICKING
       let isCreature = false;
       for(const c of gamePlane.creatures.list){
-        if(c.id != player.id&&
-          ((c.newPos[0] == x && c.newPos[1] == y)
-          ||(c.oldPos[0] == x && c.oldPos[1] == y))
-          &&c.newPos[2] == player.newPos[2]
+        if(
+           ['monster','enemy'].includes(c.type) 
+          && ((c.newPos[0] == x && c.newPos[1] == y)
+          || (c.oldPos[0] == x && c.oldPos[1] == y))
+          && c.newPos[2] == player.newPos[2]
           ){
           isCreature = true;
           player.setRedTarget = c.id;
