@@ -106,8 +106,10 @@ const gamePlane = {
           const wallerDOM = document.querySelector('.wallerDOM');
           menus.mainMenu.automation(wallerDOM);
         }
-
       }
+      // update button on/off (from serv info)
+      menus.mainMenu.automation(document.querySelector('.wallerDOM'),player.autoMWDrop);
+
       fistIteration = false;
     });
   },

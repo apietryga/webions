@@ -3,9 +3,6 @@ const map = new Map();
 const func = require("../public/js/functions");
 const game = require("../public/js/gameDetails");
 const itemsTypes = require("./itemsTypes").types;
-
-
-
 class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
     this.id = creaturesLength+1; 
@@ -19,18 +16,18 @@ class Creature {
     this.health = 100;
     this.maxHealth = this.health;
     this.totalHealth = this.maxHealth;
-    this.exhoust = 0;
     this.redTarget = false;
-    this.fistExhoust = false;
     this.restore = false;
     this.sprite = "male_oriental";
-    this.exhoustTime = 1000;
+    this.exhaustTime = 1000;
+    this.exhaust = {
+      fist: 0,
+      dist : 0,
+      mwall: 0,
+      heal: 0,
+      say: 0
+    }
     if(type == "player"){
-      this.exhaust = {
-        dist : 0,
-        mwall: 0,
-        heal: 0
-      }
       this.skills = {
         level:1,
         exp:1,
@@ -69,9 +66,6 @@ class Creature {
       this.manaRegenValue = 0;
       this.manaRegenExhoust = 0;   
       this.startPosition = this.position;
-    }
-    if(["player","npc"].includes(this.type)){
-      this.sayExhoust = false;
     }
     if(nickName == "GM"){
       this.sprite = "gm";
@@ -171,19 +165,32 @@ class Creature {
     if(func.isSet(param.autoMWDrop) && this.type == "player"){this.autoMWDrop = param.autoMWDrop;}
     // clear console
     if(func.isSet(this.console)){delete this.console;}
-
-    // console.log(this.exhaust)
-
     // MWALL DROPPING
-    // if((this.autoMWDrop || param.mwallDrop) && this.exhoust <= game.time.getTime()){ 
     if((this.autoMWDrop || param.mwallDrop) && this.type == "player" && this.exhaust.mwall <= game.time.getTime() ){ 
       const mwallManaBurn = 250;
       const wallLifeTime = 15; // seconds
       const addExhaust = [game.time.getTime() + (wallLifeTime * 1000) ];
       const dropMWall = (mwallManaBurn,addExhaust) => {
+        // check if wall is in area
+        if(Math.abs(this.position[0] - this.lastMWall[0]) >= 6 || Math.abs(this.position[1] - this.lastMWall[1]) >= 6 || this.position[2] != this.lastMWall[2]){
+          this.text = "You can't drop wall there."
+          this.autoMWDrop = false;
+          return 0;
+        }
+        // check if wall exists
+        let wallExists = false;
+        for(const wall of walls){
+          if(func.compareTables([wall[0],wall[1],wall[2]],[this.lastMWall[0],this.lastMWall[1],this.lastMWall[2]])){
+            wallExists = true;
+            wall[3] = addExhaust[0];
+            break;
+          }
+        }
+        if(!wallExists){
+          walls.push(this.lastMWall)
+        }
         this.mana -= mwallManaBurn;
         this.lastMWall[3] = addExhaust[0];
-        walls.push(this.lastMWall)
         this.text = "Magic Wall takes "+mwallManaBurn+" mana.";
         this.skills.magic_summary += mwallManaBurn;
         this.updateSkills(db);
@@ -202,13 +209,11 @@ class Creature {
       }else{
         this.text = "You need "+mwallManaBurn+" mana";
       }
-      // this.exhoust = game.time.getTime() + this.exhoustTime;
-      this.exhaust.mwall = game.time.getTime() + this.exhoustTime;
+      this.exhaust.mwall = game.time.getTime() + this.exhaustTime;
     }
-
     // SAY'n
     if(['player', 'npc'].includes(this.type)){
-      if((func.isSet(param.says) && param.says != "") && (!this.sayExhoust || this.sayExhoust <= game.time.getTime())){
+      if((func.isSet(param.says) && param.says != "") && (!this.exhaust.say || this.exhaust.say <= game.time.getTime())){
         // CONSOLE FOR GM
         const places = {
           temple:[35,-9,-1],
@@ -286,7 +291,7 @@ class Creature {
           }else if(!isCommand){
             this.says = param.says;
           }
-          // this.sayExhoust = game.time.getTime() + 1000;
+          // this.exhaust.say = game.time.getTime() + 1000;
           // saying to npc's
           // if(this.says == "hi"){
           //   if(!func.isSet(this.quests)){this.quests = [];}
@@ -303,7 +308,7 @@ class Creature {
         // NPC SAY'N
         if(this.type == "npc"){
           // this.says = "elo"; 
-          // this.sayExhoust = game.time.getTime() + 1000;
+          // this.exhaust.say = game.time.getTime() + 1000;
   
           // if(func.isSet(this.says)){
           // this.says = param.says;
@@ -326,7 +331,7 @@ class Creature {
           // }
           
         }
-        this.sayExhoust = game.time.getTime() + 1000;
+        this.exhaust.say = game.time.getTime() + 1000;
       }
       // clear says
       (this.says == this.oldSays) ? delete this.says : this.oldSays = this.says;
@@ -674,7 +679,7 @@ class Creature {
 
       // monsters & npc's staying
       if(!isFloor && ["npc","monster"].includes(this.type)){
-        // set exhoust
+        // set exhaust
         this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
         this.speed = 0;
       }else if(["npc","monster"].includes(this.type)){
@@ -687,7 +692,7 @@ class Creature {
         || (["monster","npc"].includes(this.type) && !func.compareTables(this.position,phantomPos)) ){
           // for monsters
           delete this.escapeStuck;
-          // set exhoust
+          // set exhaust
           this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
           this.position = phantomPos;
         }
@@ -749,7 +754,6 @@ class Creature {
       }
     } 
     // HEALING [player]
-    // if(typeof param.controls != "undefined" && param.controls.includes(72) && this.exhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.type=="player" && this.exhaust.heal <= game.time.getTime()  && this.health > 0){  
       // 72 is "H" key
       const healValue = Math.floor((this.totalHealth/10) + (this.skills.magic)*1);
@@ -771,19 +775,17 @@ class Creature {
           this.text = "You're full of health";
         }
       }
-      // this.exhoust =  game.time.getTime() + this.exhoustTime;
-      this.exhaust.heal =  game.time.getTime() + this.exhoustTime;
+      this.exhaust.heal =  game.time.getTime() + this.exhaustTime;
     }
     // HEALING [monster]
-    if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.exhoust <= game.time.getTime() && this.health < (0.5*this.maxHealth) && this.health > 0){
+    if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.exhaust.heal <= game.time.getTime() && this.health > 0){
       if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
       }else{
         if(!func.isSet(this.skills.healing)){this.skills.healing = 100;}
         this.health += this.skills.healing;
       }
-      // this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
-      this.exhoust =  game.time.getTime() + this.exhoustTime;
+      this.exhaust.heal =  game.time.getTime() + this.exhaustTime;
     }
     // SHOTS
     if(this.redTarget){
@@ -791,18 +793,13 @@ class Creature {
         // attack
         if(c.id == this.redTarget && this.id != c.id && c.health > 0 && this.health > 0){
           // FIST FIGHTING
-          if(this.skills.fist > 0 && this.fistExhoust <= game.time.getTime() && c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
-            this.fistExhoust = game.time.getTime() + 1000;
+          if(this.skills.fist > 0 && this.exhaust.fist <= game.time.getTime() && c.position[2] == this.position[2] &&Math.abs(c.position[1] - this.position[1]) <= 1 &&Math.abs(c.position[0] - this.position[0]) <= 1 ){
+            this.exhaust.fist = game.time.getTime() + 1000;
             c.getHit(db,this);
           }
           // DISTANCE SHOT - 68 is "D" key [players]
-          // if( this.exhoust <= game.time.getTime()
-          if( 
-            // this.exhaust.dist <= game.time.getTime()
-            // && 
-            ((this.type == "player" && this.exhaust.dist <= game.time.getTime() && ((func.isSet(this.autoShot) && this.autoShot) || param.controls.includes(68))) 
-            || (this.type == "monster" && this.skills.dist > 0 && this.exhoust <= game.time.getTime()))
-          ){
+          if(((this.type == "player" && this.exhaust.dist <= game.time.getTime() && ((func.isSet(this.autoShot) && this.autoShot) || param.controls.includes(68))) 
+            || (this.type == "monster" && this.skills.dist > 0 && this.exhaust.dist <= game.time.getTime()))){
             // check bulletTrace
             const traces = {x : [], y : []};
             // X POSITION
@@ -854,14 +851,7 @@ class Creature {
             // SHOT IF THERE'S NO WALL
             if(!isWall){
               this.shotTarget = c.id;
-              // this.shotExhoust = game.time.getTime() + 1500;
-              // this.exhoust = game.time.getTime() + this.exhoustTime;
-              if(this.type == "player"){
-                this.exhaust.dist = game.time.getTime() + this.exhoustTime;
-              }else{
-                this.exhoust= game.time.getTime() + this.exhoustTime;
-              }
-              
+              this.exhaust.dist = game.time.getTime() + this.exhaustTime;
               this.bulletOnTarget = game.time.getTime()+300;
               setTimeout(() => { c.getHit(db,this,'dist'); }, 300);
             }
@@ -928,7 +918,7 @@ class Item{
         creature.eq[f] = item;
         creature.quests.push(item.name)
       }
-      // set exhoust on box
+      // set exhaust on box
       creature.boxExhoust = game.time.getTime()+1000;
     }
   }

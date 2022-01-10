@@ -67,7 +67,7 @@ const menus = {
   },
   mainMenu:{
     parent: document.querySelector(".mainMenu"),
-    automation(dom){
+    automation(dom, update = 'default'){
       if(dom.classList.contains("enable")){
         if("AUTO SHOOTER" == dom.title){
           if(!dom.classList.contains("active")){
@@ -79,12 +79,25 @@ const menus = {
           }
         }
         if("AUTO WALLER" == dom.title){
-          if(!dom.classList.contains("active")){
-            serv.param.autoMWDrop = true;
-            dom.classList.add("active");
+          if(update != 'default'){
+            // from serv auto update.
+            if(update){
+              if(!dom.classList.contains("active")){
+                dom.classList.add("active");
+              }  
+            }else{
+              if(dom.classList.contains("active")){
+                dom.classList.remove("active");  
+              }
+            }
           }else{
-            serv.param.autoMWDrop = false;
-            dom.classList.remove("active");
+            if(!dom.classList.contains("active")){
+              serv.param.autoMWDrop = true;
+              dom.classList.add("active");
+            }else{
+              serv.param.autoMWDrop = false;
+              dom.classList.remove("active");
+            }  
           }
         }
       }
