@@ -95,12 +95,18 @@ const gamePlane = {
       // call only ones
       if(fistIteration){
         document.querySelector(".loader").style.display = "none";
-        // automation button update
+        // automation buttons update
         if(isSet(player.autoShot) && player.autoShot){
           // console.log("CLICKED")
           const shooterDOM = document.querySelector('.shooterDOM');
           menus.mainMenu.automation(shooterDOM);
         }
+        // autoMWDrop 
+        if(isSet(player.autoMWDrop) && player.autoMWDrop){
+          const wallerDOM = document.querySelector('.wallerDOM');
+          menus.mainMenu.automation(wallerDOM);
+        }
+
       }
       fistIteration = false;
     });

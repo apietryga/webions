@@ -90,10 +90,16 @@ const menus = {
       }
     },
     doms : [
-      [{ title: "PAUSE GAME",
+      [
+        { title: "PAUSE GAME",
           innerHTML: "⏸",
           type: "a",
           onclick: () => {gamePlane.stop();}
+        },
+        { title: "REFRESH GAME",
+          innerHTML: "🔄",
+          type: "a",
+          onclick: () => {location.reload()}
         },
         { title: "MAIN PAGE",
           innerHTML: "🏡",

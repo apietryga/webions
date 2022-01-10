@@ -20,12 +20,17 @@ class Creature {
     this.maxHealth = this.health;
     this.totalHealth = this.maxHealth;
     this.exhoust = 0;
-    this.exhoustTime = 1000;
     this.redTarget = false;
     this.fistExhoust = false;
     this.restore = false;
     this.sprite = "male_oriental";
+    this.exhoustTime = 1000;
     if(type == "player"){
+      this.exhaust = {
+        dist : 0,
+        mwall: 0,
+        heal: 0
+      }
       this.skills = {
         level:1,
         exp:1,
@@ -39,6 +44,7 @@ class Creature {
         magic_summary:1,
       }
       this.autoShot = false;
+      this.autoMWDrop = false;
       this.lastFrame = 0;
       this.lastDeaths = [];
       this.quests = [];
@@ -166,9 +172,12 @@ class Creature {
     // clear console
     if(func.isSet(this.console)){delete this.console;}
 
+    // console.log(this.exhaust)
+
     // MWALL DROPPING
-    if((this.autoMWDrop || param.mwallDrop) && this.exhoust <= game.time.getTime()){ 
-      const mwallManaBurn = 150;
+    // if((this.autoMWDrop || param.mwallDrop) && this.exhoust <= game.time.getTime()){ 
+    if((this.autoMWDrop || param.mwallDrop) && this.type == "player" && this.exhaust.mwall <= game.time.getTime() ){ 
+      const mwallManaBurn = 250;
       const wallLifeTime = 15; // seconds
       const addExhaust = [game.time.getTime() + (wallLifeTime * 1000) ];
       const dropMWall = (mwallManaBurn,addExhaust) => {
@@ -188,11 +197,13 @@ class Creature {
           dropMWall(mwallManaBurn,addExhaust);
         }else{
           this.text = "Set the wall first.";
+          this.autoMWDrop = false;
         }
       }else{
         this.text = "You need "+mwallManaBurn+" mana";
       }
-      this.exhoust = game.time.getTime() + this.exhoustTime;
+      // this.exhoust = game.time.getTime() + this.exhoustTime;
+      this.exhaust.mwall = game.time.getTime() + this.exhoustTime;
     }
 
     // SAY'n
@@ -738,7 +749,8 @@ class Creature {
       }
     } 
     // HEALING [player]
-    if(typeof param.controls != "undefined" && param.controls.includes(72) && this.exhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
+    // if(typeof param.controls != "undefined" && param.controls.includes(72) && this.exhoust <= game.time.getTime() && this.type=="player" && this.health > 0){  
+    if(typeof param.controls != "undefined" && param.controls.includes(72) && this.type=="player" && this.exhaust.heal <= game.time.getTime()  && this.health > 0){  
       // 72 is "H" key
       const healValue = Math.floor((this.totalHealth/10) + (this.skills.magic)*1);
       // const healValue = Math.floor(this.totalHealth/10);
@@ -759,8 +771,8 @@ class Creature {
           this.text = "You're full of health";
         }
       }
-      // this.healthExhoust =  game.time.getTime() + this.exhoustHeal;
-      this.exhoust =  game.time.getTime() + this.exhoustTime;
+      // this.exhoust =  game.time.getTime() + this.exhoustTime;
+      this.exhaust.heal =  game.time.getTime() + this.exhoustTime;
     }
     // HEALING [monster]
     if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.exhoust <= game.time.getTime() && this.health < (0.5*this.maxHealth) && this.health > 0){
@@ -784,9 +796,12 @@ class Creature {
             c.getHit(db,this);
           }
           // DISTANCE SHOT - 68 is "D" key [players]
-          if( this.exhoust <= game.time.getTime()
-            && ((this.type == "player" && ((func.isSet(this.autoShot) && this.autoShot) || param.controls.includes(68))) 
-            || (this.type == "monster" && this.skills.dist > 0))
+          // if( this.exhoust <= game.time.getTime()
+          if( 
+            // this.exhaust.dist <= game.time.getTime()
+            // && 
+            ((this.type == "player" && this.exhaust.dist <= game.time.getTime() && ((func.isSet(this.autoShot) && this.autoShot) || param.controls.includes(68))) 
+            || (this.type == "monster" && this.skills.dist > 0 && this.exhoust <= game.time.getTime()))
           ){
             // check bulletTrace
             const traces = {x : [], y : []};
@@ -840,7 +855,13 @@ class Creature {
             if(!isWall){
               this.shotTarget = c.id;
               // this.shotExhoust = game.time.getTime() + 1500;
-              this.exhoust = game.time.getTime() + this.exhoustTime;
+              // this.exhoust = game.time.getTime() + this.exhoustTime;
+              if(this.type == "player"){
+                this.exhaust.dist = game.time.getTime() + this.exhoustTime;
+              }else{
+                this.exhoust= game.time.getTime() + this.exhoustTime;
+              }
+              
               this.bulletOnTarget = game.time.getTime()+300;
               setTimeout(() => { c.getHit(db,this,'dist'); }, 300);
             }

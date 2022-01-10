@@ -8,16 +8,15 @@
   - improve mwalls in monsters routing
   - mwalls visibility (between floors and above items)
   - improve monsters exp (mainly orange wizards, maggots, cycs)
-## ISSUES
   - separate exhaust for healing, shooting and mwalls
-  - improve monsters healing
-  - double exp graphic 
   - [menus_labels] add name of item 
+  - refresh option in PG MP LG
+## ISSUES
+  - improve monsters healing
   - monsters between barbarians and maggots
   - [server_components] NPC's staying on saying and speaking
   - [server_components] backpacks and depos
   - [server_components] dead body as item + LOOTING
-  - refresh option in PG MP LG
   - protection zone
   - house zone
   - manifest.json doesn't work on android (no install option) [PWA's Manifests](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Installable_PWAs)

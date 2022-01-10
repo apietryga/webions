@@ -40,7 +40,8 @@
     "mana": 100,
     "maxMana": 150,
     "redTarget": false,
-    "autoShot": false
+    "autoShot": false,
+    "autoMWDrop": false
   },
   {
     "name": "Tosiek",
@@ -172,7 +173,8 @@
     "maxMana": 760,
     "token": "v2ljfb8jcg",
     "redTarget": false,
-    "autoShot": true
+    "autoShot": true,
+    "autoMWDrop": false
   },
   {
     "name": "Zuzia",
@@ -254,10 +256,11 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 2624,
+    "mana": 2692,
     "maxMana": 4910,
     "redTarget": false,
-    "autoShot": false
+    "autoShot": false,
+    "autoMWDrop": false
   },
   {
     "name": "Marcel",
@@ -352,7 +355,8 @@
     "mana": 100,
     "maxMana": 670,
     "redTarget": false,
-    "autoShot": false
+    "autoShot": false,
+    "autoMWDrop": false
   },
   {
     "name": "Maja",
@@ -395,7 +399,8 @@
     "mana": 100,
     "maxMana": 140,
     "redTarget": false,
-    "autoShot": false
+    "autoShot": false,
+    "autoMWDrop": false
   },
   {
     "name": "JanCio",
@@ -465,31 +470,32 @@
     "quests": [],
     "mana": 100,
     "maxMana": 450,
-    "autoShot": false
+    "autoShot": false,
+    "autoMWDrop": false
   },
   {
     "name": "GM",
-    "position": [46, 3, -1],
+    "position": [131, 16, 0],
     "speed": 4,
-    "health": 3100,
+    "health": 3110,
     "maxHealth": 2110,
     "sprite": "gm",
     "skills": {
       "level": 201,
-      "exp": 8002000,
-      "fist": 40,
-      "dist": 261,
-      "fist_summary": 59922,
-      "dist_summary": 17596737,
-      "def_summary": 125392250,
-      "def": 501,
-      "magic_summary": 2543135,
-      "magic": 137
+      "exp": 8005020,
+      "fist": 85,
+      "dist": 266,
+      "fist_summary": 606668,
+      "dist_summary": 18796674,
+      "def_summary": 8153580,
+      "def": 202,
+      "magic_summary": 2628142,
+      "magic": 139
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1641747324845,
+    "lastFrame": 1641810941403,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -544,20 +550,7 @@
         "field": "lh",
         "pos": [42, 1, -1]
       },
-      "rh": {
-        "type": "item",
-        "name": "Blessed Shield",
-        "sprite": "items",
-        "spriteNr": 12,
-        "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 100,
-        "position": [138, 0, 1],
-        "actionType": "pickUp",
-        "visibleFloor": 7,
-        "field": "rh",
-        "pos": [138, 0, 1]
-      },
+      "rh": false,
       "lg": {
         "name": "King Legs",
         "sprite": "items",
@@ -614,11 +607,13 @@
       "Blessed Shield",
       "Wand of Destiny"
     ],
-    "mana": 2110,
+    "mana": 60,
     "maxMana": 2110,
-    "redTarget": 6,
+    "redTarget": false,
     "token": "n60ej7m6rj",
-    "autoShot": false
+    "autoShot": false,
+    "autoMWDrop": true,
+    "lastMWall": [142, 5, 1, 1641810956478]
   },
   {
     "name": "Niko",
@@ -746,7 +741,8 @@
     "mana": 100,
     "maxMana": 160,
     "redTarget": false,
-    "autoShot": false
+    "autoShot": false,
+    "autoMWDrop": false
   },
   {
     "name": "Newbie",
@@ -793,6 +789,7 @@
     "token": "h28s15pifu",
     "password": "$2b$10$55dlTUJ5S3Is3I../ZN/TefDOxYNMqdRaq36H7eG2WK7rrwqHkoTS",
     "email": "a@a.pl",
-    "sex": "female"
+    "sex": "female",
+    "autoMWDrop": false
   }
 ]

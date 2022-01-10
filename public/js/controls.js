@@ -129,7 +129,7 @@ const controls = {
     }
     // red targeting (white target + S key)
     if(param[0] == 83 && param[1] == true &&(isSet(player.whiteTarget) && player.whiteTarget)){
-      if(this.currentTarget && typeof player.redTarget != "undefined"){
+      if(this.currentTarget && typeof player.redTarget != "undefined" && typeof cToTarget[this.currentTarget-1] != 'undefined'){
         if(player.redTarget == cToTarget[this.currentTarget-1].id && cToTarget[this.currentTarget-1].health > 0){
           player.setRedTarget = "clear";
         }else{

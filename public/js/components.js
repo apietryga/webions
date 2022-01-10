@@ -654,10 +654,12 @@ class Item{
     label.className = "label";
     label.innerHTML = "";
     for(const key of Object.keys(item)){
-      if(['def','speed','health','mana','manaRegen','fist','dist','atk'].includes(key)){
+      if(['name','def','speed','health','mana','manaRegen','fist','dist','atk'].includes(key)){
         const wrapper = document.createElement("div");
         wrapper.style.cssText = "display:flex;align-items:center;"
-        wrapper.append(sign.render(key));
+        if(key != 'name'){
+          wrapper.append(sign.render(key));
+        }
         wrapper.innerHTML += "<span style='flex:1;text-align:center'>"+item[key]+"</span>";
         label.append(wrapper)
       }
