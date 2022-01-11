@@ -100,7 +100,6 @@
         // let urlVals;    
         if("{{action}}" == "game"){
           acc.hideLoader = false;
-          // document.cookie = "token={{message}}";
           document.cookie = "token={{message}}; SameSite=None; Secure";
           window.location.replace("game.html");
         }

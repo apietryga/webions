@@ -60,25 +60,7 @@ const password = {
     });
   }
 }
-const log = {
-  ged : [],
-  in(nick){
-    const res = {
-      nick: nick,
-      token: (Math.random() + 1).toString(36).substring(2),
-    }
-    this.ged.push(res);
-    return res.token;
-  },
-  out(nick){
-    for(const res of this.ged){
-      if(res.nick == nick){
-        this.ged.splice(this.ged.indexOf(res),1);
-      }
-    }
-  }
-}
-function public(req, res, playersList) {
+const public = (req, res, players) => {
   const myURL = new URL("https://"+req.rawHeaders[1]+req.url);
   const vals = {
     name: game.name,
@@ -160,16 +142,40 @@ function public(req, res, playersList) {
       if(data.type == "LOGIN"){
         // search player in db
         if(func.isSet(data.nick)){
-          dbc[game.db].load({name:data.nick},(dbres)=>{
+          dbc[game.db].loadAll( (allPlayers) => {
+            let dbres = false;
+            const currentTokens = [];
+            for(const singlePlayer of allPlayers){
+              // GET TOKENS LIST
+              if(func.isSet(singlePlayer.token) && singlePlayer.token){
+                currentTokens.push(singlePlayer.token);
+              }
+              // GET CURRENT PLAYER
+              if(singlePlayer.name == data.nick){
+                dbres = singlePlayer;
+              }
+            }
             if(dbres){
             // if player is set in db
               if(func.isSet(dbres.password)){
-              // if player is complete registered.
+              // if player register is complete
                 password.comparePassword(data.password,dbres.password,(e,h)=>{
                   if(e != null){console.error(e);}
                   if(h){
+                    // SUCCESFULLY LOGIN
                     vals.action = "game";
-                    vals.message = log.in(dbres.name);
+                    // MAKE NEW UNIQUE TOKEN
+                    let newToken; do {
+                      newToken = (Math.random() + 1).toString(36).substring(2);
+                    } while (currentTokens.includes(newToken));
+                    // UPDATE BROWSER COOKIE TOKEN
+                    vals.message = newToken;
+                    // UPDATE TOKEN IN BASE
+                    players.update({name: data.nick}, (newPlayer) => {
+                      newPlayer.token = newToken;
+                      newPlayer.skills.level = -1;
+                      newPlayer.updateSkills(dbc[game.db]);
+                    })
                   }else{
                     vals.message = "<b style='color:red'>Wrong password.</b>";
                   }
@@ -322,43 +328,37 @@ function public(req, res, playersList) {
   }else if(["/game.html"].includes(myURL.pathname)){
     vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
     if(func.isSet(req.headers.cookie)){
-      let player = false;
+      let currentPlayer = false;
       // wait for connect to db and find player's token.
       let isWaiting = false;
-      // check login on cookies
+      // login player from cookies
       for(const cookie of req.headers.cookie.split("; ")){
-        const [key,value] = cookie.split("=");
+        const [key,cookieToken] = cookie.split("=");
         if(key == "token"){
           isWaiting = true;
           dbc[game.db].loadAll((allPlayers)=>{
-            // check not logged players [after server crash] 
+            // let cPlayer = false;
             for(const singlePlayer of allPlayers){
-              if(typeof singlePlayer.token != "undefined"  && singlePlayer.token == value  ){
-                player = singlePlayer.name;
-                log.ged.push({nick:singlePlayer.name,token:singlePlayer.token})
+              // find player with cookieToken
+              if(typeof singlePlayer.token != "undefined"  && singlePlayer.token == cookieToken){
+                currentPlayer = singlePlayer.name;
+                break;
               }
             }
-
-            // check logged players
-            for(const logged of log.ged){
-              if(value == logged.token){
-                player = logged.nick;
-              }
-            }
-            if(player){
+            if(currentPlayer){
               path = "./public/game.html";
-              vals.nick = player;
+              vals.nick = currentPlayer;
             }else{
               path = "./public/account.html";
               vals.message = "Please log in:";
             }
             serveChangedContent(path);
           });
-        } 
+        }
       }
-      if(player){
+      if(currentPlayer){
         path = "./public/game.html";
-        vals.nick = player;
+        vals.nick = currentPlayer;
       }else{
         path = "./public/account.html";
         vals.message = "Please log in :";
@@ -370,7 +370,7 @@ function public(req, res, playersList) {
       path = "./public/account.html";
       vals.message = "Please log in:";
       serveChangedContent(path);
-    }  
+    }
   }else if(["/players.html"].includes(myURL.pathname)){
     vals.aside = `
       <a href="/players.html?skills=level">Level</a>
@@ -393,7 +393,7 @@ function public(req, res, playersList) {
     if("?online=true" == myURL.search){
       vals.message = "<h1>Online Players</h1>";
       dbc[game.db].loadAll((content)=>{
-        vals.js += "<script>const playersList = "+JSON.stringify(playersList)+";</script>";
+        vals.js += "<script>const playersList = "+JSON.stringify(players.list)+";</script>";
         serveChangedContent(myURL.pathname);
       })
     }else if("?lastdeaths=true" == myURL.search){

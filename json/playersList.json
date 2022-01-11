@@ -45,23 +45,23 @@
   },
   {
     "name": "Tosiek",
-    "position": [53, -5, 0],
+    "position": [-5, -4, 0],
     "speed": 2.6,
-    "health": 265,
-    "maxHealth": 760,
+    "health": 720,
+    "maxHealth": 720,
     "skills": {
-      "level": 66,
-      "exp": 286724,
-      "fist": 51,
-      "dist": 58,
-      "fist_summary": 131028,
-      "dist_summary": 194970,
-      "def_summary": 10051,
-      "def": 22,
-      "magic_summary": 166075,
-      "magic": 55
+      "level": 62,
+      "exp": 233536,
+      "fist": 126,
+      "dist": 130,
+      "fist_summary": 1986648,
+      "dist_summary": 2186497,
+      "def_summary": 82377,
+      "def": 44,
+      "magic_summary": 1166057,
+      "magic": 106
     },
-    "lastFrame": 1641825874790,
+    "lastFrame": 1641927624081,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -89,7 +89,20 @@
       },
       "bp": false,
       "nc": false,
-      "ch": false,
+      "ch": {
+        "type": "item",
+        "name": "King Armor",
+        "sprite": "items",
+        "spriteNr": 7,
+        "handle": ["ch"],
+        "pickable": true,
+        "def": 100,
+        "position": [36, -8, 0],
+        "actionType": "pickUp",
+        "visibleFloor": 0,
+        "field": "ch",
+        "pos": [36, -8, 0]
+      },
       "lh": {
         "type": "item",
         "name": "Wand of Destiny",
@@ -137,66 +150,67 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-17T15:12:18.148Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 71
-      },
-      {
-        "when": "2021-12-20T01:44:48.074Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 70
-      },
-      {
-        "when": "2021-12-20T01:45:15.075Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 69
-      },
-      {
-        "when": "2021-12-20T01:46:07.669Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 68
-      },
-      {
         "when": "2021-12-27T14:37:45.145Z",
         "who": "Minotaur",
         "whoType": "monster",
         "level": 66
+      },
+      {
+        "when": "2022-01-11T15:40:31.047Z",
+        "who": "GM",
+        "whoType": "player",
+        "level": 65
+      },
+      {
+        "when": "2022-01-11T17:42:53.348Z",
+        "who": "GM",
+        "whoType": "player",
+        "level": 64
+      },
+      {
+        "when": "2022-01-11T17:44:52.269Z",
+        "who": "GM",
+        "whoType": "player",
+        "level": 63
+      },
+      {
+        "when": "2022-01-11T17:58:12.291Z",
+        "who": "Maggot",
+        "whoType": "monster",
+        "level": 62
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder"],
-    "mana": 1160,
-    "maxMana": 760,
-    "token": "qykevw81p1",
-    "redTarget": false,
+    "mana": 1120,
+    "maxMana": 720,
+    "token": "6dtyjjhch1",
+    "redTarget": 6,
     "autoShot": true,
-    "autoMWDrop": false
+    "autoMWDrop": false,
+    "lastMWall": [-13, 2, -1, 1641924180517]
   },
   {
     "name": "Zuzia",
-    "position": [120, 4, 0],
+    "position": [44, 1, -1],
     "speed": 6.8,
     "sprite": "female_wizard",
-    "health": 1224,
+    "health": 4810,
     "maxHealth": 4910,
     "skills": {
       "level": 481,
       "exp": 110718924,
       "fist": 0,
-      "dist": 0,
-      "dist_summary": null,
+      "dist": 82,
+      "dist_summary": 534405,
       "fist_summary": null,
-      "def_summary": 0,
-      "def": 0,
-      "magic_summary": 0,
-      "magic": 0
+      "def_summary": 5690,
+      "def": 18,
+      "magic_summary": 26687,
+      "magic": 30
     },
-    "lastFrame": 1639704655067,
-    "password": "$2b$10$toGdljmOPqxrMVfxCsywQeiUEJ3BJ8ugJXiosttrKoprdOnPmscLu",
+    "lastFrame": 1641918207011,
+    "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
     "email": "pietryga.zuzia@gmail.com",
     "sex": "female",
     "colors": {
@@ -256,11 +270,13 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 2728,
+    "mana": 2690,
     "maxMana": 4910,
-    "redTarget": false,
-    "autoShot": false,
-    "autoMWDrop": false
+    "redTarget": 6,
+    "autoShot": true,
+    "autoMWDrop": false,
+    "token": "o0ldsteql7",
+    "lastMWall": [45, 2, -1, 1641916972903]
   },
   {
     "name": "Marcel",
@@ -272,16 +288,16 @@
       "level": 57,
       "exp": 180670,
       "fist": 0,
-      "dist": 0,
+      "dist": 111,
       "fist_summary": 0,
-      "dist_summary": 0,
-      "def_summary": 0,
-      "def": 0,
-      "magic_summary": 0,
-      "magic": 0
+      "dist_summary": 1332927,
+      "def_summary": 19660,
+      "def": 27,
+      "magic_summary": 759408,
+      "magic": 92
     },
-    "lastFrame": 1639704655067,
-    "password": "$2b$10$Y/mtBNLx4HwF6fII0da4Ie8JmdU.wN/2bluBgRuipJdTiRahVOXFa",
+    "lastFrame": 1641922693393,
+    "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
     "email": "a@a.pl",
     "sex": "male",
     "colors": {
@@ -318,31 +334,32 @@
       "ch": false,
       "lh": {
         "type": "item",
-        "name": "Relounder",
-        "position": [37, -11, -1],
+        "name": "Wand of Destiny",
         "sprite": "items",
-        "spriteNr": 1,
-        "atk": 100,
+        "fist": 100,
+        "dist": 100,
+        "spriteNr": 10,
+        "manaRegen": 100,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "actionType": "pickUp"
+        "position": [43, 2, -1],
+        "actionType": "pickUp",
+        "visibleFloor": -1,
+        "field": "lh",
+        "pos": [43, 2, -1]
       },
       "rh": {
-        "type": "item",
-        "name": "ladder",
-        "sprite": "action_items",
-        "spriteNr": 4,
+        "name": "Simple Shield",
+        "sprite": "items",
+        "spriteNr": 11,
         "handle": ["lh", "rh"],
         "pickable": true,
-        "position": [34, -13, 0],
-        "actionType": "pickUp",
-        "visibleFloor": 0,
-        "field": "rh"
+        "def": 20
       },
       "lg": false,
       "ft": false
     },
-    "position": [-66, 15, 2],
+    "position": [44, 1, -1],
     "lastDeaths": [
       {
         "when": "2021-11-04T14:30:10.074Z",
@@ -351,12 +368,14 @@
         "level": 57
       }
     ],
-    "quests": [],
-    "mana": 100,
+    "quests": ["Simple Shield"],
+    "mana": 320,
     "maxMana": 670,
-    "redTarget": false,
-    "autoShot": false,
-    "autoMWDrop": false
+    "redTarget": 6,
+    "autoShot": true,
+    "autoMWDrop": true,
+    "token": "e4l28d0vlt",
+    "lastMWall": [42, 5, -1, 1641927001497]
   },
   {
     "name": "Maja",
@@ -475,27 +494,27 @@
   },
   {
     "name": "GM",
-    "position": [92, 7, 0],
+    "position": [-12, -3, -1],
     "speed": 4,
     "health": 3110,
     "maxHealth": 2110,
     "sprite": "gm",
     "skills": {
       "level": 201,
-      "exp": 8012890,
-      "fist": 21,
-      "dist": 2001,
-      "fist_summary": 8477,
-      "dist_summary": 8000002000,
-      "def_summary": 128651550,
-      "def": 505,
-      "magic_summary": 2692651,
-      "magic": 140
+      "exp": 8022685,
+      "fist": 131,
+      "dist": 2002,
+      "fist_summary": 2201901,
+      "dist_summary": 8017547504,
+      "def_summary": 129140220,
+      "def": 506,
+      "magic_summary": 3635151,
+      "magic": 154
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1641827085337,
+    "lastFrame": 1641926629980,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -526,16 +545,27 @@
         "desc": "You can use it to move between floors."
       },
       "nc": false,
-      "ch": {
-        "name": "King Armor",
+      "ch": false,
+      "lh": {
+        "name": "Wand of Destiny",
         "sprite": "items",
-        "spriteNr": 7,
-        "handle": ["ch"],
-        "pickable": true,
-        "def": 100
+        "fist": 100,
+        "dist": 100,
+        "spriteNr": 10,
+        "manaRegen": 100,
+        "handle": ["lh", "rh"],
+        "pickable": true
       },
-      "lh": false,
-      "rh": false,
+      "rh": {
+        "name": "Wand of Destiny",
+        "sprite": "items",
+        "fist": 100,
+        "dist": 100,
+        "spriteNr": 10,
+        "manaRegen": 100,
+        "handle": ["lh", "rh"],
+        "pickable": true
+      },
       "lg": {
         "name": "King Legs",
         "sprite": "items",
@@ -590,15 +620,25 @@
       "Wand of Destiny",
       "Blessed Shield",
       "Blessed Shield",
+      "Wand of Destiny",
+      "Wand of Destiny",
+      "Rod",
+      "Rod",
+      "Wand of Destiny",
+      "Wand of Destiny",
+      "Wand of Destiny",
+      "Rod",
+      "King Armor",
+      "Rod",
       "Wand of Destiny"
     ],
-    "mana": 1860,
+    "mana": 2110,
     "maxMana": 2110,
     "redTarget": false,
-    "token": "4ylluu1qjz",
+    "token": "r586znl8pv",
     "autoShot": true,
     "autoMWDrop": false,
-    "lastMWall": [-27, -26, 1, 1641823598153]
+    "lastMWall": [-13, 2, -1, 1641924203152]
   },
   {
     "name": "Niko",

@@ -81,7 +81,22 @@ const serv = {
             // }else if(creature.type == "npc"){type = "npc"}
             myChar = new Creature(type,creature.position,creature.name);
           }
-          gamePlane.creatures.list.push(myChar);
+          myChar.id = creature.id;
+          // prevent double chars/players
+          let isPlayer = false;
+          let isSet = false;
+          for(const cr of gamePlane.creatures.list){
+            if(myChar.id == cr.id){
+              isSet = true;
+            }
+            if(cr.type == "player" && myChar.type == "player"){
+              isPlayer = true;              
+            }
+          }
+
+          if( !isPlayer && !isSet){
+            gamePlane.creatures.list.push(myChar);
+          }
           charId = gamePlane.creatures.list.length-1;
         }else{
           // find it in gamePlane.creatures.list

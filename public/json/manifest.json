@@ -4,13 +4,21 @@
   "description": "Webions game",
   "start_url": "/",
   "background_color": "black",
+  "theme_color": "black",
   "author": "Antek Pietryga",
   "display": "standalone",
+  "prefer_related_applications": true,
   "icons": [
     {
       "src": "/apple-touch-icon.png",
       "type": "image/png",
-      "sizes": "150x150"
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon-precomposed.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "content_scripts": [

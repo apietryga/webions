@@ -157,7 +157,24 @@ class Creature {
       db.update(this);
     }
   }
-  update(param,db,creatures,items, walls = []){
+  update(param,db,allCreatures,allItems, walls = []){
+    // get nearby creatures
+    const creatures = [];
+    for(const cr of allCreatures){
+      if(Math.abs(cr.position[0] - this.position[0]) < 7
+        && Math.abs(cr.position[1] - this.position[1]) < 7
+        && this.id != cr.id){
+        creatures.push(cr);
+      }
+    }
+    // get nearby items
+    const items = [];
+    for(const it of allItems){
+      if(Math.abs(it.position[0] - this.position[0]) < 7
+        && Math.abs(it.position[1] - this.position[1]) < 7){
+        items.push(it);
+      }
+    }
     // set focus
     this.focus = param.focus;
     // update automation
@@ -381,19 +398,28 @@ class Creature {
         delete this.outfitUpdate;
       }
     }
-    // set playerinArea (4 monster walking and targeting)
-    let playerInArea; if(this.type == "monster"){
+    // PLAYER TO TARGET [THE NEAREST - 4 monster walking and targeting]
+    let playerInArea, isPlayerNear = false; if(this.type == "monster"){
+      const avaliblePlayers = [];
       for(const c of creatures){
         if(c.type == "player"){
           // add z position
-          if(Math.abs(this.position[0] - c.position[0]) < 6 
-            && Math.abs(this.position[1] - c.position[1]) < 6
+          if(Math.abs(this.position[0] - c.position[0]) < 8 
+            && Math.abs(this.position[1] - c.position[1]) < 8
             && this.position[2] == c.position[2]){
-            // isPlayerNear = true;
-            playerInArea = c;
+              isPlayerNear = true;
+              const rating = Math.abs(this.position[0] - c.position[0]) + Math.abs(this.position[1] - c.position[1]);
+              avaliblePlayers.push([c,rating])
           }
         }
-      }  
+      } 
+      avaliblePlayers.sort((a,b)=>{
+        if(a[1] < b[1]){return -1;}
+        if(a[1] > b[1]){return 1;}
+      })
+      if(avaliblePlayers.length > 0){
+        playerInArea = avaliblePlayers[0][0];
+      }
     }
     // WALKING
     if(this.walk <= game.time.getTime() && this.health > 0 && this.speed !== false){
@@ -424,18 +450,6 @@ class Creature {
       if(["monster","npc"].includes(this.type)){
         // set walking type (random / follow / escape)
         let walkingMode = "random";
-        let isPlayerNear = false;
-        creatures.sort().reverse();
-        for(const c of creatures){
-          if(c.type == "player"){
-            if(Math.abs(phantomPos[0] - c.position[0]) < 6 
-              && Math.abs(phantomPos[1] - c.position[1]) < 6
-              && phantomPos[2] == c.position[2]){
-              isPlayerNear = true;
-              playerInArea = c;
-            }
-          }
-        }
         // walking modes
         if(this.type == "npc"){
           if(func.isSet(this.talking)){
@@ -510,15 +524,13 @@ class Creature {
       const notAvalibleGrids = func.equalArr(map.notAvalibleGrids);
       if(this.type == "player" && !avalibleGrids.includes("stairs")){
         avalibleGrids.push("stairs");
-        // avalibleGrids.push("actionfloors");
         notAvalibleGrids.splice(notAvalibleGrids.indexOf("stairs"),1);
       }else if(this.type != "player" && avalibleGrids.includes("stairs")){
         notAvalibleGrids.push("stairs");
-        // avalibleGrids.splice(avalibleGrids.indexOf("stairs"),1);
       }
       // ladder 
       if(this.type == "player"){
-        for(const item of items.itemsInArea){
+        for(const item of items){
           // up
           if(func.compareTables(item.position,this.position) && item.name == "Ladder"){
             // check if's floor between
@@ -569,8 +581,6 @@ class Creature {
           }
         }
       }
-      // check throwing to grid
-
       // mwall's
       for(const wall of walls){
         if(func.compareTables(
@@ -581,11 +591,7 @@ class Creature {
           // isFloor = true;
         }
       }
-
-
-      // const checkGrids = map.getGrid(phantomPos);
-      // const checkGrids = (phantomPos)=>{
-      // for(const checkGrid of checkGrids){
+      // check grids 
       for(const checkGrid of map.getGrid(phantomPos)){
         // for(const checkGrid of map.getGrid(phantomPos)){
           if(checkGrid){
@@ -605,8 +611,8 @@ class Creature {
             if(checkGrid[4] == "doors"){
               doorAvalible = false;
               if(["monster","npc"].includes(this.type)){isFloor = false;}
+              // cases when player can pass through
               if(this.type == "player" && func.isSet(checkGrid[5])){
-                // cases when player can pass through
                 // level gate
                 if(Object.keys(checkGrid[5]).includes("level")){
                   if(this.skills.level >= checkGrid[5].level){
@@ -631,39 +637,14 @@ class Creature {
             }
           }
       }
-      // };
-
-      // checkGrids(phantomPos);
-
 
       if(isWall){isFloor = false;}
       if(!doorAvalible){isFloor = false;}
-      // check monsters and players on position
-      for(const c of creatures){
-        if (
-          // if player is on the same pos with live creature
-          (func.compareTables(c.position, phantomPos) && c.health > 0) 
-          // and if creature is no player and there's no stairs
-          // && ((this.type != "player" && !isStairs)
-          // and if creature is no player and there's stairs
-          && ((this.type != "player" && isStairs)
-          // && ((["player","npc","monster"].includes(c.type) && isStairs)
-          // or creature is current player
-          ||(this.id != c.id))
-        ){
-          isFloor = false;
-        }else if(
-          // when there's other creature on stairs - go on
-          this.type == "player" && ["npc","player","monster"].includes(c.type)
-          && isStairs
-        ){
-          isFloor = true;
-        }
-      }
+
       // check items can't walk and walkon
       let isItem = false;
       let itemText = false;
-      for(const i of items.itemsInArea){
+      for(const i of items){
         if(func.compareTables(phantomPos,i.position)){
           if(func.isSet(i.walkThrow) && i.walkThrow == false){
             isItem = true;
@@ -671,7 +652,6 @@ class Creature {
           if(func.isSet(i.walkOn)){
             itemText = true;
             i.walkOn(this,i);
-            // i.walkOn(this,i);
           }
         }
       }
@@ -686,18 +666,31 @@ class Creature {
         this.speed = this.totalSpeed;
       }
 
+      // check monsters and players on position
+      for(const c of creatures){
+        if ((func.compareTables(c.position, phantomPos) && c.health > 0) 
+            && ((this.type != "player" && isStairs)
+            ||(this.id != c.id))){
+          isFloor = false;
+        }else if(
+          // when there's other creature on stairs - go on
+          ["npc","player","monster"].includes(c.type) && isStairs
+        ){
+          isFloor = true;
+          break;
+        }
+      }
+
       // set new position or display error
-      if(isFloor){
-        if((this.type == "player" && typeof key != "undefined") 
-        || (["monster","npc"].includes(this.type) && !func.compareTables(this.position,phantomPos)) ){
+      if(isFloor && ((this.type == "player" && typeof key != "undefined") 
+        || (["monster","npc"].includes(this.type) && !func.compareTables(this.position,phantomPos)) )){
           // for monsters
           delete this.escapeStuck;
           // set exhaust
           this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
           this.position = phantomPos;
-        }
       }else if(this.type == "player" && typeof key != "undefined" && doorAvalible && !itemText){
-          this.text = "There's no way.";
+        this.text = "There's no way.";
       }  
     }
     // RED TARGETING [monsters] 
@@ -862,7 +855,7 @@ class Creature {
     // ITEM DROPING AND PICK UPING
     if(param.itemAction){
       const item = new Item(param.itemAction);
-      item.relocate(this,items,param.itemAction)
+      item.relocate(this,{allItems: allItems},param.itemAction)
       delete param.itemAction;
     }
   }

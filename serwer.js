@@ -14,9 +14,9 @@ const inGameMonsters = require("./json/monstersList").data;
 const game = require("./public/js/gameDetails");
 const public = require("./js/public");
 const itemsList = require("./json/itemsList").list;
-const { db } = require('./public/js/gameDetails');
+// const { db } = require('./public/js/gameDetails');
 const func = require('./public/js/functions')
-let servRequest = false;
+// let servRequest = false;
 // filter data on websocket send
 const disallowKeys = [
   "startPosition",
@@ -70,7 +70,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
     }
     for(const c of this.monstersInArea){
       // 0 because of monsters don't upgrades skills
-      c.update(param,0,this.monstersInArea.concat(this.players.list),im,wm.list);
+      // c.update(param,0,this.monstersInArea.concat(this.players.list),im,wm.list);
+      c.update(param,0,this.monstersInArea.concat(this.players.list),im.allItems,wm.list);
     }
   },
   init(){
@@ -118,18 +119,16 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         "game",
         "shotTarget",
         "bulletOnTarget",
-        "cyle"
-        // ,
-        // "speed"
+        "cyle",
       ];
       const deleteKeys = ['healing'];
+      const loginTokens = [];
       db.loadAll((res)=>{
         for(const plr of res){
           // make instance of player
           const player = new Creature(plr.name,0,"player");
           // rewrite
           for(const key of Object.keys(plr)){
-            // console.log(key)
             // if(deleteKeys.includes(key)){console.log(key)}
             if(skipKeys.includes(key)){continue;}
 
@@ -139,7 +138,6 @@ const cm = { // creatures managment [monsters = monsters & npc's]
                 if(!Object.keys(player.eq).includes(eqKey)){
                   console.log("DELETING: "+eqKey);
                   delete plr.eq[eqKey];
-                  
                 }
               }
             }
@@ -166,7 +164,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
             }
           }
           // update player
-          player.update({name:player.name,type: 'initUpdate'},db,[],{itemsInArea:[]});
+          // player.update({name:player.name,type: 'initUpdate'},db,[],{itemsInArea:[]});
+          player.update({name:player.name,type: 'initUpdate'},db,[],[]);
           // update player skills
           player.skills.level = -1;
           // player is update in db there:
@@ -175,18 +174,23 @@ const cm = { // creatures managment [monsters = monsters & npc's]
       });
     },
     list:[],
-    inArea:[],
     inLoading:[],
     update(param,callback){
       // console.log(this.list)
-      // TO DO MAKE inArea PLAYERS LIST!
       // check if player is on the list (in the game), and update it
       let isPlayer = false;
       for(const p of this.list){
         // update player is playing
         if(p.name == param.name){
           isPlayer = p;
-          isPlayer.update(param,dbc[game.db],cm.monstersInArea.concat(this.list),im,wm.list);
+          isPlayer.update(
+            param,
+            dbc[game.db],
+            // cm.monstersInArea.concat(this.list),
+            cm.allMonsters.concat(this.list),
+            im.allItems,
+            wm.list
+          );
           callback(isPlayer);
           break;
         }
@@ -199,13 +203,6 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         let newID = 1; while(ids.includes(newID)){newID++;}
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1,"player");
-        // save player login token
-        if(servRequest && typeof servRequest.headers != 'undefined' && typeof servRequest.headers.cookie != 'undefined' ){
-          for(const cookie of servRequest.headers.cookie.split("; ")){
-            const [key,value] = cookie.split("=");
-            if(key == "token"){newPlayer.token = value;}
-          } 
-        }
         dbc[game.db].load(newPlayer,(res)=>{
           if(res){
             // merge it with newPlayer
@@ -247,7 +244,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
       if(isThisPlayerOlnine){
         this.list.splice(this.list.indexOf(player),1);
         dbc[game.db].update(player);
-        console.log(player.name+" KICKED")
+        // console.log(player.name+" KICKED")
       }
     }
   }
@@ -301,9 +298,8 @@ dbc.init(()=>{
   const server = http.createServer((req,res)=>{
     servRequest = req;
     servResponse = res;
-    public(req,res,cm.players.list)
+    public(req,res,cm.players)
   }).listen(process.env.PORT || 80);
-  // }).listen(process.env.PORT || 443);
   const date = new Date();
   game.startServerTime = date.getTime();
   console.log("SERWER IS RUNNING");
