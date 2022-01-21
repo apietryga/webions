@@ -16,7 +16,7 @@
   ]*/
 let fs,func,stringify;
 if(typeof window == "undefined"){fs = require("fs");func = require("./functions");stringify = require("json-stringify-pretty-compact");}
-class Map{
+class GameMap{
   constructor(){
     this.path = "./json/map.json";
     // this.path = "./json/testmap.json";
@@ -232,4 +232,4 @@ class Map{
     return mapString;
   }
 }
-if(typeof window == "undefined"){module.exports = Map;}
+if(typeof window == "undefined"){module.exports = GameMap;}

@@ -1,8 +1,9 @@
-const Map = require("../public/js/map");
-const map = new Map();
+const GameMap = require("../public/js/map");
+const map = new GameMap();
 const func = require("../public/js/functions");
 const game = require("../public/js/gameDetails");
 const itemsTypes = require("./itemsTypes").types;
+
 class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
     this.id = creaturesLength+1; 
@@ -158,6 +159,7 @@ class Creature {
     }
   }
   update(param,db,allCreatures,allItems, walls = []){
+    // console.log(param);
     // get nearby creatures
     const creatures = [];
     for(const cr of allCreatures){
@@ -238,12 +240,11 @@ class Creature {
           wizards:[-70,11,2],
           king:[55,-21,-1],
           dragon:[135,1,0],
-          kingslegs:[60,-13,2],
           barbarian:[4,-33,1],
           depo:[43,0,0],
           castlegate:[40,-23,0],
           castletower:[44,-37,4],
-          playground:[40,20,0],
+          blue17:[28,17,0],
         };
         let isCommand = false;
         if(this.name == "GM"){
@@ -854,9 +855,38 @@ class Creature {
     }
     // ITEM DROPING AND PICK UPING
     if(param.itemAction){
-      const item = new Item(param.itemAction);
-      item.relocate(this,{allItems: allItems},param.itemAction)
-      delete param.itemAction;
+      // create item from it's position in eq
+      let phantomItem = false;
+        if(param.itemAction.actionType == 'drop' && func.isSet(param.itemAction.field) && param.itemAction.field != ''){
+          phantomItem = this.eq[param.itemAction.field.split(",")[0]];
+          if(param.itemAction.field.includes(",")){
+            // GET ITEM FROM CAPABLE BP
+            for(let inLevel = 0; inLevel < param.itemAction.field.split(",").length; inLevel++){
+              if(inLevel){
+                phantomItem = phantomItem.in[param.itemAction.field.split(",")[inLevel]];
+              }
+            }         
+          }
+          // console.log(phantomItem);
+          if(phantomItem){
+            phantomItem.position = param.itemAction.position;
+            phantomItem.actionType = 'drop';
+            // if(!isSet(phantomItem.field)){
+              phantomItem.field = param.itemAction.field;
+            // }
+          }
+        }else if(param.itemAction.actionType == 'pickUp'){
+          // console.log(param.itemAction)
+          phantomItem = param.itemAction;
+        }
+      if(phantomItem){
+        const item = new Item(phantomItem);
+        item.relocate(this,{allItems: allItems},param.itemAction)
+      }else{
+        this.text = "Sorry, this action is not possible."
+      }
+      delete param.itemAction;  
+
     }
   }
 }
@@ -950,28 +980,49 @@ class Item{
         // }
         //   return false;
         // }
-
+        // console.log(itemAction)
+        // if(this.field.includes(",")){
+        //   const [field,index] = this.field.split(",");
+        //   // this.field = 
+        //   // console.log(field+"|"+index);
+        // }
 
         if(func.isPos){
-          // CHECK IF ITEM IS REALLY IN THIS EQ FIELD
           let isInField = false;
-          for(const field of Object.keys(creature.eq)){
-            if(field == this.field){
+          if(this.field.includes(",")){
+            // DELETE ITEM FROM BACKPACK
+            let parentCapable;
+            parentCapable = creature.eq[this.field.split(",")[0]];
+            for(let inLevel = 0; inLevel < this.field.split(",").length; inLevel++){
+              if(inLevel && inLevel < this.field.split(",").length - 1){
+                parentCapable = parentCapable.in[this.field.split(",")[inLevel]];
+              }
+            }         
+            if(parentCapable){
+              const index = this.field.split(",")[this.field.split(",").length - 1 ];
+              parentCapable.in.splice(index,1)
               isInField = true;
-              break;
+            }
+          }else{
+            // DELETE ITEM FROM EQ FIELDS
+            for(const field of Object.keys(creature.eq)){
+              if(field == this.field){
+                isInField = true;
+                // delete it from eq
+                creature.eq[this.field] = false;
+                break;
+              }
             }
           }
           if(isInField){
-            // DELETE IT FROM EQ
-            creature.eq[this.field] = false;
             // ADD IT TO MAP
             items.allItems.push(this);
             creature.text = "You dropped out a "+this.name+".";
           }else{
-            creature.text = "Sorry, it not possible.";
+            creature.text = "Sorry, it not possible. [e1]";
           }
         }else{
-          creature.text = "Sorry, it not possible.";
+          creature.text = "Sorry, it not possible. [e2]";
         }
       }else if( itemAction.field == ""){
           // ADD IT TO MAP

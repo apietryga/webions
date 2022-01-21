@@ -9,7 +9,7 @@
     <link id="mobileCSS" rel="stylesheet" href="style/mobile.css?v={{version}}">
     <link rel="shortcut icon" href="favicon.ico?v={{version}}" type="image/x-icon">
     <title>{{name}}</title>
-    <link rel="manifest" href="./json/manifest.json">
+    <link rel="manifest" href="./json/manifest.json?v={{version}}">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="apple-touch-startup-image" href="apple-touch-icon.png">
     <meta name="apple-mobile-web-app-title" content="{{name}}">
@@ -39,7 +39,7 @@
 <script src="js/functions.js?v={{version}}"></script>
 <script src="js/sprites.js?v={{version}}"></script>
 <script src="js/map.js?v={{version}}"></script>
-<script>const map = new Map();</script>
+<script>const map = new GameMap();</script>
 <script src="js/controls.js?v={{version}}"></script>
 <!-- RESIZE GAMEPLANE -->
 <script>
@@ -71,7 +71,14 @@
       }else{
         containerOffset = wrapper.offsetLeft;
         pointerRelative = e.clientX - containerOffset;
-        boxA.style.cssText = "min-width:"+(Math.max(boxAminHeight, pointerRelative + 8))+"px !important";
+        const boxAW = parseInt(getComputedStyle(boxA).width, 10);
+        const handlerW = parseInt(getComputedStyle(handler).width, 10);
+        const handlingW = parseInt(getComputedStyle(document.querySelector(".wrapper>.mainMenu")).width, 10);
+        const totalWidth = boxAW + handlerW + handlingW; 
+        const maxBoxW = window.innerWidth - (handlerW + handlingW) - 1 ;
+        if(totalWidth < window.innerWidth || pointerRelative < maxBoxW){
+          boxA.style.cssText = "min-width:"+(Math.max(boxAminHeight, pointerRelative + 8))+"px !important";
+        }
       }
       // * Set flex-grow to 0 to prevent it from growing
       boxA.style.flexGrow = 0;
@@ -85,6 +92,7 @@
   // SET DOM'S
   makeResizeable('handler','gameAndConsole','gamePlane', "y");
   makeResizeable('handlerVertical','wrapper','gameAndConsole', "x");
+  // makeResizeable('handlerVertical','wrapper','mainMenu', "x");
 </script>
 <!-- POPUP -->
 <script>

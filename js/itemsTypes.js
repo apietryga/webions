@@ -150,5 +150,12 @@ this.types = [
       }
     },
     pickable:false
+  },
+  { name: "Table",
+    sprite: "action_items",
+    spriteNr : 5,
+    walkThrow : false,
+    pickable:true,
+    handle: ["lh","rh"],
   }
 ];

@@ -1,5 +1,5 @@
 // CONFIG VALS
-const map = new Map();
+const map = new GameMap();
 const main = document.querySelector("main");
 const searchToObject = () => {
   var pairs = window.location.search.substring(1).split("&"),

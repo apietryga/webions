@@ -66,6 +66,13 @@ const serv = {
           gamePlane.creatures.ids.push(ac.id);
         }
       }
+
+      // update items
+      gamePlane.items = [];
+      for(const item of data.items){
+        gamePlane.items.push(new Item(item));
+      }
+
       // updating creatures values
       for(const creature of data.creatures){
         let myChar;
@@ -161,11 +168,7 @@ const serv = {
           gamePlane.creatures.list[charId][key] = creature[key];
         }
       }
-      // update items
-      gamePlane.items = [];
-      for(const item of data.items){
-        gamePlane.items.push(new Item(item));
-      }
+
       // update dev info
       dev.stats.fps = dev.counterFPS+"/"+data.game.fps;
       dev.stats.time = serv.time;
@@ -180,7 +183,8 @@ const serv = {
       dev.update();
       callback();
     }
-    this.ws.onclose = () => {             // set connection
+    this.ws.onclose = (e) => {             // set connection
+      if(e != null){console.error(e)}
       this.connected = false;console.log("WS closed.");
       let newURL = window.location.origin+"/offline.html?reason=servErr&back=";
       newURL += encodeURIComponent(window.location.href);

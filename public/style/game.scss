@@ -230,7 +230,8 @@ body{
       @extend %inFrame;
       // overflow-y: auto;
       height: fit-content;
-      min-width:30%;
+      // min-width:30%;
+      // min-width:180px;
       max-height:100%;
       flex:1;
       display:flex;
@@ -299,7 +300,20 @@ body{
           // justify-content: space-evenly;
           margin:0 auto;
           div{
-            min-width:30px;
+            // display:grid;
+            // place-items: center;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            // min-width:30px;
+            max-width:80%;
+            max-height:80%;
+            .itemContainer{
+              max-width:90%;
+              max-height:90%;
+              //   max-width:fit-content;
+              // max-height:fit-content;
+            }
           }
         }
       }

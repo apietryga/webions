@@ -1,7 +1,7 @@
 const fs = require('fs');
 const http = require('http');
-const Map = require("./public/js/map");
-const map = new Map();
+const GameMap = require("./public/js/map");
+const map = new GameMap();
 const os = require("os");
 const stringify = require("json-stringify-pretty-compact");
 const WebSocketServer = require("websocket").server;

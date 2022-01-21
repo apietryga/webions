@@ -1,10 +1,18 @@
 this.list = [
-  // testmap
-  // { name:"staticBox",
-  //   position:[0,0,0],
-  //   inItem:"Simple Boots"
-  // },
-
+  // BLUE 17
+  { name:"Backpack",
+    position:[28,17,0]
+  },
+  { name:"Backpack",
+    position:[33,-12,-1]
+  },
+  { name:"Backpack",
+    position:[34,-12,-1]
+  },
+  { name:"Backpack",
+    position:[35,-12,-1]
+  },
+ 
   // TEMPLE
   { name:"staticBox",
     position:[32,-12,-1],
@@ -131,10 +139,20 @@ this.list = [
   },
 
 
-  { name:"coins",
-    position:[32,-13,1],
-    spriteNr:11
+  { name:"Table",
+    position:[34,-13,0]
   },
+  { name:"Table",
+    position:[35,-13,0],
+    pickable:false
+  },
+  { name:"Table",
+    position:[36,-13,0]
+  },
+  // { name:"coins",
+  //   position:[32,-13,1],
+  //   spriteNr:11
+  // },
   // { name:"King Armor",
   //   position:[57,-13,1]
   // },

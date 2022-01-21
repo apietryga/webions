@@ -85,7 +85,9 @@ class Creature {
         if(this.eq[key] && field != null){
           if(field.innerHTML == "" || field.innerHTML == "&nbsp;"){
             field.innerHTML = "";
-            const newItem = new Item(this.eq[key]);
+            const makeNewItemFrom = this.eq[key];
+            makeNewItemFrom.field = key;
+            const newItem = new Item(makeNewItemFrom);
             field.append(newItem.toDOM());
           }
         }else if(field != null){
@@ -619,15 +621,19 @@ class Item{
     const img = map.sprites[item.sprite];
     sq.width = img.height;
     sq.height = img.height;
+    // sq.width = "100%";
+    // sq.height = "100%";
     const ctx = sq.getContext("2d");
     ctx.drawImage(img, 
       item.spriteNr * img.height, 0, img.height, img.height,
       0, 0, img.height, img.height
     );
+    this.dom = sq;
     sq.onclick = () => {
       if(sq.classList.contains("picked")){
         sq.classList.remove("picked");
-        menus.mainMenu.twiceClick(item,sq.parentElement);
+        // menus.mainMenu.twiceClick(item,sq.parentElement);
+        menus.mainMenu.twiceClick(item);
       }else{
         // clear picked class
         for(const p of document.querySelectorAll(".picked")){
@@ -662,7 +668,7 @@ class Item{
   }
   draw(){
      // CANVAS ITEM
-     if(isSet(this.position) && this.position[2] <= map.visibleFloor){
+     if(isSet(this.position) && this.position[2] <= map.visibleFloor && isSet(map.sprites[this.sprite])){
       const ctx = gamePlane.context;
       const img = map.sprites[this.sprite];
       // console.log(img);

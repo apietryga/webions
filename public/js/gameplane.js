@@ -22,11 +22,11 @@ const gamePlane = {
   },
   updategamePlane() {
     serv.load(()=>{
-      menus.update();
       gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
       if(isSet(player.update) && player.update.constructor === Function){
         player.update();
       }
+      menus.update();
       if(!isSet(player.newPos)){player.newPos = player.position;}
       map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
       const drawStack = [];

@@ -44,7 +44,6 @@ const controls = {
 
     if(params[0] == 87 && params[1]){
       document.body.style.cursor = "cell";
-      // console.log("mwall picked");
       player.mwall = true;
     }
 
@@ -156,7 +155,6 @@ const controls = {
         return 0;
       }
 
-
       // ITEM CLICKING
       let isAction = false;
       // drop item
@@ -164,18 +162,14 @@ const controls = {
       if(picked != null){
         isAction = true;
         player.itemAction = {}
-        for(const key of Object.keys(picked)){
-          player.itemAction[key] = picked[key];
-        }
+        // console.log(picked.field)
         player.itemAction.position = [x,y,player.position[2]];
         player.itemAction.actionType = "drop";
-        player.itemAction.visibleFloor = map.visibleFloor;
-        if(picked.parentElement.className == ""){
-        //   // player.itemAction.field = document.querySelector(".backpack .row > div")
-          // player.itemAction.field = ".backpack in"
+
+        if(isSet(picked.field)){
+          player.itemAction.field = picked.field;
         }else{
-          player.itemAction.field = picked.parentElement.parentElement.className;
-          // console.log(player.itemAction.field)
+
         }
       }else{
         // pick up item

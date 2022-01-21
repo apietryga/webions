@@ -201,43 +201,23 @@ const menus = {
       }
       this.menuName = menuName;
       this.dom = document.createElement("div");
-      // build bp with items
-      if(menuName == "BACKPACK" && isSet(options.cap)){
-        this.dom.className = "backpack";
-        const title = document.createElement("div");
-        title.innerHTML = "Backpack";
-        title.className = "title";
-        this.dom.append(title);
-        const row = document.createElement("div");
-        row.className = "row";
-        // FIND BP ITEMS by position:
-        let field = player;
-        for(const nest of this.position.split(">")){
-          field = field[nest];
+      // build capable items
+      if(isSet(options.cap)){
+        if(isSet(options.parent)){
+          this.capableItems.close(options.parent);
         }
-
-        // CREATE ITEMS INSIDE BACKPACK
-        const inItems = [];
-        if(!isSet(field.in) ){
-          field.in = player.eq.bp
+        if(!isSet(options.openedContainer)){
+          this.capableItems.open(options);
         }else{
-          for(const inItem of field.in){
-            inItems.push(new Item(inItem));
-          }
+          this.capableItems.close(options);
         }
-
-
-        // MAKE SQUARES AND FILL IT BY ITEMS
-        for(let i = 0; i < options.cap; i++){
-          const sq = document.createElement("div");
-          row.append(sq);    
-          // FILL SQUARES BY ITEMS
-          if(isSet(inItems[i])){
-            sq.append(inItems[i].toDOM());
-          }
-        }
-        this.dom.append(row);
       }
+
+      // if(isSet(options.cap)){
+      //   // this.capableItems.build(menuName,options);
+      //   this.capableItems.open(options);
+      // //   // console.log(options)
+      // }
       for(const [i,row] of this.doms.entries()){
         // BUILD FROM TEMPLATE
         if(this.menuName == row[0].title){
@@ -261,7 +241,6 @@ const menus = {
         const collapseButton = document.createElement("div");
         collapseButton.innerHTML = "&bigtriangleup;"
         title.onclick = () => {
-          console.log("handle:");
           const menuItem = collapseButton.parentElement.parentElement.parentElement;
           const mainMenuDOM = collapseButton.parentElement.parentElement.parentElement.parentElement;
           if(collapseButton.parentElement.parentElement.classList.contains("collapsed")){
@@ -282,12 +261,12 @@ const menus = {
           }
         }
         title.append(collapseButton)
-        const x = document.createElement("div");
-        if(this.menuName == "BACKPACK"){
-          x.innerHTML = "x";
-          title.append(x);
-          x.onclick = () => {this.close(this.dom,this.menuName)};
-        }
+        // const x = document.createElement("div");
+        // if(this.menuName == "BACKPACK"){
+        //   x.innerHTML = "x";
+        //   title.append(x);
+        //   x.onclick = () => {this.close(this.dom,this.menuName)};
+        // }
       }
       // MAIN NAVBAR & hp & mana ALWAYS ON TOP
       if(["PAUSE GAME","HEALTH","MANA"].includes(menuName)){
@@ -295,7 +274,6 @@ const menus = {
       }else{
         this.parent.append(this.dom);
       }
-
     },
     update(){
       // SKILLS UPDATE
@@ -365,27 +343,16 @@ const menus = {
         displaySingleSkill();
       } 
     },
-    twiceClick(item,parent){
-      if(item.name == 'backpack'){
-        const itemOptions = {cap:item.cap}
-        // check it position
-        if(parent.className == "bp"){
-          itemOptions.position = "eq>bp";
+    twiceClick(item){
+      // this.build("Backpack", item)
+     if(isSet(item.cap)){
+        if(isSet(item.parent)){
+          this.capableItems.close(item.parent);
+        }
+        if(!isSet(item.openedContainer)){
+          this.capableItems.open(item);
         }else{
-          itemOptions.position = "eq>bp>bp[1]";
-        }
-        // check if bp is open now
-        let isOpen = false;
-        for(const openField of this.opened){
-          // close if opened
-          if(openField[1].position == itemOptions.position){
-            this.close(this.dom,this.menuName);
-            isOpen = true;
-          }
-        }
-        // open it, if it's not opened yet
-        if(!isOpen){
-          this.build("BACKPACK",itemOptions);
+          this.capableItems.close(item);
         }
       }
       this.resize();
@@ -431,6 +398,88 @@ const menus = {
         }
       }
     },
+    capableItems : {
+      opened : new Map(),
+      refresh(){
+        for(const [whenOpened, item] of this.opened){
+          // MAKE OR CLEAR ROW FOR ITEMS FIELD
+          let isRow = false; for(const child of item.openedContainer.children){
+            if(child.classList.contains("row")){
+              isRow = child;
+            }
+          }const row = isRow ? isRow : document.createElement("div");
+          row.innerHTML = ""; row.className = "row";
+
+          // CHECK THE BACKPACK POSITION
+          let itemIn = player.eq[item.field.split(",")[0]].in;          
+          if(item.field.includes(",") && isSet(itemIn)){
+            // bp from bp etc.
+            for(let inLevel = 0; inLevel < item.field.split(",").length; inLevel++){
+              if(inLevel){
+                 itemIn = itemIn[item.field.split(",")[inLevel]].in
+              }
+            }         
+          }
+
+          // CREATE ITEMS INSIDE BACKPACK
+          const inItems = [];
+          if(isSet(itemIn)){
+            for(const [i,inItem] of itemIn.entries()){
+              const insideItem = new Item(inItem);
+              insideItem.parent = item;
+              // sending to serv : parent field, index
+              insideItem.field = item.field+","+i
+              inItems.push(insideItem);
+            }
+          }
+          // MAKE SQUARES AND FILL IT BY ITEMS
+          for(let i = 0; i < item.cap; i++){
+            const sq = document.createElement("div");
+            row.append(sq);    
+            // FILL SQUARES BY ITEMS
+            if(isSet(inItems[i])){
+              sq.append(inItems[i].toDOM());
+            }
+          }
+          item.openedContainer.append(row);
+        }
+      },
+      close(item){
+        item.openedContainer.remove();
+        this.opened.delete(item.whenOpen);
+        delete item.openedContainer;
+      },
+      open(item){
+        const title = document.createElement("div");
+        title.innerHTML = "Backpack";
+        title.className = "title";
+
+        if(item.parent){
+          const moveUp = document.createElement("div");
+          title.append(moveUp);
+          moveUp.innerHTML = "↑";
+          moveUp.onclick = () => {
+            this.open(item.parent);
+            this.close(item);
+          }
+  
+        }
+
+        const x = document.createElement("div");
+        x.innerHTML = "x";
+        x.onclick = () => {this.close(item)};
+        title.append(x);
+
+        item.openedContainer = document.createElement("div");
+        item.openedContainer.className = "backpack";
+        item.openedContainer.append(title);
+        menus.mainMenu.dom.append(item.openedContainer);
+
+        item.whenOpen = new Date().getTime();
+        this.opened.set(item.whenOpen,item);
+        this.refresh();
+      }
+    }
   },
   resize(){
     this.mainMenu.resize();
@@ -438,7 +487,6 @@ const menus = {
   outfit:{
     div:document.createElement("div"),
     init(){
-      // idk
     },
     resize(){
       const x = (window.innerWidth - document.querySelector(".gamePlaneCanvas").clientWidth)/2;
@@ -813,5 +861,45 @@ const menus = {
   },
   update(){
     this.mainMenu.update();
+    // update opened backpacks
+    // COUT ITEMS FOR REFRESHING BP'S
+    let playerItemsLength = 0;
+    for(const item of Object.keys(player.eq)){
+      // COUNT ITEMS IN EQ
+      if(player.eq[item]){
+        playerItemsLength++;
+      }
+      // COUNT ITEMS IN CAPABLEITEMS [backpack]
+      const countInBackPackItems = (item) => {
+        if(isSet(item.in)){
+          for(const inItem of item.in){
+            if(inItem){
+              playerItemsLength++;
+              countInBackPackItems(inItem);
+            }
+          }
+        }  
+      }
+      countInBackPackItems(player.eq[item])
+      // console.log(playerItemsLength)
+
+      // if(isSet(player.eq[item].in)){
+      //   for(const inItem of player.eq[item].in){
+      //     if(inItem){
+      //       playerItemsLength++;
+      //     }
+      //   }
+      // }
+    }
+    if(isSet(player.itemsLength)){
+      // CHECK IF SOMETHING CHANGED IN ITEMS 
+      if(player.itemsLength != playerItemsLength){
+        this.mainMenu.capableItems.refresh();
+        player.itemsLength = playerItemsLength;
+        // console.log(playerItemsLength);
+      }
+    }else{
+      player.itemsLength = playerItemsLength;
+    }
   }
 }
