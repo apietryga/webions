@@ -876,8 +876,13 @@ class Creature {
             // }
           }
         }else if(param.itemAction.actionType == 'pickUp'){
-          // console.log(param.itemAction)
-          phantomItem = param.itemAction;
+          for(const item of items.reverse()){
+            if(func.compareTables(item.position, param.itemAction.position )){
+              phantomItem = item;
+              break;
+            }
+          }
+
         }
       if(phantomItem){
         const item = new Item(phantomItem);
@@ -987,6 +992,7 @@ class Item{
         //   // console.log(field+"|"+index);
         // }
 
+        // if(func.isPos()){
         if(func.isPos){
           let isInField = false;
           if(this.field.includes(",")){

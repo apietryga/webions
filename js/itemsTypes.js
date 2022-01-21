@@ -155,7 +155,13 @@ this.types = [
     sprite: "action_items",
     spriteNr : 5,
     walkThrow : false,
-    pickable:true,
+    pickable: false,
     handle: ["lh","rh"],
+  },
+  { name: "Locker",
+    sprite: "action_items",
+    spriteNr : 7,
+    walkThrow : false,
+    pickable:false,
   }
 ];

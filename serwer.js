@@ -267,7 +267,7 @@ const im = { // items management
         this.itemsInArea.push(new Item(item));
       }
     }
-    output.items = this.itemsInArea;
+    output.items = this.itemsInArea.reverse();
     callback(output);
   }
 }

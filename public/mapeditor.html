@@ -89,7 +89,7 @@
 <script>
   // make it editable
   const map = new GameMap();
-  Map.prototype.editor = {
+  GameMap.prototype.editor = {
     canvas: document.createElement("canvas"),
     map: [],
     element: ["floors",0,40],

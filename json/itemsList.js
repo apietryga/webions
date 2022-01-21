@@ -1,43 +1,85 @@
 this.list = [
-  // BLUE 17
-  { name:"Backpack",
-    position:[28,17,0]
-  },
-  { name:"Backpack",
-    position:[33,-12,-1]
-  },
-  { name:"Backpack",
-    position:[34,-12,-1]
-  },
-  { name:"Backpack",
-    position:[35,-12,-1]
-  },
- 
-  // TEMPLE
+  // TEMPLE [-1]
   { name:"staticBox",
-    position:[32,-12,-1],
-    inItem:"Simple Boots"
+    position:[31,-11,-1],
+    inItem:"Simple Boots",
+    spriteNr:2,
+  },
+  { name:"Table",
+    position:[31,-12,-1],
   },
   { name:"Simple Boots",
-    position:[31,-12,-1]
+    position:[31,-12,-1],
+    pickable: false
   },
   { name:"staticBox",
-    position:[32,-6,-1],
-    inItem: "Rod"
+    position:[31,-7,-1],
+    inItem: "Rod",
+    spriteNr:2,
+  },
+  { name:"Table",
+    position:[31,-6,-1],
   },
   { name:"Rod",
-    position:[31,-6,-1]
+    position:[31,-6,-1],
+    pickable: false
   },
-  // DEPO - TRAINS
   { name:"staticBox",
-    position:[49,8,-1],
-    level:0,
+    position:[38,-11,-1],
+    inItem: "Backpack",
     spriteNr:2,
-    inItem: "Simple Shield"
   },
-  { name:"Simple Shield",
-    position:[49,9,-1]
+  { name:"Table",
+    position:[38,-12,-1],
   },
+  { name:"Backpack",
+    position:[38,-12,-1],
+    pickable: false
+  },
+
+  // TEMPLE [0]
+  { name:"Table",
+    position:[30,-13,0],
+  },
+  { name:"Locker",
+    position:[30,-13,0],
+    spriteNr:6,
+  },
+  { name:"Table",
+    position:[31,-13,0],
+  },
+  { name:"Table",
+    position:[32,-13,0],
+  },
+  { name:"Locker",
+    position:[32,-13,0],
+    spriteNr:6,
+  },
+  { name:"Table",
+    position:[34,-13,0],
+  },
+  { name:"Locker",
+    position:[34,-13,0],
+    spriteNr:6,
+  },
+  { name:"Table",
+    position:[35,-13,0],
+  },
+  { name:"Table",
+    position:[36,-13,0],
+  },
+  { name:"Locker",
+    position:[36,-13,0],
+    spriteNr:6,
+  },
+  { name:"Table",
+    position:[38,-13,0],
+  },
+  { name:"Locker",
+    position:[38,-13,0],
+    spriteNr:6,
+  },
+
   // NORTH OF CASTLE [ladder]
   { name:"staticBox",
     position:[50,-40,0],
@@ -104,11 +146,59 @@ this.list = [
     inItem: "Magic Hat",
     spriteNr:2,
   },
-  // DEPO CHESTS
+
+  // DEPO [-1] - TRAINS
+  { name:"staticBox",
+    position:[49,8,-1],
+    level:0,
+    spriteNr:2,
+    inItem: "Simple Shield"
+  },
+  { name:"Simple Shield",
+    position:[49,9,-1]
+  },
+
+  // DEPO [0]
+  { name:"Table",
+    position:[42,6,0],
+  },
+  { name:"Locker",
+    position:[42,6,0],
+  },
+  { name:"Table",
+    position:[43,6,0],
+  },
+  { name:"Table",
+    position:[44,6,0],
+  },
+  { name:"Locker",
+    position:[44,6,0],
+  },
+  { name:"Table",
+    position:[46,6,0],
+  },
+  { name:"Locker",
+    position:[46,6,0],
+  },
+  { name:"Table",
+    position:[47,6,0],
+  },
+  { name:"Table",
+    position:[48,6,0],
+  },
+  { name:"Locker",
+    position:[48,6,0],
+  },
+   
+
+  // DEPO [1] CHESTS
   { name:"staticBox",
     position:[42,-2,1],
     inItem: "King Legs",
     level:100
+  },
+  { name:"Table",
+    position:[41,-2,1],
   },
   { name:"King Legs",
     position:[41,-2,1]
@@ -118,6 +208,9 @@ this.list = [
     inItem: "King Boots",
     level:150
   },
+  { name:"Table",
+    position:[41,0,1],
+  },
   { name:"King Boots",
     position:[41,0,1]
   },
@@ -125,6 +218,9 @@ this.list = [
     position:[42,2,1],
     inItem: "Blessed Shield",
     level:200
+  },
+  { name:"Table",
+    position:[41,2,1],
   },
   { name:"Blessed Shield",
     position:[41,2,1]
@@ -134,28 +230,29 @@ this.list = [
     inItem: "The Crown",
     level:250
   },
+  { name:"Table",
+    position:[41,4,1],
+  },
   { name:"The Crown",
     position:[41,4,1]
   },
+  { name:"Table",
+    position:[46,5,1],
+  },
+  { name:"Locker",
+    position:[46,5,1],
+  },
+  { name:"Table",
+    position:[47,5,1],
+  },
+  { name:"Table",
+    position:[48,5,1],
+  },
+  { name:"Locker",
+    position:[48,5,1],
+  },
 
 
-  { name:"Table",
-    position:[34,-13,0]
-  },
-  { name:"Table",
-    position:[35,-13,0],
-    pickable:false
-  },
-  { name:"Table",
-    position:[36,-13,0]
-  },
-  // { name:"coins",
-  //   position:[32,-13,1],
-  //   spriteNr:11
-  // },
-  // { name:"King Armor",
-  //   position:[57,-13,1]
-  // },
   { name:"Wand of Destiny",
     position:[-72,11,2]
   },

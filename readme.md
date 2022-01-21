@@ -10,25 +10,27 @@
     at Item.draw (components.js?v=0.46:670:19)
   - tables
   - [server_components] backpacks
+  - items z-index
+  - order of picking items
+  - chest with backpack in temple
+  - pretty walls in depo and temple
 
 ## ISSUES
-  - menus on click and show
-  - opened menus on cookies
+  - improve throwing items/mwalls
   - [server_components] depos
   - [server_components] coins
-  - [server_components] dead body as item
+  - [server_components] dead body animation
   - [server_components] looting
   - [server_components] NPC's staying on saying, speaking and trading
   - [last_dragon] monsters walking through static items 
   - login without cookies (once)
   - players list on hash map (improve logout quene)
-  - items z-index
   - improve target unselect
   - [first_dragon] stairs moving when monster's there
   - in labels label show desc and cap
-  - trees 
   - monsters between barbarians and maggots
   - protection zone
+  - trees 
   - house zone
   - improve offline detection & player kicking
   - console messages not always received 

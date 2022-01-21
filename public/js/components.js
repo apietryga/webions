@@ -93,42 +93,6 @@ class Creature {
         }else if(field != null){
           field.innerHTML = "";
         }
-        // Backpack preview update
-        // const square = document.querySelectorAll(".backpack .row >div");
-        // if(key == "bp"){
-        //   if(player.eq.bp){
-        //     if(player.eq.bp.in && player.eq.bp.in.length > 0){
-        //       // console.log(player.eq.bp.in.length)
-        //       for(const [i,sq] of square.entries()){
-        //         // sq.innerHTML = "";
-        //         if(typeof player.eq.bp.in[i] != "undefined"
-        //         && sq.innerHTML == ""){
-        //           sq.append(this.toDOM(new Item(player.eq.bp.in[i])))
-        //         }else{
-        //           if(player.eq.bp.in.length < i){
-        //             sq.innerHTML = "";
-        //           }
-        //         }
-        //       }
-        //       // for(const [i,inItem] of player.eq.bp.in.entries()){
-        //         // clear square
-        //         // square[i].innerHTML = "";
-        //         // if(square[i].innerHTML == ""){
-        //           // add item to square
-        //           // square[i].append(this.toDOM(new Item(inItem)));
-        //         // }else{
-        //           // square[i].innerHTML = "";
-        //         // }
-        //       // }
-        //     }else{
-        //       // clear bp
-        //       for(const s of square){s.innerHTML = "";}
-        //     }
-        //   }else{
-        //       // clear bp
-        //       for(const s of square){s.innerHTML = "";}
-        //   }
-        // } 
       }
     }
     // SPRITE LOAD & UPDATE
@@ -671,11 +635,27 @@ class Item{
      if(isSet(this.position) && this.position[2] <= map.visibleFloor && isSet(map.sprites[this.sprite])){
       const ctx = gamePlane.context;
       const img = map.sprites[this.sprite];
-      // console.log(img);
-      // console.log(this.sprite)
+
+      let isTable = false;
+      if(this.name != "Table"){
+        for(const item of gamePlane.items){
+          if(compareTables(item.position, this.position) && item.name == "Table"){
+            isTable = true;
+            break;
+          }
+        }
+      }
+
       let w = img.height;
       let x = ((this.position[0] - player.position[0] + 5) * 40 - w)+40;    
-      let y = ((this.position[1] - player.position[1] + 5) * 40 - w)+40;     
+      let y = ((this.position[1] - player.position[1] + 5) * 40 - w)+40;   
+
+      // change position if item say on table
+      if(isTable){
+        x -= 20;
+        y -= 15;
+      }
+
       ctx.drawImage(img, this.spriteNr * img.height, 0, img.height, img.height,
         x, y, w, w
       );

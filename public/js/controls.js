@@ -179,7 +179,10 @@ const controls = {
             // check if player stand next to item & if item is pickable
             if(Math.abs(item.position[0] - player.position[0]) < 2 && Math.abs(item.position[1] - player.position[1]) < 2 && item.pickable ){
               // console.log(item);
-              player.itemAction = item;
+              // player.itemAction = item;
+              player.itemAction = {};
+              // console.log(item)
+              player.itemAction.position = item.position;
               player.itemAction.actionType = "pickUp";
               isAction = true;
             }
