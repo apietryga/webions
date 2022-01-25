@@ -163,6 +163,7 @@ const controls = {
         isAction = true;
         player.itemAction = {}
         // console.log(picked.field)
+        player.itemAction.visibleFloor = map.visibleFloor;
         player.itemAction.position = [x,y,player.position[2]];
         player.itemAction.actionType = "drop";
 

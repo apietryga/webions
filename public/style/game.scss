@@ -299,7 +299,7 @@ body{
           justify-content: flex-start;
           // justify-content: space-evenly;
           margin:0 auto;
-          div{
+          div:not(.label){
             // display:grid;
             // place-items: center;
             display:flex;

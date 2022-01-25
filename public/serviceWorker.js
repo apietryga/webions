@@ -4,7 +4,7 @@ self.addEventListener('install', (event) => {
     caches.open(cacheVersion).then((cache) => {
       return cache.addAll([
         './offline.html',
-        './style/both.css',
+        './style/both.min.css',
         './logo.webp',
         './favicon.ico'
       ]);

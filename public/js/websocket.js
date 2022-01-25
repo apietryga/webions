@@ -126,6 +126,7 @@ const serv = {
         }
         // updating values
         for(const key of Object.keys(creature)){
+          // console.log(creature)
           if(key == "position"){
             // gamePlane.creatures.list[charId]["servPos"] = creature[key];
             if(!compareTables(gamePlane.creatures.list[charId]["newPos"],creature[key])){

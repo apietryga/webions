@@ -142,11 +142,11 @@ this.types = [
     sprite: "action_items",
     spriteNr : 3,
     walkThrow : false,
-    walkOn : (creature,item) => {
+    walkOn : (creature,item,items) => {
       if(typeof item.level != "undefined" && item.level > creature.skills.level && creature.name != "GM"){
         creature.text = "You need "+item.level+" level to open this box";
       }else if(typeof creature.eq !=  "undefined"&& creature.type == "player" && !creature.quests.includes(item.name)){
-        item.makeNew({name:item.inItem},"eq",creature);
+        item.makeNew({name:item.inItem},items,creature);
       }
     },
     pickable:false
@@ -163,5 +163,8 @@ this.types = [
     spriteNr : 7,
     walkThrow : false,
     pickable:false,
+    walkOn : (creature,item) => {
+      creature.lockerOpened = item.position;
+    }
   }
 ];

@@ -67,6 +67,12 @@ class Creature {
       this.manaRegenValue = 0;
       this.manaRegenExhoust = 0;   
       this.startPosition = this.position;
+      this.locker = {
+        name: "Locker",
+        in: [],
+        cap: 10,
+        field: 'locker'
+      };
     }
     if(nickName == "GM"){
       this.sprite = "gm";
@@ -159,7 +165,6 @@ class Creature {
     }
   }
   update(param,db,allCreatures,allItems, walls = []){
-    // console.log(param);
     // get nearby creatures
     const creatures = [];
     for(const cr of allCreatures){
@@ -177,6 +182,19 @@ class Creature {
         items.push(it);
       }
     }
+
+    // DEPO LOCKERS
+    if(this.type == "player"){
+      if(this.lockerOpened
+        && this.position[2] == this.position[2]
+        && Math.abs(this.position[0] - this.lockerOpened[0]) <= 1
+        && Math.abs(this.position[1] - this.lockerOpened[1]) <= 1
+      ){
+      }else{
+        this.lockerOpened = false;
+      }  
+    }
+
     // set focus
     this.focus = param.focus;
     // update automation
@@ -184,6 +202,7 @@ class Creature {
     if(func.isSet(param.autoMWDrop) && this.type == "player"){this.autoMWDrop = param.autoMWDrop;}
     // clear console
     if(func.isSet(this.console)){delete this.console;}
+    
     // MWALL DROPPING
     if((this.autoMWDrop || param.mwallDrop) && this.type == "player" && this.exhaust.mwall <= game.time.getTime() ){ 
       const mwallManaBurn = 250;
@@ -205,14 +224,21 @@ class Creature {
             break;
           }
         }
-        if(!wallExists){
-          walls.push(this.lastMWall)
-        }
+
+        // if(func.isPos(map,this)){
         this.mana -= mwallManaBurn;
         this.lastMWall[3] = addExhaust[0];
         this.text = "Magic Wall takes "+mwallManaBurn+" mana.";
         this.skills.magic_summary += mwallManaBurn;
-        this.updateSkills(db);
+        this.updateSkills(db);  
+        if(!wallExists){
+          walls.push(this.lastMWall)
+        }
+
+        // }else{
+        //   this.text = "Sorry it's not possible."
+        // }
+
       }
       if(this.mana >= mwallManaBurn){
         if(func.isSet(param.mwallDrop)){
@@ -652,7 +678,7 @@ class Creature {
           }
           if(func.isSet(i.walkOn)){
             itemText = true;
-            i.walkOn(this,i);
+            i.walkOn(this,i,{allItems:allItems});
           }
         }
       }
@@ -725,9 +751,54 @@ class Creature {
     if(this.health <= 0 && !this.restore){
       this.direction = 4;
       this.cyle = 0;
+      this.dieTime = game.time.getTime();
       // for monsters
       if(this.type == "monster"){
         this.restore = game.time.getTime() + 60000;
+        // LOOTING
+        if(func.isSet(this.loot)){
+          // SET LOOTING POSITION
+          const lootPositions = [];
+          lootPositions.push([this.position[0]-1,this.position[1]-1,this.position[2]])
+          lootPositions.push([this.position[0]-1,this.position[1],this.position[2]])
+          lootPositions.push([this.position[0]-1,this.position[1]+1,this.position[2]])
+          lootPositions.push([this.position[0]+1,this.position[1]+1,this.position[2]])
+          lootPositions.push([this.position[0]+1,this.position[1]-1,this.position[2]])
+          lootPositions.push([this.position[0]+1,this.position[1],this.position[2]])
+          lootPositions.push([this.position[0],this.position[1]+1,this.position[2]])
+          lootPositions.push([this.position[0],this.position[1]-1,this.position[2]])
+
+          // SET LOOTING ITEMS BY FREQURENCY
+          const currentLoot = [];
+          for(const lootItem of this.loot){
+            if(func.randomIntFromInterval(0, 10)/10 <= lootItem.freq){
+              // set drop position of item
+              const posIndex = func.randomIntFromInterval(0, lootPositions.length-1);
+              lootItem.position = lootPositions[posIndex];
+              lootPositions.splice(posIndex, 1);
+              // add it to current loot
+              currentLoot.push(lootItem)
+            }            
+          }
+          //  ADD ITEMS TO MAP
+          for(const oldMapItem of currentLoot){
+            // rewrite item
+            const mapItem = {};
+            for(const key of Object.keys(oldMapItem)){
+              mapItem[key] = oldMapItem[key];
+            }  
+
+            // unset not used vals
+            delete mapItem.freq;
+            // randomize amount
+            if(func.isSet(mapItem.amount)){
+              const [from,to] = mapItem.amount.split("-");
+              mapItem.amount = func.randomIntFromInterval(from*1, to*1);
+            }
+
+            allItems.push(new Item(mapItem));
+          }
+        }
       }
       if(this.type == "npc"){
         this.restore = game.time.getTime();
@@ -737,16 +808,27 @@ class Creature {
         game.dead = true;
       }
     }
-    // RESTORING [monster]
-    if(this.restore && game.time.getTime() >= this.restore){
-      this.health = this.maxHealth;
-      this.restore = false;
-      this.direction = 1;
-      if(!this.type == "npc"){
-        this.position = this.startPosition;
-        this.cyle = this.defaultCyle;
-      }
-    } 
+    // RESTORING [monster, npc]
+    if(["monster","npc"].includes(this.type)){
+      if(this.restore && game.time.getTime() >= this.restore){
+        if(func.isSet(this.dieTime)){ delete this.dieTime; }
+        this.health = this.maxHealth;
+        this.restore = false;
+        this.direction = 1;
+        if(!this.type == "npc"){
+          this.position = this.startPosition;
+          this.cyle = this.defaultCyle;
+        }
+      }else if(this.restore){
+        const totalDieTime = this.restore*1 - this.dieTime*1;
+        const currentDieTime =  this.restore*1 - game.time.getTime()*1;
+        if((totalDieTime/3) >= currentDieTime){
+          this.cyle = 2;
+        }else if((totalDieTime/3)*2 >= currentDieTime){
+           this.cyle = 1;
+        }
+      } 
+    }
     // HEALING [player]
     if(typeof param.controls != "undefined" && param.controls.includes(72) && this.type=="player" && this.exhaust.heal <= game.time.getTime()  && this.health > 0){  
       // 72 is "H" key
@@ -864,10 +946,10 @@ class Creature {
             for(let inLevel = 0; inLevel < param.itemAction.field.split(",").length; inLevel++){
               if(inLevel){
                 phantomItem = phantomItem.in[param.itemAction.field.split(",")[inLevel]];
+                // phantomItem.visibleFloor = param.itemAction.visibleFloor;
               }
             }         
           }
-          // console.log(phantomItem);
           if(phantomItem){
             phantomItem.position = param.itemAction.position;
             phantomItem.actionType = 'drop';
@@ -885,13 +967,13 @@ class Creature {
 
         }
       if(phantomItem){
+        phantomItem.visibleFloor = param.itemAction.visibleFloor;
         const item = new Item(phantomItem);
         item.relocate(this,{allItems: allItems},param.itemAction)
       }else{
         this.text = "Sorry, this action is not possible."
       }
-      delete param.itemAction;  
-
+      delete param.itemAction; 
     }
   }
 }
@@ -899,7 +981,7 @@ class Item{
   constructor(obj){
     this.rewrite(obj);
   }
-  makeNew(obj,where,creature){
+  makeNew(obj,items,creature){
     const item = new Item(obj);
     // GENERATE RANDOM STATS:
     if(func.isSet(item.randStats)){
@@ -920,7 +1002,7 @@ class Item{
       let setted = false;
       let f; // key of eq item
       // check empty places in eq
-      if(where == "eq" && func.isSet(item.handle)){
+      if(func.isSet(item.handle)){
         for(f of item.handle){
           if(!creature.eq[f]){
             setted=true;
@@ -940,60 +1022,24 @@ class Item{
       if(isQuest && creature.name != "GM"){
         creature.text = "The box is empty.";
       }else if(!setted){
-        creature.text = "You have no empty places.";
-      }else{
-        creature.text = "You've found a "+item.name;
-        creature.eq[f] = item;
+        item.relocate(creature, items, { actionType: 'pickUp', brandNew: true })
         creature.quests.push(item.name)
+      }else{
+        creature.text = "You've found a " + item.name;
+        creature.quests.push(item.name)
+        creature.eq[f] = item;
       }
       // set exhaust on box
-      creature.boxExhoust = game.time.getTime()+1000;
+      creature.boxExhoust = game.time.getTime() + 1000;
     }
   }
   relocate(creature,items,itemAction){
     // EQ TO MAP
     if(itemAction.actionType == 'drop'){
-      if(func.isSet(itemAction.field) && itemAction.field != "" ){
       // DROP ITEM
+      if(func.isSet(itemAction.field) && itemAction.field != "" ){
         // SET DROPPING FLOOR [WHEN DROP IS BETWEEN FLOORS]
-        // let isPos = false;
-        // for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
-        //   const checkPosition = [this.position[0],this.position[1],floor];
-        //   for(const grid of map.getGrid(checkPosition)){
-        //     if(grid[4] == "floors"){
-        //       isPos = true;
-        //       this.position = checkPosition;
-        //       break;
-        //     }
-        //   }
-        //   if(isPos){break;} 
-        // }
-        // let isPos = false;
-
-        // CHECK Floor throwing thing
-        // const isPos = () =>{
-        // for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
-        //   const checkPosition = [this.position[0],this.position[1],floor];
-        //   for(const grid of map.getGrid(checkPosition)){
-        //     if(grid[4] == "floors"){
-        //       isPos = true;
-        //       this.position = checkPosition;
-        //       break;
-        //     }
-        //   }
-        //   if(isPos){break;} 
-        // }
-        //   return false;
-        // }
-        // console.log(itemAction)
-        // if(this.field.includes(",")){
-        //   const [field,index] = this.field.split(",");
-        //   // this.field = 
-        //   // console.log(field+"|"+index);
-        // }
-
-        // if(func.isPos()){
-        if(func.isPos){
+        if(func.isPos(map,this)){
           let isInField = false;
           if(this.field.includes(",")){
             // DELETE ITEM FROM BACKPACK
@@ -1042,26 +1088,37 @@ class Item{
     if(itemAction.actionType == 'pickUp'){
       if(this.pickable){
         let move = false;
-        // try to move this item to eq
-        for(const handle of this.handle){
-          if(!creature.eq[handle]){
-            move = true;
-            creature.eq[handle] = this;
-            break;
+        // GROUP AMOUNT ITEMS
+        if(func.isSet(this.amount) && func.searchItemInCreature(this, creature)){
+          move = true;
+        }else{
+          // TRY TO MOVE ITEM TO EQ
+          for(const handle of this.handle){
+            if(!creature.eq[handle]){
+              move = true;
+              creature.eq[handle] = this;
+              break;
+            }
           }
-        }
-        // if eq is full, try give it to bp
-        if(!move && creature.eq.bp){
-          if(!func.isSet(creature.eq.bp.in)){creature.eq.bp.in = [];}
-          // check fields in bp
-          if(creature.eq.bp.in.length < creature.eq.bp.cap){
-            creature.eq.bp.in.push(this);
-            move = true;
+          // IF EQ IS FULL, TRY MOVE IT TO BP
+          if(!move && creature.eq.bp){
+            
+            
+            if(!func.isSet(creature.eq.bp.in)){creature.eq.bp.in = [];}
+            // check fields in bp
+            if(creature.eq.bp.in.length < creature.eq.bp.cap){
+              creature.eq.bp.in.push(this);
+              move = true;
+            }
+
+
           }
         }
         // SHOW RESULT
         if(!move){
           creature.text = "You can't pick up this "+this.name;
+        }else if(func.isSet(itemAction.brandNew)){
+          creature.text = "You've found a "+this.name;
         }else{
           creature.text = "You picked up "+this.name;
           // clear it from itemlist
@@ -1069,8 +1126,7 @@ class Item{
           // to last dropped on top
           items.allItems.reverse();
           items.allItems.splice(items.allItems.map((e)=>{ 
-            if(func.compareTables(e.position, this.position)){
-              // this.delete = true;
+            if(func.isSet(this.position) && func.compareTables(e.position, this.position)){
               e.delete = true;
               return this.delete
             }else{

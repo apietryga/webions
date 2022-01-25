@@ -136,7 +136,7 @@ class Creature {
         this.cyle = 0;
       }
     }else{
-      if(this.sprite != "tourets"){
+      if(this.sprite != "tourets" && this.health > 0){
         this.cyle = 0;
       }
       this.position = this.newPos;
@@ -163,7 +163,7 @@ class Creature {
     // DEATH
     if(this.health <= 0){
       if(this.sprite != "tourets"){
-        this.cyle = 0;
+        // this.cyle = 0;
       }
       this.direction = 4;
       if(player.whiteTarget == this.id){
@@ -395,25 +395,12 @@ class Grid {
       this.cyle = 1;
     }
     if(this.type == "mwalls"){
-      // console.log(this.cyle);
-      // this.cyle = 2;
-      // if(this.cyle == 1)
-      
-      // if(this.cyle == 0){
-      //   this.cyle = 1;
-      // }else{
-      //   this.cyle = 0;
-      // }
       if(serv.time %2 == 0){
         this.cyle = 1;
       }else{
         this.cyle = 0;
         
       }
-      // this.cyle = this.cyle == 0 ? 2 : 1; 
-      // console.log(this)
-      // console.log(this)
-      // console.log(map.sprites[this.type])
     }
     if(this.type != 'delete'){
       // console.log(map.sprites[this.type])
@@ -570,13 +557,56 @@ class Item{
     for(const key of Object.keys(obj)){
       this[key] = obj[key];
     }
-    // console.log(this)
-    // this.addEventListener(mobileControls.ev,()=>{
-    //   console.log(this)
-    // })
+
+    // SPRITES FOR COINS
+    if(this.sprite == "coins"){
+      // GOLD COINS
+      if(this.amount  == 1 ){
+        this.spriteNr = 0;
+      }else if( this.amount <= 2){
+        this.spriteNr = 1;
+      }else if(this.amount < 10){
+        this.spriteNr = 2;
+      }else if(this.amount < 30){
+        this.spriteNr = 3;
+      }else if(this.amount < 50){
+        this.spriteNr = 4;
+      }else if(this.amount < 100){
+        this.spriteNr = 5;
+
+      // PLATINIUM COINS
+      }else if(this.amount  == 100 ){
+        this.spriteNr = 6;
+      }else if(this.amount  <= 200 ){
+        this.spriteNr = 7;
+      }else if( this.amount < 1000){
+        this.spriteNr = 8;
+      }else if(this.amount < 3000){
+        this.spriteNr = 9;
+      }else if(this.amount < 5000){
+        this.spriteNr = 10;
+      }else if(this.amount < 10000){
+        this.spriteNr = 11;
+
+        // PLATINIUM COINS
+      }else if(this.amount == 10000){
+        this.spriteNr = 12;
+      }else if(this.amount  <= 20000 ){
+        this.spriteNr = 13;
+      }else if(this.amount  < 100000 ){
+        this.spriteNr = 14;
+      }else if( this.amount < 300000){
+        this.spriteNr = 15;
+      }else if(this.amount < 50000){
+        this.spriteNr = 16;
+      }else{
+        this.spriteNr = 17;
+      }
+    }
   }
   toDOM(){
     const item = this;
+    // const item = new Item(this);
     const sq = document.createElement("canvas");
     for(const k of Object.keys(item)){
       sq[k] = item[k];
@@ -585,13 +615,38 @@ class Item{
     const img = map.sprites[item.sprite];
     sq.width = img.height;
     sq.height = img.height;
-    // sq.width = "100%";
-    // sq.height = "100%";
+
     const ctx = sq.getContext("2d");
+    // ctx.clearRect(0, 0, img.width, img.height);
+
     ctx.drawImage(img, 
       item.spriteNr * img.height, 0, img.height, img.height,
       0, 0, img.height, img.height
     );
+
+    const itemContainer = document.createElement("div");
+    itemContainer.className = "itemContainer";
+    
+    // ITEMS WITH AMOUNT
+    if(isSet(this.amount)){
+      itemContainer.dataset.amount = this.amount;
+      ctx.fillStyle = '#fff';
+      ctx.lineWidth = 0.5;
+      ctx.font = '400 15px Tahoma';
+      ctx.textAlign = "right";
+
+      let showingAmount = 100;
+      if(item.amount < 100){
+        showingAmount = item.amount;
+      }else if(item.amount < 10000){
+        showingAmount = item.amount/100;
+      // }else if(item.amount < 1000000){
+      }else{
+        showingAmount = item.amount/10000;
+      }
+      ctx.fillText(showingAmount, 32, 32);
+    }
+    
     this.dom = sq;
     sq.onclick = () => {
       if(sq.classList.contains("picked")){
@@ -606,14 +661,12 @@ class Item{
         sq.classList.add("picked");
       }
     }
-    const itemContainer = document.createElement("div");
-    itemContainer.className = "itemContainer";
     // Item's skills preview
     const label = document.createElement("div");
     label.className = "label";
     label.innerHTML = "";
     for(const key of Object.keys(item)){
-      if(['name','def','speed','health','mana','manaRegen','fist','dist','atk'].includes(key)){
+      if(['name','def','speed','health','mana','manaRegen','fist','dist','atk','amount'].includes(key)){
         const wrapper = document.createElement("div");
         wrapper.style.cssText = "display:flex;align-items:center;"
         if(key != 'name'){
@@ -628,7 +681,7 @@ class Item{
     return itemContainer;
   }
   update(){
-    // console.log("update...")
+    // update items on floor.
   }
   draw(){
      // CANVAS ITEM

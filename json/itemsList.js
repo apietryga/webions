@@ -252,7 +252,7 @@ this.list = [
     position:[48,5,1],
   },
 
-
+  // WIZARDS
   { name:"Wand of Destiny",
     position:[-72,11,2]
   },
@@ -261,5 +261,15 @@ this.list = [
   },
   { name:"Magic Armor",
     position:[-71,11,2]
-  }
+  },
+
+  // BLUE 17
+  { name:"Ladder",
+    position:[25,15,1],
+  },
+  { name:"staticBox",
+    position:[29,13,1],
+    inItem: "Coins",
+    spriteNr:2,
+  },
 ]

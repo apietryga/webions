@@ -95,7 +95,18 @@ const monstersTypes = [
       fist:50,
       exp:25,
       dist:0
-    }
+    },
+    loot:[
+      {
+        name : "Coins",
+        amount : "5 - 50",
+        freq: 1
+      },
+      {
+        name : "Simple Shield",
+        freq: 0.2
+      }
+    ]
   },
   {name:"Barbarian",
     sprite:"barbarian",

@@ -151,21 +151,111 @@ this.validateNick = (nick, forbiddenNicks) => {
   }  
   return [true, nick];
 }
-this.isPos = () =>{
+this.isPos = (map,throwingEl) =>{
   // SET DROPPING FLOOR [WHEN DROP IS BETWEEN FLOORS]
-  for(let floor = this.visibleFloor; floor >= map.minFloor; floor--){
-    const checkPosition = [this.position[0],this.position[1],floor];
+  let isPos = false;
+  let isWall = false;
+  for(let floor = throwingEl.visibleFloor; floor >= map.minFloor; floor--){
+    const checkPosition = [throwingEl.position[0],throwingEl.position[1],floor];
     for(const grid of map.getGrid(checkPosition)){
       if(grid[4] == "floors"){
         isPos = true;
-        this.position = checkPosition;
-        break;
+        throwingEl.position = checkPosition;
+        // break;
+      }
+      if(grid[4] == "walls"){
+        isWall = true;
       }
     }
-    if(isPos){return isPos;} 
+    if(isPos && !isWall){return isPos;} 
   }
   return false;
 }
+this.divideAmountItems = (addAI, crAI) => {
+  // AI - aumount item
+  // return false will create another item
+  if( crAI.amount + addAI.amount > 100 ){
+
+
+    if(
+      // prevent adding gold to platinium
+      ((crAI.amount % 100 == 0 && addAI.amount % 100 != 0)
+      || (addAI.amount % 100 == 0 && crAI.amount % 100 != 0))
+      // prevent adding platinium to crystal
+      ||((crAI.amount % 10000 == 0 && addAI.amount % 10000 != 0)
+      || (addAI.amount % 10000 == 0 && crAI.amount % 10000 != 0))
+    ){
+      return false;
+    }
+
+
+
+    // platinium
+    if(crAI.amount % 100 == 0 && addAI.amount % 100 == 0){
+      if(crAI.amount + addAI.amount > 10000){
+        // crystal
+        if(crAI.amount % 10000 == 0 && addAI.amount % 10000 == 0){
+          if(crAI.amount + addAI.amount > 1000000){
+            // stack crystal
+            addAI.amount = (crAI.amount + addAI.amount) - 1000000;
+            crAI.amount = 1000000;
+            return false;
+          }else{
+            crAI.amount += addAI.amount;
+            return true;
+          }
+        }
+        // stack platinium
+        addAI.amount = (crAI.amount + addAI.amount) - 10000;
+        crAI.amount = 10000;
+        return false;
+      }else{
+        crAI.amount += addAI.amount;
+        return true;
+      }
+    }
+
+
+    // 0 - 100 stack
+    addAI.amount = (crAI.amount + addAI.amount) - 100;
+    crAI.amount = 100;
+    return false;
+  }else{
+    crAI.amount += addAI.amount;
+    addAI.amount = 0;
+    return true;
+  }
+
+}
+this.searchItemInCreature = (item, creature) => {
+  // console.log('searchItemInCreature')
+  let findedItem = false;
+  for(const eqField of Object.keys(creature.eq).reverse()){
+    // check in eq
+    if(creature.eq[eqField].name == item.name && this.divideAmountItems(item, creature.eq[eqField])){
+      findedItem = creature.eq[eqField];
+      break;
+    }
+    // check in capable items in eq
+    // TO DO : CHECK BP IN BP
+    if(this.isSet(creature.eq[eqField].in)){
+      for(const inItem of creature.eq[eqField].in){
+        if(inItem.name == item.name && this.divideAmountItems(item, inItem)){
+          findedItem = inItem;
+          break;
+        }
+      }
+    }
+    if(findedItem){ break; }
+  }
+
+  return findedItem;
+}
+this.randomIntFromInterval = (min, max) => { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+
 function recolorImage(img, fresh = {head:[50,50,50],chest:[50,50,50],legs:[50,50,50],foots:[50,50,50]}){
   if(!isSet(img)){return 0;}
   const c = document.createElement('canvas');
@@ -250,6 +340,8 @@ function get_cookie(name){
       return c.trim().startsWith(name + '=');
   });
 }
+
+
 // signs for health, manaRegen etc.
 const sign = {
   names: ['fist','dist','mana','manaRegen','def','health','healing','speed','exp'],

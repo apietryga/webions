@@ -411,7 +411,12 @@ const menus = {
           row.innerHTML = ""; row.className = "row";
 
           // CHECK THE BACKPACK POSITION
-          let itemIn = player.eq[item.field.split(",")[0]].in;          
+          let itemIn;
+          if(item.name == "Locker"){
+            itemIn = player.locker.in;
+          }else{
+            itemIn = player.eq[item.field.split(",")[0]].in;          
+          }
           if(item.field.includes(",") && isSet(itemIn)){
             // bp from bp etc.
             for(let inLevel = 0; inLevel < item.field.split(",").length; inLevel++){
@@ -445,13 +450,17 @@ const menus = {
         }
       },
       close(item){
-        item.openedContainer.remove();
+        // console.log("DELETING")
+        // if(isSet(item.openedContainer)){
+          item.openedContainer.remove();
+        // }
         this.opened.delete(item.whenOpen);
         delete item.openedContainer;
       },
       open(item){
         const title = document.createElement("div");
-        title.innerHTML = "Backpack";
+        // title.innerHTML = "Backpack";
+        title.innerHTML = item.name;
         title.className = "title";
 
         if(item.parent){
@@ -861,20 +870,43 @@ const menus = {
   },
   update(){
     this.mainMenu.update();
-    // update opened backpacks
-    // COUT ITEMS FOR REFRESHING BP'S
+
+    // REFRESH AMOUNT OF ITEMS IN EQ
+    for(const eqField of Object.keys(player.eq)){
+      if(isSet(player.eq[eqField].amount)){
+        const itemContainer = document.querySelector(".eq ."+eqField+" .itemContainer");
+        if(player.eq[eqField].amount != itemContainer.dataset.amount){
+          const thisEqDOM = document.querySelector(".eq ."+eqField);
+          const newItem = new Item(player.eq[eqField]);
+          newItem.field = eqField;
+          thisEqDOM.innerHTML = "";
+          thisEqDOM.append(newItem.toDOM());
+        }
+      }
+    }
+
+    // COUNT ITEMS FOR REFRESH OPENED BP'S
     let playerItemsLength = 0;
     for(const item of Object.keys(player.eq)){
       // COUNT ITEMS IN EQ
       if(player.eq[item]){
-        playerItemsLength++;
+        if(isSet(player.eq[item].amount)){
+          playerItemsLength += player.eq[item].amount;
+        }else{
+          playerItemsLength++;
+        }
       }
       // COUNT ITEMS IN CAPABLEITEMS [backpack]
       const countInBackPackItems = (item) => {
         if(isSet(item.in)){
           for(const inItem of item.in){
             if(inItem){
-              playerItemsLength++;
+              if(isSet(inItem.amount)){
+                playerItemsLength += inItem.amount;
+              }else{
+                playerItemsLength++;
+              }      
+              // playerItemsLength++;
               countInBackPackItems(inItem);
             }
           }
@@ -900,6 +932,27 @@ const menus = {
       }
     }else{
       player.itemsLength = playerItemsLength;
+    }
+
+    // DEPO LOCKERS LISTENING
+    if(player.lockerOpened){
+      let isLockerOpen = false;
+      this.mainMenu.capableItems.opened.forEach((obj)=>{
+        if(obj.name == "Locker"){
+          isLockerOpen = true;
+        }
+      })
+      if(!isLockerOpen){
+        player.lockerDOM = player.locker;
+        this.mainMenu.capableItems.open(player.lockerDOM);
+      }
+
+    }else{
+      this.mainMenu.capableItems.opened.forEach((obj,key)=>{
+        if(obj.name == "Locker"){
+          this.mainMenu.capableItems.close(player.lockerDOM);
+        }
+      })
     }
   }
 }
