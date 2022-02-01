@@ -25,9 +25,9 @@
 ## ISSUES
   - NPC's staying on saying, speaking and trading
   - monsters walking through static items 
+  - moving through stairs when monster's there
   - login without cookies (once)
   - improve target unselect
-  - moving through stairs when monster's there
   - in labels label show desc, cap and amount
   - protection zone
   - house zone
