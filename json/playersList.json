@@ -45,23 +45,23 @@
   },
   {
     "name": "Tosiek",
-    "position": [82, 9, 1],
+    "position": [93, 30, 0],
     "speed": 2.6,
-    "health": 708,
+    "health": 700,
     "maxHealth": 720,
     "skills": {
       "level": 62,
-      "exp": 233886,
+      "exp": 234686,
       "fist": 126,
-      "dist": 130,
-      "fist_summary": 1988908,
-      "dist_summary": 2190867,
-      "def_summary": 113527,
-      "def": 49,
-      "magic_summary": 1167557,
+      "dist": 131,
+      "fist_summary": 1992750,
+      "dist_summary": 2198463,
+      "def_summary": 135327,
+      "def": 52,
+      "magic_summary": 1170557,
       "magic": 106
     },
-    "lastFrame": 1642805745248,
+    "lastFrame": 1651855734595,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -75,15 +75,14 @@
       "hd": {
         "type": "item",
         "name": "Magic Hat",
-        "position": [55, -8, 1],
+        "position": [100, 0, 0],
         "sprite": "items",
         "spriteNr": 13,
         "handle": ["hd"],
         "pickable": true,
         "mana": 400,
         "manaRegen": 50,
-        "actionType": "pickUp",
-        "visibleFloor": 7,
+        "actionType": "drop",
         "field": "hd",
         "pos": [55, -8, 1]
       },
@@ -159,7 +158,10 @@
             "pickable": true,
             "manaRegen": 10
           }
-        ]
+        ],
+        "position": [88, 9, 0],
+        "actionType": "drop",
+        "field": "bp"
       },
       "nc": false,
       "ch": {
@@ -256,11 +258,11 @@
     "quests": ["ladder", "Backpack"],
     "mana": 1120,
     "maxMana": 720,
-    "token": "5ed5rjmimw",
+    "token": "ryrxjgq9v3",
     "redTarget": false,
     "autoShot": true,
     "autoMWDrop": false,
-    "lastMWall": [2, -6, 0, 1641980358781]
+    "lastMWall": [105, 42, 0, 1651855738626]
   },
   {
     "name": "Zuzia",
@@ -342,7 +344,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 3606,
+    "mana": 3610,
     "maxMana": 4910,
     "redTarget": 6,
     "autoShot": true,
@@ -441,7 +443,7 @@
       }
     ],
     "quests": ["Simple Shield"],
-    "mana": 220,
+    "mana": 320,
     "maxMana": 670,
     "redTarget": 6,
     "autoShot": true,
@@ -1578,7 +1580,7 @@
     "mana": 2110,
     "maxMana": 2110,
     "redTarget": false,
-    "token": "3u22nh9t2lj",
+    "token": "uiclf42b2o",
     "autoShot": true,
     "autoMWDrop": false,
     "lastMWall": [30, 12, 1, 1642963262479]

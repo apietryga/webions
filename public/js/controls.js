@@ -139,8 +139,8 @@ const controls = {
       if(isSet(e.offsetX)){
         const gY = e.target.offsetWidth/11;
         const gX = e.target.offsetHeight/11;
-        ox = Math.floor(e.layerX/gX);
-        oy = Math.floor(e.layerY/gY);
+        ox = Math.floor(e.offsetX/gX);
+        oy = Math.floor(e.offsetY/gY);
       }
       // GET X Y pos.
       const x = ox+player.newPos[0]-5;
@@ -162,7 +162,6 @@ const controls = {
       if(picked != null){
         isAction = true;
         player.itemAction = {}
-        // console.log(picked.field)
         player.itemAction.visibleFloor = map.visibleFloor;
         player.itemAction.position = [x,y,player.position[2]];
         player.itemAction.actionType = "drop";

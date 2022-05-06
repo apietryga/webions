@@ -384,7 +384,6 @@ const extendConsole = (val) => {
 
 
 // HEROKU ANTI IDLING SCRIPT
-
 const antiIdlingScript = () => {
   setInterval(() => {
     http.get(process.env.ORIGIN, (res) => {
