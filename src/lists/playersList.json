@@ -344,7 +344,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 3622,
+    "mana": 3634,
     "maxMana": 4910,
     "redTarget": 6,
     "autoShot": true,
@@ -367,7 +367,7 @@
       "dist_summary": 1332927,
       "def_summary": 19660,
       "def": 27,
-      "magic_summary": 782908,
+      "magic_summary": 783158,
       "magic": 93
     },
     "lastFrame": 1641922693393,
@@ -443,13 +443,13 @@
       }
     ],
     "quests": ["Simple Shield"],
-    "mana": 120,
+    "mana": 170,
     "maxMana": 670,
     "redTarget": 6,
     "autoShot": true,
     "autoMWDrop": true,
     "token": "e4l28d0vlt",
-    "lastMWall": [42, 5, -1, 1658416956054]
+    "lastMWall": [42, 5, -1, 1658420734389]
   },
   {
     "name": "Maja",
@@ -568,27 +568,27 @@
   },
   {
     "name": "GM",
-    "position": [92, -9, 1],
+    "position": [29, 16, 1],
     "speed": 4,
     "health": 3110,
     "maxHealth": 2110,
     "sprite": "gm",
     "skills": {
       "level": 201,
-      "exp": 8035430,
+      "exp": 8035655,
       "fist": 189,
       "dist": 202,
-      "fist_summary": 6695094,
-      "dist_summary": 8121220,
-      "def_summary": 1000363600,
+      "fist_summary": 6696539,
+      "dist_summary": 8123938,
+      "def_summary": 1000363800,
       "def": 1001,
-      "magic_summary": 3710760,
+      "magic_summary": 3711510,
       "magic": 155
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1643127325174,
+    "lastFrame": 1658418244206,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -718,15 +718,6 @@
             "amount": 600
           },
           {
-            "name": "Simple Shield",
-            "position": [91, -10, 1],
-            "sprite": "items",
-            "spriteNr": 11,
-            "handle": ["lh", "rh"],
-            "pickable": true,
-            "def": 20
-          },
-          {
             "name": "Coins",
             "amount": 56,
             "position": [91, -10, 1],
@@ -736,12 +727,26 @@
             "pickable": true
           },
           {
+            "name": "Simple Shield",
+            "position": [37, 12, 0],
+            "sprite": "items",
+            "spriteNr": 11,
+            "handle": ["lh", "rh"],
+            "pickable": true,
+            "def": 20,
+            "actionType": "drop",
+            "field": "bp,4"
+          },
+          {
             "name": "Simple Legs",
             "sprite": "items",
             "spriteNr": 4,
             "handle": ["lg"],
             "pickable": true,
-            "manaRegen": 10
+            "manaRegen": 10,
+            "position": [37, 11, 0],
+            "actionType": "drop",
+            "field": "bp,5"
           }
         ],
         "position": [29, 13, 1],
@@ -1583,7 +1588,7 @@
     "token": "j0n1aczj3s",
     "autoShot": true,
     "autoMWDrop": false,
-    "lastMWall": [30, 12, 1, 1642963262479]
+    "lastMWall": [36, -4, 0, 1658417599279]
   },
   {
     "name": "Niko",
