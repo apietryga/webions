@@ -2,6 +2,7 @@ const GameMap = require("../../public/js/map");
 const map = new GameMap();
 const func = require("../../public/js/functions");
 const game = require("../../public/js/gameDetails");
+const Item = require("./Item");
 
 module.exports = class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
