@@ -1,16 +1,16 @@
 const fs = require('fs');
 const func = require("../public/js/functions");
 const URL = require('url').URL;
-const dbConnect = require("./dbconnect"), dbc = new dbConnect();dbc.init(()=>{});
+const dbConnect = require("../src/dbconnect"), dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
 const Mailgun = require("mailgun").Mailgun, mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
-const Creature = require("./server_components")[0];
+const Creature = require("../src/components/Creature");
 const MarkdownIt = require('markdown-it'), md = new MarkdownIt();
 const bcrypt = require('bcrypt');
 const mime = require('mime-types');
 // filter creatures to monsters only
-const creatures = require("./monstersTypes");
-const npcs = require("./npcs").npcs;
+const creatures = require("../src/types/monstersTypes");
+const npcs = require("../src/lists/npcs").npcs;
 const monsters = [];
 for(const creature of creatures){
   if(typeof creature.type == "undefined" && creature.sprite != "tourets"){
@@ -437,7 +437,7 @@ const public = (req, res, players) => {
     `;
     vals.js += `<script>
         const monsters = ${JSON.stringify(monsters)};
-        const items = ${JSON.stringify(require("./itemsTypes").types)};
+        const items = ${JSON.stringify(require("../src/types/itemsTypes").types)};
     </script>`;
     serveChangedContent(myURL.pathname);
   }else if(["/","/index.html"].includes(myURL.pathname)){

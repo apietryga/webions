@@ -1,5 +1,5 @@
 this.npcs = [
-   {name:"Slepo Oma",
+  { name:"Slepo Oma",
     sprite:"oma",
     health:100,
     type:"npc",
