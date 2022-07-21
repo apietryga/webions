@@ -18,7 +18,8 @@ let fs,func,stringify;
 if(typeof window == "undefined"){fs = require("fs");func = require("./functions");stringify = require("json-stringify-pretty-compact");}
 class GameMap{
   constructor(){
-    this.path = "./json/map.json";
+    // this.path = "./json/map.json";
+    this.path = "./src/map/map.json";
     // this.path = "./json/testmap.json";
     this.avalibleGrids = ['floors','halffloors'];
     this.notAvalibleGrids = ['walls','stairs','windows','mwalls'];
