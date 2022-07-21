@@ -45,23 +45,23 @@
   },
   {
     "name": "Tosiek",
-    "position": [93, 30, 0],
+    "position": [35, -9, -1],
     "speed": 2.6,
-    "health": 700,
-    "maxHealth": 720,
+    "health": 710,
+    "maxHealth": 710,
     "skills": {
-      "level": 62,
-      "exp": 234686,
-      "fist": 126,
+      "level": 61,
+      "exp": 225621,
+      "fist": 127,
       "dist": 131,
-      "fist_summary": 1992750,
-      "dist_summary": 2198463,
-      "def_summary": 135327,
-      "def": 52,
-      "magic_summary": 1170557,
+      "fist_summary": 2001342,
+      "dist_summary": 2215326,
+      "def_summary": 223277,
+      "def": 61,
+      "magic_summary": 1171591,
       "magic": 106
     },
-    "lastFrame": 1651855734595,
+    "lastFrame": 1658431304240,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -224,12 +224,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-27T14:37:45.145Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 66
-      },
-      {
         "when": "2022-01-11T15:40:31.047Z",
         "who": "GM",
         "whoType": "player",
@@ -252,17 +246,23 @@
         "who": "Maggot",
         "whoType": "monster",
         "level": 62
+      },
+      {
+        "when": "2022-07-21T19:21:44.178Z",
+        "who": "Maggot",
+        "whoType": "monster",
+        "level": 61
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder", "Backpack"],
-    "mana": 1120,
-    "maxMana": 720,
-    "token": "ryrxjgq9v3",
+    "mana": 1110,
+    "maxMana": 710,
+    "token": "1oex04dbt5h",
     "redTarget": false,
     "autoShot": true,
     "autoMWDrop": false,
-    "lastMWall": [105, 42, 0, 1651855738626]
+    "lastMWall": [32, -23, 0, 1658431131742]
   },
   {
     "name": "Zuzia",
@@ -344,7 +344,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 3610,
+    "mana": 3646,
     "maxMana": 4910,
     "redTarget": 6,
     "autoShot": true,
@@ -367,7 +367,7 @@
       "dist_summary": 1332927,
       "def_summary": 19660,
       "def": 27,
-      "magic_summary": 782408,
+      "magic_summary": 783408,
       "magic": 93
     },
     "lastFrame": 1641922693393,
@@ -443,13 +443,13 @@
       }
     ],
     "quests": ["Simple Shield"],
-    "mana": 320,
+    "mana": 220,
     "maxMana": 670,
     "redTarget": 6,
     "autoShot": true,
     "autoMWDrop": true,
     "token": "e4l28d0vlt",
-    "lastMWall": [42, 5, -1, 1643127048313]
+    "lastMWall": [42, 5, -1, 1658421489980]
   },
   {
     "name": "Maja",
@@ -568,27 +568,27 @@
   },
   {
     "name": "GM",
-    "position": [92, -9, 1],
+    "position": [28, 18, 0],
     "speed": 4,
     "health": 3110,
     "maxHealth": 2110,
     "sprite": "gm",
     "skills": {
       "level": 201,
-      "exp": 8035430,
+      "exp": 8035655,
       "fist": 189,
       "dist": 202,
-      "fist_summary": 6695094,
-      "dist_summary": 8121220,
-      "def_summary": 1000363600,
+      "fist_summary": 6696539,
+      "dist_summary": 8123938,
+      "def_summary": 1000363800,
       "def": 1001,
-      "magic_summary": 3710760,
+      "magic_summary": 3711510,
       "magic": 155
     },
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1643127325174,
+    "lastFrame": 1658421347248,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],
@@ -718,15 +718,6 @@
             "amount": 600
           },
           {
-            "name": "Simple Shield",
-            "position": [91, -10, 1],
-            "sprite": "items",
-            "spriteNr": 11,
-            "handle": ["lh", "rh"],
-            "pickable": true,
-            "def": 20
-          },
-          {
             "name": "Coins",
             "amount": 56,
             "position": [91, -10, 1],
@@ -736,12 +727,26 @@
             "pickable": true
           },
           {
+            "name": "Simple Shield",
+            "position": [37, 12, 0],
+            "sprite": "items",
+            "spriteNr": 11,
+            "handle": ["lh", "rh"],
+            "pickable": true,
+            "def": 20,
+            "actionType": "drop",
+            "field": "bp,4"
+          },
+          {
             "name": "Simple Legs",
             "sprite": "items",
             "spriteNr": 4,
             "handle": ["lg"],
             "pickable": true,
-            "manaRegen": 10
+            "manaRegen": 10,
+            "position": [37, 11, 0],
+            "actionType": "drop",
+            "field": "bp,5"
           }
         ],
         "position": [29, 13, 1],
@@ -1580,10 +1585,10 @@
     "mana": 2110,
     "maxMana": 2110,
     "redTarget": false,
-    "token": "uiclf42b2o",
+    "token": "j0n1aczj3s",
     "autoShot": true,
     "autoMWDrop": false,
-    "lastMWall": [30, 12, 1, 1642963262479]
+    "lastMWall": [36, -4, 0, 1658417599279]
   },
   {
     "name": "Niko",

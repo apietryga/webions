@@ -1,5 +1,5 @@
 const fs = require('fs');
-const game = require('../public/js/gameDetails');
+const game = require('../../public/js/gameDetails');
 const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
 class dbConnect{
@@ -101,7 +101,7 @@ class dbConnect{
     }
   }
   json = {
-    src: "./json/playersList.json",
+    src: "./src/lists/playersList.json",
     loadAll(callback){
       fs.readFile(this.src,"utf8",(e,content) => {
         if(e == null){
