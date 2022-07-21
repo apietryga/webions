@@ -45,23 +45,23 @@
   },
   {
     "name": "Tosiek",
-    "position": [33, 11, 0],
+    "position": [35, -9, -1],
     "speed": 2.6,
-    "health": 700,
-    "maxHealth": 720,
+    "health": 710,
+    "maxHealth": 710,
     "skills": {
-      "level": 62,
-      "exp": 236276,
-      "fist": 126,
+      "level": 61,
+      "exp": 225621,
+      "fist": 127,
       "dist": 131,
-      "fist_summary": 1997722,
-      "dist_summary": 2207472,
-      "def_summary": 170127,
-      "def": 56,
-      "magic_summary": 1170557,
+      "fist_summary": 2001342,
+      "dist_summary": 2215326,
+      "def_summary": 223277,
+      "def": 61,
+      "magic_summary": 1171591,
       "magic": 106
     },
-    "lastFrame": 1658417430070,
+    "lastFrame": 1658431304240,
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "password": "$2b$10$PLRXnU4nlkYnfUdfHpWBJOHq3eJ4Ssxw5KtbBK4D7M8/FQOlD3SH2",
@@ -224,12 +224,6 @@
     },
     "lastDeaths": [
       {
-        "when": "2021-12-27T14:37:45.145Z",
-        "who": "Minotaur",
-        "whoType": "monster",
-        "level": 66
-      },
-      {
         "when": "2022-01-11T15:40:31.047Z",
         "who": "GM",
         "whoType": "player",
@@ -252,17 +246,23 @@
         "who": "Maggot",
         "whoType": "monster",
         "level": 62
+      },
+      {
+        "when": "2022-07-21T19:21:44.178Z",
+        "who": "Maggot",
+        "whoType": "monster",
+        "level": 61
       }
     ],
     "sprite": "male_citizen",
     "quests": ["ladder", "Backpack"],
-    "mana": 1120,
-    "maxMana": 720,
-    "token": "9hif9op7a0l",
+    "mana": 1110,
+    "maxMana": 710,
+    "token": "1oex04dbt5h",
     "redTarget": false,
     "autoShot": true,
     "autoMWDrop": false,
-    "lastMWall": [105, 42, 0, 1651855738626]
+    "lastMWall": [32, -23, 0, 1658431131742]
   },
   {
     "name": "Zuzia",
@@ -344,7 +344,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 3634,
+    "mana": 3646,
     "maxMana": 4910,
     "redTarget": 6,
     "autoShot": true,
@@ -367,7 +367,7 @@
       "dist_summary": 1332927,
       "def_summary": 19660,
       "def": 27,
-      "magic_summary": 783158,
+      "magic_summary": 783408,
       "magic": 93
     },
     "lastFrame": 1641922693393,
@@ -443,13 +443,13 @@
       }
     ],
     "quests": ["Simple Shield"],
-    "mana": 170,
+    "mana": 220,
     "maxMana": 670,
     "redTarget": 6,
     "autoShot": true,
     "autoMWDrop": true,
     "token": "e4l28d0vlt",
-    "lastMWall": [42, 5, -1, 1658420734389]
+    "lastMWall": [42, 5, -1, 1658421489980]
   },
   {
     "name": "Maja",
@@ -568,7 +568,7 @@
   },
   {
     "name": "GM",
-    "position": [29, 16, 1],
+    "position": [28, 18, 0],
     "speed": 4,
     "health": 3110,
     "maxHealth": 2110,
@@ -588,7 +588,7 @@
     "password": "$2b$10$u60JdlxnLLyiszpIfEeoV.qsMTj/ySjgem66EzQx8kjkwCaVrU3Pq",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastFrame": 1658418244206,
+    "lastFrame": 1658421347248,
     "colors": {
       "head": [240, 169, 98],
       "chest": [240, 98, 98],

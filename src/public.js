@@ -1,16 +1,17 @@
 const fs = require('fs');
 const func = require("../public/js/functions");
 const URL = require('url').URL;
-const dbConnect = require("../src/dbconnect"), dbc = new dbConnect();dbc.init(()=>{});
+const dbConnect = require("./database/dbconnect"), dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
 const Mailgun = require("mailgun").Mailgun, mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
-const Creature = require("../src/components/Creature");
+const Creature = require("./components/Creature");
 const MarkdownIt = require('markdown-it'), md = new MarkdownIt();
 const bcrypt = require('bcrypt');
 const mime = require('mime-types');
+const itemTypes = require("./types/itemsTypes").types;
 // filter creatures to monsters only
-const creatures = require("../src/types/monstersTypes");
-const npcs = require("../src/lists/npcs").npcs;
+const creatures = require("./types/monstersTypes");
+const npcs = require("./lists/npcs").npcs;
 const monsters = [];
 for(const creature of creatures){
   if(typeof creature.type == "undefined" && creature.sprite != "tourets"){
@@ -60,6 +61,8 @@ const password = {
     });
   }
 }
+
+
 const public = (req, res, players) => {
   const myURL = new URL("https://"+req.rawHeaders[1]+req.url);
   const vals = {
@@ -437,7 +440,7 @@ const public = (req, res, players) => {
     `;
     vals.js += `<script>
         const monsters = ${JSON.stringify(monsters)};
-        const items = ${JSON.stringify(require("../src/types/itemsTypes").types)};
+        const items = ${JSON.stringify(itemTypes)};
     </script>`;
     serveChangedContent(myURL.pathname);
   }else if(["/","/index.html"].includes(myURL.pathname)){
@@ -452,4 +455,6 @@ const public = (req, res, players) => {
     serveChangedContent(myURL.pathname);
   }
 }
+
+
 module.exports = public; 
