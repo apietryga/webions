@@ -1,5 +1,5 @@
 const fs = require('fs');
-const game = require('../public/js/gameDetails');
+const game = require('../../public/js/gameDetails');
 const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
 class dbConnect{
