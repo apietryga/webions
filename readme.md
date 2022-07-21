@@ -1,6 +1,8 @@
 # WEBIONS
-  Webions is a MMORPG game working on browsers. (Like Tibia in borwser) 
-  You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "src/server.js" by nodejs. I will make instructions for this in future versions.
+[CLICK HERE TO PLAY](https://webions.herokuapp.com/)
+
+Webions is a MMORPG game working on browsers. (Like Tibia in borwser) 
+You can simply download [this repository](https://github.com/apietryga/webions2) and make server on your own by open "src/server.js" by nodejs. I will make instructions for this in future versions.
 
 ## FIRST RUN
 1. Get the repository
