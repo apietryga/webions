@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apietryga/webions2.git"
+    "url": "git+https://github.com/apietryga/webions.git"
   },
   "keywords": [
     "game",
@@ -29,7 +29,7 @@
   "author": "apietryga",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/apietryga/webions2/issues"
+    "url": "https://github.com/apietryga/webions/issues"
   },
-  "homepage": "https://github.com/apietryga/webions2#readme"
+  "homepage": "https://github.com/apietryga/webions#readme"
 }

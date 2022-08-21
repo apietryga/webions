@@ -415,7 +415,7 @@ const public = (req, res, players) => {
       })
     }
   }else if(["/4devs.html"].includes(myURL.pathname)){
-    vals.aside = `<a href="https://github.com/apietryga/webions2" target="_blank">GITHUB</a>`;
+    vals.aside = `<a href="https://github.com/apietryga/webions" target="_blank">GITHUB</a>`;
     serveChangedContent(myURL.pathname);
   }else if(["/mapeditor.html"].includes(myURL.pathname)){
     if(game.dev == true){
