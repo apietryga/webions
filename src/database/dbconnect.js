@@ -5,6 +5,7 @@ const redis = require('redis');
 class dbConnect{
   init(callback){
     // Redis connection
+    // console.log(process.env.REDIS_URL)
     if(typeof process.env.REDIS_URL == "string" || typeof process.env.REDIS_TLS_URL == "string"){
       this.redis.client = redis.createClient(process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL, {tls: {rejectUnauthorized: false,}});
     }else{

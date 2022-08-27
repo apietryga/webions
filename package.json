@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
     "http-shutdown": "^1.2.2",
     "json-stringify-pretty-compact": "^3.0.0",
     "mailgun": "^0.5.0",

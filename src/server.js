@@ -18,6 +18,7 @@ const public = require("./public");
 const itemsList = require("./lists/itemsList").list;
 // const { db } = require('./public/js/gameDetails');
 const func = require('../public/js/functions')
+require('dotenv').config()
 // let servRequest = false;
 // filter data on websocket send
 const disallowKeys = [
