@@ -344,7 +344,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 3646,
+    "mana": 3650,
     "maxMana": 4910,
     "redTarget": 6,
     "autoShot": true,
@@ -443,7 +443,7 @@
       }
     ],
     "quests": ["Simple Shield"],
-    "mana": 220,
+    "mana": 320,
     "maxMana": 670,
     "redTarget": 6,
     "autoShot": true,
