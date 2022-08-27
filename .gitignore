@@ -3,3 +3,4 @@ dump.rdb
 Redis/
 sprite_pack/
 json/playersList.json
+.env
