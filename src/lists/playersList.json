@@ -344,7 +344,7 @@
     },
     "lastDeaths": [],
     "quests": [],
-    "mana": 3654,
+    "mana": 3682,
     "maxMana": 4910,
     "redTarget": 6,
     "autoShot": true,
@@ -367,7 +367,7 @@
       "dist_summary": 1332927,
       "def_summary": 19660,
       "def": 27,
-      "magic_summary": 783658,
+      "magic_summary": 784408,
       "magic": 93
     },
     "lastFrame": 1641922693393,
@@ -443,13 +443,13 @@
       }
     ],
     "quests": ["Simple Shield"],
-    "mana": 170,
+    "mana": 120,
     "maxMana": 670,
     "redTarget": 6,
     "autoShot": true,
     "autoMWDrop": true,
     "token": "e4l28d0vlt",
-    "lastMWall": [42, 5, -1, 1661581786896]
+    "lastMWall": [42, 5, -1, 1661582937702]
   },
   {
     "name": "Maja",
