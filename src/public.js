@@ -329,6 +329,51 @@ const public = (req, res, players) => {
     }
     req.on("end", ()=>{processRequest(serveChangedContent)});
   }else if(["/game.html"].includes(myURL.pathname)){
+    vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
+    if(func.isSet(req.headers.cookie)){
+      let currentPlayer = false;
+      // wait for connect to db and find player's token.
+      let isWaiting = false;
+      // login player from cookies
+      for(const cookie of req.headers.cookie.split("; ")){
+        const [key,cookieToken] = cookie.split("=");
+        if(key == "token"){
+          isWaiting = true;
+          dbc[game.db].loadAll((allPlayers)=>{
+            // let cPlayer = false;
+            for(const singlePlayer of allPlayers){
+              // find player with cookieToken
+              if(typeof singlePlayer.token != "undefined"  && singlePlayer.token == cookieToken){
+                currentPlayer = singlePlayer.name;
+                break;
+              }
+            }
+            if(currentPlayer){
+              path = "./public/game.html";
+              vals.nick = currentPlayer;
+            }else{
+              path = "./public/account.html";
+              vals.message = "Please log in:";
+            }
+            serveChangedContent(path);
+          });
+        }
+      }
+      if(currentPlayer){
+        path = "./public/game.html";
+        vals.nick = currentPlayer;
+      }else{
+        path = "./public/account.html";
+        vals.message = "Please log in :";
+      }
+      if(!isWaiting){
+        serveChangedContent(path);
+      }
+    }else{
+      path = "./public/account.html";
+      vals.message = "Please log in:";
+      serveChangedContent(path);
+    }
   }else if(["/exportplayers"].includes(myURL.pathname)){
 
     // const allPlayers = []

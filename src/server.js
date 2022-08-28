@@ -17,7 +17,8 @@ const game = require("../public/js/gameDetails");
 const public = require("./public");
 const itemsList = require("./lists/itemsList").list;
 // const { db } = require('./public/js/gameDetails');
-const func = require('../public/js/functions')
+const func = require('../public/js/functions');
+
 require('dotenv').config()
 // let servRequest = false;
 // filter data on websocket send
@@ -27,7 +28,7 @@ const disallowKeys = [
   "password",
   "lastDeaths"
 ];
-const cm = { // creatures managment [monsters = monsters & npc's]
+const cm = { // creatures managment [monsters = monsters & npc's] 
   allMonsters: [],
   monstersInArea: [],
   loadMonsters(){
@@ -302,7 +303,7 @@ dbc.init(()=>{
     servRequest = req;
     servResponse = res;
     public(req,res,cm.players)
-  }).listen(process.env.PORT || 80);
+  }).listen(process.env.PORT || 5000);
   const date = new Date();
   game.startServerTime = date.getTime();
   console.log("SERWER IS RUNNING");
@@ -365,16 +366,16 @@ process.on('SIGTERM', shutdown('SIGTERM')).on('SIGINT', shutdown('SIGINT')).on('
 
 
 // CATCH ALL CONSOLE LOGS AND ERRORS
-const log = console.log;
-const err = console.error;
-const extendConsole = (val) => {
-  const date = new Date();
-  const time = date.getHours()+":"+date.getMinutes(); 
-  args = [time,val];
-//   const content = JSON.parse(fs.readFileSync('./public/logs.json','utf-8'));
-//   content.push({"log" : time+": "+val});
-//   fs.writeFileSync('./public/logs.json',stringify(content));
-}
+// const log = console.log;
+// const err = console.error;
+// const extendConsole = (val) => {
+//   const date = new Date();
+//   const time = date.getHours()+":"+date.getMinutes(); 
+//   args = [time,val];
+// //   const content = JSON.parse(fs.readFileSync('./public/logs.json','utf-8'));
+// //   content.push({"log" : time+": "+val});
+// //   fs.writeFileSync('./public/logs.json',stringify(content));
+// }
 // console.log = (val) => {     
 //   extendConsole(val);
 //   log.apply(console, args);
