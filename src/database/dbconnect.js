@@ -2,10 +2,21 @@ const fs = require('fs');
 const game = require('../../public/js/gameDetails');
 const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
+const mongoose = require('mongoose');
+require('dotenv').config()
+const Player = require('./models/playerModel')
+
 class dbConnect{
-  init(callback){
-    // Redis connection
-    // console.log(process.env.REDIS_URL)
+  async init(callback){
+
+    // MOGNO CONNECTION (PRIMARY)
+    await mongoose // connect to db
+    .connect(process.env.MONGO_URI)
+    .then(() => { return game.db = "mongodb" })
+    .catch(() => game.db = "redis" );
+    if(game.db == 'mongodb') return 
+
+    // REDIS CONNECTION (SECONDARY)
     if(typeof process.env.REDIS_URL == "string" || typeof process.env.REDIS_TLS_URL == "string"){
       this.redis.client = redis.createClient(process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL, {tls: {rejectUnauthorized: false,}});
     }else{
@@ -53,6 +64,7 @@ class dbConnect{
     ];
     this.json.dataToSave = this.dataToSave;
     this.redis.dataToSave = this.dataToSave;
+    this.mongodb.dataToSave = this.dataToSave;
   }
   // db types 
   redis = {
@@ -170,6 +182,30 @@ class dbConnect{
         }
       }
       this.save(allPlayers);
+    }
+  }
+  mongodb = {
+    loadAll(callback){
+      console.log("mongooose loadall")
+    },
+    load(player, callback){
+      console.log("mongo load")
+    },
+    update(player, callback = () => {}){
+      console.log("mongo updating")
+    },
+    save(newContent){
+      console.log('mongo player saving')
+    },
+    del(playerName){
+      console.log("mongo delete player")
+    },
+    import(){
+      // import data from old redis
+      console.log('IMPORTING')
+      fs.readFileSync('./backups/webions_players27.08.json')
+      console.log('IMPORTING DONE')
+
     }
   }
 }
