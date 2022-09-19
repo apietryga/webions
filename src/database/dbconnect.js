@@ -4,17 +4,22 @@ const stringify = require("json-stringify-pretty-compact");
 const redis = require('redis');
 const mongoose = require('mongoose');
 require('dotenv').config()
-const Player = require('./models/playerModel')
+const playerModel = require('./models/playerModel')
 
 class dbConnect{
   async init(callback){
 
     // MOGNO CONNECTION (PRIMARY)
+    console.log('here1')
     await mongoose // connect to db
     .connect(process.env.MONGO_URI)
     .then(() => { return game.db = "mongodb" })
-    .catch(() => game.db = "redis" );
-    if(game.db == 'mongodb') return 
+    // .catch(() => game.db = "redis");
+    .catch(e => console.log( e ));
+
+    console.log('here2')
+    // if(game.db == 'mongodb') return 
+    if(game.db == 'mongodb') callback() 
 
     // REDIS CONNECTION (SECONDARY)
     if(typeof process.env.REDIS_URL == "string" || typeof process.env.REDIS_TLS_URL == "string"){
@@ -187,12 +192,40 @@ class dbConnect{
   mongodb = {
     loadAll(callback){
       console.log("mongooose loadall")
+
+      callback('elo')
+      
     },
     load(player, callback){
       console.log("mongo load")
     },
     update(player, callback = () => {}){
       console.log("mongo updating")
+
+      const exsitUser = await playerModel.findOne({ email: email });
+      if (exsitUser) {
+        const error = new Error(
+          "Eamil already exist, please pick another email!"
+        );
+        res.status(409).json({
+          error: "Eamil already exist, please pick another email! ",
+        });
+        error.statusCode = 409;
+        throw error;
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new userModel({
+        fullname: fullname,
+        email: email,
+        password: hashedPassword,
+      });
+      const result = await user.save();
+      res.status(200).json({
+        message: "User created",
+        user: { id: result._id, email: result.email },
+      });
+
     },
     save(newContent){
       console.log('mongo player saving')
