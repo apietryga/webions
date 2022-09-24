@@ -259,6 +259,7 @@ class Creature {
     if(this.position[2] <= map.visibleFloor){
       if(["player","enemy"].includes(this.type)){
           // draw colors masks
+          if(!this.img){return }
           const cw = this.img.width/6;
           ctx.drawImage(
             this.img, (this.cyle+3) * cw, this.direction * cw, cw, this.img.height/5,
