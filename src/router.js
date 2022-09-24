@@ -6,7 +6,7 @@ const router = {
   set( obj ){ this[Object.keys(obj)] = obj[Object.keys(obj)] }
 }
 
-router.call.route('*').post( (req,res) => { public(req,res, router.cm, router.dbconnect) });
+// router.call.route('*').post( (req,res) => { public(req,res, router.cm, router.dbconnect) });
 router.call.route(['/','/index.html']).get( webController.index );
 router.call.route('/libary.html').get( webController.libary );
 router.call.route('/mapeditor.html').get( webController.mapeditor );
