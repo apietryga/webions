@@ -5,7 +5,6 @@ const redis = require('redis');
 // const mongoose = require('mongoose');
 require('dotenv').config()
 const playerModel = require('./models/playerModel')
-
 class dbConnect{
   // async init(callback){
   async init(){
@@ -13,29 +12,27 @@ class dbConnect{
     // await mongoose // connect to db
     // .connect(process.env.MONGO_URI)
     // .then(() => { return game.db = "mongodb" })
+
     // .catch(() => game.db = "redis" );
     // if(game.db == 'mongodb') return 
-
     // REDIS CONNECTION (SECONDARY)
     if(typeof process.env.REDIS_URL == "string" || typeof process.env.REDIS_TLS_URL == "string"){
       this.redis.client = redis.createClient(process.env.REDIS_TLS_URL ? process.env.REDIS_TLS_URL : process.env.REDIS_URL, {tls: {rejectUnauthorized: false,}});
     }else{
       this.redis.client = redis.createClient();
     }
-    // await this.redis.client.on('error', () => {
-    this.redis.client.on('error', () => {
+
+    await new Promise( resolve => {
       this.redis.client.quit();
       delete this.redis.client;
       game.db = 'json';
+      resolve()
     })
-    // await this.redis.client.keys('*', error => {
-    this.redis.client.keys('*', error => {
-      if(error  == null){
-        game.db = 'redis';
-      }else{
-        game.db = 'json';
-      }
-      return
+
+    if(!this.redis.client){ return }
+    await this.redis.client.keys('*', error => {
+      if(error  == null){ return game.db = 'redis' }
+      return game.db = 'json';
     })
   }
   constructor(){
@@ -142,43 +139,27 @@ class dbConnect{
       // console.log("content from db", content)
       return []
     },
-    // load(player,callback){
-    load( player ){
-      this.playerIsSet(player.name,(p)=>{
-        // callback(p[0]);
-        return p[0];
-      })
+    async load( player ){
+      const p = await this.playerIsSet( player.name )
+      return p[0]
     },
-    // playerIsSet(name,callback){
     async playerIsSet( name ){
-      const r = await JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
-      // this.loadAll((r)=>{
-        // find player by name
-        let isPlayer = false;
-        for(let p of r){
-          if(p.name == name){
-            isPlayer = p;
-            break;
-          }
+      const allPlayers = await JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
+      let isPlayer, index, p;
+      for([ index, p ] of allPlayers.entries()){
+        if(p.name == name){
+          isPlayer = p;
+          break;
         }
-        // callback([isPlayer,r]);
-        return [isPlayer,r];
-      // })
+      }
+      return [isPlayer,allPlayers , index];
     },
-    // update(player,callback = ()=>{}){
     async update( player ){
-      // this.playerIsSet(player.name,  (p)=>{
       const p = await this.playerIsSet(player.name)
         if(typeof p[0] == "object"){
-          // update record
-          for(let [i,px] of p[1].entries()){
-            if(px.name == player.name){
-              for(const k of Object.keys(player)){
-                if(this.dataToSave.includes(k)){
-                  p[1][i][k] = player[k];
-                }
-              }
-              break;
+          for(const k of Object.keys(player)){
+            if(this.dataToSave.includes(k)){
+              p[1][p[2]][k] = player[k];
             }
           }
         }else{
@@ -192,9 +173,6 @@ class dbConnect{
           p[1].push(nPlayer);
         }
         this.save(p[1]);
-        // callback();
-        return
-      // })
     },
     save(newContent){
       fs.writeFileSync(this.src, stringify(newContent));  

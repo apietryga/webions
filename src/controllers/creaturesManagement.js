@@ -58,46 +58,44 @@ const cm = { // creatures managment [monsters = monsters & npc's]
     }
     for(const c of this.monstersInArea){
       // 0 because of monsters don't upgrades skills
-      // c.update(param,0,this.monstersInArea.concat(this.players.list),im,wm.list);
       c.update(param,0,this.monstersInArea.concat(this.players.list),im.allItems,wm.list);
     }
   },
   init(){
     this.loadMonsters();
   },
-  async update(param,callback, dbconnected){
-    // this.players.update(param,(player)=>{
+  async update(param, dbconnected){
     const player = await this.players.update(param, dbconnected)
-      this.monstersUpdate(player, param);
-      game.player = player.id;
-      if(typeof player.text == "undefined"){delete player.text;}
-      const filteredCreatures = [];
-      for(const creature of this.players.list.concat(this.monstersInArea)){
-        const filteredCreature = {};
-        for(const key of Object.keys(creature)){
-          if(!disallowKeys.includes(key)){
-            filteredCreature[key] = creature[key];
-          }
+    this.monstersUpdate(player, param);
+    game.player = player.id;
+    if(typeof player.text == "undefined"){delete player.text;}
+    const filteredCreatures = [];
+    for(const creature of this.players.list.concat(this.monstersInArea)){
+      const filteredCreature = {};
+      for(const key of Object.keys(creature)){
+        if(!disallowKeys.includes(key)){
+          filteredCreature[key] = creature[key];
         }
-        filteredCreatures.push(filteredCreature);
       }
-      const output = {
-        game: game,
-        creatures: filteredCreatures
-      }
-      callback(output,player);
-      // retrive died player
-      if(typeof game.dead != "undefined"){
-        delete game.dead;
-        player.position = player.startPosition;
-        player.health = player.totalHealth;
-        player.mana = player.totalMana;
-        player.cyle = 0;
-        player.direction = 1;
-        this.players.kick(player);   
-      }
-      player.text = "";
-    // })
+      filteredCreatures.push(filteredCreature);
+    }
+    const output = {
+      game: game,
+      creatures: filteredCreatures
+    }
+    // callback(output,player);
+    // retrive died player
+    if(typeof game.dead != "undefined"){
+      delete game.dead;
+      player.position = player.startPosition;
+      player.health = player.totalHealth;
+      player.mana = player.totalMana;
+      player.cyle = 0;
+      player.direction = 1;
+      this.players.kick(player);   
+    }
+    player.text = "";
+    return [output, player];
   },
   players: {
     list:[],
@@ -155,15 +153,12 @@ const cm = { // creatures managment [monsters = monsters & npc's]
           }
         }
         // update player
-        // player.update({name:player.name,type: 'initUpdate'},db,[],{itemsInArea:[]});
         player.update({name:player.name,type: 'initUpdate'},db,[],[]);
         // update player skills
         player.skills.level = -1;
-        // player is update in db there:
         player.updateSkills(db);
       }
     },
-    // async update(param){
     async update(param, dbconnected){
       // check if player is on the list (in the game), and update it
       let isPlayer = false;
@@ -171,20 +166,14 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         // update player is playing
         if(p.name == param.name){
           isPlayer = p;
-          // console.log(isPlayer)
           isPlayer.update(
             param,
             dbconnected,
-            // cm.monstersInArea.concat(this.list),
             cm.allMonsters.concat(this.list),
             im.allItems,
             wm.list
           );
-          // console.log('IM HERE: ', isPlayer)
-          // console.log('IM HERE: ')
           return isPlayer
-          // callback(isPlayer);
-          // break;
         }
       }
       // push player to online list
@@ -195,41 +184,30 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         let newID = 1; while(ids.includes(newID)){newID++;}
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1,"player");
-        // await dbc[game.db].load(newPlayer,(res)=>{
-        // const res = await dbc[game.db].load(newPlayer)
         const res = await dbconnected.load(newPlayer)
-          if(res){
-            // merge it with newPlayer
-            const defaultPosition = newPlayer.position;
-            for(const k of Object.keys(res)){
-              if(['token'].includes(k)){continue;}
-              newPlayer[k] = res[k];
-            }
-            if(newPlayer.lastFrame < game.lastUpdate){
-              newPlayer.position = defaultPosition;
-            }
+        if(res){
+          // merge it with newPlayer
+          const defaultPosition = newPlayer.position;
+          for(const k of Object.keys(res)){
+            if(['token'].includes(k)){continue;}
+            newPlayer[k] = res[k];
           }
-          newPlayer.type = "player";
-          this.inLoading.splice(this.inLoading.indexOf(param.name),1);     
-          this.list.push(newPlayer);
-          // update player loading info (token etc)
-          // dbc[game.db].update(newPlayer);
-          dbconnected.update(newPlayer);
-          // callback(newPlayer);
-          return newPlayer
-        // }); 
+          if(newPlayer.lastFrame < game.lastUpdate){
+            newPlayer.position = defaultPosition;
+          }
+        }
+        newPlayer.type = "player";
+        this.inLoading.splice(this.inLoading.indexOf(param.name),1);     
+        this.list.push(newPlayer);
+        return newPlayer
       }
       console.log("keep going")
       // kick off offline.
       const kickTime = isPlayer.focus?1000:20000;
-      // setTimeout(() => {
-        // console.log('im here')
-        if(typeof isPlayer == "object" 
-          && new Date().getTime() - isPlayer.lastFrame > kickTime
-          && this.list.includes(isPlayer)){
-            cm.players.kick(isPlayer)
-        }
-      // }, 1000);
+      if(typeof isPlayer == "object" && new Date().getTime() - isPlayer.lastFrame > kickTime
+        && this.list.includes(isPlayer)){
+          cm.players.kick(isPlayer)
+      }
     },
     kick(player){
       let isThisPlayerOlnine = false;

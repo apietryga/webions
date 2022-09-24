@@ -195,9 +195,17 @@ const public = async (req, res, players, dbc) => {
                 // UPDATE BROWSER COOKIE TOKEN
                 vals.message = newToken;
                 // UPDATE TOKEN IN BASE
-                const newPlayer = await players.update({name: data.nick}, dbc[game.db])
-                newPlayer.token = newToken;
-                dbc[game.db].update(newPlayer)
+
+                // const newPlayer = await players.update({name: data.nick}, dbc[game.db])
+                // console.log("COMPARE THIS SHIT", {
+                //   dbres,
+                //   newPlayer
+                // })
+                // console.log("")
+                // newPlayer.token = newToken;
+                dbres.token = newToken;
+                // dbc[game.db].update(newPlayer)
+                dbc[game.db].update(dbres)
               }else{
                 vals.message = "<b style='color:red'>Wrong password.</b>";
               }
