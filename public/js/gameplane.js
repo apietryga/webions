@@ -19,6 +19,7 @@ const gamePlane = {
     controls.init();
     controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
+    console.log('initialized?')
   },
   updategamePlane() {
     serv.load(()=>{

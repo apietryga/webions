@@ -69,9 +69,10 @@ class GameMap{
       }
     });
   }
-  generate(callback){
+  // generate(callback){
+  async generate(){
     this.update();
-    callback();
+    // callback();
   }
   draw(){
     for(const g of this.grids){

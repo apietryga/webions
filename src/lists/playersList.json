@@ -621,7 +621,7 @@
   },
   {
     "name": "Tosiek",
-    "position": [42, -15, 0],
+    "position": [42, 0, 0],
     "speed": 2.5,
     "health": 729,
     "maxHealth": 600,
@@ -641,7 +641,7 @@
     },
     "autoShot": false,
     "autoMWDrop": false,
-    "lastFrame": 1661831968243,
+    "lastFrame": 1663608071849,
     "lastDeaths": [
       {
         "when": "2021-12-27T21:22:55.964Z",
@@ -842,7 +842,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [25, -44, 0, 1658432192288],
-    "token": "7z8uoi006b"
+    "token": "8se4opigak"
   },
   {
     "name": "EDA",
@@ -1258,7 +1258,7 @@
     "sex": "male"
   },
   {
-    "name": "ZbÅ‚Ä…kany Jamajczyk",
+    "name": "Zbłąkany Jamajczyk",
     "position": [2, 1, 0],
     "speed": 2.1,
     "health": 200,

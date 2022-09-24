@@ -1,7 +1,7 @@
 const fs = require('fs');
 const func = require("../public/js/functions");
 const URL = require('url').URL;
-const dbConnect = require("./database/dbconnect"), dbc = new dbConnect();dbc.init(()=>{});
+// const dbConnect = require("./database/dbconnect"), dbc = new dbConnect();dbc.init(()=>{});
 const game = require("../public/js/gameDetails");
 const Mailgun = require("mailgun").Mailgun, mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
 const Creature = require("./components/Creature");
@@ -55,15 +55,26 @@ const password = {
      });
    });
   },
-  comparePassword : (plainPass, hashword, callback) => {
-    bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {
-      return err == null ? callback(null, isPasswordMatch) : callback(err);
-    });
-  }
+  // comparePassword : (plainPass, hashword, callback) => {
+  //   bcrypt.compare(plainPass, hashword, function(err, isPasswordMatch) {
+  //     return err == null ? callback(null, isPasswordMatch) : callback(err);
+  //   });
+  // },
+  comparePassword : async (plainPass, hashword) => {
+    // const result = await bcrypt.compare(plainPass, hashword)
+    return await bcrypt.compare(plainPass, hashword)
+    // console.log("RESULT HERE : ", result)
+    // return err == null ? callback(null, isPasswordMatch) : callback(err);
+
+  },
+  
+
 }
 
 
-const public = (req, res, players) => {
+const public = async (req, res, players, dbc) => {
+  if(dbc == null) { console.error("Database not found."); return }
+  const db = dbc[game.db];
   const myURL = new URL("https://"+req.rawHeaders[1]+req.url);
   const vals = {
     name: game.name,
@@ -138,14 +149,19 @@ const public = (req, res, players) => {
   const monstersNames = func.getNamesFromObjArr(monsters).concat(func.getNamesFromObjArr(npcs));
   if(["/account.html"].includes(myURL.pathname)){
     path = "/account.html";
-    let body = '';req.on("data",(chunk)=>{body += chunk;});
+    // let body = '';req.on("data",(chunk)=>{body += chunk;});
     vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
-    const processRequest = (callback) => {
-      const data = (body == '')?{type:"LOGIN"}:JSON.parse('{"' + decodeURI(body).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace(/\s/g,'') + '"}');
+    // const processRequest = async (callback) => {
+    const processRequest = async () => {
+      // const data = (body == '')?{type:"LOGIN"}:JSON.parse('{"' + decodeURI(body).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace(/\s/g,'') + '"}');
+      const data = req.body
       if(data.type == "LOGIN"){
         // search player in db
         if(func.isSet(data.nick)){
-          dbc[game.db].loadAll( (allPlayers) => {
+          // console.log(dbc)
+          const allPlayers = await db.loadAll();
+          // console.log("allPlayers", allPlayers)
+          // dbc[game.db].loadAll( (allPlayers) => {
             let dbres = false;
             const currentTokens = [];
             for(const singlePlayer of allPlayers){
@@ -162,8 +178,14 @@ const public = (req, res, players) => {
             // if player is set in db
               if(func.isSet(dbres.password)){
               // if player register is complete
-                password.comparePassword(data.password,dbres.password,(e,h)=>{
-                  if(e != null){console.error(e);}
+                console.log('here im2')
+                
+                // password.comparePassword(data.password,dbres.password)
+                
+                // password.comparePassword(data.password,dbres.password,(e,h)=>{
+                const h = password.comparePassword(data.password,dbres.password)
+                  // console.log('here im3')
+                  // if(e != null){console.error(e);}
                   if(h){
                     // SUCCESFULLY LOGIN
                     vals.action = "game";
@@ -174,38 +196,50 @@ const public = (req, res, players) => {
                     // UPDATE BROWSER COOKIE TOKEN
                     vals.message = newToken;
                     // UPDATE TOKEN IN BASE
-                    players.update({name: data.nick}, (newPlayer) => {
+                    // console.log('here im3')
+                    // players.update({name: data.nick}, (newPlayer) => {
+                    // const newPlayer = await players.update({name: data.nick})
+                    console.log('here :D')
+                    const newPlayer = await players.update({name: data.nick})
+                      console.log('here im5', newPlayer, data.nick, players)
                       newPlayer.token = newToken;
                       newPlayer.skills.level = -1;
                       newPlayer.updateSkills(dbc[game.db]);
-                    })
+                    // })
                   }else{
+                    console.log('here im4')
+
                     vals.message = "<b style='color:red'>Wrong password.</b>";
                   }
-                  callback();
-                });                
+                  // return
+                  // callback();
+                // });                
               }else{
               // if player is not fully registered (before v.0.2)
                 vals.action = "register";
                 vals.nick = data.nick;
                 vals.message = "<b style='color:green'>Seems that you have no acc details.<br />Set it up.</b>";
-                callback();
+                // callback();
+                // return
               }
+              // return
             }else{
             // if player is not in base at all
               vals.action = "register";
               vals.nick = data.nick;
               vals.message = "<b style='color:red'>Player "+data.nick+" not exsists, but you can create it:</b>";
-              callback();
+              // callback();
+              // return
             }
-          })
+            // return
+          // })
         }else{
           if(myURL.search == "?action=logout"){
             vals.js += "<script>delete_cookie('token')</script>";
             vals.action = "logout";
             vals.message = "<b style='color:green;'>You're succesfully logout.</b>";
           }
-          callback();
+          // callback();
         }
       }else if(data.type == "REGISTER"){
         dbc[game.db].load({name:data.nick},(dbres)=>{
@@ -216,7 +250,7 @@ const public = (req, res, players) => {
               // player isset
               vals.action = "register";
               vals.message = "<b style='color:red;'>This account arleady exsits.</b>"
-              callback();                
+              // callback();                
             // }else if(func.validateNick(data.nick,monstersNames)[0]){
             //   vals.action = "register";
             //   vals.message = "<b style='color:red;'>"+func.validateNick(data.nick,monstersNames)[1]+"</b>";
@@ -233,7 +267,7 @@ const public = (req, res, players) => {
                 vals.message = "<b style='color:green;'>You're succesfully updated your account.</b>";
                 vals.message += "<br />";
                 vals.message += "<a href='account.html?action=login'>Click here to login.</a>";
-                callback();
+                // callback();
               });
             }
           }else{
@@ -242,7 +276,7 @@ const public = (req, res, players) => {
               vals.action = "register";
               // vals.message = "<b style='color:red;'>"+func.validateNick(data.nick,monstersNames)[1]+"</b>";
               vals.message = "<b style='color:red;'>"+validNick[1]+"</b>";
-              callback();                
+              // callback();                
             }else{
             // making new player
               const newPlayer = new Creature(validNick[1]);
@@ -256,7 +290,7 @@ const public = (req, res, players) => {
                 vals.message = "<b style='color:green;'>You're succesfully created your account.</b>";
                 vals.message += "<br />";
                 vals.message += "<a href='account.html?action=login'>Click here to login.</a>";
-                callback();
+                // callback();
               });
             }
           }
@@ -327,7 +361,14 @@ const public = (req, res, players) => {
         }
       }
     }
-    req.on("end", ()=>{processRequest(serveChangedContent)});
+    await processRequest()
+    // console.log('here im')
+    // req.on("end", ()=>{processRequest(serveChangedContent)});
+    // req.on("end", serveChangedContent);
+    // serveChangedContent('/'+vals.action+'.html')
+    // serveChangedContent('/'+vals.action+'.html')
+    serveChangedContent(myURL.pathname);
+    // console.log('served')
   }else if(["/game.html"].includes(myURL.pathname)){
     vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
     if(func.isSet(req.headers.cookie)){
@@ -339,7 +380,8 @@ const public = (req, res, players) => {
         const [key,cookieToken] = cookie.split("=");
         if(key == "token"){
           isWaiting = true;
-          dbc[game.db].loadAll((allPlayers)=>{
+          const allPlayers = await db.loadAll();
+          // dbc[game.db].loadAll((allPlayers)=>{
             // let cPlayer = false;
             for(const singlePlayer of allPlayers){
               // find player with cookieToken
@@ -356,7 +398,7 @@ const public = (req, res, players) => {
               vals.message = "Please log in:";
             }
             serveChangedContent(path);
-          });
+          // });
         }
       }
       if(currentPlayer){
@@ -379,10 +421,11 @@ const public = (req, res, players) => {
     // const allPlayers = []
     // console.log(database)
 
-    dbc[game.db].loadAll( allPlayers => {
+    const allPlayers = await db.loadAll();
+    // dbc[game.db].loadAll( allPlayers => {
       console.log( game.db, allPlayers )
       res.end(JSON.stringify(allPlayers))
-    })
+    // })
 
 
 
@@ -401,30 +444,37 @@ const public = (req, res, players) => {
     if("?skills" == key){
       vals.message = "<h1>TOP "+value.charAt(0).toUpperCase() +value.slice(1)+"</h1>";
     }
-    dbc[game.db].loadAll((content)=>{
+    // dbc[game.db].loadAll((content)=>{
+      const content = await dbc[game.db].loadAll()
       vals.js += "<script>const key = '"+value+"'; </script>";
       vals.js += "<script>const playerList = '"+JSON.stringify(content)+"';</script>";
-    })
+    // })
     if("?online=true" == myURL.search){
       vals.message = "<h1>Online Players</h1>";
-      dbc[game.db].loadAll((content)=>{
+      // dbc[game.db].loadAll((content)=>{
         vals.js += "<script>const playersList = "+JSON.stringify(players.list)+";</script>";
         serveChangedContent(myURL.pathname);
-      })
+      // })
     }else if("?lastdeaths=true" == myURL.search){
       vals.message = "<h1>Last Deaths</h1>";
-      dbc[game.db].loadAll((content)=>{
+      // dbc[game.db].loadAll((content)=>{
         vals.js += "<script>const playersList = "+JSON.stringify(content)+";</script>";
         serveChangedContent(myURL.pathname);
-      })
+      // })
     }else{
       if("" == myURL.search){
         vals.message = "<h1>TOP Players</h1>";
       }
-      dbc[game.db].loadAll((content)=>{
+
+      const content = await dbc[game.db].loadAll()
+      // console.log('GAME[DB]: ', game.db)
+      // console.log('CONTENT: ', content)
+      // dbc[game.db].loadAll((content)=>{
+        // console.log('here im 2')
+        // console.log(content)
         vals.js += "<script>const playersList = '"+JSON.stringify(content)+"';</script>";
         serveChangedContent(myURL.pathname);
-      })
+      // })
     }
   }else if(["/4devs.html"].includes(myURL.pathname)){
     vals.aside = `<a href="https://github.com/apietryga/webions" target="_blank">GITHUB</a>`;
