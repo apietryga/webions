@@ -154,18 +154,20 @@
     }
   }
   load.both("Load sprites",10);
-  map.loadSprites(()=>{
+  map.loadSprites( async ()=>{
     menus.init();
     load.both("Load serwer info",50);
-    serv.load(()=>{
+    // serv.load(()=>{
+    await serv.load()
       load.both("Loading map",70);
-      map.generate(()=>{
+      // map.generate(()=>{
+      await map.generate()
         load.both("Loading Game Plane",90);
         gamePlane.init();
         setResolution();
-      })
+      // })
     })
-  });
+  // });
   // set elements resolution:
   
   window.onresize = () =>{

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const http = require('http');
+// const http = require('http');
 const GameMap = require("../public/js/map");
 const map = new GameMap();
 const os = require("os");
@@ -12,12 +12,18 @@ const monstersTypes = require("./types/monstersTypes");
 const npcs = require("./lists/npcs").npcs;
 const dbConnect = require("./database/dbconnect");
 const dbc = new dbConnect();
+
 const inGameMonsters = require("./lists/monstersList").data;
 const game = require("../public/js/gameDetails");
 const public = require("./public");
 const itemsList = require("./lists/itemsList").list;
 // const { db } = require('./public/js/gameDetails');
 const func = require('../public/js/functions');
+
+const bodyParser = require('body-parser');
+const express = require('express')
+const app = express()
+app.use(bodyParser.urlencoded({ extended: true }));
 
 require('dotenv').config()
 // let servRequest = false;
@@ -115,7 +121,9 @@ const cm = { // creatures managment [monsters = monsters & npc's]
     })
   },
   players: {
-    init(db){
+    list:[],
+    inLoading:[],
+    async init(db){
       // REFRESH PLAYER SKILLS [ONCE A SERV LOAD])
       const skipKeys = [
         "healthValue",
@@ -127,59 +135,58 @@ const cm = { // creatures managment [monsters = monsters & npc's]
       ];
       const deleteKeys = ['healing'];
       const loginTokens = [];
-      db.loadAll((res)=>{
-        for(const plr of res){
-          // make instance of player
-          const player = new Creature(plr.name,0,"player");
-          // rewrite
-          for(const key of Object.keys(plr)){
-            // if(deleteKeys.includes(key)){console.log(key)}
-            if(skipKeys.includes(key)){continue;}
+      const res = await db.loadAll();
+      for(const plr of res){
+        // make instance of player
+        const player = new Creature(plr.name,0,"player");
+        // rewrite
+        for(const key of Object.keys(plr)){
+          // if(deleteKeys.includes(key)){console.log(key)}
+          if(skipKeys.includes(key)){continue;}
 
-            // deleting weird eq fields
-            if(key == 'eq'){
-              for(const eqKey of Object.keys(plr[key])){
-                if(!Object.keys(player.eq).includes(eqKey)){
-                  console.log("DELETING: "+eqKey);
-                  delete plr.eq[eqKey];
-                }
+          // deleting weird eq fields
+          if(key == 'eq'){
+            for(const eqKey of Object.keys(plr[key])){
+              if(!Object.keys(player.eq).includes(eqKey)){
+                console.log("DELETING: "+eqKey);
+                delete plr.eq[eqKey];
               }
-            }
-
-            if(plr[key].constructor === Object){
-            // if it's object
-              player[key] = {};
-              for(const keyIn of Object.keys(plr[key])){
-                if(deleteKeys.includes(keyIn)){
-                  console.error("deleting "+keyIn+" from "+plr.name+" "+key)
-                }else{
-                  player[key][keyIn] = plr[key][keyIn];
-                }
-              }
-            }else if(plr[key].constructor === Array){
-            // if it's array
-              player[key] = [];
-              for(const keyIn of Object.keys(plr[key])){
-                player[key][keyIn] = plr[key][keyIn];
-              }
-            }else{
-              // if(key == 'speed' & player[key] != )
-              player[key] = plr[key];
             }
           }
-          // update player
-          // player.update({name:player.name,type: 'initUpdate'},db,[],{itemsInArea:[]});
-          player.update({name:player.name,type: 'initUpdate'},db,[],[]);
-          // update player skills
-          player.skills.level = -1;
-          // player is update in db there:
-          player.updateSkills(db);
+
+          if(plr[key].constructor === Object){
+          // if it's object
+            player[key] = {};
+            for(const keyIn of Object.keys(plr[key])){
+              if(deleteKeys.includes(keyIn)){
+                console.error("deleting "+keyIn+" from "+plr.name+" "+key)
+              }else{
+                player[key][keyIn] = plr[key][keyIn];
+              }
+            }
+          }else if(plr[key].constructor === Array){
+          // if it's array
+            player[key] = [];
+            for(const keyIn of Object.keys(plr[key])){
+              player[key][keyIn] = plr[key][keyIn];
+            }
+          }else{
+            // if(key == 'speed' & player[key] != )
+            player[key] = plr[key];
+          }
         }
-      });
+        // update player
+        // player.update({name:player.name,type: 'initUpdate'},db,[],{itemsInArea:[]});
+        player.update({name:player.name,type: 'initUpdate'},db,[],[]);
+        // update player skills
+        player.skills.level = -1;
+        // player is update in db there:
+        player.updateSkills(db);
+      }
     },
-    list:[],
-    inLoading:[],
-    update(param,callback){
+    async update(param){
+    // update(param,callback){
+      // console.log("PLAYER UPDATING")
       // console.log(this.list)
       // check if player is on the list (in the game), and update it
       let isPlayer = false;
@@ -187,6 +194,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         // update player is playing
         if(p.name == param.name){
           isPlayer = p;
+          // console.log(isPlayer)
           isPlayer.update(
             param,
             dbc[game.db],
@@ -195,8 +203,11 @@ const cm = { // creatures managment [monsters = monsters & npc's]
             im.allItems,
             wm.list
           );
-          callback(isPlayer);
-          break;
+          // console.log('IM HERE: ', isPlayer)
+          // console.log('IM HERE: ')
+          return isPlayer
+          // callback(isPlayer);
+          // break;
         }
       }
       // push player to online list
@@ -207,7 +218,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         let newID = 1; while(ids.includes(newID)){newID++;}
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1,"player");
-        dbc[game.db].load(newPlayer,(res)=>{
+        // await dbc[game.db].load(newPlayer,(res)=>{
+        const res = await dbc[game.db].load(newPlayer)
           if(res){
             // merge it with newPlayer
             const defaultPosition = newPlayer.position;
@@ -224,18 +236,21 @@ const cm = { // creatures managment [monsters = monsters & npc's]
           this.list.push(newPlayer);
           // update player loading info (token etc)
           dbc[game.db].update(newPlayer);
-          callback(newPlayer);
-        }); 
+          // callback(newPlayer);
+          return newPlayer
+        // }); 
       }
+      console.log("keep going")
       // kick off offline.
       const kickTime = isPlayer.focus?1000:20000;
-      setTimeout(() => {
+      // setTimeout(() => {
+        // console.log('im here')
         if(typeof isPlayer == "object" 
           && new Date().getTime() - isPlayer.lastFrame > kickTime
           && this.list.includes(isPlayer)){
             cm.players.kick(isPlayer)
         }
-      }, 1000);
+      // }, 1000);
     },
     kick(player){
       let isThisPlayerOlnine = false;
@@ -295,19 +310,24 @@ const wm = { // walls management
     // }
     callback(output);
   }
-}
-let param;cm.init();im.init();
-dbc.init(()=>{
-  cm.players.init(dbc[game.db]);
-  const server = http.createServer((req,res)=>{
+};
+// let param;cm.init();im.init();
+
+( async () => {
+  await dbc.init()
+  cm.players.init(dbc[game.db])
+  app.get('*', (req, res)=> {
     servRequest = req;
     servResponse = res;
-    public(req,res,cm.players)
-  }).listen(process.env.PORT || 5000);
-  const date = new Date();
-  game.startServerTime = date.getTime();
-  console.log("SERWER IS RUNNING");
-  // WEBSOCKET
+    public(req,res,cm.players, dbc)    
+  })
+  app.post('*', (req, res)=> {
+    servRequest = req;
+    servResponse = res;
+    public(req,res,cm.players, dbc)    
+  })
+  const server = app.listen(process.env.PORT || 5000)
+  // new WebSocketServer({httpServer k: app})
   new WebSocketServer({httpServer : server})
   .on('request', (req)=>{
     const connection = req.accept('echo-protocol', req.origin);
@@ -348,7 +368,70 @@ dbc.init(()=>{
       }       
     })
   })
-})
+
+
+  const date = new Date();
+  game.startServerTime = date.getTime();
+  console.log("SERWER IS RUNNING");
+})()
+
+// dbc.init(()=>{
+//   console.log('db inited')
+//   cm.players.init(dbc[game.db]);
+//   console.log('players inited')
+//   // const server = http.createServer((req,res)=>{
+//   //   servRequest = req;
+//   //   servResponse = res;
+//   //   public(req,res,cm.players)
+//   // }).listen(process.env.PORT || 5000);
+
+
+//   const date = new Date();
+//   game.startServerTime = date.getTime();
+//   console.log("SERWER IS RUNNING");
+  // WEBSOCKET
+  // new WebSocketServer({httpServer : server})
+  // new WebSocketServer({httpServer : app})
+  // .on('request', (req)=>{
+  //   const connection = req.accept('echo-protocol', req.origin);
+  //   connection.on('message', (data) => {
+  //     param = JSON.parse(data.utf8Data);
+  //     // In game actions
+  //     if(Object.keys(param).includes("name")){
+  //       game.time = new Date();
+  //       game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%";
+  //       cm.update(param,(output,player)=>{
+  //         im.update(output,player,(output)=>{
+  //           wm.update(output, (output)=>{
+  //             connection.sendUTF(stringify(output,null,2));
+  //           })
+  //         })
+  //       })
+  //     }
+  //     // Getting data
+  //     if(Object.keys(param).includes("get")){
+  //       const mapPatch = map.path;
+  //       if(param.get == "map"){
+  //         const mapRead = fs.readFileSync(mapPatch,{encoding:'utf8'});
+  //         const mapArr = JSON.parse(mapRead);
+  //         connection.sendUTF(stringify(mapArr,null,2));
+  //       }
+  //       // Get onlinelist
+  //       if(param.get == "onlineList"){
+  //         const onlineList = [];
+  //         for(const p of cm.players.list){
+  //           onlineList.push({"name":p.name,"skills":{"level":p.skills.level}});
+  //         }
+  //         connection.sendUTF(stringify(onlineList,null,2));
+  //       }
+  //       // PUSH MAP
+  //       if(param.get == "pushmap"){
+  //         connection.sendUTF(map.saveToFileMap(mapPatch,param));
+  //       }
+  //     }       
+  //   })
+  // })
+// })
 
 
 // SAVE PLAYERS BEFORE SERVER CRASH
@@ -388,19 +471,19 @@ process.on('SIGTERM', shutdown('SIGTERM')).on('SIGINT', shutdown('SIGINT')).on('
 
 
 // HEROKU ANTI IDLING SCRIPT
-const antiIdlingScript = () => {
-  setInterval(() => {
-    http.get(process.env.ORIGIN, (res) => {
-      res.on('data', () => {
-        try {
-          console.log("ANTI IDLING CALL");
-        } catch (err) {
-          console.error("ANTI IDLIG ERROR 1: " + err.message);
-        }
-      });
-    }).on('error', (err) => {
-      // console.error("ANTI IDLIG ERROR 2: " + err.message);
-      console.log("ANTI IDLING SHOT.");
-    });
-  }, 20 * 60 * 1000); // load every 20 minutes
-};antiIdlingScript();
+// const antiIdlingScript = () => {
+//   setInterval(() => {
+//     http.get(process.env.ORIGIN, (res) => {
+//       res.on('data', () => {
+//         try {
+//           console.log("ANTI IDLING CALL");
+//         } catch (err) {
+//           console.error("ANTI IDLIG ERROR 1: " + err.message);
+//         }
+//       });
+//     }).on('error', (err) => {
+//       // console.error("ANTI IDLIG ERROR 2: " + err.message);
+//       console.log("ANTI IDLING SHOT.");
+//     });
+//   }, 20 * 60 * 1000); // load every 20 minutes
+// };antiIdlingScript();

@@ -22,7 +22,8 @@ const serv = {
     return this.param;
   },
   // every frame load:
-  load(cb){
+  // load(cb){
+  async load(){
     // Response from serv
     const res = (msg,callback) => {
       const data = JSON.parse(msg.data);
@@ -215,10 +216,13 @@ const serv = {
       // if(isSet(this.param.says)){delete this.param.says;}
       // if(isSet(this.param.outfit)){delete this.param.outfit;}
       // if(isSet(this.param.target)){delete this.param.target;}
-      this.ws.onmessage = (msg) => {res(msg,()=>{cb();})};     
-    }else{
-      cb();
+      // this.ws.onmessage = (msg) => {res(msg,()=>{cb();})};     
+      this.ws.onmessage = (msg) => {res(msg,()=>{ return })};     
     }
+    // else{
+    //   // cb();
+    //   return
+    // }
     this.ws.onerror = (error) => {         // connection error
       gamePlane.stop();
       // console.log("Your connection is lost, ");
