@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style/both.min.css?version={{version}}">
   <script src="./js/functions.js?version={{version}}"></script>
   <link rel="manifest" href="./json/manifest.json?v={{version}}">
-  {{js}}
+  {{ js | safe }}
 </head>
 <body>
   <script src="./js/gameDetails.js?v={{version}}"></script>
@@ -19,7 +19,7 @@
     <noscript>
       You need enable javascript to make this page work.
     </noscript>
-    <div class="message">{{message}}</div>
+    <div class="message">{{ message | safe}}</div>
     <form id="login" action="account.html" method="post">
       <div class="nick">
         <input type="text" name="nick" placeholder="nick">
@@ -67,7 +67,7 @@
       <input type="submit" value="CHANGE" name="type">
     </form>
     <form id="result" action="account.html" method="get">
-      {{message}}
+      {{ message | safe}}
     </form>
     <form id="logout" action="account.html" method="get">
       <input type="hidden" name="logout" value="true">
@@ -101,7 +101,7 @@
         // let urlVals;    
         if("{{action}}" == "game"){
           acc.hideLoader = false;
-          document.cookie = "token={{message}}; SameSite=None; Secure";
+          document.cookie = "token={{message|safe}}; SameSite=None; Secure";
           window.location.replace("game.html");
         }
         if("{{action}}" == "logout"){
@@ -114,7 +114,8 @@
           window.location.replace("/account.html?action=login");
 
         }
-        if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){
+        {# if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){ #}
+        if( "{{action}}" != ""){
           this.urlVals = "{{action}}";
         }else{
           this.urlVals = window.location.search.split(/=|&/);
@@ -133,10 +134,12 @@
       messDisplayer(){
         // MESSAGE DISPLAYER
         const message = document.querySelector(".message");
-        if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){
+        {# if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){ #}
+        if(message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){
           message.innerHTML = "";
         }
-        if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){
+        {# if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){ #}
+        if("{{nick}}" != "" ){
           for(const nickField of document.querySelectorAll(".nick > input")){
             nickField.value = "{{nick}}";
           }
