@@ -23,3 +23,5 @@ You can simply download [this repository](https://github.com/apietryga/webions) 
 ## STORAGE
   By default the data store in simple redis server as JSON stringify, but it automatically changed to storing in JSON file ***/json/playersList.json***, if redis connection is not set.
   Remember, that if you would host game server on heroku - JSON files will be cleared once a day - redis db not. 
+
+  <!-- another test -->
