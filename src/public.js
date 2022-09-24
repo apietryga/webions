@@ -5,7 +5,7 @@ const URL = require('url').URL;
 const game = require("../public/js/gameDetails");
 const Mailgun = require("mailgun").Mailgun, mailgun = new Mailgun(process.env.MAILGUN_API_KEY);
 const Creature = require("./components/Creature");
-const MarkdownIt = require('markdown-it'), md = new MarkdownIt();
+// const MarkdownIt = require('markdown-it'), md = new MarkdownIt();
 const bcrypt = require('bcrypt');
 const mime = require('mime-types');
 const itemTypes = require("./types/itemsTypes").types;
@@ -406,54 +406,54 @@ const public = async (req, res, players, dbc) => {
 
 
   }else if(["/players.html"].includes(myURL.pathname)){
-    vals.aside = `
-      <a href="/players.html?skills=level">Level</a>
-      <a href="/players.html?skills=fist">Fist</a>
-      <a href="/players.html?skills=dist">Dist</a>
-      <a href="/players.html?skills=def">Def</a>
-      <a href="/players.html?skills=magic">Magic</a>
-      <a href="/players.html?online=true">Online</a>
-      <a href="/players.html?lastdeaths=true">Last&nbsp;Deaths</a>
-    `;
-    vals.js += "<script src='/js/components.js?version="+game.version+"'></script>";
-    const [key,value] = myURL.search.split("=");
-    if("?skills" == key){
-      vals.message = "<h1>TOP "+value.charAt(0).toUpperCase() +value.slice(1)+"</h1>";
-    }
-    // dbc[game.db].loadAll((content)=>{
-      const content = await dbc[game.db].loadAll()
-      vals.js += "<script>const key = '"+value+"'; </script>";
-      vals.js += "<script>const playerList = '"+JSON.stringify(content)+"';</script>";
-    // })
-    if("?online=true" == myURL.search){
-      vals.message = "<h1>Online Players</h1>";
-      // dbc[game.db].loadAll((content)=>{
-        vals.js += "<script>const playersList = "+JSON.stringify(players.list)+";</script>";
-        serveChangedContent(myURL.pathname);
-      // })
-    }else if("?lastdeaths=true" == myURL.search){
-      vals.message = "<h1>Last Deaths</h1>";
-      // dbc[game.db].loadAll((content)=>{
-        vals.js += "<script>const playersList = "+JSON.stringify(content)+";</script>";
-        serveChangedContent(myURL.pathname);
-      // })
-    }else{
-      if("" == myURL.search){
-        vals.message = "<h1>TOP Players</h1>";
-      }
+    // vals.aside = `
+    //   <a href="/players.html?skills=level">Level</a>
+    //   <a href="/players.html?skills=fist">Fist</a>
+    //   <a href="/players.html?skills=dist">Dist</a>
+    //   <a href="/players.html?skills=def">Def</a>
+    //   <a href="/players.html?skills=magic">Magic</a>
+    //   <a href="/players.html?online=true">Online</a>
+    //   <a href="/players.html?lastdeaths=true">Last&nbsp;Deaths</a>
+    // `;
+    // vals.js += "<script src='/js/components.js?version="+game.version+"'></script>";
+    // const [key,value] = myURL.search.split("=");
+    // if("?skills" == key){
+    //   vals.message = "<h1>TOP "+value.charAt(0).toUpperCase() +value.slice(1)+"</h1>";
+    // }
+    // // dbc[game.db].loadAll((content)=>{
+    //   const content = await dbc[game.db].loadAll()
+    //   vals.js += "<script>const key = '"+value+"'; </script>";
+    //   vals.js += "<script>const playerList = '"+JSON.stringify(content)+"';</script>";
+    // // })
+    // if("?online=true" == myURL.search){
+    //   vals.message = "<h1>Online Players</h1>";
+    //   // dbc[game.db].loadAll((content)=>{
+    //     vals.js += "<script>const playersList = "+JSON.stringify(players.list)+";</script>";
+    //     serveChangedContent(myURL.pathname);
+    //   // })
+    // }else if("?lastdeaths=true" == myURL.search){
+    //   vals.message = "<h1>Last Deaths</h1>";
+    //   // dbc[game.db].loadAll((content)=>{
+    //     vals.js += "<script>const playersList = "+JSON.stringify(content)+";</script>";
+    //     serveChangedContent(myURL.pathname);
+    //   // })
+    // }else{
+    //   if("" == myURL.search){
+    //     vals.message = "<h1>TOP Players</h1>";
+    //   }
 
-      const content = await dbc[game.db].loadAll()
-      // console.log('GAME[DB]: ', game.db)
-      // console.log('CONTENT: ', content)
-      // dbc[game.db].loadAll((content)=>{
-        // console.log('here im 2')
-        // console.log(content)
-        vals.js += "<script>const playersList = '"+JSON.stringify(content)+"';</script>";
-        serveChangedContent(myURL.pathname);
-      // })
-    }
+    //   const content = await dbc[game.db].loadAll()
+    //   // console.log('GAME[DB]: ', game.db)
+    //   // console.log('CONTENT: ', content)
+    //   // dbc[game.db].loadAll((content)=>{
+    //     // console.log('here im 2')
+    //     // console.log(content)
+    //     vals.js += "<script>const playersList = '"+JSON.stringify(content)+"';</script>";
+    //     serveChangedContent(myURL.pathname);
+    //   // })
+    // }
   }else if(["/4devs.html"].includes(myURL.pathname)){
-    vals.aside = `<a href="https://github.com/apietryga/webions" target="_blank">GITHUB</a>`;
+    // vals.aside = `<a href="https://github.com/apietryga/webions" target="_blank">GITHUB</a>`;
     serveChangedContent(myURL.pathname);
   }else if(["/mapeditor.html"].includes(myURL.pathname)){
     if(game.dev == true){
@@ -469,25 +469,25 @@ const public = async (req, res, players, dbc) => {
               <a href="/mapeditor.html">REFRESH</a>`);
     }
   }else if(["/libary.html"].includes(myURL.pathname)){
-    vals.aside = `
-    <a href="/libary.html?page=install">Install</a>
-    <a href="/libary.html?page=controls">Controls</a>
-    <a href="/libary.html?page=monsters">Monsters</a>
-    <a href="/libary.html?page=items">Items</a>
-    <a href="/libary.html?page=about">About</a>
-    `;
-    vals.js += `<script>
-        const monsters = ${JSON.stringify(monsters)};
-        const items = ${JSON.stringify(itemTypes)};
-    </script>`;
+    // vals.aside = `
+    // <a href="/libary.html?page=install">Install</a>
+    // <a href="/libary.html?page=controls">Controls</a>
+    // <a href="/libary.html?page=monsters">Monsters</a>
+    // <a href="/libary.html?page=items">Items</a>
+    // <a href="/libary.html?page=about">About</a>
+    // `;
+    // vals.js += `<script>
+    //     const monsters = ${JSON.stringify(monsters)};
+    //     const items = ${JSON.stringify(itemTypes)};
+    // </script>`;
     serveChangedContent(myURL.pathname);
   }else if(["/","/index.html"].includes(myURL.pathname)){
-    vals.aside = `<a href="/players.html?online=true">Online list</a>
-    <a href="/players.html?lastdeaths=true">Last deaths</a>`;
-    if(myURL.pathname == "/"){myURL.pathname = "/index.html"}
-    path = myURL.pathname;
-    const result = md.render(fs.readFileSync("readme.md", "utf8"));
-    vals.message = result;
+    // vals.aside = `<a href="/players.html?online=true">Online list</a>
+    // <a href="/players.html?lastdeaths=true">Last deaths</a>`;
+    // if(myURL.pathname == "/"){myURL.pathname = "/index.html"}
+    // path = myURL.pathname;
+    // const result = md.render(fs.readFileSync("readme.md", "utf8"));
+    // vals.message = result;
     serveChangedContent();
   }else{
     serveChangedContent(myURL.pathname);

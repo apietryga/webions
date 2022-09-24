@@ -16,23 +16,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const path = require('path')
 
 const nunjucks = require('nunjucks');
-// nunjucks.configure('views', {
 nunjucks.configure(path.resolve(__dirname, './views/'), {
   express   : app,
   autoescape: true,
   watch : true
-})
-// app.get(['/','/index.html'], (req, res) => {
-//   // res.render("test.html");
-//   // nunjucks.render("test.html");
-//   // return nunjucks.render(path.resolve(__dirname, '/views/test.html'), articles);
-//   // return nunjucks.render(path.resolve(__dirname, './views/test.html'), [1,2,3]);
-//   // return nunjucks.render(path.resolve(__dirname, './views/test.html'));
-//   // return nunjucks.render(path.resolve(__dirname, './views/index.njk'));
-//   // nunjucks.render(path.resolve(__dirname, './views/index.njk'));
-//   // res.render(path.resolve(__dirname, './views/test.html'));
-//   res.render('template.html', [12,2,1])
-// });
+}).addFilter('isObject', function(val) {
+  if(val.constructor == Object){
+    return true
+  }
+  return false
+    //  if (isNaN(num)){
+    //     return 'n/a';
+    //  }
+    //  return num;
+});
+
+// app.use(express.static('../public'));
+app.use(express.static(path.resolve(__dirname, '../public/')));
 
 cm.init();
 im.init();
