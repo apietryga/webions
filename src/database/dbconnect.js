@@ -150,8 +150,8 @@ class dbConnect{
       })
     },
     // playerIsSet(name,callback){
-    playerIsSet( name ){
-      const r = JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
+    async playerIsSet( name ){
+      const r = await JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
       // this.loadAll((r)=>{
         // find player by name
         let isPlayer = false;
@@ -166,8 +166,9 @@ class dbConnect{
       // })
     },
     // update(player,callback = ()=>{}){
-    update( player ){
-      this.playerIsSet(player.name,(p)=>{
+    async update( player ){
+      // this.playerIsSet(player.name,  (p)=>{
+      const p = await this.playerIsSet(player.name)
         if(typeof p[0] == "object"){
           // update record
           for(let [i,px] of p[1].entries()){
@@ -193,7 +194,7 @@ class dbConnect{
         this.save(p[1]);
         // callback();
         return
-      })
+      // })
     },
     save(newContent){
       fs.writeFileSync(this.src, stringify(newContent));  

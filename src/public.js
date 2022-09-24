@@ -149,97 +149,70 @@ const public = async (req, res, players, dbc) => {
   const monstersNames = func.getNamesFromObjArr(monsters).concat(func.getNamesFromObjArr(npcs));
   if(["/account.html"].includes(myURL.pathname)){
     path = "/account.html";
-    // let body = '';req.on("data",(chunk)=>{body += chunk;});
     vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
-    // const processRequest = async (callback) => {
-    const processRequest = async () => {
+
+    // })()
+    // const processRequest = async () => {
+    await ( async () => {
+
       // const data = (body == '')?{type:"LOGIN"}:JSON.parse('{"' + decodeURI(body).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace(/\s/g,'') + '"}');
       const data = req.body
+      if(myURL.search == "?action=logout"){
+        vals.js += "<script>delete_cookie('token')</script>";
+        vals.action = "logout";
+        vals.message = "<b style='color:green;'>You're succesfully logout.</b>";
+        return
+      }
+
       if(data.type == "LOGIN"){
         // search player in db
         if(func.isSet(data.nick)){
-          // console.log(dbc)
           const allPlayers = await db.loadAll();
-          // console.log("allPlayers", allPlayers)
-          // dbc[game.db].loadAll( (allPlayers) => {
-            let dbres = false;
-            const currentTokens = [];
-            for(const singlePlayer of allPlayers){
-              // GET TOKENS LIST
-              if(func.isSet(singlePlayer.token) && singlePlayer.token){
-                currentTokens.push(singlePlayer.token);
-              }
-              // GET CURRENT PLAYER
-              if(singlePlayer.name == data.nick){
-                dbres = singlePlayer;
-              }
+          let dbres = false;
+          const currentTokens = [];
+          for(const singlePlayer of allPlayers){
+            // GET TOKENS LIST
+            if(func.isSet(singlePlayer.token) && singlePlayer.token){
+              currentTokens.push(singlePlayer.token);
             }
-            if(dbres){
-            // if player is set in db
-              if(func.isSet(dbres.password)){
-              // if player register is complete
-                console.log('here im2')
-                
-                // password.comparePassword(data.password,dbres.password)
-                
-                // password.comparePassword(data.password,dbres.password,(e,h)=>{
-                const h = password.comparePassword(data.password,dbres.password)
-                  // console.log('here im3')
-                  // if(e != null){console.error(e);}
-                  if(h){
-                    // SUCCESFULLY LOGIN
-                    vals.action = "game";
-                    // MAKE NEW UNIQUE TOKEN
-                    let newToken; do {
-                      newToken = (Math.random() + 1).toString(36).substring(2);
-                    } while (currentTokens.includes(newToken));
-                    // UPDATE BROWSER COOKIE TOKEN
-                    vals.message = newToken;
-                    // UPDATE TOKEN IN BASE
-                    // console.log('here im3')
-                    // players.update({name: data.nick}, (newPlayer) => {
-                    // const newPlayer = await players.update({name: data.nick})
-                    console.log('here :D')
-                    const newPlayer = await players.update({name: data.nick})
-                      console.log('here im5', newPlayer, data.nick, players)
-                      newPlayer.token = newToken;
-                      newPlayer.skills.level = -1;
-                      newPlayer.updateSkills(dbc[game.db]);
-                    // })
-                  }else{
-                    console.log('here im4')
-
-                    vals.message = "<b style='color:red'>Wrong password.</b>";
-                  }
-                  // return
-                  // callback();
-                // });                
+            // GET CURRENT PLAYER
+            if(singlePlayer.name == data.nick){
+              dbres = singlePlayer;
+            }
+          }
+          if(dbres){
+          // if player is set in db
+            if(func.isSet(dbres.password)){
+            // if player register is complete
+              const h = await password.comparePassword(data.password,dbres.password)
+              if(h){
+                // SUCCESFULLY LOGIN
+                vals.action = "game";
+                // MAKE NEW UNIQUE TOKEN
+                let newToken; do {
+                  newToken = (Math.random() + 1).toString(36).substring(2);
+                } while (currentTokens.includes(newToken));
+                // UPDATE BROWSER COOKIE TOKEN
+                vals.message = newToken;
+                // UPDATE TOKEN IN BASE
+                const newPlayer = await players.update({name: data.nick}, dbc[game.db])
+                newPlayer.token = newToken;
+                dbc[game.db].update(newPlayer)
               }else{
-              // if player is not fully registered (before v.0.2)
-                vals.action = "register";
-                vals.nick = data.nick;
-                vals.message = "<b style='color:green'>Seems that you have no acc details.<br />Set it up.</b>";
-                // callback();
-                // return
+                vals.message = "<b style='color:red'>Wrong password.</b>";
               }
-              // return
             }else{
-            // if player is not in base at all
+            // if player is not fully registered (before v.0.2)
               vals.action = "register";
               vals.nick = data.nick;
-              vals.message = "<b style='color:red'>Player "+data.nick+" not exsists, but you can create it:</b>";
-              // callback();
-              // return
+              vals.message = "<b style='color:green'>Seems that you have no acc details.<br />Set it up.</b>";
             }
-            // return
-          // })
-        }else{
-          if(myURL.search == "?action=logout"){
-            vals.js += "<script>delete_cookie('token')</script>";
-            vals.action = "logout";
-            vals.message = "<b style='color:green;'>You're succesfully logout.</b>";
+          }else{
+          // if player is not in base at all
+            vals.action = "register";
+            vals.nick = data.nick;
+            vals.message = "<b style='color:red'>Player "+data.nick+" not exsists, but you can create it:</b>";
           }
-          // callback();
         }
       }else if(data.type == "REGISTER"){
         dbc[game.db].load({name:data.nick},(dbres)=>{
@@ -360,15 +333,10 @@ const public = async (req, res, players, dbc) => {
           }
         }
       }
-    }
-    await processRequest()
-    // console.log('here im')
-    // req.on("end", ()=>{processRequest(serveChangedContent)});
-    // req.on("end", serveChangedContent);
-    // serveChangedContent('/'+vals.action+'.html')
-    // serveChangedContent('/'+vals.action+'.html')
+    // }
+    })()
+    // await processRequest()
     serveChangedContent(myURL.pathname);
-    // console.log('served')
   }else if(["/game.html"].includes(myURL.pathname)){
     vals.js += "<script>const monstersNames = "+JSON.stringify(monstersNames)+"</script>";
     if(func.isSet(req.headers.cookie)){
