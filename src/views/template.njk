@@ -41,10 +41,12 @@
       <a href="/players.html?skills=level">Players</a>
       <a href="/4devs.html">4devs</a>
     </nav>
-    {{content}}
+    <main>
+      {% include "contents/"+page+".njk" %}
+    </main>
     <aside>
-      {{aside}}
-    </aside>  
+      {{ aside | safe }}
+    </aside>
   </div>
   <footer>
     <!-- <a href="#top">Top this page</a> -->
