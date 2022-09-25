@@ -32,6 +32,7 @@ router.call.group("/players", router => {
     '/lastdeaths'
   ], webController.players)
 })
+router.call.route('/player/:player').get( webController.player );
 router.call.route('/account.html').post( authController.account );
 router.call.route('*').get( (req,res) => { 
   res.render('template.njk', { ...webController.vals, page: '404' })

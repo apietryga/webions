@@ -26,6 +26,7 @@ module.exports = new class webController {
     }
     this.monstersNames = func.getNamesFromObjArr(this.monsters).concat(func.getNamesFromObjArr(npcs));
   }
+
   index = (req, res) => {
     this.vals.aside = `
       <a href="/players/online">Online list</a>
@@ -36,7 +37,6 @@ module.exports = new class webController {
   }
   
   players = async ( req, res ) => {
-    // console.log(dbconnected) 
     const vals = {
       aside : `
       <a href="/players/level">Level</a>
@@ -69,6 +69,22 @@ module.exports = new class webController {
       monsters : this.monsters
     }
     for(const key in vals){ this.vals[key] = vals[key] }
+    res.render("template.njk", this.vals)
+  }
+
+  player = async ( req, res ) => {
+    // console.log(req.params.player)
+    this.vals.player = await dbconnected.load({ name:req.params.player })
+    console.log(this.vals.player)
+    this.vals.page = 'player'
+    this.vals.aside = `
+      <a href="/players/level">Level</a>
+      <a href="/players/fist">Fist</a>
+      <a href="/players/dist">Dist</a>
+      <a href="/players/def">Def</a>
+      <a href="/players/magic">Magic</a>
+      <a href="/players/online">Online</a>
+      <a href="/players/lastdeaths">Last&nbsp;Deaths</a>`,
     res.render("template.njk", this.vals)
   }
 
@@ -112,6 +128,7 @@ module.exports = new class webController {
     res.render("template.njk", this.vals);
   }
   game = (req, res) => {
+    this.vals.nick = "GM"
     this.vals.monstersNames = this.monstersNames
     this.vals.page = req.url.match(/([a-zA-Z0-9]+)/g)[0]
     res.render("game.njk", this.vals);

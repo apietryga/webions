@@ -1,29 +1,37 @@
 {% if not subpage or subpage == 'index' %} 
   {% set subpage = 'level' %} 
 {% endif %}
-<h1>TOP {{ subpage }}</h1>
-<table>
-  <thead>
-    <tr class="listHead">
-      <th>lp.</th>
-      <th>Player name</th>
-      <th>{{ subpage }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% set players = [players, subpage] | getStats %}
-
-    {% for index, player in players.entries() %}
-      <tr class="listBody">
-        <td> {{ index + 1 }} </td>
-        <td>
-          {{player.name}}
-        </td>
-        <td>
-          {# {{player.skills.level}} #}
-          {{player.skills[subpage]}}
-        </td>        
+{% if subpage == 'lastdeaths' %}
+  {% include "./players/"+subpage+".njk" %} 
+{% else %}
+  {% set players = [players, subpage] | getStats %}
+  {% if subpage != 'online' %}
+    <h1> TOP {{ subpage }}</h1>
+  {% else %}
+    <h1>Online list</h1>
+    {% set subpage = 'level' %} 
+  {% endif %}
+  <table>
+    <thead>
+      <tr class="listHead">
+        <th>lp.</th>
+        <th>Player name</th>
+        <th>{{ subpage }}</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for index, player in players.entries() %}
+        <tr class="listBody" onclick="location.replace('/player/{{ player.name }}')">
+          <td> {{ index + 1 }} </td>
+          <td>
+            {{player.name}}
+          </td>
+          <td>
+            {# {{player.skills.level}} #}
+            {{player.skills[subpage]}}
+          </td>        
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}

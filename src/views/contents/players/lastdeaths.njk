@@ -1,0 +1,20 @@
+<h1>Last Deaths</h1>
+<table>
+  {% for death in [players, subpage] | getStats %}
+    <tr>
+      <td>{{ death.when | date("YYYY.MM.DD, HH:mm") }}</td>
+      <td>
+        <a href="/player/{{ death.name }}">{{ death.name }}</a>
+        <span> was killed at level </span>
+        <b>{{ death.level }}</b>
+        <span> by </span>
+        {% if death.whoType == 'player' %}
+          <a href="/player/{{ death.who }}">{{ death.who }}</a>
+        {% else %}
+          {{ death.who }}
+        {% endif  %}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+
