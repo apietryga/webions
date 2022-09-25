@@ -95,7 +95,7 @@ body{
       >table{
         @extend %onFrame;
         border-spacing: 0;
-        width:100%;
+        width:100% !important;
         th{
           @extend %onFrame;
           background-color:  rgba(0, 0, 0, 0.493);
@@ -284,6 +284,9 @@ body{
               div{
                 text-align: center;
                 font-style: italic;
+              }
+              &:hover{
+                background-color:rgb(99, 86, 86); 
               }
             }
             &.monsters td:nth-child(1){min-height:80px;}

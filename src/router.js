@@ -1,20 +1,41 @@
 const webController = require('./controllers/webController')
+const authController = require('./controllers/authController')
+require('express-group-routes');
 const Router = require('express').Router
-const public = require("./public");
 const router = {
   call : Router(),
   set( obj ){ this[Object.keys(obj)] = obj[Object.keys(obj)] }
 }
-
-// router.call.route('*').post( (req,res) => { public(req,res, router.cm, router.dbconnect) });
 router.call.route(['/','/index.html']).get( webController.index );
-router.call.route('/libary.html').get( webController.libary );
-router.call.route('/mapeditor.html').get( webController.mapeditor );
 router.call.route('/4devs.html').get( webController['4devs'] );
-router.call.route('/players.html').get( webController.players );
-router.call.route('/exportplayers.html').get( webController.exportplayers );
 router.call.route('/game.html').get( webController.game );
 router.call.route('/account.html').get( webController.account );
+router.call.group("/libary", router => {
+  router.get([
+    "/",
+    "/about",
+    "/install",
+    "/controls",
+    "/items",
+    "/monsters",
+  ], webController.libary)
+})
+router.call.group("/players", router => {
+  router.get([
+    '/',
+    '/level',
+    '/fist',
+    '/dist',
+    '/def',
+    '/magic',
+    '/online',
+    '/lastdeaths'
+  ], webController.players)
+})
+router.call.route('/account.html').post( authController.account );
+router.call.route('*').get( (req,res) => { 
+  res.render('template.njk', { ...webController.vals, page: '404' })
+});
 
 
 module.exports = router

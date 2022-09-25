@@ -1,0 +1,81 @@
+{% set headers = items | getHeaders %}
+{% set tableClass = headers | join("") %}
+<div class="scrollWrapper" style="display:block"></div>
+<div class="scrollWrapper">
+  <table class="{{ tableClass }}">
+    <thead>
+      {% for key in headers %}
+        <th> {% include "./ico.njk" %} </th>
+      {% endfor %}
+    </thead>
+    <tbody>
+      {% for item in items %}
+        <tr>
+          {% for key in headers %}
+            <td>
+              {% if item[key] | isObject %}
+                <ul>
+                  {% for key, innerValue in item[key] %}
+                    <li>{{ key }}: {{ innerValue }}</li>
+                  {% endfor %}
+                </ul>
+              {% elif key == ""%}
+
+                {% set img = item | getImg %}
+                <div class="item preview"
+                  style="height: {{ img.size }}px;
+                  background-image: url(/img/sprites/{{item.sprite}}.webp?v=0.48);
+                  background-position: {{ img.positionY }}px {{ img.positionX }}px; 
+                  background-size:{{ img.backgroundSize }};
+                  width: {{ img.size }}px;";>
+                </div>
+              
+              
+              
+              {% else %} 
+                {{ item[key] }} 
+              {% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const tableSorting_{{tableClass}} = {
+    desc: true,
+    trs: document.querySelectorAll('.{{tableClass}} tbody tr'),
+    init(){
+      document.querySelectorAll(".{{tableClass}} thead .itemContainer").forEach( itemContainer => {
+        itemContainer.onclick = e => {
+          const th = e.target.parentElement
+          const nodes = Array.prototype.slice.call( th.parentElement.children );
+          this.sort( nodes.indexOf( th ) )
+        }
+      })
+    },
+    sort( index ){
+      this.desc = !this.desc
+      const trs = Array.prototype.slice.call( this.trs )
+      trs.sort(function(a, b) {
+        let keyA = a.children[index].innerText, 
+        keyB = b.children[index].innerText;
+
+        if(!isNaN(keyA)){
+          keyA = keyA*1
+          keyB = keyB*1
+        }
+        if (keyA < keyB) return tableSorting_{{tableClass}}.desc ? -1 : 1;
+        if (keyA > keyB) return tableSorting_{{tableClass}}.desc ? 1: -1;
+        return 0;
+      });
+      document.querySelector('.{{tableClass}} tbody').innerHTML = ""
+      for(const tr of trs){
+        document.querySelector('.{{tableClass}} tbody').append(tr)
+      }
+    }
+  }
+  tableSorting_{{tableClass}}.init()
+</script>

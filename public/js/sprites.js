@@ -94,7 +94,7 @@ let sprites = [
     w:80,
   },
   { name: "dragon",
-    src : "img/sprites/web_dragon.webp?v="+game.version,
+    src : "img/sprites/dragon.webp?v="+game.version,
     group : "monsters"
   },
   { name: "minotaur",
@@ -106,22 +106,24 @@ let sprites = [
     group : "monsters"
   },
   { name: "barbarian",
-    src : "img/sprites/barbarian_knight.webp?v="+game.version,
+    src : "img/sprites/barbarian.webp?v="+game.version,
     group : "monsters"
   },
   { name: "barbarian_monk",
-    src : "img/sprites/barbarian.webp?v="+game.version,
+    src : "img/sprites/barbarian_monk.webp?v="+game.version,
     group : "monsters"
   },
   { name: "cat",
     src : "img/sprites/cat.webp?v="+game.version,
     group : "monsters"
   },
-  { name: "orangeWizard",
+  // { name: "orangeWizard",
+  { name: "orange_wizard",
     src : "img/sprites/orange_wizard.webp?v="+game.version,
     group : "monsters"
   },
-  { name: "trainingMan",
+  // { name: "trainingMan",
+  { name: "training_man",
     src : "img/sprites/training_man.webp?v="+game.version,
     group : "monsters"
   },
@@ -130,14 +132,15 @@ let sprites = [
     group : "monsters"
   },
   { name: "cyclops",
-    src : "img/sprites/web_cyclops.webp?v="+game.version,
+    src : "img/sprites/cyclops.webp?v="+game.version,
     group : "monsters"
   },
   { name: "actions",
     src : "img/sprites/actions/actions.webp?v="+game.version
   },
   { name: "action_items",
-    src : "img/sprites/actions/action_items.webp?v="+game.version
+    // src : "img/sprites/actions/action_items.webp?v="+game.version
+    src : "img/sprites/action_items.webp?v="+game.version
   },
   { name: "tourets",
     src : "img/sprites/tourets.webp?v="+game.version
