@@ -1,3 +1,29 @@
-  <noscript>You must turn on javaScript to see this page.</noscript>
-  {{message}}
-  {{js}}
+{% if not subpage or subpage == 'index' %} 
+  {% set subpage = 'level' %} 
+{% endif %}
+<h1>TOP {{ subpage }}</h1>
+<table>
+  <thead>
+    <tr class="listHead">
+      <th>lp.</th>
+      <th>Player name</th>
+      <th>{{ subpage }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% set players = [players, subpage] | getStats %}
+
+    {% for index, player in players.entries() %}
+      <tr class="listBody">
+        <td> {{ index + 1 }} </td>
+        <td>
+          {{player.name}}
+        </td>
+        <td>
+          {# {{player.skills.level}} #}
+          {{player.skills[subpage]}}
+        </td>        
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

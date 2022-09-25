@@ -1,7 +1,7 @@
-.itemContainer .label, body ::-webkit-scrollbar-track {
+body ::-webkit-scrollbar-track, .itemContainer .label {
   border: 2px solid;
   border-color: #444444 #737373 #737373 #444444;
-  background-color: #2f2f2f;
+  background-color: rgb(47, 47, 47);
   color: #AEAEAC;
 }
 
@@ -9,14 +9,13 @@ body ::-webkit-scrollbar-thumb {
   border: 2px solid;
   border-color: #737373 #444444 #444444 #737373;
   padding: 2px;
-  background-color: #2f2f2f;
+  background-color: rgb(47, 47, 47);
   color: #AEAEAC;
 }
 
 .itemContainer {
   position: relative;
 }
-
 .itemContainer .label {
   pointer-events: none;
   position: absolute;
@@ -27,10 +26,9 @@ body ::-webkit-scrollbar-thumb {
   padding: 5px;
   z-index: 1;
   text-align: left;
-  background-color: #2f2f2fb6 !important;
+  background-color: rgba(47, 47, 47, 0.7137254902) !important;
   display: none !important;
 }
-
 .itemContainer:hover > .label {
   display: block !important;
 }
@@ -38,7 +36,6 @@ body ::-webkit-scrollbar-thumb {
 body ::-webkit-scrollbar {
   width: 10px;
 }
-
 body ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
@@ -53,42 +50,48 @@ body ::-webkit-scrollbar-thumb:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #181818;
+  background-color: rgb(24, 24, 24);
   z-index: 2;
 }
-
 .loader h1 {
   color: #fff;
 }
-
 .loader .imgField {
   position: relative;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
   height: fit-content;
   padding: 10px;
 }
-
 .loader .imgField img {
   position: relative;
   width: 100%;
   height: 100%;
   z-index: 2;
 }
-
 .loader .imgField:before {
   box-sizing: border-box;
-  content: '';
+  content: "";
   position: absolute;
-  border: 16px solid #9a01013f;
-  border-top: 16px solid #b7990038;
-  border-bottom: 16px solid #b7990038;
+  border: 16px solid rgba(154, 1, 1, 0.2470588235);
+  border-top: 16px solid rgba(183, 153, 0, 0.2196078431);
+  border-bottom: 16px solid rgba(183, 153, 0, 0.2196078431);
   border-radius: 50%;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
-  animation: spin 2s linear infinite;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
 }
-
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -97,20 +100,17 @@ body ::-webkit-scrollbar-thumb:hover {
     transform: rotate(360deg);
   }
 }
-
 .loader .loadProgress {
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
   height: 14px;
 }
-
 .loader .loadProgress .progressBar {
   border-radius: 5px;
-  background-color: #912020;
+  background-color: rgb(145, 32, 32);
   width: 0;
   height: 100%;
 }
-
 .loader .loadDetails {
   font-size: 0.4em;
   height: 25px;
@@ -125,7 +125,6 @@ body ::-webkit-scrollbar-thumb:hover {
     width: 50vw;
   }
 }
-
 @media (orientation: landscape) {
   .loadProgress, .loadDetails {
     width: 50vh;

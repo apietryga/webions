@@ -1,8 +1,9 @@
-<h1><a href="./libary.html">Libary</a></h1>
+<h1><a href="./libary">Libary</a></h1>
 <div class="content">
-  <div class="index" style="display:none;">
+  {# <div class="index" style="display:none;"> #}
+  {# <div class="index">
     <!-- <h2>Here's a few information about game</h2> -->
-    <article><a href="?page=install">Install Client</a>
+    <article><a href="./install">Install Client</a>
       <p>
         You can simply install {{name}} game on your 
         <a href="?page=install#windows">Windows</a>,
@@ -10,7 +11,7 @@
         <a href="?page=install#ios">iOS</a> device in steps.
       </p>
     </article>
-    <article><a href="?page=controls">Controls</a>
+    <article><a href="./controls">Controls</a>
       <p>
         Few information about controls in game. Here you can learn about
         <a href="?page=controls#wt">white targeting</a>, 
@@ -19,17 +20,17 @@
         <a href="?page=controls#healing">healing</a>.
       </p>
     </article>
-    <article><a href="?page=items">Items</a>
+    <article><a href="./items">Items</a>
       <p>
         Here you've list of items from the game. 
       </p>
     </article>
-    <article><a href="?page=monsters">Monsters</a>
+    <article><a href="./monsters">Monsters</a>
       <p>
         Here you've list of monsters from the game. 
       </p>
     </article>
-    <article><a href="?page=about">About</a>
+    <article><a href="./about">About</a>
       <p>
         here's info about authors
       </p>
@@ -100,60 +101,16 @@
   
   </div>
   <div class="items" style="display:none">
-    <div class="scrollWrapper" style="display:block"></div>
-    <div class="scrollWrapper">
-      <div>
-        <table>
-          <thead>
-            {% for key, item in items[0] %}
-              <th>{{ key }}</th>
-            {% endfor %}
-          </thead>
-          <tbody>
-            {% for item in items %}
-              <tr>
-                {% for key, value in item %}
-                  <td>{{ item[key]  }}</td>
-                {% endfor %}                
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+    <div>
+      {% include "../components/table.njk" %}
     </div>
   </div>
   <div class="monsters" style="display:none">
-    <div class="scrollWrapper" style="display:block"></div>
-    <div class="scrollWrapper">
-      <div>
-        <table>
-          <thead>
-            {% for key, monster in monsters[0] %}
-              <th>{{ key }}</th>
-            {% endfor %}
-          </thead>
-          <tbody>
-            {% for monster in monsters %}
-              <tr>
-                {% for key, value in monster %}
-                  <td>
-                    {% if value | isObject %}
-                      {% for key, innerValue in value %}
-                        <li>{{ key }}: {{ innerValue }}</li>
-                      {% endfor %}
-                    {% else %} {{ value }} {% endif %}
-                  </td>
-                {% endfor %}
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+    <div>
+      {% set items = monsters %}
+      {% include "../components/table.njk" %}
     </div>
   </div>
-
-
-
   <div class="about" style="display:none">
     <h2 id="about">About</h2>
     <p>
@@ -161,5 +118,12 @@
       My other projects you can find <a href="https://apietryga.web.app" target="_blank">here</a>
       
     </p>
-  </div>
+  </div> #}
+  {# KONTENT #}
+
+  {% if subpage%}
+    {% include "./libary/"+subpage+".njk" %}
+  {% else %}
+    {% include "./libary/index.njk" %}
+  {% endif %}
 </div>

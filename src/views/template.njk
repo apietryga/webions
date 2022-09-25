@@ -37,8 +37,8 @@
   <div class="wrapper">
     <nav>
       <a href="/">Home</a>
-      <a href="/libary.html">Libary</a>
-      <a href="/players.html?skills=level">Players</a>
+      <a href="/libary">Libary</a>
+      <a href="/players/level">Players</a>
       <a href="/4devs.html">4devs</a>
     </nav>
     <main>
@@ -51,8 +51,8 @@
   <footer>
     <!-- <a href="#top">Top this page</a> -->
     <a href="/">Home</a>
-    <a href="/libary.html">Libary</a>
-    <a href="/players.html?skills=level">Players</a>
+    <a href="/libary">Libary</a>
+    <a href="/players/level">Players</a>
     <a href="/4devs.html">4devs</a>
   </footer>
   </body>
@@ -71,5 +71,5 @@
     document.cookie = "popup=false";
   }
   // SERVICE WORKER FOR OFFLINE DISPLAY
-  if('serviceWorker' in navigator){navigator.serviceWorker.register('./serviceWorker.js');}
+  if('serviceWorker' in navigator){navigator.serviceWorker.register('/serviceWorker.js');}
 </script>
