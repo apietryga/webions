@@ -1,6 +1,7 @@
 
 const nunjucks = require('nunjucks');
 const path = require('path')
+const dateFilter = require('nunjucks-date-filter');
 const skipTH = [
   'desc', 
   'spriteNr',
@@ -57,22 +58,31 @@ module.exports = {
         'speed', 
         'exp',
       ]
-      // const index = icons.findIndex(ico => { return ico == key })
       const index = icons.indexOf(key)
-      // console.log(key, index)
       return {
-        // bgPosition: '-125px 0px'
         name : index == -1 ? key : '',
         bgPosition: '-'+( index * 25 )+'px 0px'
       }
     })
     .addFilter('getStats', ([players, page]) => {
-      if(['online', 'lastdeaths'].includes(page)){ return []}
-
+      if(page == 'lastdeaths'){
+        players.forEach( p => {p.lastDeaths.forEach(d => { d.name = p.name } )})
+        return players
+        .flatMap(({ lastDeaths }) => lastDeaths)
+        .sort((a, b) => {
+          if(a.when > b.when){return -1}
+          if(a.when < b.when){return 1}
+        })
+      }
+      if(page == 'online'){
+        return cm.players.list
+      }
+      players = players.filter(player => player.name != 'GM')
       return players.sort((a, b) => {
         if(a.skills[page] > b.skills[page]) { return -1 }
         if(a.skills[page] < b.skills[page]) { return 1 }
       })
     })
+    .addFilter('date', dateFilter)
   }
 }

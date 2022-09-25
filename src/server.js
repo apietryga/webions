@@ -16,6 +16,7 @@ app.use(express.static('./public'));
 
 ( async () => {
   cm.init();
+  global.cm = cm;
   im.init();
   await dbc.init()
   global.dbconnected = dbc[game.db]

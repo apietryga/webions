@@ -1,3 +1,5 @@
+const func = require('../../public/js/functions')
+const game = require("../../public/js/gameDetails");
 const wm = { // walls management
   list : [],
   update(output,callback){
@@ -6,16 +8,7 @@ const wm = { // walls management
         this.list.splice(i,1);
       }
     }
-
-    // console.log('walls management')
-    // console.log(this.list);
-    // output.push(walls);
     output.walls = this.list;
-    // if(typeof output.walls != 'undefined'){
-
-    // }else{
-
-    // }
     callback(output);
   }
 }
