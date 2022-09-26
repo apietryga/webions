@@ -2,6 +2,7 @@
 const nunjucks = require('nunjucks');
 const path = require('path')
 const dateFilter = require('nunjucks-date-filter');
+
 const skipTH = [
   'desc', 
   'spriteNr',
@@ -16,7 +17,7 @@ const skipTH = [
 
 module.exports = {
   configure(app){
-    nunjucks.configure(path.resolve(__dirname, '../views/'), {
+    const env = nunjucks.configure(path.resolve(__dirname, '../views/'), {
       express   : app,
       autoescape: true,
       watch : true
@@ -84,5 +85,6 @@ module.exports = {
       })
     })
     .addFilter('date', dateFilter)
+    require('nunjucks-global-uid')(env)
   }
 }

@@ -7,8 +7,8 @@
     <td>health</td>
     <td>
       <div class="healthBar">
-        <div style="width: 100%; background-color: rgb(0, 255, 0);"></div>
-        <div class="label">{{ player.mana }}&nbsp;/&nbsp;<b>{{ player.maxMana }}</b>&nbsp;(600 + 129)</div>
+        <div style="width: {{(player.health*100)/player.totalHealth}}%; background-color: rgb(0, 255, 0);"></div>
+        <div class="label">{{ player.health }}&nbsp;/&nbsp;<b>{{ player.totalHealth }}</b>&nbsp;({{ player.maxHealth }} + {{player.totalHealth - player.maxHealth}})</div>
       </div>
     </td>
   </tr>
@@ -16,14 +16,14 @@
     <td>mana</td>
     <td>
       <div class="manaBar">
-        <div style="width: 100%; background-color: rgb(12, 49, 129);"></div>
-        <div class="label">{{ player.health }}&nbsp;/&nbsp;<b>{{ player.maxHealth }}</b>&nbsp;(600 + 129)</div>
+        <div style="width: {{(player.mana*100)/player.totalMana}}%; background-color: rgb(12, 49, 129);"></div>
+        <div class="label">{{ player.mana }}&nbsp;/&nbsp;<b>{{ player.totalMana }}</b>&nbsp;({{ player.maxMana }} + {{player.totalMana - player.maxMana}})</div>
       </div>
     </td>
   </tr>
   <tr class="detailsBody">
     <td>sprite</td>
-    <td><canvas width="40" height="40"></canvas></td>
+    <td> {% include '../components/sprite.njk' %} </td>
   </tr>
   <tr class="detailsBody">
     <td>lastFrame</td>
@@ -34,14 +34,38 @@
     <td class="eq">
       <div class="allFields">
         <div style="grid-area: hd / hd / hd / hd;">
-        <div class="itemContainer">
-          <div class="label">
+          <div class="itemContainer">
+            <div class="label">
+              <div style="display: flex; align-items: center;">
+                <span style="flex:1;text-align:center">Magic Hat</span>
+              </div>
+              <div style="display: flex; align-items: center;">
+                <div class="itemContainer" 
+                  style="width: 25px; height: 25px; 
+                  background-image: url(&quot;./img/signs.svg&quot;); 
+                  background-size: auto 100%; margin: auto; background-position: -50px 0px;">
+                  <div class="label">mana</div>
+                </div>
+              <span style="flex:1;text-align:center">400</span>
+            </div>
             <div style="display: flex; align-items: center;">
-              <span style="flex:1;text-align:center">Magic Hat</span>
-              </div><div style="display: flex; align-items: center;">
-                <div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -50px 0px;">
-                <div class="label">mana</div>
-              </div><span style="flex:1;text-align:center">400</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -75px 0px;"><div class="label">manaRegen</div></div><span style="flex:1;text-align:center">50</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: bp / bp / bp / bp;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Backpack</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: nc / nc / nc / nc;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Random Item</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -50px 0px;"><div class="label">mana</div></div><span style="flex:1;text-align:center">76</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -75px 0px;">
+              <div class="itemContainer" 
+                style="width: 25px; height: 25px; 
+                background-image: url(&quot;./img/signs.svg&quot;); 
+                background-size: auto 100%; margin: auto; 
+                background-position: -75px 0px;">
+                <div class="label">manaRegen</div>
+              </div>
+              <span style="flex:1;text-align:center">50</span>
+            </div>
+          </div>
+          <canvas class="itemDOM" width="32" height="32"></canvas>
+        </div>
+      </div>
+
+      <div style="grid-area: bp / bp / bp / bp;">
+            <div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;">
+              <span style="flex:1;text-align:center">Backpack</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: nc / nc / nc / nc;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Random Item</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -50px 0px;"><div class="label">mana</div></div><span style="flex:1;text-align:center">76</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -75px 0px;">
               <div class="label">manaRegen</div></div>
               <span style="flex:1;text-align:center">31</span></div>
               <div style="display: flex; align-items: center;">
@@ -51,7 +75,7 @@
                     <div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -175px 0px;"><div class="label">speed</div></div><span style="flex:1;text-align:center">1</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas>
                     </div>
                     </div>
-                    </div>
+          </div>
       </td>
   </tr>
   <tr class="detailsBody">

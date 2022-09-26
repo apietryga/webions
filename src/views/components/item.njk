@@ -1,0 +1,32 @@
+{% set id = uid('canvas') %}
+<div class="itemContainer" id="{{ id }}">
+  <div class="label">
+    <div style="display: flex; align-items: center;">
+      {# <span style="flex:1;text-align:center">Magic Hat</span> #}
+      <span style="flex:1;text-align:center">TEST</span>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <div class="itemContainer" 
+        style="width: 25px; height: 25px; 
+        background-image: url(&quot;./img/signs.svg&quot;); 
+        background-size: auto 100%; margin: auto; background-position: -50px 0px;">
+        <div class="label">mana</div>
+      </div>
+    <span style="flex:1;text-align:center">400</span>
+  </div>
+  {# <canvas class="itemDOM" width="32" height="32"></canvas> #}
+</div>
+
+<script src="/js/components.js"></script>
+<script>
+  window.onload = () => {
+    const eq = {{ player.eq | dump | safe }}
+    const fieldDOM = document.getElementById("{{ id }}")
+    for(const eqField of Object.keys(player.eq)){
+      const item = new Item(eq[eqField]);
+      const itemDOM = item.toDOM();
+      fieldDOM.append(itemDOM);
+    }
+
+  }
+</script>

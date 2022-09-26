@@ -76,6 +76,11 @@ module.exports = new class webController {
     // console.log(req.params.player)
     this.vals.player = await dbconnected.load({ name:req.params.player })
     console.log(this.vals.player)
+    delete this.vals.player.token
+    delete this.vals.player.password
+    this.vals.player.type = 'player'
+    func.setTotalVals(this.vals.player)
+
     this.vals.page = 'player'
     this.vals.aside = `
       <a href="/players/level">Level</a>

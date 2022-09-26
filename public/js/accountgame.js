@@ -5,7 +5,7 @@ loader.className = "loader";
 const imgField = document.createElement("div");
 imgField.className = "imgField";
   const img = document.createElement("img");
-  img.src = "logo.webp";
+  img.src = "/img/logo.webp";
   img.alt = game.name+" Game";
   imgField.append(img);
 loader.append(imgField);
