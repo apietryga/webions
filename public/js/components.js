@@ -614,15 +614,21 @@ class Item{
     }
     sq.className = "itemDOM";
     const img = map.sprites[item.sprite];
-    sq.width = img.height;
-    sq.height = img.height;
+    if(!img){ return }
+
+    const height = img?.height;
+
+    sq.width = height;
+    sq.height = height;
 
     const ctx = sq.getContext("2d");
     // ctx.clearRect(0, 0, img.width, img.height);
 
+    console.log("img", img, "height", height)
+    
     ctx.drawImage(img, 
-      item.spriteNr * img.height, 0, img.height, img.height,
-      0, 0, img.height, img.height
+      item.spriteNr * height, 0, height, height,
+      0, 0, height, height
     );
 
     const itemContainer = document.createElement("div");

@@ -2333,27 +2333,27 @@
   },
   {
     "name": "GM",
-    "position": [-71, 10, 3],
+    "position": [13, -27, 1],
     "speed": 5,
     "health": 4110,
     "maxHealth": 3110,
-    "redTarget": 35,
+    "redTarget": 65,
     "sprite": "gm",
     "skills": {
       "level": 301,
-      "exp": 27003090,
-      "fist": 17,
-      "fist_summary": 4204,
+      "exp": 27005870,
+      "fist": 19,
+      "fist_summary": 5849,
       "dist": 1001,
-      "dist_summary": 1000033828,
-      "def_summary": 27098119,
+      "dist_summary": 1000058050,
+      "def_summary": 27105819,
       "def": 301,
       "magic_summary": 12800,
       "magic": 24
     },
     "autoShot": true,
     "autoMWDrop": false,
-    "lastFrame": 1664148077975,
+    "lastFrame": 1664618504219,
     "lastDeaths": [
       {
         "when": "2021-11-19T19:24:24.332Z",
@@ -2429,7 +2429,8 @@
       "Backpack",
       "Backpack",
       "King Legs",
-      "Wand of Destiny"
+      "Wand of Destiny",
+      "Magic Hat"
     ],
     "colors": {
       "head": [240, 169, 98],
@@ -2467,6 +2468,15 @@
             "handle": ["lg"],
             "pickable": true,
             "def": 50
+          },
+          {
+            "name": "Magic Hat",
+            "sprite": "items",
+            "spriteNr": 13,
+            "handle": ["hd"],
+            "pickable": true,
+            "mana": 400,
+            "manaRegen": 50
           }
         ]
       },
