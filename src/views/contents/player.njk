@@ -1,7 +1,6 @@
 <h1>
   <a href="/players">Players</a> ▸ {{ player.name }}
 </h1>
-
 <table>
   <tr class="detailsBody">
     <td>health</td>
@@ -33,50 +32,16 @@
     <td>eq</td>
     <td class="eq">
       <div class="allFields">
-        <div style="grid-area: hd / hd / hd / hd;">
-          <div class="itemContainer">
-            <div class="label">
-              <div style="display: flex; align-items: center;">
-                <span style="flex:1;text-align:center">Magic Hat</span>
-              </div>
-              <div style="display: flex; align-items: center;">
-                <div class="itemContainer" 
-                  style="width: 25px; height: 25px; 
-                  background-image: url(&quot;./img/signs.svg&quot;); 
-                  background-size: auto 100%; margin: auto; background-position: -50px 0px;">
-                  <div class="label">mana</div>
-                </div>
-              <span style="flex:1;text-align:center">400</span>
-            </div>
-            <div style="display: flex; align-items: center;">
-              <div class="itemContainer" 
-                style="width: 25px; height: 25px; 
-                background-image: url(&quot;./img/signs.svg&quot;); 
-                background-size: auto 100%; margin: auto; 
-                background-position: -75px 0px;">
-                <div class="label">manaRegen</div>
-              </div>
-              <span style="flex:1;text-align:center">50</span>
-            </div>
-          </div>
-          <canvas class="itemDOM" width="32" height="32"></canvas>
-        </div>
+        {% for field in ['nc', 'hd', 'bp', 'lh', 'ch', 'rh', 'lg', 'ft'] %}
+          <div style="grid-area: {{ field }};">
+            {% set item = player.eq[field] %}
+            {% if item %}            
+              {% include "../components/item.njk" %}
+            {% endif %}
+          </div>          
+        {% endfor %}
       </div>
-
-      <div style="grid-area: bp / bp / bp / bp;">
-            <div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;">
-              <span style="flex:1;text-align:center">Backpack</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: nc / nc / nc / nc;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Random Item</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -50px 0px;"><div class="label">mana</div></div><span style="flex:1;text-align:center">76</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -75px 0px;">
-              <div class="label">manaRegen</div></div>
-              <span style="flex:1;text-align:center">31</span></div>
-              <div style="display: flex; align-items: center;">
-                <div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -125px 0px;"><div class="label">health</div></div><span style="flex:1;text-align:center">129</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -100px 0px;"><div class="label">def</div></div><span style="flex:1;text-align:center">48</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: ch / ch / ch / ch;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">King Armor</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -100px 0px;"><div class="label">def</div></div><span style="flex:1;text-align:center">100</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: lh / lh / lh / lh;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Simple Shield</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -100px 0px;"><div class="label">def</div></div><span style="flex:1;text-align:center">20</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: rh / rh / rh / rh;"><div class="itemContainer"><div class="label">
-                  <div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Wand of Destiny</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: 0px 0px;"><div class="label">fist</div></div><span style="flex:1;text-align:center">100</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -25px 0px;"><div class="label">dist</div></div><span style="flex:1;text-align:center">100</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -75px 0px;"><div class="label">manaRegen</div></div><span style="flex:1;text-align:center">100</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: lg / lg / lg / lg;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Simple Legs</span></div><div style="display: flex; align-items: center;"><div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -75px 0px;"><div class="label">manaRegen</div></div><span style="flex:1;text-align:center">10</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas></div></div><div style="grid-area: ft / ft / ft / ft;"><div class="itemContainer"><div class="label"><div style="display: flex; align-items: center;"><span style="flex:1;text-align:center">Simple Boots</span></div><div style="display: flex; align-items: center;">
-                    
-                    <div class="itemContainer" style="width: 25px; height: 25px; background-image: url(&quot;./img/signs.svg&quot;); background-size: auto 100%; margin: auto; background-position: -175px 0px;"><div class="label">speed</div></div><span style="flex:1;text-align:center">1</span></div></div><canvas class="itemDOM" width="32" height="32"></canvas>
-                    </div>
-                    </div>
-          </div>
-      </td>
+    </td>
   </tr>
   <tr class="detailsBody">
     <td>skills</td>
@@ -92,15 +57,16 @@
         </tr>
         <tr>
           <td>fist</td>
-          <td><b>{{ player.skills.fist }}</b> ( 188 <i>+100</i> )</td>
+          {# <td><b>{{ player.skills.fist }}</b> ( 188 <i>+100</i> )</td> #}
+          <td><b>{{ player.totalFist }}</b> ( {{ player.skills.fist }} <i>+{{ player.totalFist - player.skills.fist }}</i> )</td>
         </tr>
         <tr>
           <td>dist</td>
-          <td><b>{{ player.skills.dist }}</b> ( 189 <i>+100</i> )</td>
+          <td><b>{{ player.totalDist }}</b> ( {{ player.skills.dist }} <i>+{{ player.totalDist - player.skills.dist }}</i> )</td>
         </tr>
         <tr>
           <td>def</td>
-          <td><b>{{ player.skills.def }}</b> ( 88 <i>+168</i> )</td>
+          <td><b>{{ player.totalDef }}</b> ( {{ player.skills.def }} <i>+{{ player.totalDef - player.skills.def }}</i> )</td>
         </tr>
         <tr>
           <td>magic</td>
@@ -108,7 +74,7 @@
         </tr>
         <tr>
           <td>speed</td>
-          <td><b>{{ player.speed }}</b> ( 3 <i>+1</i> )</td>
+          <td><b>{{ player.totalSpeed }}</b> ( {{ player.speed }} <i>+{{ player.totalSpeed - player.speed }}</i> )</td>
         </tr>
       </table>
     </td>
@@ -143,4 +109,3 @@
     </td>
   </tr>
 </table>
-{# {{ player | dump }} #}

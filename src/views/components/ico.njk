@@ -1,13 +1,13 @@
 {% set ico = key | getIco %}
-<div class="itemContainer"
-  {% if not ico.name and ico.name == "" %}
-  style="width: 25px;
+{% if not ico.name and ico.name == "" %}
+  <div class="itemContainer" style="width: 25px;
     height: 25px;
     background-image: url('/img/signs.svg');
     background-size: auto 100%;
     margin: auto;
     background-position:{{ ico.bgPosition }};"
-  {% endif %}
-  >{{ ico.name }}
-  <div class="label"> {{ key }} </div>
-</div>
+  ></div>
+  {% if icoValue %} {{ icoValue }} {% endif %}
+{% elif not icoValue and icoValue != 0 %}
+  {{ico.name}}
+{% endif %}

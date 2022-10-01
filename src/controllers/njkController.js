@@ -2,6 +2,7 @@
 const nunjucks = require('nunjucks');
 const path = require('path')
 const dateFilter = require('nunjucks-date-filter');
+const items = require('../types/itemsTypes')
 
 const skipTH = [
   'desc', 
@@ -21,6 +22,16 @@ module.exports = {
       express   : app,
       autoescape: true,
       watch : true
+    })
+    .addFilter('getItem', item => {
+      return {
+        ...items.types.find( it => it.name == item.name ),
+        ...item
+      }
+    })
+    .addFilter('isArray', val => {
+      if(!val){return false}
+      if(val.constructor == Array){ return true }
     })
     .addFilter('isObject', val => {
       if(!val){return false}

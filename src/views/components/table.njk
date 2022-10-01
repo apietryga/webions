@@ -15,12 +15,18 @@
             <td>
               {% if item[key] | isObject %}
                 <ul>
-                  {% for key, innerValue in item[key] %}
-                    <li>{{ key }}: {{ innerValue }}</li>
+                  {% for key, icoValue in item[key] %}
+                    <li style="display:flex;">{% include "./ico.njk" %}</li>
                   {% endfor %}
                 </ul>
+              {% elif item[key] | isArray%}
+                <div class="items">
+                {% for item in item[key] %}
+                    {% set item = item | getItem%}
+                    {% include "./item.njk" %}
+                {% endfor %}
+                </div>
               {% elif key == ""%}
-
                 {% set img = item | getImg %}
                 <div class="item preview"
                   style="height: {{ img.size }}px;
@@ -29,9 +35,6 @@
                   background-size:{{ img.backgroundSize }};
                   width: {{ img.size }}px;";>
                 </div>
-              
-              
-              
               {% else %} 
                 {{ item[key] }} 
               {% endif %}
