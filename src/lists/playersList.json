@@ -842,7 +842,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [25, -44, 0, 1658432192288],
-    "token": "cyp0ldpsj5"
+    "token": "la7ivdvamz"
   },
   {
     "name": "EDA",
@@ -2537,6 +2537,385 @@
     "password": "$2b$10$.8M61VyIgCxK7M2wMlZHgewYB.lAoCNjpCUsJ0unSU0w06DBgupKa",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastMWall": [56, -20, -2, 1641930243542]
+    "lastMWall": [56, -20, -2, 1641930243542],
+    "token": "um3won5q6k"
+  },
+  {
+    "name": "TESTOWO",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 110,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$iyYO3N.lt850wR/aYUrQPuj72F29gk6FPydUfWQKJzrrPl7r/RAP6",
+    "email": "asd@asd.co",
+    "sex": "male",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 0,
+      "dist_summary": 0,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 0,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 110
+  },
+  {
+    "name": "ASDasdas",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 110,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$NSt.rImjMKJJsSnRWQ3RDOsCRUcrFPEn5a2g2/8/O7/d9JmBcoH/S",
+    "email": "asd@asD.CP",
+    "sex": "male",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 0,
+      "dist_summary": 0,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 0,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 110
+  },
+  {
+    "name": "asdasdasdasd",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 110,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$xXpOMZV6H5mKdM12FiLNKOzvTGgv/6SbesMG4rvs8DExSSdi5EIbK",
+    "email": "asd@asda.as",
+    "sex": "male",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 0,
+      "dist_summary": 0,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 0,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 110
+  },
+  {
+    "name": "asdaxAAX",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 110,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$YGltUhSxP7BMcwepYnJq2OzfZPM4undVH8cykC9ulqGyfybkmLvGO",
+    "email": "asd@asd.co",
+    "sex": "male",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 0,
+      "dist_summary": 0,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 0,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 110
+  },
+  {
+    "name": "testowo",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 100,
+    "redTarget": 11,
+    "sprite": "male_oriental",
+    "password": "$2b$10$OUnR9irVT4ccEGbPx4abbemOMi09Sk/RXc7MrZTjxEwkN/3BR9O0K",
+    "email": "asd@asd.co",
+    "sex": "female",
+    "token": "yzpm0suatpk",
+    "skills": {
+      "level": 0,
+      "exp": 0,
+      "fist": 3,
+      "fist_summary": 19,
+      "dist": 4,
+      "dist_summary": 43,
+      "def": 7,
+      "def_summary": 301,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 1665001156414,
+    "lastDeaths": [
+      {
+        "when": "2022-10-05T20:18:32.830Z",
+        "who": "Wasp",
+        "whoType": "monster",
+        "level": 0
+      },
+      {
+        "when": "2022-10-05T20:19:16.357Z",
+        "who": "Wasp",
+        "whoType": "monster",
+        "level": 0
+      }
+    ],
+    "quests": ["Simple Boots", "Rod", "Backpack"],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": {
+        "name": "Backpack",
+        "sprite": "items",
+        "spriteNr": 0,
+        "cap": 8,
+        "handle": ["bp"],
+        "pickable": true
+      },
+      "nc": false,
+      "ch": false,
+      "lh": {
+        "name": "Rod",
+        "sprite": "items",
+        "spriteNr": 1,
+        "fist": 15,
+        "dist": 20,
+        "manaRegen": 2,
+        "handle": ["lh", "rh"],
+        "pickable": true
+      },
+      "rh": false,
+      "lg": false,
+      "ft": {
+        "name": "Simple Boots",
+        "sprite": "items",
+        "spriteNr": 5,
+        "handle": ["ft"],
+        "pickable": true,
+        "speed": 1
+      }
+    },
+    "mana": 100,
+    "maxMana": 100
+  },
+  {
+    "name": "testeusz",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 110,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$sAdN/ihUW76sxfahRWDVheBK/Ci8hXPA9G.9k3WDjloIWXYrdNoXK",
+    "email": "test@123.cok",
+    "sex": "male",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 0,
+      "dist_summary": 0,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 0,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 110
+  },
+  {
+    "name": "testdwa",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 110,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$p9KB.FRTEuwXPBk.ARMYxOC/U5H03ZmoEv0otrHUVEQUxR2cUThmi",
+    "email": "asd@asd.co",
+    "sex": "male",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 0,
+      "dist_summary": 0,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 0,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 110
+  },
+  {
+    "name": "testtrzy",
+    "position": [35, -9, -1],
+    "speed": 3,
+    "health": 100,
+    "maxHealth": 100,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$Rzmxrp/oIm3KPx0uby1UfeLttv2vQ.FM1Xp.KGoczD/xTztNWxqq.",
+    "email": "async@asd.co",
+    "sex": "female"
   }
 ]

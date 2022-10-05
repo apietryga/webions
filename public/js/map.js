@@ -19,6 +19,7 @@ if(typeof window == "undefined"){fs = require("fs");func = require("./functions"
 class GameMap{
   constructor(){
     // this.path = "./json/map.json";
+    // this.path = "./src/map/map.json";
     this.path = "./src/map/map.json";
     // this.path = "./json/testmap.json";
     this.avalibleGrids = ['floors','halffloors'];
@@ -113,7 +114,7 @@ class GameMap{
                 grid = [oneGrid[2],oneGrid[0],oneGrid[1],floor[0],oneGrid[3]];
                 if(typeof oneGrid[4] != "undefined"){grid.push(oneGrid[4])}
                 if(oneGrid[4] == "doors"){
-                  console.log(oneGrid);
+                  console.log("oneGrid", oneGrid);
                 }
 
                 if(typeof oneGrid[5] != "undefined"){grid.push(oneGrid[5]);console.log(oneGrid[5])}
@@ -160,9 +161,6 @@ class GameMap{
         }
       }
     }
-    
-    
-
   }
   saveToFileMap(mapPatch,param){
     const mapRead = fs.readFileSync(mapPatch,{encoding:'utf8'});

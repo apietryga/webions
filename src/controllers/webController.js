@@ -5,7 +5,7 @@ const itemTypes = require("../types/itemsTypes").types;
 const creatures = require("../types/monstersTypes");
 const npcs = require("../lists/npcs").npcs;
 const func = require("../../public/js/functions");
-
+const auth = require("./authController")
 module.exports = new class webController {
   constructor(){
     this.vals = { 
@@ -99,56 +99,18 @@ module.exports = new class webController {
     res.render("template.njk", this.vals);
   }
 
-  // players = (req, res) => {
-  //   // const [key,value] = myURL.search.split("=");
-  //   // if("?skills" == key){
-  //   //   vals.message = "<h1>TOP "+value.charAt(0).toUpperCase() +value.slice(1)+"</h1>";
-  //   // }
-  //   // const content = await dbc[game.db].loadAll()
-  //   // vals.js += "<script>const key = '"+value+"'; </script>";
-  //   // vals.js += "<script>const playerList = '"+JSON.stringify(content)+"';</script>";
-  //   // if("?online=true" == myURL.search){
-  //   //   vals.message = "<h1>Online Players</h1>";
-  //   //   vals.js += "<script>const playersList = "+JSON.stringify(players.list)+";</script>";
-  //   //   serveChangedContent(myURL.pathname);
-  //   // }else if("?lastdeaths=true" == myURL.search){
-  //   //   vals.message = "<h1>Last Deaths</h1>";
-  //   //   vals.js += "<script>const playersList = "+JSON.stringify(content)+";</script>";
-  //   //   serveChangedContent(myURL.pathname);
-  //   // }else{
-  //   //   if("" == myURL.search){
-  //   //     vals.message = "<h1>TOP Players</h1>";
-  //   //   }
-  //   //   const content = await dbc[game.db].loadAll()
-  //   //   vals.js += "<script>const playersList = '"+JSON.stringify(content)+"';</script>";
-  //   //   serveChangedContent(myURL.pathname);
-  //   // }
-
-
-  //   this.vals.page = req.url.match(/([a-zA-Z0-9]+)/g)[0]
-  //   res.render("template.njk", this.vals);
-  // }
   exportplayers = (req, res) => {
     this.vals.page = req.url.match(/([a-zA-Z0-9]+)/g)[0]
     res.render("template.njk", this.vals);
   }
+
   game = (req, res) => {
-    this.vals.nick = "GM"
     this.vals.monstersNames = this.monstersNames
     this.vals.page = req.url.match(/([a-zA-Z0-9]+)/g)[0]
-    res.render("game.njk", this.vals);
-  }
-  account = async (req, res) => {
-    this.vals.monstersNames = this.monstersNames;
-    if(req.query?.action == "logout"){
-      this.vals.js += "<script>delete_cookie('token')</script>";
-      this.vals.action = "logout";
-      this.vals.message = "<b style='color:green;'>You're succesfully logout.</b>";
-      return
+    this.vals.message = ""
+    if(auth.isAuth()){
+      return res.render("game.njk", this.vals);
     }
-
-    this.vals.page = req.url.match(/([a-zA-Z0-9]+)/g)[0]
-    res.render("account.njk", this.vals);
+    return res.redirect('/acc');
   }
-  
 }

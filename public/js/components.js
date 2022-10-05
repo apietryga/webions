@@ -623,8 +623,7 @@ class Item{
 
     const ctx = sq.getContext("2d");
     // ctx.clearRect(0, 0, img.width, img.height);
-
-    console.log("img", img, "height", height)
+    // console.log("img", img, "height", height)
     
     ctx.drawImage(img, 
       item.spriteNr * height, 0, height, height,

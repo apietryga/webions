@@ -91,8 +91,8 @@ module.exports = {
       }
       players = players.filter(player => player.name != 'GM')
       return players.sort((a, b) => {
-        if(a.skills[page] > b.skills[page]) { return -1 }
-        if(a.skills[page] < b.skills[page]) { return 1 }
+        if(a.skills?.[page] > b.skills?.[page]) { return -1 }
+        if(a.skills?.[page] < b.skills?.[page]) { return 1 }
       })
     })
     .addFilter('date', dateFilter)
