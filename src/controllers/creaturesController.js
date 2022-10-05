@@ -219,7 +219,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
       }
       if(isThisPlayerOlnine){
         this.list.splice(this.list.indexOf(player),1);
-        dbc[game.db].update(player);
+        // dbc[game.db].update(player);
+        dbconnected.update(player);
         // console.log(player.name+" KICKED")
       }
     }

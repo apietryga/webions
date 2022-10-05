@@ -122,7 +122,8 @@ const menus = {
         { title: "LOGOUT",
           innerHTML: "🚪",
           type: "a",
-          href: "./account.html?action=logout"
+          // href: "./account.html?action=logout"
+          href: "/acc/logout"
         }
       ],
       [{ title:"HEALTH",
