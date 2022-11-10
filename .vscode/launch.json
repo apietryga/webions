@@ -6,12 +6,14 @@
   "configurations": [
     {
       "type": "node",
+      // "type": "nodemon",
       "request": "launch",
       "name": "Webions",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/src/server.js"
+      // "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/src/server.js",
     }
   ]
 }

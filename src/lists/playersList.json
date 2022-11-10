@@ -842,7 +842,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [25, -44, 0, 1658432192288],
-    "token": "3z4etyilvn"
+    "token": "w201ww1q1fi"
   },
   {
     "name": "EDA",
@@ -2538,7 +2538,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [56, -20, -2, 1641930243542],
-    "token": "9hgqi1wdbu"
+    "token": "qcvq0shije"
   },
   {
     "name": "TESTOWO",
@@ -2952,5 +2952,112 @@
     },
     "mana": 100,
     "maxMana": 110
+  },
+  {
+    "name": "tesxx",
+    "position": [36, -8, 0],
+    "speed": 3,
+    "health": 100,
+    "maxHealth": 100,
+    "redTarget": 83,
+    "sprite": "male_oriental",
+    "password": "$2b$10$KwwpuWV.SUQZhz3qgEif7.iWv2VgvWmEgZi2oxvMAyQnG5NugeVZ6",
+    "email": "a@a.pl",
+    "sex": "female",
+    "token": "v5c7qyjhab",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": -6,
+      "fist_summary": -254,
+      "dist": -9,
+      "dist_summary": -781,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 1668113215153,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 100
+  },
+  {
+    "name": "new",
+    "position": [35, -9, -1],
+    "speed": 2,
+    "health": 100,
+    "maxHealth": 110,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$8YZ/zqZzUCKWM757KeHS/epyfzXuSjLJkDifAp6935TXjnCvmHT46",
+    "email": "as@as.pol",
+    "sex": "male",
+    "skills": {
+      "level": 1,
+      "exp": 1,
+      "fist": 1,
+      "fist_summary": 1,
+      "dist": 0,
+      "dist_summary": 0,
+      "def": 1,
+      "def_summary": 1,
+      "magic": 1,
+      "magic_summary": 1
+    },
+    "autoShot": false,
+    "autoMWDrop": false,
+    "lastFrame": 0,
+    "lastDeaths": [],
+    "quests": [],
+    "colors": {
+      "head": [240, 169, 98],
+      "chest": [240, 98, 98],
+      "legs": [155, 155, 155],
+      "foots": [13, 13, 13]
+    },
+    "eq": {
+      "hd": false,
+      "bp": false,
+      "nc": false,
+      "ch": false,
+      "lh": false,
+      "rh": false,
+      "lg": false,
+      "ft": false
+    },
+    "mana": 100,
+    "maxMana": 110
+  },
+  {
+    "name": "xad",
+    "position": [35, -9, -1],
+    "speed": 3,
+    "health": 100,
+    "maxHealth": 100,
+    "redTarget": false,
+    "sprite": "male_oriental",
+    "password": "$2b$10$0GQZ3H5kXwAGtHoSTxLENeyH1/4oTmhZZtR6aWWPL25DIYUck85Mq",
+    "email": "asas@as.com",
+    "sex": "female"
   }
 ]

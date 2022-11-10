@@ -10,6 +10,12 @@
   <link rel="stylesheet" href="/style/both.min.css?version={{version}}">
   <script src="/js/functions.js?version={{version}}"></script>
   <link rel="manifest" href="/json/manifest.json?v={{version}}">
+
+  {# TODO: MAKE COMMON HEAD FILE #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  
   {{ js | safe }}
 </head>
 <body>
@@ -19,72 +25,83 @@
     <noscript>
       You need enable javascript to make this page work.
     </noscript>
-    <div class="message">{{ message | safe}}</div>
-    {# <form id="login" action="account.html" method="post"> #}
-    <form id="login" action="/acc/login" method="post">
-      <div class="nick">
-        <input type="text" name="nick" placeholder="nick">
+    <div class="window" draggable="true">
+      <h1>WINDOW TITLE</h1>
+      <div class="window-inside">
+        <div class="message">{{ message | safe}}</div>
+        <form id="login" action="/acc/login" method="post">
+          <div class="nick">
+            <label for="nick">Username:</label>
+            <input type="text" id="nick" name="nick" placeholder="nick">
+          </div>
+          <div class="pass">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="password">
+          </div>
+          <div class="buttons">
+            <input type="submit" value="Ok" name="type">  
+            <button>Cancel</button>
+          </div>
+        </form>
+        <form id="register" action="/acc/register" method="post">
+          <div class="nick">
+            <input type="text" placeholder="nick" name="nick">
+          </div>
+          <div class="pass">
+            <input type="password" name="password" placeholder="password">
+          </div>
+          <div class="pass">
+            <input type="text" placeholder="email" name="email">
+          </div>
+          <div class="pass">
+            <div class="sex">
+              <legend>
+                <input type="radio" name="sex" value="male" id="male">
+                <label for="male">male</label>
+              </legend>
+              <legend>
+                <input type="radio" name="sex" value="female" id="female">  
+                <label for="female">female</label>
+              </legend>
+            </div>
+          </div>
+          <div class="buttons">
+            <input type="submit" value="REGISTER" name="type">
+          </div>
+        </form>
+        <form id="forgot" action="/acc/forgot" method="post">
+          <div class="email">
+            <input type="text" placeholder="nick" name="nick">
+          </div>
+          <div class="buttons">
+            <input type="submit" value="REMIND" name="type">
+          </div>
+        </form>
+        <form id="newpass" action="/acc/newpass" method="post">
+          <input type="hidden" name="passToken">
+          <div class="pass">
+            <input type="password" placeholder="new&nbsp;password" name="newpass">
+          </div>
+          <input type="submit" value="CHANGE" name="type">
+        </form>
+        <form id="result" action="acc" method="get">
+          {{ message | safe}}
+        </form>
+        <form id="logout" action="/acc/logout" method="get">
+          <input type="hidden" name="logout" value="true">
+        </form>
       </div>
-      <div class="pass">
-        <input type="password" name="password" placeholder="password">
-      </div>
-      <input type="submit" value="LOGIN" name="type">  
-    </form>
-    {# <form id="register" action="account.html" method="post"> #}
-    <form id="register" action="/acc/register" method="post">
-      <div class="nick">
-        <input type="text" placeholder="nick" name="nick">
-      </div>
-      <div class="pass">
-        <input type="password" name="password" placeholder="password">
-      </div>
-      <div class="pass">
-        <input type="text" placeholder="email" name="email">
-      </div>
-      <div class="pass">
-        <div class="sex">
-          <legend>
-            <input type="radio" name="sex" value="male" id="male">
-            <label for="male">male</label>
-          </legend>
-          <legend>
-            <input type="radio" name="sex" value="female" id="female">  
-            <label for="female">female</label>
-          </legend>
-        </div>
-      </div>
-      <input type="submit" value="REGISTER" name="type">
-    </form>
-    {# <form id="forgot" action="account.html" method="post"> #}
-    <form id="forgot" action="/acc/forgot" method="post">
-      <div class="email">
-        <input type="text" placeholder="nick" name="nick">
-      </div>
-      <input type="submit" value="REMIND" name="type">
-    </form>
-    {# <form id="newpass" action="account.html" method="post"> #}
-    <form id="newpass" action="/acc/newpass" method="post">
-      <input type="hidden" name="passToken">
-      <div class="pass">
-        <input type="password" placeholder="new&nbsp;password" name="newpass">
-      </div>
-      <input type="submit" value="CHANGE" name="type">
-    </form>
-    {# <form id="result" action="account.html" method="get"> #}
-    <form id="result" action="acc" method="get">
-      {{ message | safe}}
-    </form>
-    <form id="logout" action="/acc/logout" method="get">
-      <input type="hidden" name="logout" value="true">
-    </form>
+    </div>
   </main>
   <footer>
     <div class="options">
       {# <a href="?action=login">Login</a> #}
-      <a href="/acc/login">Login</a>
-      <a href="/acc/forgot">Forgot</a>
-      <a href="/acc/register">Register</a>
-      <a href="/">Home</a>  
+
+      {# <button data-href="/acc/login">Login</button> #}
+      <a class="btn" href="/acc/login">Login</a>
+      <a class="btn" href="/acc/forgot">Forgot</a>
+      <a class="btn" href="/acc/register">Register</a>
+      <a class="btn" href="/">Home</a>  
     </div>
   </footer>
   <script>
@@ -142,7 +159,6 @@
       messDisplayer(){
         // MESSAGE DISPLAYER
         const message = document.querySelector(".message");
-        // {# if(message.innerHTML == "{{mess"+"age}}" || message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){ #}
         if(message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){
           message.innerHTML = "";
         }
@@ -165,18 +181,7 @@
           if(form.style.display == "flex"){
             // get all inputs
             for(const input of form.querySelectorAll("input")){
-              // input.style.border = "none";
               input.style.outline = "none";
-/*
-             if(input.name == 'nick' && form.id == "register"){
-                console.log("VALIDATE NICKNAME!")
-                if(!validateNick(input.value, monstersNames)[0]){
-                  valid = false;
-                  message = validateNick(input.value, monstersNames)[1];
-                  input.style.border = "2px solid red";
-                }
-              }
-*/
               if(["text","password"].includes(input.type)){
                 if(input.value == ""){
                   valid = false;
