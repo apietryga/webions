@@ -1,6 +1,7 @@
 const webController = require('./controllers/webController')
 const authController = require('./controllers/authController')
 require('express-group-routes');
+
 const Router = require('express').Router
 const router = {
   call : Router(),
@@ -39,6 +40,5 @@ router.call.group('/acc', router => {
 router.call.route('*').get( ( req, res ) => { 
   res.render('template.njk', { ...webController.vals, page: '404' })
 });
-
 
 module.exports = router
