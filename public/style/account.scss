@@ -2,18 +2,34 @@
 $formBG: #2f2f2fb4;
 a{text-decoration: none;color:#fff;}
 body{
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   font-size:20px;
   margin:0;
   background-color:rgba(0, 0, 0, 0.9);
   height:100vh;
   display:flex;
   flex-direction: column;
-  // background-image: url("/img/logo.webp");
-  background-image: url("/img/account_background.webp");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
   position: relative;
+
+  .background{
+    position:absolute;
+    width:100vw;
+    height:100vh;
+    img{
+      position:absolute;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      opacity:0;
+      transition:3s;
+      &.active{
+        opacity:1;
+      }
+    }
+  }
+
   main{
     width:100%;
     height:100%;
@@ -27,10 +43,14 @@ body{
       background-color: var(--background-darkest);
       border:2px solid;
       border-color:var(--border-color-outside);
-      display:flex;
+      display:none;
       flex-direction: column;
       z-index:1;
-      h1{
+      &.active{
+        display:flex;
+      }
+
+      h2{
         background-color: var(--background-darkest);
         color:var(--font-ligher);
         font-size:.5rem;
@@ -46,11 +66,11 @@ body{
         color:var(--font-lightest);
         b{
           font-size:.7rem;
-          padding:.5rem 2rem 1.2rem 2rem;
+          padding:.5rem 2rem .5rem 0;
         }
         form{
           flex-direction: column;
-          display:none;
+          // display:none;
           * > {
             padding-left:.5rem;
           }
