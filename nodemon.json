@@ -1,0 +1,8 @@
+{
+  "ignore": [ 
+    "src/lists",
+    "src/views",
+    "public"
+  ]
+
+}

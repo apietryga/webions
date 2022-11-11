@@ -1,3 +1,4 @@
+src/lists/playersList.json
 node_modules/
 dump.rdb
 Redis/

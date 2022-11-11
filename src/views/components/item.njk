@@ -1,0 +1,27 @@
+<div class="itemContainer">
+  <div class="label">
+    <div style="display: flex; align-items: center;">
+      <span style="flex:1;text-align:center">{{ item.name }}</span>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <ul>
+        {% for key, value in item %}
+          <li>
+            {% set ico = key %}
+            {% set icoValue = value %}
+            {%  include "./ico.njk"  %} 
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div style="
+    width:32px;
+    height:32px;
+    background-image: url(/img/sprites/{{ item.sprite }}.webp);
+    background-position:-{{ 32 * item.spriteNr }}px 0;
+  "></div>
+</div>
+<script>
+  console.log({{ item | dump | safe }})
+</script>

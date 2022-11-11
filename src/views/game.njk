@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="theme-color" content="black">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="style/both.min.css?v={{version}}">
-    <link rel="stylesheet" href="style/game.min.css?v={{version}}">
-    <link id="mobileCSS" rel="stylesheet" href="style/mobile.min.css?v={{version}}">
-    <link rel="shortcut icon" href="favicon.ico?v={{version}}" type="image/x-icon">
+    <link rel="stylesheet" href="/style/both.min.css?v={{version}}">
+    <link rel="stylesheet" href="/style/game.min.css?v={{version}}">
+    <link id="mobileCSS" rel="stylesheet" href="/style/mobile.min.css?v={{version}}">
+    <link rel="shortcut icon" href="/img/favicon.ico?v={{version}}" type="image/x-icon">
     <title>{{name}}</title>
-    <link rel="manifest" href="./json/manifest.json?v={{version}}">
+    <link rel="manifest" href="/json/manifest.json?v={{version}}">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="apple-touch-startup-image" href="apple-touch-icon.png">
     <meta name="apple-mobile-web-app-title" content="{{name}}">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   </head>
   <body onselect="typeof document.selection != 'undefined' ? document.selection.empty():'';">
-    <script src="js/gameDetails.js?v={{version}}"></script>
-    <script src="./js/accountgame.js?v={{version}}"></script>
+    <script src="/js/gameDetails.js?v={{version}}"></script>
+    <script src="/js/accountgame.js?v={{version}}"></script>
     <noscript>
       This game will not apear without JavaScript - turn it on to play.
     </noscript>
@@ -36,11 +36,11 @@
     </div>
   </body>
 </html>
-<script src="js/functions.js?v={{version}}"></script>
-<script src="js/sprites.js?v={{version}}"></script>
-<script src="js/map.js?v={{version}}"></script>
+<script src="/js/functions.js?v={{version}}"></script>
+<script src="/js/sprites.js?v={{version}}"></script>
+<script src="/js/map.js?v={{version}}"></script>
 <script>const map = new GameMap();</script>
-<script src="js/controls.js?v={{version}}"></script>
+<script src="/js/controls.js?v={{version}}"></script>
 <!-- RESIZE GAMEPLANE -->
 <script>
   // MAKE RESIZEABLE MENUS
@@ -133,11 +133,11 @@
   };
 </script>
 <!--| GAMEPLANE PROPERTIES |-->
-<script src="js/gameplane.js?v={{version}}"></script>
-<script src="js/components.js?v={{version}}"></script>
+<script src="/js/gameplane.js?v={{version}}"></script>
+<script src="/js/components.js?v={{version}}"></script>
 <!--| WEBSOCKET SERVER CONNECTION |-->
-<script src="js/websocket.js?v={{version}}"></script>
-<script src="js/menus.js?v={{version}}"></script>
+<script src="/js/websocket.js?v={{version}}"></script>
+<script src="/js/menus.js?v={{version}}"></script>
 <!--| PRELOAD |-->
 <script>
   // preload ;>
@@ -154,20 +154,17 @@
     }
   }
   load.both("Load sprites",10);
-  map.loadSprites(()=>{
+  map.loadSprites( async ()=>{
     menus.init();
     load.both("Load serwer info",50);
-    serv.load(()=>{
-      load.both("Loading map",70);
-      map.generate(()=>{
-        load.both("Loading Game Plane",90);
-        gamePlane.init();
-        setResolution();
-      })
-    })
-  });
-  // set elements resolution:
-  
+    await serv.load()
+    load.both("Loading map",70);
+    await map.generate()
+    load.both("Loading Game Plane",90);
+    gamePlane.init();
+    setResolution();
+  })
+    
   window.onresize = () =>{
     setResolution();
   }

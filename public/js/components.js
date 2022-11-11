@@ -259,6 +259,7 @@ class Creature {
     if(this.position[2] <= map.visibleFloor){
       if(["player","enemy"].includes(this.type)){
           // draw colors masks
+          if(!this.img){return }
           const cw = this.img.width/6;
           ctx.drawImage(
             this.img, (this.cyle+3) * cw, this.direction * cw, cw, this.img.height/5,
@@ -613,15 +614,20 @@ class Item{
     }
     sq.className = "itemDOM";
     const img = map.sprites[item.sprite];
-    sq.width = img.height;
-    sq.height = img.height;
+    if(!img){ return }
+
+    const height = img?.height;
+
+    sq.width = height;
+    sq.height = height;
 
     const ctx = sq.getContext("2d");
     // ctx.clearRect(0, 0, img.width, img.height);
-
+    // console.log("img", img, "height", height)
+    
     ctx.drawImage(img, 
-      item.spriteNr * img.height, 0, img.height, img.height,
-      0, 0, img.height, img.height
+      item.spriteNr * height, 0, height, height,
+      0, 0, height, height
     );
 
     const itemContainer = document.createElement("div");
