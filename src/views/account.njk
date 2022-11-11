@@ -38,7 +38,7 @@
       You need enable javascript to make this page work.
     </noscript>
     <div class="window {% if action == 'login' %}active{% endif %}" draggable="true" id="login">
-      <h2>WINDOW TITLE</h2>
+      <h2>{{action}}</h2>
       <div class="window-inside">
 
         <div class="message">{{ message | safe}}</div>
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="window {% if action == 'register' %}active{% endif %}" draggable="true" id="register">
-      <h2>WINDOW TITLE</h2>
+      <h2>{{action}}</h2>
       <div class="window-inside">
 
         <form action="/acc/register" method="post">
@@ -94,7 +94,7 @@
       </div>
     </div>
     <div class="window {% if action == 'forgot' %}active{% endif %}" draggable="true" id="forgot">
-      <h2>WINDOW TITLE</h2>
+      <h2>{{action}}</h2>
       <div class="window-inside">
 
         <form action="/acc/forgot" method="post">
@@ -110,7 +110,7 @@
       </div>
     </div>
     <div class="window {% if action == 'newpass' %}active{% endif %}" draggable="true" id="newpass">
-      <h2>WINDOW TITLE</h2>
+      <h2>{{action}}</h2>
       <div class="window-inside">
 
         <form action="/acc/newpass" method="post">
@@ -124,20 +124,21 @@
       </div>
     </div>
     <div class="window {% if action == 'result' %}active{% endif %}" draggable="true" id="result">
-      <h2>WINDOW TITLE</h2>
+      <h2>{{action}}</h2>
       <div class="window-inside">
 
         <form action="acc" method="get">
           {{ message | safe}}
           <div class="buttons">
-            <button>Ok</button>
+            {# <button>Ok</button> #}
+            <a class="btn" href="/acc">Cancel</a>
           </div>
         </form>
 
       </div>
     </div>
     <div class="window {% if action == 'logout' %}active{% endif %}" draggable="true" id="logout">
-      <h2>WINDOW TITLE</h2>
+      <h2>{{action}}</h2>
       <div class="window-inside">
 
         <form action="/acc/logout" method="get">
