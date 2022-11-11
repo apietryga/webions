@@ -20,16 +20,29 @@
 </head>
 <body>
   <script src="/js/gameDetails.js?v={{version}}"></script>
-  <script src="/js/accountgame.js?version={{version}}"></script>
+  {# <script src="/js/accountgame.js?version={{version}}"></script> #}
+  <div class="background">
+    <img src="/img/acc_page/1.webp" alt="background 1" class="active">
+    <img src="/img/acc_page/2.webp" alt="background 2">
+    <img src="/img/acc_page/3.webp" alt="background 3">
+    <img src="/img/acc_page/4.webp" alt="background 4">
+    <img src="/img/acc_page/5.webp" alt="background 5">
+    <img src="/img/acc_page/6.webp" alt="background 6">
+    <img src="/img/acc_page/7.webp" alt="background 7">
+    <img src="/img/acc_page/8.webp" alt="background 8">
+    <img src="/img/acc_page/9.webp" alt="background 9">
+  </div>
+
   <main>
     <noscript>
       You need enable javascript to make this page work.
     </noscript>
-    <div class="window" draggable="true">
-      <h1>WINDOW TITLE</h1>
+    <div class="window {% if action == 'login' %}active{% endif %}" draggable="true" id="login">
+      <h2>WINDOW TITLE</h2>
       <div class="window-inside">
+
         <div class="message">{{ message | safe}}</div>
-        <form id="login" action="/acc/login" method="post">
+        <form action="/acc/login" method="post">
           <div class="nick">
             <label for="nick">Username:</label>
             <input type="text" id="nick" name="nick" placeholder="nick">
@@ -40,10 +53,17 @@
           </div>
           <div class="buttons">
             <input type="submit" value="Ok" name="type">  
-            <button>Cancel</button>
+            <a href="/acc/" class="btn">Cancel</a>
           </div>
         </form>
-        <form id="register" action="/acc/register" method="post">
+
+      </div>
+    </div>
+    <div class="window {% if action == 'register' %}active{% endif %}" draggable="true" id="register">
+      <h2>WINDOW TITLE</h2>
+      <div class="window-inside">
+
+        <form action="/acc/register" method="post">
           <div class="nick">
             <input type="text" placeholder="nick" name="nick">
           </div>
@@ -66,28 +86,61 @@
             </div>
           </div>
           <div class="buttons">
-            <input type="submit" value="REGISTER" name="type">
+            <input type="submit" value="Register" name="type">
+            <a href="/acc/" class="btn">Cancel</a>
           </div>
         </form>
-        <form id="forgot" action="/acc/forgot" method="post">
+
+      </div>
+    </div>
+    <div class="window {% if action == 'forgot' %}active{% endif %}" draggable="true" id="forgot">
+      <h2>WINDOW TITLE</h2>
+      <div class="window-inside">
+
+        <form action="/acc/forgot" method="post">
           <div class="email">
             <input type="text" placeholder="nick" name="nick">
           </div>
           <div class="buttons">
-            <input type="submit" value="REMIND" name="type">
+            <input type="submit" value="Remind" name="type">
+            <a href="/acc/" class="btn">Cancel</a>
           </div>
         </form>
-        <form id="newpass" action="/acc/newpass" method="post">
+
+      </div>
+    </div>
+    <div class="window {% if action == 'newpass' %}active{% endif %}" draggable="true" id="newpass">
+      <h2>WINDOW TITLE</h2>
+      <div class="window-inside">
+
+        <form action="/acc/newpass" method="post">
           <input type="hidden" name="passToken">
           <div class="pass">
             <input type="password" placeholder="new&nbsp;password" name="newpass">
           </div>
           <input type="submit" value="CHANGE" name="type">
         </form>
-        <form id="result" action="acc" method="get">
+
+      </div>
+    </div>
+    <div class="window {% if action == 'result' %}active{% endif %}" draggable="true" id="result">
+      <h2>WINDOW TITLE</h2>
+      <div class="window-inside">
+
+        <form action="acc" method="get">
           {{ message | safe}}
+          <div class="buttons">
+            <button>Ok</button>
+          </div>
         </form>
-        <form id="logout" action="/acc/logout" method="get">
+
+      </div>
+    </div>
+    <div class="window {% if action == 'logout' %}active{% endif %}" draggable="true" id="logout">
+      <h2>WINDOW TITLE</h2>
+      <div class="window-inside">
+
+        <form action="/acc/logout" method="get">
           <input type="hidden" name="logout" value="true">
         </form>
       </div>
@@ -101,129 +154,11 @@
       <a class="btn" href="/">Home</a>  
     </div>
   </footer>
+
   <script>
-    const acc = {
-      hideLoader:true,
-      urlVals:'login',
-      init(){
-        this.formPicker();
-        this.messDisplayer();
-        for(const submit of document.querySelectorAll("input[type=submit]")){
-          submit.addEventListener("click",this.formValidator);
-        }
-        if(this.hideLoader){
-          document.querySelector(".loader").style.display = "none";
-        }
-      },
-      formPicker(){
-        // FORM PICKER [from URL]
-        let isForm = false;
-        // let urlVals;    
-        if("{{action}}" == "game"){
-          acc.hideLoader = false;
-          {# // document.cookie = "token={{ message | safe }}; SameSite=None; Secure"; #}
-          document.cookie = "token={{ token | safe }}; SameSite=None; Secure";
-          window.location.replace("game.html");
-        }
-        if("{{action}}" == "logout"){
-          for(const cookie of document.cookie.split(";")){
-            const c = cookie.split("=");
-            if(c[0] == "token"){
-              document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-            }
-          }
-          // window.location.replace("/account.html?action=login");
-          window.location.replace("/acc/login");
-
-        }
-        // {# if("{{action}}" != "{{act"+"ion}}" && "{{action}}" != ""){ #}
-        if( "{{action}}" != ""){
-          this.urlVals = "{{action}}";
-        }else{
-          this.urlVals = window.location.search.split(/=|&/);
-        }
-        for(const f of document.querySelectorAll("form")){
-          if(this.urlVals.includes(f.id)){
-            f.style.display = "flex";
-            isForm = true;
-          }
-        }
-        if(!isForm){
-          document.querySelector("#login").style.display = "flex";
-        }
-
-      },
-      messDisplayer(){
-        // MESSAGE DISPLAYER
-        const message = document.querySelector(".message");
-        if(message.innerHTML == "" || this.urlVals == "result" || "{{action}}" == "game" ){
-          message.innerHTML = "";
-        }
-        // {# if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){ #}
-        if("{{nick}}" != "" ){
-          for(const nickField of document.querySelectorAll(".nick > input")){
-            nickField.value = "{{nick}}";
-          }
-        }
-      },
-      formValidator(e){
-        // FORM VALIDATOR
-        let valid = true;
-        let isRadio = false;
-        // let action = false;
-        let message = "";
-        let radioValue;
-        // get current form
-        for(const form of document.querySelectorAll("form")){
-          if(form.style.display == "flex"){
-            // get all inputs
-            for(const input of form.querySelectorAll("input")){
-              input.style.outline = "none";
-              if(["text","password"].includes(input.type)){
-                if(input.value == ""){
-                  valid = false;
-                  message = "Fill up all fields.";
-                  input.style.border = "2px solid red";
-                }
-              }
-              if(input.name == "email"){
-                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if(!re.test(String(input.value).toLowerCase())){
-                  valid = false;
-                  message = "Re-type your real email adress. It'll be helpful when you forget your pass.";
-                  input.style.border = "2px solid red";
-                }
-              }
-              if(input.type == "radio"){
-                isRadio = true;
-                if(input.checked == true){
-                  radioValue = input.value;
-                }
-              }
-              if(input.name == "passToken"){
-                input.value = window.location.search.split("passToken=")[1];
-              }
-            }
-            // check radio input
-            for(const input of form.querySelectorAll("input")){
-              if(input.type == "radio" && !isSet(radioValue) && isRadio){
-                input.style.outline = "2px solid red";
-                valid = false;
-              }
-            }
-          }
-        }
-        if(message != ""){
-          const messField = document.querySelector(".message");
-          messField.innerHTML = "<b style='color:red;'>"+message+"</b>";
-          messField.style.display = "flex";
-        }
-        if(!valid){
-          e.preventDefault();
-        }
-      }
-    }
-    acc.init();
+    const nick = "{{nick}}";
+    const action = "{{action}}";
   </script>
+  <script src="/js/modules/account.js"></script>
 </body>
 </html>

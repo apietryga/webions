@@ -31,7 +31,7 @@ module.exports = new class authController {
 
   home = (req, res) => { 
     const vals = {
-      action : req.url
+      action : req.url.replace("/", "")
     }
     if(req.url == '/register'){
       vals.js = `<script>let monstersNames = ${ JSON.stringify( monstersNames ) }</script>`
@@ -58,7 +58,10 @@ module.exports = new class authController {
     }
 
     if( ! await this.password.comparePassword( data.password, dbres.password ) ){
-      return res.render("account.njk", { message : "<b style='color:red'>Wrong password.</b>" })
+      return res.render("account.njk", { 
+        action : 'login',
+        message : "<b style='color:red'>Wrong password.</b>" 
+      })
     }
 
     let token; do {
