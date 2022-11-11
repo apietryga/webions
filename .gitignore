@@ -5,4 +5,3 @@ Redis/
 sprite_pack/
 json/playersList.json
 .env
-dump.rdb

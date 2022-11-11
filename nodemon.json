@@ -2,8 +2,7 @@
   "ignore": [ 
     "src/lists",
     "src/views",
-    "public",
-    "src"
+    "public"
   ]
 
 }

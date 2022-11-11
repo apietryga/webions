@@ -37,7 +37,7 @@
     <noscript>
       You need enable javascript to make this page work.
     </noscript>
-    <div class="window {% if action == 'login' %}active{% endif %}" draggable="true" id="login">
+    <div class="window {% if action == 'login' %}active{% endif %}" id="login">
       <h2>{{action}}</h2>
       <div class="window-inside">
 
@@ -59,24 +59,25 @@
 
       </div>
     </div>
-    <div class="window {% if action == 'register' %}active{% endif %}" draggable="true" id="register">
+    <div class="window {% if action == 'register' %}active{% endif %}" id="register">
       <h2>{{action}}</h2>
       <div class="window-inside">
+        {{ message | safe }}
 
         <form action="/acc/register" method="post">
           <div class="nick">
-            <input type="text" placeholder="nick" name="nick">
+            <input type="text" placeholder="nick" name="nick" value="Tosiek">
           </div>
           <div class="pass">
-            <input type="password" name="password" placeholder="password">
+            <input type="password" name="password" placeholder="password" value="hasło">
           </div>
           <div class="pass">
-            <input type="text" placeholder="email" name="email">
+            <input type="text" placeholder="email" name="email" value="antek.pietryga@gmail.com">
           </div>
           <div class="pass">
             <div class="sex">
               <legend>
-                <input type="radio" name="sex" value="male" id="male">
+                <input type="radio" name="sex" value="male" id="male" checked >
                 <label for="male">male</label>
               </legend>
               <legend>
@@ -93,7 +94,7 @@
 
       </div>
     </div>
-    <div class="window {% if action == 'forgot' %}active{% endif %}" draggable="true" id="forgot">
+    <div class="window {% if action == 'forgot' %}active{% endif %}" id="forgot">
       <h2>{{action}}</h2>
       <div class="window-inside">
 
@@ -109,7 +110,7 @@
 
       </div>
     </div>
-    <div class="window {% if action == 'newpass' %}active{% endif %}" draggable="true" id="newpass">
+    <div class="window {% if action == 'newpass' %}active{% endif %}" id="newpass">
       <h2>{{action}}</h2>
       <div class="window-inside">
 
@@ -123,21 +124,20 @@
 
       </div>
     </div>
-    <div class="window {% if action == 'result' %}active{% endif %}" draggable="true" id="result">
+    <div class="window {% if action == 'result' %}active{% endif %}" id="result">
       <h2>{{action}}</h2>
       <div class="window-inside">
 
         <form action="acc" method="get">
           {{ message | safe}}
           <div class="buttons">
-            {# <button>Ok</button> #}
             <a class="btn" href="/acc">Cancel</a>
           </div>
         </form>
 
       </div>
     </div>
-    <div class="window {% if action == 'logout' %}active{% endif %}" draggable="true" id="logout">
+    <div class="window {% if action == 'logout' %}active{% endif %}" id="logout">
       <h2>{{action}}</h2>
       <div class="window-inside">
 
