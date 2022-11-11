@@ -1,4 +1,5 @@
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const func = require('../../public/js/functions')
 const npcs = require('../lists/npcs').npcs;
 const creatures = require('../types/monstersTypes');
@@ -68,6 +69,7 @@ module.exports = new class authController {
       token = (Math.random() + 1).toString(36).substring(2);
     } while (currentTokens.includes(token));
 
+    console.log("STĄD3")
     dbconnected.update( { ...dbres, token } )
 
     res.render('game.njk', {
@@ -103,6 +105,7 @@ module.exports = new class authController {
     const newPlayer = new Creature(validNick[1]);
     this.password.cryptPassword(req.body.password, async ( e, password ) => {
       if(e != null){ return console.error(e) }
+      console.log('stąd4')
       await dbconnected.update({
         ...newPlayer,
         password,
@@ -112,8 +115,7 @@ module.exports = new class authController {
     })
     return res.render('account.njk', {
       action: 'result',
-      message: `<b style='color:green;'> You're succesfully created your account. </b>
-      <br /><a href='account.html?action=login'>Click here to login.</a>`,
+      message: `<b style='color:green;'> You're succesfully created your account. </b><a href='account.html?action=login' class='btn'>Login</a>`,
     })
   }
 
