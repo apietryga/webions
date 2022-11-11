@@ -144,17 +144,36 @@ const UX = {
       if(btn.innerText === 'Cancel'){
         btn.addEventListener('click', UX.buttons.cancel)
       }
+      if(btn.parentElement.classList.contains('options')){
+        btn.addEventListener('click', UX.buttons.optionsButton)
+      }
     })
-
+  },
+  actions: {
+    hideAllForms(){
+      document.querySelectorAll('.window').forEach(form => {
+        form.classList.remove('active')
+      })
+    },
+    showForm( name ){
+      this.hideAllForms()
+      try {
+        document.querySelector('.window#'+name).classList.add('active')      
+        document.querySelector('.window#'+name+' h2').innerText = name      
+      } catch (error) {
+        location.replace('/')
+      }
+    }
   },
   buttons: {
     cancel( e ){
       e.preventDefault();
-      console.log('JU SIUR ?')
+      UX.actions.hideAllForms()
+    },
+    optionsButton( e ){
+      e.preventDefault();
+      UX.actions.showForm( e.target.innerText.toLowerCase() )
     }
-
   }
-
-
 }
 UX.init();
