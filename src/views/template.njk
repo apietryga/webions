@@ -8,7 +8,7 @@
     <title>{{name}}</title>
     <meta name="description" content="Webions is a MMORPG game working on browsers.">
     <link rel="manifest" href="/json/manifest.json?v={{version}}">
-    <link rel="shortcut icon" href="favicon.ico?v={{version}}" type="image/x-icon">
+    <link rel="shortcut icon" href="/img/favicon.ico?v={{version}}" type="image/x-icon">
     <link rel="stylesheet" href="/style/both.min.css?v={{version}}">
     <link rel="stylesheet" href="/style/page.min.css?v={{version}}">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png?v={{version}}">
@@ -16,11 +16,19 @@
     <meta name="theme-color" content="black">
     <meta name="apple-mobile-web-app-title" content="{{name}}">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="/js/gameDetails.js?v={{version}}"></script>
+    <script src="/js/sprites.js?v={{version}}"></script>
     <script src="/js/map.js?v={{version}}"></script>
     <script src="/js/functions.js?v={{version}}" defer></script>
-    <script src="/js/gameDetails.js?v={{version}}" defer></script>
-    <script src="/js/sprites.js?v={{version}}" defer></script>
-    <script src="/wwwscripts.js?v={{version}}" defer></script>
+    {# <script src="/js/gameDetails.js?v={{version}}" defer></script> #}
+    {# <script src="/js/sprites.js?v={{version}}" defer></script> #}
+    {# <script src="/wwwscripts.js?v={{version}}" defer></script> #}
+
+  {# TODO: MAKE COMMON HEAD FILE #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
   </head>
   <body>
   <header>
@@ -31,26 +39,28 @@
       </a>
     </div>
     <div class="play">
-      <a href="game.html">PLAY!</a>
+      <a href="/game.html">PLAY!</a>
     </div>
   </header>
   <div class="wrapper">
     <nav>
       <a href="/">Home</a>
-      <a href="/libary.html">Libary</a>
-      <a href="/players.html?skills=level">Players</a>
+      <a href="/libary">Libary</a>
+      <a href="/players/level">Players</a>
       <a href="/4devs.html">4devs</a>
     </nav>
-    {{content}}
+    <main>
+      {% include "contents/"+page+".njk" %}
+    </main>
     <aside>
-      {{aside}}
-    </aside>  
+      {{ aside | safe }}
+    </aside>
   </div>
   <footer>
     <!-- <a href="#top">Top this page</a> -->
     <a href="/">Home</a>
-    <a href="/libary.html">Libary</a>
-    <a href="/players.html?skills=level">Players</a>
+    <a href="/libary">Libary</a>
+    <a href="/players/level">Players</a>
     <a href="/4devs.html">4devs</a>
   </footer>
   </body>
@@ -69,5 +79,5 @@
     document.cookie = "popup=false";
   }
   // SERVICE WORKER FOR OFFLINE DISPLAY
-  if('serviceWorker' in navigator){navigator.serviceWorker.register('./serviceWorker.js');}
+  if('serviceWorker' in navigator){navigator.serviceWorker.register('/serviceWorker.js');}
 </script>

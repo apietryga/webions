@@ -1,0 +1,111 @@
+<h1>
+  <a href="/players">Players</a> ▸ {{ player.name }}
+</h1>
+<table>
+  <tr class="detailsBody">
+    <td>health</td>
+    <td>
+      <div class="healthBar">
+        <div style="width: {{(player.health*100)/player.totalHealth}}%; background-color: rgb(0, 255, 0);"></div>
+        <div class="label">{{ player.health }}&nbsp;/&nbsp;<b>{{ player.totalHealth }}</b>&nbsp;({{ player.maxHealth }} + {{player.totalHealth - player.maxHealth}})</div>
+      </div>
+    </td>
+  </tr>
+  <tr class="detailsBody">
+    <td>mana</td>
+    <td>
+      <div class="manaBar">
+        <div style="width: {{(player.mana*100)/player.totalMana}}%; background-color: rgb(12, 49, 129);"></div>
+        <div class="label">{{ player.mana }}&nbsp;/&nbsp;<b>{{ player.totalMana }}</b>&nbsp;({{ player.maxMana }} + {{player.totalMana - player.maxMana}})</div>
+      </div>
+    </td>
+  </tr>
+  <tr class="detailsBody">
+    <td>sprite</td>
+    <td> {% include '../components/sprite.njk' %} </td>
+  </tr>
+  <tr class="detailsBody">
+    <td>lastFrame</td>
+    <td><span>{{ player.lastFrame | date("YYYY.MM.DD, HH:mm")}}</span></td>
+  </tr>
+  <tr class="detailsBody">
+    <td>eq</td>
+    <td class="eq">
+      <div class="allFields">
+        {% for field in ['nc', 'hd', 'bp', 'lh', 'ch', 'rh', 'lg', 'ft'] %}
+          <div style="grid-area: {{ field }};">
+            {% set item = player.eq[field] %}
+            {% if item %}            
+              {% include "../components/item.njk" %}
+            {% endif %}
+          </div>          
+        {% endfor %}
+      </div>
+    </td>
+  </tr>
+  <tr class="detailsBody">
+    <td>skills</td>
+    <td>
+      <table>
+        <tr>
+          <td>level</td>
+          <td>{{ player.skills.level }}</td>
+        </tr>
+        <tr>
+          <td>exp</td>
+          <td>{{ player.skills.exp }}</td>
+        </tr>
+        <tr>
+          <td>fist</td>
+          {# <td><b>{{ player.skills.fist }}</b> ( 188 <i>+100</i> )</td> #}
+          <td><b>{{ player.totalFist }}</b> ( {{ player.skills.fist }} <i>+{{ player.totalFist - player.skills.fist }}</i> )</td>
+        </tr>
+        <tr>
+          <td>dist</td>
+          <td><b>{{ player.totalDist }}</b> ( {{ player.skills.dist }} <i>+{{ player.totalDist - player.skills.dist }}</i> )</td>
+        </tr>
+        <tr>
+          <td>def</td>
+          <td><b>{{ player.totalDef }}</b> ( {{ player.skills.def }} <i>+{{ player.totalDef - player.skills.def }}</i> )</td>
+        </tr>
+        <tr>
+          <td>magic</td>
+          <td>{{ player.skills.magic }}</td>
+        </tr>
+        <tr>
+          <td>speed</td>
+          <td><b>{{ player.totalSpeed }}</b> ( {{ player.speed }} <i>+{{ player.totalSpeed - player.speed }}</i> )</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr class="detailsBody">
+    <td>quests</td>
+    <td class="quests">
+      <ul>
+        {% for quest in player.quests %}
+          <li> {{ quest }} </li>
+        {% endfor %}
+      </ul>
+    </td>
+  </tr>
+  <tr class="detailsBody">
+    <td>lastDeaths</td>
+    <td>
+      <table>
+        {% for death in player.lastDeaths %}
+          <tr>
+            <td>2022.01.11<br><sub>20:00</sub></td>
+            <td>By 
+              {% if death.whoType == 'player' %}
+                <a href="/player/{{death.who}}">{{ death.who }}</a>
+              {% else %}
+                {{ death.who }} 
+              {% endif%}              
+              on {{death.level}} level.</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </td>
+  </tr>
+</table>

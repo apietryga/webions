@@ -95,7 +95,7 @@ body{
       >table{
         @extend %onFrame;
         border-spacing: 0;
-        width:100%;
+        width:100% !important;
         th{
           @extend %onFrame;
           background-color:  rgba(0, 0, 0, 0.493);
@@ -159,9 +159,14 @@ body{
           }
           .quests{
             padding:2%;
-            div{
-              text-align: left;
-              padding:2%;
+            ul{
+              // padding:0;
+              margin: 0;
+
+              li{
+                text-align: left;
+                padding:.2rem;
+              }
             }
           }
           >td{
@@ -251,6 +256,8 @@ body{
           }
         }
         &.items,&.monsters{
+          display:flex;
+          justify-content: center;
           width:100%;
           table{
             flex:1;
@@ -284,6 +291,19 @@ body{
               div{
                 text-align: center;
                 font-style: italic;
+              }
+              &:hover{
+                background-color:rgb(99, 86, 86); 
+              }
+              .items{
+                display:flex;
+                flex-wrap:wrap;
+              }
+              ul{
+                margin:0;
+                padding:0;
+                list-style: none;
+                text-align: left;
               }
             }
             &.monsters td:nth-child(1){min-height:80px;}

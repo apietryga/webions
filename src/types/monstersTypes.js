@@ -1,7 +1,8 @@
 const monstersTypes = [
   { name:"Training Man",
   // type:"npc",
-    sprite:"trainingMan",
+    // sprite:"trainingMan",
+    sprite:"training_man",
     health:10000000,
     speed:false,
     skills:{
@@ -56,7 +57,8 @@ const monstersTypes = [
     }
   },
   {name:"Orange Wizard",
-    sprite:"orangeWizard",
+    // sprite:"orangeWizard",
+    sprite:"orange_wizard",
     health:1700,
     speed:3,
     skills:{

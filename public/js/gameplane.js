@@ -20,8 +20,11 @@ const gamePlane = {
     controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
   },
-  updategamePlane() {
-    serv.load(()=>{
+  async updategamePlane() {
+    // console.log("update")
+    // serv.load(()=>{
+    await serv.load()
+      // console.log('serv loaded')
       gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
       if(isSet(player.update) && player.update.constructor === Function){
         player.update();
@@ -33,6 +36,7 @@ const gamePlane = {
       const nicksStack = [];
       // filter mwalls zIndex
       const filteredMWalls = [];
+      if(!gamePlane.mwalls){return }
       for(const wall of gamePlane.mwalls){
         if(wall.position[2] <= map.visibleFloor ){
           filteredMWalls.push(wall);
@@ -111,7 +115,7 @@ const gamePlane = {
       menus.mainMenu.automation(document.querySelector('.wallerDOM'),player.autoMWDrop);
 
       fistIteration = false;
-    });
+    // });
   },
   stop(title = "GAME PAUSED."){
     // show popup

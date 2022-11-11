@@ -3,10 +3,10 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(cacheVersion).then((cache) => {
       return cache.addAll([
-        './offline.html',
-        './style/both.min.css',
-        './logo.webp',
-        './favicon.ico'
+        '/offline.html',
+        '/style/both.min.css',
+        '/img/logo.webp',
+        '/img/favicon.ico'
       ]);
     })
   );

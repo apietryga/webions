@@ -1,0 +1,8 @@
+<h1><a href="./libary">Libary</a></h1>
+<div class="content {{subpage}}">
+  {% if subpage%}
+    {% include "./libary/"+subpage+".njk" %}
+  {% else %}
+    {% include "./libary/index.njk" %}
+  {% endif %}
+</div>

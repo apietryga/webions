@@ -1,0 +1,26 @@
+{% set id = uid('canvas') %}
+<canvas id={{ id }} width="40" height="40"></canvas>
+
+<script defer>
+  window.addEventListener('load', () => {
+    const canvasSprite = document.getElementById("{{ id }}")
+    const ctx = canvasSprite.getContext("2d");
+    let img = new Image();
+    img.src = "../img/sprites/outfits/{{ player.sprite }}.webp";
+    img.onload = () => {
+      const recolor = recolorImage(img, {{ player.colors | dump | safe }});
+      recolor.onload = () =>{
+        img = recolor;
+        // draw else elements xD
+        ctx.drawImage(
+          img, 260, 100, 80, 80,
+          0, 0, 80, 80
+        );
+        ctx.drawImage(
+          img, 20, 100, 80, 80,
+          0, 0, 80, 80
+        );
+      }
+    }
+  })
+</script>
