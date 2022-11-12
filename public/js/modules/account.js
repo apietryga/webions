@@ -160,6 +160,7 @@ const UX = {
       try {
         document.querySelector('.window#'+name).classList.add('active')      
         document.querySelector('.window#'+name+' h2').innerText = name      
+        document.querySelector('.window#'+name+' input').focus()
       } catch (error) {
         location.replace('/')
       }
