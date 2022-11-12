@@ -19,10 +19,17 @@ const gamePlane = {
     controls.init();
     controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
+
+    this.socketWorker = new Worker('/js/workers/socketWorker.js');
+    this.socketWorker.postMessage('init');
+    this.socketWorker.onmessage = data => { this.getServInfo( data ) }
+  },
+  getServInfo( data ){
+    console.log("GETTED SERV INFO", { data })
+
+
   },
   async updategamePlane() {
-    // console.log("update")
-    // serv.load(()=>{
     await serv.load()
       // console.log('serv loaded')
       gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
@@ -115,7 +122,6 @@ const gamePlane = {
       menus.mainMenu.automation(document.querySelector('.wallerDOM'),player.autoMWDrop);
 
       fistIteration = false;
-    // });
   },
   stop(title = "GAME PAUSED."){
     // show popup
