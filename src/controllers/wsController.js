@@ -46,6 +46,11 @@ const wsController = (server, cm, im, dbconnect) => {
         }
       }       
     })
+
+    // setInterval( () => { 
+    //   connection.sendUTF(stringify({test: 'hejoi'},null,2));
+    // },3000)
+
   })
 }
 
