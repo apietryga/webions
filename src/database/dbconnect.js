@@ -35,6 +35,8 @@ class dbConnect{
   // async init(callback){
   async init(){
     if(process.env.DEV){ return 'json' }
+    return 'json'
+
     let db = 'redis'
     // MOGNO CONNECTION (PRIMARY)
     // await mongoose // connect to db

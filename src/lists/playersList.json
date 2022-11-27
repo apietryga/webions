@@ -842,7 +842,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [25, -44, 0, 1658432192288],
-    "token": "t5w4u4pgmc"
+    "token": "sjlhf27jhc"
   },
   {
     "name": "EDA",
@@ -2538,7 +2538,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [56, -20, -2, 1641930243542],
-    "token": "cfpzurxkml"
+    "token": "vefiz7dzfi"
   },
   {
     "name": "TESTOWO",
@@ -3145,15 +3145,15 @@
   },
   {
     "name": "",
-    "position": [35, -9, -1],
+    "position": [36, -8, -1],
     "speed": 2,
-    "health": 100,
+    "health": 110,
     "maxHealth": 110,
     "redTarget": false,
     "sprite": "male_oriental",
     "password": "$2b$10$bVIqbxpcYK8B5XjpJfjvwu.LspjQWF52cH5AzrEn5wztIYcnEaIUu",
     "email": "",
-    "token": "hv9gori7wc",
+    "token": "vattjqc86e",
     "skills": {
       "level": 1,
       "exp": 1,
@@ -3163,12 +3163,12 @@
       "dist_summary": 0,
       "def": 1,
       "def_summary": 1,
-      "magic": 1,
-      "magic_summary": 1
+      "magic": 3,
+      "magic_summary": 13
     },
     "autoShot": false,
     "autoMWDrop": false,
-    "lastFrame": 0,
+    "lastFrame": 1669551304105,
     "lastDeaths": [],
     "quests": [],
     "colors": {
@@ -3187,7 +3187,7 @@
       "lg": false,
       "ft": false
     },
-    "mana": 100,
+    "mana": 50,
     "maxMana": 110
   },
   {
