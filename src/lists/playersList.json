@@ -621,27 +621,27 @@
   },
   {
     "name": "Tosiek",
-    "position": [42, 0, 0],
+    "position": [-28, -30, 1],
     "speed": 2.5,
     "health": 729,
-    "maxHealth": 600,
+    "maxHealth": 610,
     "redTarget": false,
     "sprite": "male_wizard",
     "skills": {
-      "level": 50,
-      "exp": 124241,
+      "level": 51,
+      "exp": 125001,
       "fist": 188,
       "dist": 189,
-      "fist_summary": 6546622,
-      "dist_summary": 6650627,
-      "def_summary": 663091,
+      "fist_summary": 6548638,
+      "dist_summary": 6654095,
+      "def_summary": 663441,
       "def": 88,
       "magic_summary": 3750811,
       "magic": 156
     },
     "autoShot": false,
     "autoMWDrop": false,
-    "lastFrame": 1663608071849,
+    "lastFrame": 1669550017334,
     "lastDeaths": [
       {
         "when": "2021-12-27T21:22:55.964Z",
@@ -837,12 +837,12 @@
       }
     },
     "mana": 1076,
-    "maxMana": 600,
+    "maxMana": 610,
     "password": "$2b$10$OeEV9s2v41X23P2JYwOc/uiHSUWiBS5ST8FqXyzph1k1MxEZa5KLe",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [25, -44, 0, 1658432192288],
-    "token": "f1yonfwirt"
+    "token": "t5w4u4pgmc"
   },
   {
     "name": "EDA",
@@ -2538,7 +2538,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [56, -20, -2, 1641930243542],
-    "token": "6idlux0s2k"
+    "token": "cfpzurxkml"
   },
   {
     "name": "TESTOWO",
