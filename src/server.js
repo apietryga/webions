@@ -29,9 +29,9 @@ app.use(express.static('./public'));
   router.set({ players: cm.players })
   app.use(router.call)
 
-  const server = app.listen(process.env.PORT || 5000)
+  const server = app.listen(process.env.PORT || 2095)
   // wsController( server , cm, im, dbc[game.db])
   wsController( server , cm, im, global.dbconnected)
   game.startServerTime = new Date().getTime();
-  console.log("SERWER IS RUNNING");
+  console.log("SERWER IS RUNNING ON PORT " + 2095);
 })()
