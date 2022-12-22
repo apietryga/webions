@@ -85,18 +85,30 @@
   reconnectDOM.className = "loadProgress";
   reconnectDOM.innerHTML = "PREPARING TO RECONNECT";
   document.querySelector(".loader").append(reconnectDOM);
-  setInterval(() => {
-    const fetchingURL = location.origin+"/game.html";
-    fetch(location.origin+"/game.html")
+  const offlineInterval = setInterval(() => {
+    // console.log('intervaled ')
+    // const fetchingURL = location.origin+"/game.html";
+    // fetch(location.origin+"/game.html")
+    console.log('location:', location.origin+"/acc")
+    fetch(location.origin+"/acc")
     .then((response)=>{
-      if(response.url == fetchingURL){
+      // if(response.url == fetchingURL){
+      clearInterval(offlineInterval)
+      if( response.status === 200
+      //   response.url == location.origin+"/game.html" 
+      // ||  response.url == location.origin+"/acc" 
+      ){
+        console.log('here 0', typeof offNav.url, response)
         reconnectDOM.innerHTML = "SERWER ONLINE, REDIRECTING";
         typeof offNav.url != "undefined"?location.replace(offNav.url):location.reload();
       }else{
+        console.log('here 1', response)
         reconnectDOM.innerHTML = "SERWER OFFLINE, TRYING AGAIN";
+        location.replace('https://google.com')
       }
     })
     .catch((e)=>{
+      console.log('here 2')
       reconnectDOM.innerHTML = "SERWER OFFLINE, TRYING AGAIN";
     })
   },3000)

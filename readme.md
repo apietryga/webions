@@ -1,6 +1,5 @@
 # WEBIONS
 
-<!-- [CLICK HERE TO PLAY](https://webions.herokuapp.com/game.html) -->
 [CLICK HERE TO PLAY](https://webions.uk/game.html)
 
 Webions is a MMORPG game working on browsers. (Like Tibia in borwser) 

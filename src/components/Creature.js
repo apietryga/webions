@@ -6,6 +6,8 @@ const Item = require("./Item");
 
 module.exports = class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
+    this.creatures = require('../modules/creature')
+    this.items = require('../modules/item')
     this.id = creaturesLength+1; 
     this.name = nickName;
     this.type = type;
@@ -165,35 +167,9 @@ module.exports = class Creature {
     }
   }
   update(param,db,allCreatures,allItems, walls = []){
-    // get nearby creatures
-    const creatures = [];
-    for(const cr of allCreatures){
-      if(Math.abs(cr.position[0] - this.position[0]) < 7
-        && Math.abs(cr.position[1] - this.position[1]) < 7
-        && this.id != cr.id){
-        creatures.push(cr);
-      }
-    }
-    // get nearby items
-    const items = [];
-    for(const it of allItems){
-      if(Math.abs(it.position[0] - this.position[0]) < 7
-        && Math.abs(it.position[1] - this.position[1]) < 7){
-        items.push(it);
-      }
-    }
-
-    // DEPO LOCKERS
-    if(this.type == "player"){
-      if(this.lockerOpened
-        && this.position[2] == this.position[2]
-        && Math.abs(this.position[0] - this.lockerOpened[0]) <= 1
-        && Math.abs(this.position[1] - this.lockerOpened[1]) <= 1
-      ){
-      }else{
-        this.lockerOpened = false;
-      }  
-    }
+    // new this.items(this)
+    const creatures = this.creatures.nearbyCreatures(allCreatures, this.position, this.id)
+    const items = this.items.nearbyItems(allItems, this.position)
 
     // set focus
     this.focus = param.focus;
@@ -203,59 +179,14 @@ module.exports = class Creature {
     // clear console
     if(func.isSet(this.console)){delete this.console;}
     
-    // MWALL DROPPING
-    if((this.autoMWDrop || param.mwallDrop) && this.type == "player" && this.exhaust.mwall <= game.time.getTime() ){ 
-      const mwallManaBurn = 250;
-      const wallLifeTime = 15; // seconds
-      const addExhaust = [game.time.getTime() + (wallLifeTime * 1000) ];
-      const dropMWall = (mwallManaBurn,addExhaust) => {
-        // check if wall is in area
-        if(Math.abs(this.position[0] - this.lastMWall[0]) >= 6 || Math.abs(this.position[1] - this.lastMWall[1]) >= 6 || this.position[2] != this.lastMWall[2]){
-          this.text = "You can't drop wall there."
-          this.autoMWDrop = false;
-          return 0;
-        }
-        // check if wall exists
-        let wallExists = false;
-        for(const wall of walls){
-          if(func.compareTables([wall[0],wall[1],wall[2]],[this.lastMWall[0],this.lastMWall[1],this.lastMWall[2]])){
-            wallExists = true;
-            wall[3] = addExhaust[0];
-            break;
-          }
-        }
-
-        // if(func.isPos(map,this)){
-        this.mana -= mwallManaBurn;
-        this.lastMWall[3] = addExhaust[0];
-        this.text = "Magic Wall takes "+mwallManaBurn+" mana.";
-        this.skills.magic_summary += mwallManaBurn;
-        this.updateSkills(db);  
-        if(!wallExists){
-          walls.push(this.lastMWall)
-        }
-
-        // }else{
-        //   this.text = "Sorry it's not possible."
-        // }
-
-      }
-      if(this.mana >= mwallManaBurn){
-        if(func.isSet(param.mwallDrop)){
-          // mwall dropping from key
-          this.lastMWall = param.mwallDrop.concat(addExhaust);
-          dropMWall(mwallManaBurn,addExhaust);
-        }else if(func.isSet(this.lastMWall) && this.autoMWDrop){
-          dropMWall(mwallManaBurn,addExhaust);
-        }else{
-          this.text = "Set the wall first.";
-          this.autoMWDrop = false;
-        }
-      }else{
-        this.text = "You need "+mwallManaBurn+" mana";
-      }
-      this.exhaust.mwall = game.time.getTime() + this.exhaustTime;
+    if(this.type == "player"){
+      // DEPO LOCKERS
+      this.items.openDepoLockers(this.position, this.lockerOpened)
+  
+      // MWALL DROPPING
+      this.creatures.mwallDrop(this.autoMWDrop, this.exhaust, this.lastMWall, this.position, this.text, this.mana, this.skills, this.updateSkills, param, this.exhaustTime, walls)
     }
+
     // SAY'n
     if(['player', 'npc'].includes(this.type)){
       if((func.isSet(param.says) && param.says != "") && (!this.exhaust.say || this.exhaust.say <= game.time.getTime())){
