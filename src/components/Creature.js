@@ -6,8 +6,8 @@ const Item = require("./Item");
 
 module.exports = class Creature {
   constructor(nickName,creaturesLength = 0,type = "monster"){
-    this.creatures = require('../modules/creature')
-    this.items = require('../modules/item')
+    // this.creatures = require('../modules/creature')
+    // this.items = require('../modules/item')
     this.id = creaturesLength+1; 
     this.name = nickName;
     this.type = type;
@@ -141,6 +141,222 @@ module.exports = class Creature {
       }
     }
   }
+  nearbyItems( allItems ){
+    return allItems.filter( it => { 
+      return Math.abs(it.position[0] - this.position[0]) < 7
+        && Math.abs(it.position[1] - this.position[1]) < 7
+    })
+  }
+  nearbyCreatures( allCreatures ){
+    return allCreatures.filter( cr => {
+      return Math.abs(cr.position[0] - this.position[0]) < 7
+        && Math.abs(cr.position[1] - this.position[1]) < 7
+        && this.id != cr.id
+    })
+  }
+  manaRegen( ){
+    if(!this?.totalManaRegen || this.manaRegenExhoust >= game.time.getTime() || this.totalManaRegen <= 0){ return }
+    if((this.mana + this.totalManaRegen) < this.totalMana){
+      this.mana += this.totalManaRegen;
+    }else{
+      this.mana = this.totalMana;
+    }
+    const manaExhoust = 1000;
+    this.manaRegenExhoust = game.time.getTime()*1 + manaExhoust;
+  }
+  mwallDrop( param, walls ){
+    if(( this.autoMWDrop || param?.mwallDrop ) && this.exhaust.mwall <= game.time.getTime() ){ 
+      const mwallManaBurn = 250;
+      const wallLifeTime = 15; // seconds
+      const addExhaust = [ game.time.getTime() + ( wallLifeTime * 1000 ) ];
+      const dropMWall = ( mwallManaBurn, addExhaust ) => {
+        // check if wall is in area
+        if(Math.abs(this.position[0] - this.lastMWall[0]) >= 6 || Math.abs(this.position[1] - this.lastMWall[1]) >= 6 || this.position[2] != this.lastMWall[2]){
+          this.text = "You can't drop wall there."
+          this.autoMWDrop = false;
+          return 0;
+        }
+        // check if wall exists
+        let wallExists = false;
+        for(const wall of walls){
+          if(func.compareTables([wall[0],wall[1],wall[2]],[this.lastMWall[0],this.lastMWall[1],this.lastMWall[2]])){
+            wallExists = true;
+            wall[3] = addExhaust[0];
+            break;
+          }
+        }
+
+        // if(func.isPos(map,this)){
+        this.mana -= mwallManaBurn;
+        this.lastMWall[3] = addExhaust[0];
+        this.text = "Magic Wall takes "+mwallManaBurn+" mana.";
+        this.skills.magic_summary += mwallManaBurn;
+        // updateSkills(db);  
+        this.updateSkills(dbconnected);  
+        if(!wallExists){
+          walls.push(this.lastMWall)
+        }
+
+        // }else{
+        //   text = "Sorry it's not possible."
+        // }
+
+      }
+      if(this.mana >= mwallManaBurn){
+        if(func.isSet(param.mwallDrop)){
+          // mwall dropping from key
+          this.lastMWall = param.mwallDrop.concat(addExhaust);
+          dropMWall(mwallManaBurn,addExhaust);
+        }else if(func.isSet(this.lastMWall) && this.autoMWDrop){
+          dropMWall(mwallManaBurn,addExhaust);
+        }else{
+          this.text = "Set the wall first.";
+          this.autoMWDrop = false;
+        }
+      }else{
+        this.text = "You need "+mwallManaBurn+" mana";
+      }
+      this.exhaust.mwall = game.time.getTime() + this.exhaustTime;
+    }
+
+
+
+
+
+  }
+  openDepoLockers( ){
+    if(this.lockerOpened
+      && this.position[2] == this.position[2]
+      && Math.abs(this.position[0] - this.lockerOpened[0]) <= 1
+      && Math.abs(this.position[1] - this.lockerOpened[1]) <= 1
+    ){
+    }else{
+      this.lockerOpened = false;
+    }  
+  }
+  say( param ){
+    if((func.isSet(param.says) && param.says != "") && (!this.exhaust.say || this.exhaust.say <= game.time.getTime())){
+      // CONSOLE FOR GM
+      const places = {
+        temple:[35,-9,-1],
+        castle:[49,-34,1],
+        wizards:[-70,11,2],
+        king:[55,-21,-1],
+        dragon:[135,1,0],
+        barbarian:[4,-33,1],
+        depo:[43,0,0],
+        castlegate:[40,-23,0],
+        castletower:[44,-37,4],
+        blue17:[28,17,0],
+      };
+      let isCommand = false;
+      if(this.name == "GM"){
+        const command = param.says.split(" ");
+        if(['!move'].includes(command[0])){
+          if(func.isSet(command[1])){ 
+            const dim = ["x","y","z"];
+            let sign = false;
+            let val = 1;
+            let key = false;
+            if(dim.includes(command[1].split("-")[0])){
+              sign = -1;
+              val = command[1].split("-")[1];
+              key = command[1].split("-")[0];
+            }
+            if(dim.includes(command[1].split("+")[0])){
+              sign = +1;
+              key = command[1].split("+")[0];
+              val = command[1].split("+")[0];
+            }
+            if(sign){
+              for(const [i,d] of dim.entries()){
+                if(key == d){
+                  this.position[i] += (sign*val);
+                }
+              }
+            }
+            // templates
+            if(Object.keys(places).includes(command[1])){
+              this.position[0] = places[command[1]][0];
+              this.position[1] = places[command[1]][1];
+              this.position[2] = places[command[1]][2];
+            }else{
+              this.position[0] = command[1];
+            }
+          }
+          if(func.isSet(command[2])){ this.position[1] = command[2];}
+          if(func.isSet(command[3])){ this.position[2] = command[3];}
+          isCommand = true;
+        }
+        if(['!health','!mana'].includes(command[0])){
+          if(!isNaN(command[1])){
+            this[command[0].replace('!','')] = command[1];
+          }
+          isCommand = true;
+        }
+        if(['!level','!fist','!dist',"!def","!magic"].includes(command[0])){
+          isCommand = true;
+          const keyToChange = command[0] == '!level' ? 'exp' : command[0].replace('!','')+"_summary";
+          const value = isNaN(Math.pow(command[1],3)) ? false : Math.pow(command[1],3) ;
+          if(value){
+            this.skills[keyToChange] = value;
+            this.updateSkills(db);
+          }
+        }
+      }
+      // PLAYER SAY'N
+      if(this.type == "player"){
+        // TP to temple
+        if(param.says == "!temple" && this.type == "player"){
+          this.position = [35,-9,-1];
+        }else if(!isCommand){
+          this.says = param.says;
+        }
+        // this.exhaust.say = game.time.getTime() + 1000;
+        // saying to npc's
+        // if(this.says == "hi"){
+        //   if(!func.isSet(this.quests)){this.quests = [];}
+        //   for(const c of creatures){
+        //     if(c.type == "npc" && func.isSet(c.dialog) 
+        //     && Math.abs(c.position[0] - this.position[0]) < 6
+        //     && Math.abs(c.position[1] - this.position[1]) < 6
+        //     && c.position[2] == this.position[2]){
+        //       // c.dialog(this,c);
+        //     }
+        //   }
+        // }  
+      }
+      // NPC SAY'N
+      if(this.type == "npc"){
+        // this.says = "elo"; 
+        // this.exhaust.say = game.time.getTime() + 1000;
+
+        // if(func.isSet(this.says)){
+        // this.says = param.says;
+        // if()
+        // for(const dialog of this.dial){
+        //   for(const speakKey of Object.keys(dialog)){
+        //     if(param.says.toLowerCase() == speakKey){
+        //       let text = dialog[speakKey];
+        //       text.replace("{name}",param.name);
+        //       // this.says = text;
+        //       // this.dialog(this,player)
+        //       this.talking = game.time.getTime() + 8000;
+        //     }
+        //   }
+        // }
+        // this.says = 
+
+        // if(func.isSet(this.says)){
+        //   this.talking = game.time.getTime() + 10000;
+        // }
+        
+      }
+      this.exhaust.say = game.time.getTime() + 1000;
+    }
+    // clear says
+    (this.says == this.oldSays) ? delete this.says : this.oldSays = this.says;
+  }
   updateSkills(db, keys = ['fist','dist','def','magic']){
     let smthChanged = false;
     // fist, dist update
@@ -166,150 +382,36 @@ module.exports = class Creature {
       db.update(this);
     }
   }
+  updateSprites( param ){
+    if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
+    if(func.isSet(param.outfit)){
+      this.sprite = param.outfit.sprite;
+      this.colors = param.outfit.colors;
+      this.outfitUpdate = true;
+    }else{
+      delete this.outfitUpdate;
+    }
+  }
   update(param,db,allCreatures,allItems, walls = []){
-    // new this.items(this)
-    const creatures = this.creatures.nearbyCreatures(allCreatures, this.position, this.id)
-    const items = this.items.nearbyItems(allItems, this.position)
-
+    const creatures = this.nearbyCreatures( allCreatures )
+    const items = this.nearbyItems( allItems )
     // set focus
     this.focus = param.focus;
     // update automation
-    if(func.isSet(param.autoShot) && this.type == "player"){this.autoShot = param.autoShot;}
-    if(func.isSet(param.autoMWDrop) && this.type == "player"){this.autoMWDrop = param.autoMWDrop;}
+    if(param?.autoShot && this.type == "player"){this.autoShot = param.autoShot;}
+    if(param?.autoMWDrop && this.type == "player"){this.autoMWDrop = param.autoMWDrop;}
     // clear console
-    if(func.isSet(this.console)){delete this.console;}
-    
+    if(this?.console){delete this.console;}
     if(this.type == "player"){
-      // DEPO LOCKERS
-      this.items.openDepoLockers(this.position, this.lockerOpened)
-  
-      // MWALL DROPPING
-      this.creatures.mwallDrop(this.autoMWDrop, this.exhaust, this.lastMWall, this.position, this.text, this.mana, this.skills, this.updateSkills, param, this.exhaustTime, walls)
+      this.openDepoLockers()
+      this.mwallDrop( param, walls )
+      this.manaRegen( )
+      if(this.health > this.totalHealth){ this.health = this.totalHealth  }
+      if(this.mana > this.totalMana){ this.mana = this.totalMana }
+      this.updateSprites( param )
     }
-
-    // SAY'n
     if(['player', 'npc'].includes(this.type)){
-      if((func.isSet(param.says) && param.says != "") && (!this.exhaust.say || this.exhaust.say <= game.time.getTime())){
-        // CONSOLE FOR GM
-        const places = {
-          temple:[35,-9,-1],
-          castle:[49,-34,1],
-          wizards:[-70,11,2],
-          king:[55,-21,-1],
-          dragon:[135,1,0],
-          barbarian:[4,-33,1],
-          depo:[43,0,0],
-          castlegate:[40,-23,0],
-          castletower:[44,-37,4],
-          blue17:[28,17,0],
-        };
-        let isCommand = false;
-        if(this.name == "GM"){
-          const command = param.says.split(" ");
-          if(['!move'].includes(command[0])){
-            if(func.isSet(command[1])){ 
-              const dim = ["x","y","z"];
-              let sign = false;
-              let val = 1;
-              let key = false;
-              if(dim.includes(command[1].split("-")[0])){
-                sign = -1;
-                val = command[1].split("-")[1];
-                key = command[1].split("-")[0];
-              }
-              if(dim.includes(command[1].split("+")[0])){
-                sign = +1;
-                key = command[1].split("+")[0];
-                val = command[1].split("+")[0];
-              }
-              if(sign){
-                for(const [i,d] of dim.entries()){
-                  if(key == d){
-                    this.position[i] += (sign*val);
-                  }
-                }
-              }
-              // templates
-              if(Object.keys(places).includes(command[1])){
-                this.position[0] = places[command[1]][0];
-                this.position[1] = places[command[1]][1];
-                this.position[2] = places[command[1]][2];
-              }else{
-                this.position[0] = command[1];
-              }
-            }
-            if(func.isSet(command[2])){ this.position[1] = command[2];}
-            if(func.isSet(command[3])){ this.position[2] = command[3];}
-            isCommand = true;
-          }
-          if(['!health','!mana'].includes(command[0])){
-            if(!isNaN(command[1])){
-              this[command[0].replace('!','')] = command[1];
-            }
-            isCommand = true;
-          }
-          if(['!level','!fist','!dist',"!def","!magic"].includes(command[0])){
-            isCommand = true;
-            const keyToChange = command[0] == '!level' ? 'exp' : command[0].replace('!','')+"_summary";
-            const value = isNaN(Math.pow(command[1],3)) ? false : Math.pow(command[1],3) ;
-            if(value){
-              this.skills[keyToChange] = value;
-              this.updateSkills(db);
-            }
-          }
-        }
-        // PLAYER SAY'N
-        if(this.type == "player"){
-          // TP to temple
-          if(param.says == "!temple" && this.type == "player"){
-            this.position = [35,-9,-1];
-          }else if(!isCommand){
-            this.says = param.says;
-          }
-          // this.exhaust.say = game.time.getTime() + 1000;
-          // saying to npc's
-          // if(this.says == "hi"){
-          //   if(!func.isSet(this.quests)){this.quests = [];}
-          //   for(const c of creatures){
-          //     if(c.type == "npc" && func.isSet(c.dialog) 
-          //     && Math.abs(c.position[0] - this.position[0]) < 6
-          //     && Math.abs(c.position[1] - this.position[1]) < 6
-          //     && c.position[2] == this.position[2]){
-          //       // c.dialog(this,c);
-          //     }
-          //   }
-          // }  
-        }
-        // NPC SAY'N
-        if(this.type == "npc"){
-          // this.says = "elo"; 
-          // this.exhaust.say = game.time.getTime() + 1000;
-  
-          // if(func.isSet(this.says)){
-          // this.says = param.says;
-          // if()
-          // for(const dialog of this.dial){
-          //   for(const speakKey of Object.keys(dialog)){
-          //     if(param.says.toLowerCase() == speakKey){
-          //       let text = dialog[speakKey];
-          //       text.replace("{name}",param.name);
-          //       // this.says = text;
-          //       // this.dialog(this,player)
-          //       this.talking = game.time.getTime() + 8000;
-          //     }
-          //   }
-          // }
-          // this.says = 
-  
-          // if(func.isSet(this.says)){
-          //   this.talking = game.time.getTime() + 10000;
-          // }
-          
-        }
-        this.exhaust.say = game.time.getTime() + 1000;
-      }
-      // clear says
-      (this.says == this.oldSays) ? delete this.says : this.oldSays = this.says;
+      this.say( param )
     }
     // UPDATE LASTFRAME || KEEP PLAYER IN GAME || save player on logout
     if(typeof game.startServerTime != "undefined" && param.type != 'initUpdate'){
@@ -324,36 +426,6 @@ module.exports = class Creature {
         this.baseSpeed = this.speed;
       }else{
         this.totalSpeed = this.baseSpeed;
-      }
-    }
-    // CHECK HEALTH, MANA ON ITEM DROP
-    if(this.type == "player"){
-      if(this.health > this.totalHealth){
-        this.health = this.totalHealth;
-      }
-      if(this.mana > this.totalMana){
-        this.mana = this.totalMana;
-      }
-    }
-    // MANA REGEN
-    if(func.isSet(this.totalManaRegen) && this.manaRegenExhoust < game.time.getTime() && this.totalManaRegen > 0 && this.type == "player"){
-      if((this.mana + this.totalManaRegen) < this.totalMana){
-        this.mana += this.totalManaRegen;
-      }else{
-       this.mana = this.totalMana;
-      }
-      const manaExhoust = 1000;
-      this.manaRegenExhoust = game.time.getTime()*1 + manaExhoust;
-    }
-    // SPRITES UPDATE
-    if(this.type == 'player'){
-      if(!func.isSet(this.sprite)){this.sprite = this.sex+"_citizen";}
-      if(func.isSet(param.outfit)){
-        this.sprite = param.outfit.sprite;
-        this.colors = param.outfit.colors;
-        this.outfitUpdate = true;
-      }else{
-        delete this.outfitUpdate;
       }
     }
     // PLAYER TO TARGET [THE NEAREST - 4 monster walking and targeting]
