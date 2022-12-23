@@ -842,7 +842,7 @@
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
     "lastMWall": [25, -44, 0, 1658432192288],
-    "token": "t2gfy5xipm"
+    "token": "ml7rxyzyzf"
   },
   {
     "name": "EDA",
@@ -2333,27 +2333,27 @@
   },
   {
     "name": "GM",
-    "position": [13, -27, 1],
+    "position": [-64, 14, 0],
     "speed": 5,
     "health": 4110,
     "maxHealth": 3110,
-    "redTarget": 65,
+    "redTarget": false,
     "sprite": "gm",
     "skills": {
       "level": 301,
-      "exp": 27005870,
-      "fist": 19,
-      "fist_summary": 5849,
+      "exp": 27007090,
+      "fist": 20,
+      "fist_summary": 7160,
       "dist": 1001,
-      "dist_summary": 1000058050,
-      "def_summary": 27105819,
+      "dist_summary": 1000071262,
+      "def_summary": 27115819,
       "def": 301,
-      "magic_summary": 12800,
-      "magic": 24
+      "magic_summary": 50987,
+      "magic": 38
     },
     "autoShot": true,
     "autoMWDrop": false,
-    "lastFrame": 1664618504219,
+    "lastFrame": 1671822954411,
     "lastDeaths": [
       {
         "when": "2021-11-19T19:24:24.332Z",
@@ -2442,14 +2442,13 @@
       "hd": {
         "type": "item",
         "name": "The Crown",
-        "position": [37, -9, -1],
+        "position": [39, -5, 0],
         "sprite": "items",
         "spriteNr": 6,
         "handle": ["hd"],
         "pickable": true,
         "health": 1000,
-        "actionType": "pickUp",
-        "visibleFloor": -1,
+        "actionType": "drop",
         "field": "hd",
         "pos": [37, -9, -1]
       },
@@ -2532,13 +2531,13 @@
         "speed": 4
       }
     },
-    "mana": 3310,
+    "mana": 3260,
     "maxMana": 3110,
     "password": "$2b$10$.8M61VyIgCxK7M2wMlZHgewYB.lAoCNjpCUsJ0unSU0w06DBgupKa",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastMWall": [56, -20, -2, 1641930243542],
-    "token": "vefiz7dzfi"
+    "lastMWall": [36, -5, 0, 1671822263354],
+    "token": "3wgnac9hpt"
   },
   {
     "name": "TESTOWO",

@@ -1,5 +1,5 @@
-const creatures = require('./creatures')
+// const creatures = require('./creatures')
 
-module.exports = {
-  ...creatures
-}
+// module.exports = {
+//   ...creatures
+// }
