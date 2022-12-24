@@ -246,6 +246,9 @@
 
 <!-- DELAY BEFORE RELOAD - FOR FIREFOX -->
 <script>
+  console.log( '{{ token }}' )
+  document.cookie = "token={{ token | safe }}; SameSite=None; Secure";
+
   if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
     // GET GOTO LOCATION
     // let whereLocation = "./game.html";

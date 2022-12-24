@@ -25,7 +25,19 @@ module.exports = new class authController {
     },
   }
 
-  isAuth(){ // cookie login
+  async isAuth( req ){ // cookie login
+    if(!req.cookies?.token || req.cookies?.token == ''){ return false }
+
+    const all = await dbconnected.loadAll()
+    const player = all.filter( player => player.token === req.cookies.token )[0]
+
+    if(player){
+      return {
+        action : 'game',
+        token: player.token,
+        nick: player.name,
+      }
+    }
 
     return false 
   }
@@ -73,7 +85,7 @@ module.exports = new class authController {
 
     res.render('game.njk', {
       action : 'game',
-      message: token,
+      token,
       nick: data.nick
     })
   }
