@@ -104,12 +104,13 @@ module.exports = new class webController {
     res.render("template.njk", this.vals);
   }
 
-  game = (req, res) => {
+  game = async (req, res) => {
     this.vals.monstersNames = this.monstersNames
     this.vals.page = req.url.match(/([a-zA-Z0-9]+)/g)[0]
     this.vals.message = ""
-    if(auth.isAuth()){
-      return res.render("game.njk", this.vals);
+    const isAuth = await auth.isAuth( req );
+    if( isAuth ){
+      return res.render('game.njk', isAuth)
     }
     return res.redirect('/acc/login');
   }
