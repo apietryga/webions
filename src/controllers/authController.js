@@ -69,7 +69,6 @@ module.exports = new class authController {
       token = (Math.random() + 1).toString(36).substring(2);
     } while (currentTokens.includes(token));
 
-    console.log("STĄD3")
     dbconnected.update( { ...dbres, token } )
 
     res.render('game.njk', {

@@ -86,9 +86,6 @@
   reconnectDOM.innerHTML = "PREPARING TO RECONNECT";
   document.querySelector(".loader").append(reconnectDOM);
   const offlineInterval = setInterval(() => {
-    // console.log('intervaled ')
-    // const fetchingURL = location.origin+"/game.html";
-    // fetch(location.origin+"/game.html")
     console.log('location:', location.origin+"/acc")
     fetch(location.origin+"/acc")
     .then((response)=>{

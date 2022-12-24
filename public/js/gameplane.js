@@ -124,7 +124,8 @@ const gamePlane = {
     popup.init(title);
     clearInterval(this.interval);
     menus.console.log(
-      "Game Paused. <a href='/game.html'>RELOAD</a> to play.",
+      // "Game Paused. <a href='/game.html'>RELOAD</a> to play.",
+      "Game Paused. <a href='/game'>RELOAD</a> to play.",
       {color:"#fff"}
     )
   }
