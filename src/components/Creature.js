@@ -406,6 +406,7 @@ module.exports = class Creature {
       this.openDepoLockers()
       this.mwallDrop( param, walls )
       this.manaRegen( )
+      func.setTotalVals(this);
       if(this.health > this.totalHealth){ this.health = this.totalHealth  }
       if(this.mana > this.totalMana){ this.mana = this.totalMana }
       this.updateSprites( param )
@@ -417,8 +418,6 @@ module.exports = class Creature {
     if(typeof game.startServerTime != "undefined" && param.type != 'initUpdate'){
       this.lastFrame = game.time.getTime();
     }
-    // GET EQ VALUES (totalHealth, totalMana etc.)
-    func.setTotalVals(this);
     // monsters and npc's speed update
     if(["monster","npc"].includes(this.type)){
       if(func.isSet(this.speed) && this.speed != 0){
