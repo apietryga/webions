@@ -382,10 +382,9 @@ class Grid {
     this.y = (this.position[1]) * this.height;
   }
   update = () => {
-    // console.log("ee?")
     if(typeof player != "undefined"){
-      this.x = (this.position[0] - player.position[0] + 5) * this.width;
-      this.y = (this.position[1] - player.position[1] + 5) * this.height;
+      this.x = (this.position[0] - player.position[0] + Math.floor( game.mapSize[0] / 2 )) * this.width;
+      this.y = (this.position[1] - player.position[1] + Math.floor( game.mapSize[1] / 2 )) * this.height;
     }
   }
   draw = (plr = {}) => {
