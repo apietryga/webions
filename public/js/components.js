@@ -4,8 +4,8 @@ class Creature {
     this.type = type;
     this.cyle = 0;
     this.name = pName;
-    this.width = 40;
-    this.height = 40;
+    this.width = game.square;
+    this.height = game.square;
     // this.sprite = "citizen"; 
     // this.img = map.sprites[this.sprite];
     this.hideFloor = "none";
@@ -13,8 +13,10 @@ class Creature {
     this.y = y ;
     this.z = z;
     if(this.type == "player"){
-      this.x = 200;
-      this.y = 200;
+      // this.x = 200;
+      // this.y = 200;
+      this.x = Math.floor( game.mapSize[0]/2 ) * game.square;
+      this.y = Math.floor( game.mapSize[1]/2 ) * game.square;
     }
     // this.direction = 1;
     this.position = [x, y, z]; //x y z
@@ -209,8 +211,9 @@ class Creature {
     }
     // SET OTHER CREATURES DEPENDS OF PLAYER POSITION
     if(this.type != "player" && typeof player.position != null){
-      this.x = (this.position[0] - player.position[0] + 5) * 40;
-      this.y = (this.position[1] - player.position[1] + 5) * 40;  
+      // this.x = (this.position[0] - player.position[0] + 5) * game.square;
+      this.x = (this.position[0] - player.position[0] + 5) * game.square;
+      this.y = (this.position[1] - player.position[1] + 5) * game.square;  
     }
   }
   draw(){
@@ -263,18 +266,18 @@ class Creature {
           const cw = this.img.width/6;
           ctx.drawImage(
             this.img, (this.cyle+3) * cw, this.direction * cw, cw, this.img.height/5,
-            this.x - 40, this.y-40, 100, 100
+            this.x - game.square, this.y-game.square, 100, 100
           );
           // draw else elements xD
           ctx.drawImage(
             this.img, this.cyle * cw, this.direction * cw, cw, this.img.height/5,
-            this.x - 40, this.y-40, 100, 100
+            this.x - game.square, this.y-game.square, 100, 100
           );
       }else{
         const img = map.sprites[this.sprite];
         ctx.drawImage(
           img, this.cyle * img.width/3, this.direction * img.width/3, img.width/3, img.height/5,
-          this.x - 40, this.y-40, 100, 100
+          this.x - game.square, this.y-game.square, 100, 100
         );
       }
     }
@@ -295,9 +298,9 @@ class Creature {
       ctx.fillStyle = "red";
       ctx.strokeStyle = 'red';
       ctx.lineWidth = 3;
-      ctx.moveTo(this.x  ,this.y + 40);
-      ctx.lineTo(this.x + 40, this.y + 40);
-      ctx.lineTo(this.x + 40, this.y -1);
+      ctx.moveTo(this.x  ,this.y + game.square);
+      ctx.lineTo(this.x + game.square, this.y + game.square);
+      ctx.lineTo(this.x + game.square, this.y -1);
       ctx.stroke();  
     }
     // draw hits and healing value
@@ -325,7 +328,7 @@ class Creature {
     }
     // HEALING amount
     if(this.oldHealth < this.health){
-      gamePlane.actions.push(new Action("misc",this.x,this.y,40,40,2));
+      gamePlane.actions.push(new Action("misc",this.x,this.y,game.square,game.square,2));
     }
     // DISTANCE SHOT
     if(this.bulletOnTarget >= serv.time){
@@ -354,7 +357,7 @@ class Creature {
     }else{
       // last bullet
       if(typeof this.shotBullet != "undefined" && typeof this.shotVictim != "undefined"){
-        gamePlane.actions.push(new Action("misc",this.shotVictim.position[0],this.shotVictim.position[1],40,40,1));
+        gamePlane.actions.push(new Action("misc",this.shotVictim.position[0],this.shotVictim.position[1],game.square,game.square,1));
         delete this.shotBullet;
         delete this.startBullet;
       }
@@ -367,8 +370,8 @@ class Grid {
     this.texture = t[0];
     this.position = [t[1], t[2], t[3]];
     this.type = t[4];
-    this.width = 40;
-    this.height = 40;
+    this.width = game.square;
+    this.height = game.square;
     this.zIndex = t[3];
     this.checked = false;
     this.cyle = 0;
@@ -391,7 +394,7 @@ class Grid {
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
 
-    const w = (typeof map.sprites[this.type] != "undefined")?map.sprites[this.type].dataset.w:40;
+    const w = (typeof map.sprites[this.type] != "undefined")?map.sprites[this.type].dataset.w:game.square;
     if(this.type == 'doors' && compareTables(this.position,phantomPlayer.newPos)){
       this.cyle = 1;
     }
@@ -408,7 +411,7 @@ class Grid {
       if(typeof map.sprites[this.type] != 'undefined'){
         ctx.drawImage(map.sprites[this.type],
           this.texture * w, this.cyle*w, w, w,
-          (this.position[0] - phantomPlayer.position[0] + 6)*40-w, (this.position[1] - phantomPlayer.position[1] + 6)*40-w, w, w);
+          (this.position[0] - phantomPlayer.position[0] + 6)*game.square-w, (this.position[1] - phantomPlayer.position[1] + 6)*game.square-w, w, w);
     
       }else{
         // console.log(this);
@@ -470,8 +473,8 @@ class Action{  // class for hitText, Bullets,
   update(){
     this.showFPS++;
     let ctx = gamePlane.context;
-    let x = ((this.x - player.position[0] + 5) * 40);    
-    let y = ((this.y - player.position[1] + 5) * 40);     
+    let x = ((this.x - player.position[0] + 5) * game.square);    
+    let y = ((this.y - player.position[1] + 5) * game.square);     
     if(this.type == "says"){
       // set color
       ctx.fillStyle = '#ff0';
@@ -518,14 +521,14 @@ class Action{  // class for hitText, Bullets,
     if(this.type == "bullet"){
       // draw bullet
       var img = map.sprites.actions;
-      ctx.drawImage(img, 3*40, this.text * 40, 40, 40,
-      x, y, 40, 40);
+      ctx.drawImage(img, 3*game.square, this.text * game.square, game.square, game.square,
+      x, y, game.square, game.square);
     }
     if(this.type == "misc"){
       var img = map.sprites.actions;
       this.cyle = Math.round(this.showFPS);
       if(this.text != 1){x = this.x; y = this.y;}
-      ctx.drawImage(img, this.cyle*40, this.text * 40, 40, 40,
+      ctx.drawImage(img, this.cyle*game.square, this.text * game.square, game.square, game.square,
       x, y, this.w, this.h); 
     }
     if(this.type == "centerTxt"){
@@ -638,7 +641,7 @@ class Item{
       itemContainer.dataset.amount = this.amount;
       ctx.fillStyle = '#fff';
       ctx.lineWidth = 0.5;
-      ctx.font = '400 15px Tahoma';
+      ctx.font = 'game.square0 15px Tahoma';
       ctx.textAlign = "right";
 
       let showingAmount = 100;
@@ -706,8 +709,8 @@ class Item{
       }
 
       let w = img.height;
-      let x = ((this.position[0] - player.position[0] + 5) * 40 - w)+40;    
-      let y = ((this.position[1] - player.position[1] + 5) * 40 - w)+40;   
+      let x = ((this.position[0] - player.position[0] + 5) * game.square - w) + game.square;    
+      let y = ((this.position[1] - player.position[1] + 5) * game.square - w) + game.square;   
 
       // change position if item say on table
       if(isTable){

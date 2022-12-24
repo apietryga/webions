@@ -5,6 +5,9 @@ const game = {
   fps: 16,
   db:"redis",
   lastUpdate: 1633895983384,
-  dev: false
+  dev: false,
+  mapSize: [15, 11], // x y squares
+  square: 40, // px one square
+
 }
 if(typeof window == "undefined"){module.exports = game;}
