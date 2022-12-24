@@ -148,8 +148,6 @@ const controls = {
       // const y = oy+player.newPos[1]-5;
       const y = oy + player.newPos[1] - Math.floor( game.mapSize[1] / 2 );
 
-      console.log({ x, y })
-
       // MWALL CLICKING
       if(player.mwall){
         document.body.style.cursor = "auto";

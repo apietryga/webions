@@ -22,19 +22,8 @@ const acc = {
   formPicker(){
     // FORM PICKER [from URL]
     let isForm = false;
-    // if(action == "game"){
-    //   acc.hideLoader = false;
-    //   document.cookie = "token={{ token | safe }}; SameSite=None; Secure";
-    //   window.location.replace("game");
-    // }
-    if(action == "logout"){
-      for(const cookie of document.cookie.split(";")){
-        const c = cookie.split("=");
-        if(c[0] == "token"){
-          document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        }
-      }
-      window.location.replace("/acc/login");
+    if(location.pathname.split('/')[location.pathname.split('/').length - 1 ] == "logout"){
+      delete_cookie('token')
     }
     if( action != ""){
       this.urlVals = action;
