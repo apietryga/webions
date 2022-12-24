@@ -176,6 +176,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
           return isPlayer
         }
       }
+      console.log({ param })
       // push player to online list
       if(isPlayer == false && !this.inLoading.includes(param.name)){
         this.inLoading.push(param.name);

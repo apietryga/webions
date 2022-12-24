@@ -7,7 +7,6 @@ const game = {
   lastUpdate: 1633895983384,
   dev: false,
   mapSize: [15, 11], // x y squares
-  // mapSize: [200, 200], // x y squares
   square: 40, // px one square
 
 }

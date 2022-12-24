@@ -22,17 +22,14 @@ app.use(cookieParser());
   im.init();
   global.dbconnected = dbc[ await dbc.init() ]
 
-  // cm.players.init(dbc[game.db])
   cm.players.init(global.dbconnected)
 
   router.set({ app })
-  // router.set({ dbconnect: dbc[game.db] })
   router.set({ dbconnect: global.dbconnected })
   router.set({ players: cm.players })
   app.use(router.call)
 
   const server = app.listen(process.env.PORT || 2095)
-  // wsController( server , cm, im, dbc[game.db])
   wsController( server , cm, im, global.dbconnected)
   game.startServerTime = new Date().getTime();
   console.log("SERWER IS RUNNING ON PORT " + 2095);
