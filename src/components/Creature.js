@@ -300,7 +300,8 @@ module.exports = class Creature {
           const value = isNaN(Math.pow(command[1],3)) ? false : Math.pow(command[1],3) ;
           if(value){
             this.skills[keyToChange] = value;
-            this.updateSkills(db);
+            // this.updateSkills(db);
+            this.updateSkills(dbconnected);
           }
         }
       }

@@ -83,15 +83,10 @@ class GameMap{
   // update view
   update([x,y,z] = [0,0,0],how = 'default'){ // player x y z - update all grids in player Area.
     this.grids = [];
-    const minY = (how == 'default')?y-6:y-10;
-    // const minX = (how == 'default')?x-6:x-10;
-    // const minX = (x - (( Math.ceil(game.mapSize[0]/2) - 1 )));
-    const minX = (x - (( Math.ceil(game.mapSize[0]/2) )));
-    // const maxX = (how == 'default')?14:21;
-    // const maxX = (x + (( Math.ceil(game.mapSize[0]) - 1 )));
-    const maxX = (x + (( Math.ceil(game.mapSize[0]) + 2 )));
-    // console.log({ x, minX, maxX })
-    const maxY = (how == 'default')?14:21;
+    const minY = y - Math.ceil( game.mapSize[1] / 2 );
+    const minX = x - Math.ceil( game.mapSize[0] / 2 );
+    const maxX = game.mapSize[0] + 3;
+    const maxY = game.mapSize[1] + 3;
     for(let nZ = this.minFloor; nZ <= z; nZ++){
       for(let nX = 0; nX < maxX; nX++){
         for(let nY = 0; nY < maxY; nY++){
