@@ -62,16 +62,17 @@ class Creature {
             }
           }
           // CANVAS RENDER
+          const fontSize = 20;
           ctx.fillStyle = hpColor(percHealth);
           ctx.strokeStyle = 'black';
           ctx.lineWidth = 1.5;
-          ctx.font = '900 20px Tahoma';
+          ctx.font = '900 ' + fontSize + 'px Tahoma';
           ctx.textAlign = "center";
           ctx.fillText(this.name, this.x + 5, this.y - 22);
           ctx.strokeText(this.name, this.x + 5, this.y - 22);
           ctx.beginPath();
-          ctx.rect(this.x - 11, this.y - 18, 30, 5);
-          ctx.fillRect(this.x - 10, this.y - 17, barWidth, 3);
+          ctx.rect(this.x - ( fontSize / 2 ) + 1, this.y - ( fontSize - 2 ), 30, 5);
+          ctx.fillRect(this.x - ( fontSize / 2 ), this.y - ( fontSize - 3 ), barWidth, 3);
           ctx.stroke();
         }
       }
@@ -211,9 +212,8 @@ class Creature {
     }
     // SET OTHER CREATURES DEPENDS OF PLAYER POSITION
     if(this.type != "player" && typeof player.position != null){
-      // this.x = (this.position[0] - player.position[0] + 5) * game.square;
-      this.x = (this.position[0] - player.position[0] + 5) * game.square;
-      this.y = (this.position[1] - player.position[1] + 5) * game.square;  
+      this.x = (this.position[0] - player.position[0] + Math.floor( game.mapSize[0] / 2 )) * game.square;
+      this.y = (this.position[1] - player.position[1] + Math.floor( game.mapSize[1] / 2 )) * game.square;  
     }
   }
   draw(){
@@ -407,14 +407,12 @@ class Grid {
       }
     }
     if(this.type != 'delete'){
-      // console.log(map.sprites[this.type])
       if(typeof map.sprites[this.type] != 'undefined'){
         ctx.drawImage(map.sprites[this.type],
           this.texture * w, this.cyle*w, w, w,
-          (this.position[0] - phantomPlayer.position[0] + 6)*game.square-w, (this.position[1] - phantomPlayer.position[1] + 6)*game.square-w, w, w);
-    
-      }else{
-        // console.log(this);
+          ( this.position[0] - phantomPlayer.position[0] + Math.ceil( game.mapSize[0]/2 ) ) * game.square - w, 
+          ( this.position[1] - phantomPlayer.position[1] + Math.ceil( game.mapSize[1]/2 ) ) * game.square - w, w, w
+        );
       }
     }
     if (this.checked) {
@@ -440,14 +438,15 @@ class Text {
         this.oldText = this.text;
         this.showFPS = 0;
       }
+      const fontSize = 20;
       let ctx = gamePlane.context;
       ctx.fillStyle = '#fff';
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 1.5;
-      ctx.font = '900 20px Tahoma';
+      ctx.font = '900 ' + fontSize + 'px Tahoma';
       ctx.textAlign = "center";
-      ctx.fillText(this.text, player.x, player.y + 230);
-      ctx.strokeText(this.text, player.x, player.y + 230);
+      ctx.fillText(this.text, player.x, player.y + game.square * Math.ceil( game.mapSize[1] / 2 ) - ( fontSize / 2 ) );
+      ctx.strokeText(this.text, player.x, player.y + game.square * Math.ceil( game.mapSize[1] / 2 ) - ( fontSize / 2 ) );
       if (this.showFPS >= this.showingLength) {
         this.text = "";
         this.showFPS = 0;
@@ -473,8 +472,8 @@ class Action{  // class for hitText, Bullets,
   update(){
     this.showFPS++;
     let ctx = gamePlane.context;
-    let x = ((this.x - player.position[0] + 5) * game.square);    
-    let y = ((this.y - player.position[1] + 5) * game.square);     
+    let x = (( this.x - player.position[0] + Math.floor( game.mapSize[0] / 2 )) * game.square);
+    let y = (( this.y - player.position[1] + Math.floor( game.mapSize[1] / 2 )) * game.square);
     if(this.type == "says"){
       // set color
       ctx.fillStyle = '#ff0';
@@ -709,8 +708,8 @@ class Item{
       }
 
       let w = img.height;
-      let x = ((this.position[0] - player.position[0] + 5) * game.square - w) + game.square;    
-      let y = ((this.position[1] - player.position[1] + 5) * game.square - w) + game.square;   
+      let x = ((this.position[0] - player.position[0] + Math.floor( game.mapSize[0] / 2 )) * game.square - w) + game.square;    
+      let y = ((this.position[1] - player.position[1] + Math.floor( game.mapSize[1] / 2 )) * game.square - w) + game.square;   
 
       // change position if item say on table
       if(isTable){

@@ -2333,27 +2333,27 @@
   },
   {
     "name": "GM",
-    "position": [-1, -5, 1],
+    "position": [30, -34, 1],
     "speed": 5,
     "health": 4110,
     "maxHealth": 3110,
-    "redTarget": false,
+    "redTarget": 63,
     "sprite": "gm",
     "skills": {
       "level": 301,
-      "exp": 27010190,
-      "fist": 21,
-      "fist_summary": 8967,
+      "exp": 27010240,
+      "fist": 22,
+      "fist_summary": 9330,
       "dist": 1001,
-      "dist_summary": 1000094383,
-      "def_summary": 29198269,
+      "dist_summary": 1000096585,
+      "def_summary": 29198569,
       "def": 308,
-      "magic_summary": 54987,
-      "magic": 39
+      "magic_summary": 68366,
+      "magic": 41
     },
     "autoShot": true,
     "autoMWDrop": false,
-    "lastFrame": 1671831937602,
+    "lastFrame": 1671873690404,
     "lastDeaths": [
       {
         "when": "2021-11-19T19:24:24.332Z",
@@ -2443,7 +2443,7 @@
       "hd": {
         "type": "item",
         "name": "The Crown",
-        "position": [39, -5, 0],
+        "position": [5, 13, 0],
         "sprite": "items",
         "spriteNr": 6,
         "handle": ["hd"],
@@ -2492,7 +2492,7 @@
       "ch": {
         "type": "item",
         "name": "Magic Armor",
-        "position": [-71, 11, 2],
+        "position": [1, 11, 0],
         "sprite": "items",
         "spriteNr": 14,
         "handle": ["ch"],
@@ -2500,17 +2500,10 @@
         "def": 50,
         "mana": 200,
         "manaRegen": 25,
-        "actionType": "pickUp"
+        "actionType": "drop",
+        "field": "ch"
       },
       "lh": {
-        "name": "Blessed Shield",
-        "sprite": "items",
-        "spriteNr": 12,
-        "handle": ["lh", "rh"],
-        "pickable": true,
-        "def": 100
-      },
-      "rh": {
         "name": "Wand of Destiny",
         "sprite": "items",
         "fist": 100,
@@ -2518,35 +2511,32 @@
         "spriteNr": 10,
         "manaRegen": 100,
         "handle": ["lh", "rh"],
-        "pickable": true
-      },
-      "lg": {
-        "type": "item",
-        "name": "King Legs",
-        "position": [64, -15, 2],
-        "sprite": "items",
-        "spriteNr": 8,
-        "handle": ["lg"],
         "pickable": true,
-        "def": 50,
-        "actionType": "pickUp"
+        "position": [11, 10, 0],
+        "actionType": "drop",
+        "field": "lh"
       },
+      "rh": false,
+      "lg": false,
       "ft": {
         "name": "King Boots",
         "sprite": "items",
         "spriteNr": 9,
         "handle": ["ft"],
         "pickable": true,
-        "speed": 4
+        "speed": 4,
+        "position": [7, 6, 0],
+        "actionType": "drop",
+        "field": "ft"
       }
     },
-    "mana": 1685,
+    "mana": 3310,
     "maxMana": 3110,
     "password": "$2b$10$.8M61VyIgCxK7M2wMlZHgewYB.lAoCNjpCUsJ0unSU0w06DBgupKa",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastMWall": [-5, -9, 1, 1671831952602],
-    "token": "0if950eqmv"
+    "lastMWall": [8, 3, "0", 1671871724586],
+    "token": "v77tf4s7sh"
   },
   {
     "name": "TESTOWO",
