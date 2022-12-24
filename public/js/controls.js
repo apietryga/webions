@@ -137,14 +137,18 @@ const controls = {
     get(e){
       let ox,oy;
       if(isSet(e.offsetX)){
-        const gY = e.target.offsetWidth/11;
-        const gX = e.target.offsetHeight/11;
+        const gX = e.target.offsetWidth / game.mapSize[0];
+        const gY = e.target.offsetHeight / game.mapSize[1];
         ox = Math.floor(e.offsetX/gX);
         oy = Math.floor(e.offsetY/gY);
       }
       // GET X Y pos.
-      const x = ox+player.newPos[0]-5;
-      const y = oy+player.newPos[1]-5;
+      // const x = ox+player.newPos[0]-5;
+      const x = ox + player.newPos[0] - Math.floor( game.mapSize[0] / 2 );
+      // const y = oy+player.newPos[1]-5;
+      const y = oy + player.newPos[1] - Math.floor( game.mapSize[1] / 2 );
+
+      console.log({ x, y })
 
       // MWALL CLICKING
       if(player.mwall){

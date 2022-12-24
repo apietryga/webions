@@ -85,11 +85,12 @@ class GameMap{
     this.grids = [];
     const minY = (how == 'default')?y-6:y-10;
     // const minX = (how == 'default')?x-6:x-10;
-    const minX = (x - (( Math.ceil(game.mapSize[0]/2) - 1 )));
+    // const minX = (x - (( Math.ceil(game.mapSize[0]/2) - 1 )));
+    const minX = (x - (( Math.ceil(game.mapSize[0]/2) )));
     // const maxX = (how == 'default')?14:21;
     // const maxX = (x + (( Math.ceil(game.mapSize[0]) - 1 )));
     const maxX = (x + (( Math.ceil(game.mapSize[0]) + 2 )));
-    console.log({ x, minX, maxX })
+    // console.log({ x, minX, maxX })
     const maxY = (how == 'default')?14:21;
     for(let nZ = this.minFloor; nZ <= z; nZ++){
       for(let nX = 0; nX < maxX; nX++){
