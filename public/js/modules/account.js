@@ -11,7 +11,6 @@ setInterval(()=>{
 },15000)
 
 const acc = {
-  // hideLoader:true,
   urlVals:'login',
   init(){
     this.formPicker();
@@ -19,18 +18,14 @@ const acc = {
     for(const submit of document.querySelectorAll("input[type=submit]")){
       submit.addEventListener("click",this.formValidator);
     }
-    // if(this.hideLoader){
-    //   document.querySelector(".loader").style.display = "none";
-    // }
   },
   formPicker(){
     // FORM PICKER [from URL]
     let isForm = false;
-    // let urlVals;    
     if(action == "game"){
       acc.hideLoader = false;
       document.cookie = "token={{ token | safe }}; SameSite=None; Secure";
-      window.location.replace("game.html");
+      window.location.replace("game");
     }
     if(action == "logout"){
       for(const cookie of document.cookie.split(";")){
@@ -39,11 +34,8 @@ const acc = {
           document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
       }
-      // window.location.replace("/account.html?action=login");
       window.location.replace("/acc/login");
-
     }
-    // {# if(action != "{{act"+"ion}}" && action != ""){ #}
     if( action != ""){
       this.urlVals = action;
     }else{
@@ -52,13 +44,12 @@ const acc = {
     
     for(const f of document.querySelectorAll("form")){
       if(this.urlVals.includes(f.id)){
+        document.querySelector('div.active')?.querySelector('input[type=text]')?.focus()
         f.style.display = "flex";
         isForm = true;
+        break;
       }
     }
-    //if(!isForm){
-    //  document.querySelector("#login").style.display = "flex";
-    //}
 
   },
   messDisplayer(){
@@ -67,11 +58,8 @@ const acc = {
     if(message.innerHTML == "" || this.urlVals == "result" || action == "game" ){
       message.innerHTML = "";
     }
-    // {# if("{{nick}}" != "" && "{{nick}}" != "{{ni"+"ck}}" ){ #}
-    // if("{{nick}}" != "" ){
     if(nick != "" ){
       for(const nickField of document.querySelectorAll(".nick > input")){
-        // nickField.value = "{{nick}}";
         nickField.value = nick;
       }
     }
@@ -159,8 +147,10 @@ const UX = {
       this.hideAllForms()
       try {
         document.querySelector('.window#'+name).classList.add('active')      
-        document.querySelector('.window#'+name+' h2').innerText = name      
+        document.querySelector('.window#'+name+' h2').innerText = name     
+        document.querySelector('div.active')?.querySelector('input[type=text]')?.focus()
       } catch (error) {
+        console.log({ error })
         location.replace('/')
       }
     }

@@ -1,6 +1,6 @@
 # WEBIONS
 
-[CLICK HERE TO PLAY](https://webions.uk/game.html)
+[CLICK HERE TO PLAY](https://webions.uk/game)
 
 Webions is a MMORPG game working on browsers. (Like Tibia in borwser) 
 You can simply download [this repository](https://github.com/apietryga/webions) and make server on your own by open "src/server.js" by nodejs. I will make instructions for this in future versions.

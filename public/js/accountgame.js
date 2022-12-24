@@ -16,7 +16,8 @@ loader.append(h1);
 
 const loadProgress = document.createElement("div");
 loadProgress.className = "loadProgress";
-if(location.pathname != "/game.html"){loadProgress.style.border = 0;}
+// if(location.pathname != "/game.html"){loadProgress.style.border = 0;}
+if(location.pathname != "/game"){loadProgress.style.border = 0;}
   const progressBar = document.createElement("div");
   progressBar.className = "progressBar";
   loadProgress.append(progressBar);

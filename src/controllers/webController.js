@@ -111,6 +111,6 @@ module.exports = new class webController {
     if(auth.isAuth()){
       return res.render("game.njk", this.vals);
     }
-    return res.redirect('/acc');
+    return res.redirect('/acc/login');
   }
 }
