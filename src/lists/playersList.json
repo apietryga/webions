@@ -2333,7 +2333,7 @@
   },
   {
     "name": "GM",
-    "position": [-64, 14, 0],
+    "position": [-1, -5, 1],
     "speed": 5,
     "health": 4110,
     "maxHealth": 3110,
@@ -2341,19 +2341,19 @@
     "sprite": "gm",
     "skills": {
       "level": 301,
-      "exp": 27007090,
-      "fist": 20,
-      "fist_summary": 7160,
+      "exp": 27010190,
+      "fist": 21,
+      "fist_summary": 8967,
       "dist": 1001,
-      "dist_summary": 1000071262,
-      "def_summary": 27115819,
-      "def": 301,
-      "magic_summary": 50987,
-      "magic": 38
+      "dist_summary": 1000094383,
+      "def_summary": 29198269,
+      "def": 308,
+      "magic_summary": 54987,
+      "magic": 39
     },
     "autoShot": true,
     "autoMWDrop": false,
-    "lastFrame": 1671822954411,
+    "lastFrame": 1671831937602,
     "lastDeaths": [
       {
         "when": "2021-11-19T19:24:24.332Z",
@@ -2430,7 +2430,8 @@
       "Backpack",
       "King Legs",
       "Wand of Destiny",
-      "Magic Hat"
+      "Magic Hat",
+      "King Boots"
     ],
     "colors": {
       "head": [240, 169, 98],
@@ -2476,6 +2477,14 @@
             "pickable": true,
             "mana": 400,
             "manaRegen": 50
+          },
+          {
+            "name": "King Boots",
+            "sprite": "items",
+            "spriteNr": 9,
+            "handle": ["ft"],
+            "pickable": true,
+            "speed": 4
           }
         ]
       },
@@ -2531,13 +2540,13 @@
         "speed": 4
       }
     },
-    "mana": 3260,
+    "mana": 1685,
     "maxMana": 3110,
     "password": "$2b$10$.8M61VyIgCxK7M2wMlZHgewYB.lAoCNjpCUsJ0unSU0w06DBgupKa",
     "email": "antek.pietryga@gmail.com",
     "sex": "male",
-    "lastMWall": [36, -5, 0, 1671822263354],
-    "token": "3wgnac9hpt"
+    "lastMWall": [-5, -9, 1, 1671831952602],
+    "token": "0if950eqmv"
   },
   {
     "name": "TESTOWO",
