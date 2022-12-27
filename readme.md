@@ -30,3 +30,8 @@ run:
 ```bash
 (npm run start&)
 ```
+
+
+kill -9 $(lsof -t -i:2095)
+
+(npm run start&)
