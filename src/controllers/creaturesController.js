@@ -51,8 +51,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
      //  update only monsters in area
     this.monstersInArea = [];
     for(const c of this.allMonsters){
-      if(Math.abs( c.position[0] - player.position[0] ) < 7
-      && Math.abs( c.position[1] - player.position[1] ) < 7){
+      if(Math.abs( c.position[0] - player.position[0] ) < Math.ceil( game.mapSize[0] / 2 ) + 1
+      && Math.abs( c.position[1] - player.position[1] ) < Math.ceil( game.mapSize[1] / 2 ) + 1 ){
         this.monstersInArea.push(c);
       }
     }
