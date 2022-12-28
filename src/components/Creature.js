@@ -143,14 +143,14 @@ module.exports = class Creature {
   }
   nearbyItems( allItems ){
     return allItems.filter( it => { 
-      return Math.abs(it.position[0] - this.position[0]) < 7
-        && Math.abs(it.position[1] - this.position[1]) < 7
+      return Math.abs(it.position[0] - this.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
+        && Math.abs(it.position[1] - this.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
     })
   }
   nearbyCreatures( allCreatures ){
     return allCreatures.filter( cr => {
-      return Math.abs(cr.position[0] - this.position[0]) < 7
-        && Math.abs(cr.position[1] - this.position[1]) < 7
+      return Math.abs(cr.position[0] - this.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
+        && Math.abs(cr.position[1] - this.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
         && this.id != cr.id
     })
   }
@@ -171,7 +171,7 @@ module.exports = class Creature {
       const addExhaust = [ game.time.getTime() + ( wallLifeTime * 1000 ) ];
       const dropMWall = ( mwallManaBurn, addExhaust ) => {
         // check if wall is in area
-        if(Math.abs(this.position[0] - this.lastMWall[0]) >= 6 || Math.abs(this.position[1] - this.lastMWall[1]) >= 6 || this.position[2] != this.lastMWall[2]){
+        if(Math.abs(this.position[0] - this.lastMWall[0]) >= 6 || Math.abs(this.position[1] - this.lastMWall[1]) >= game.mapSize[1] / 2 || this.position[2] != this.lastMWall[2]){
           this.text = "You can't drop wall there."
           this.autoMWDrop = false;
           return 0;
@@ -434,8 +434,8 @@ module.exports = class Creature {
       for(const c of creatures){
         if(c.type == "player"){
           // add z position
-          if(Math.abs(this.position[0] - c.position[0]) < 8 
-            && Math.abs(this.position[1] - c.position[1]) < 8
+          if(Math.abs(this.position[0] - c.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 2
+            && Math.abs(this.position[1] - c.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 2
             && this.position[2] == c.position[2]){
               isPlayerNear = true;
               const rating = Math.abs(this.position[0] - c.position[0]) + Math.abs(this.position[1] - c.position[1]);
@@ -741,8 +741,8 @@ module.exports = class Creature {
         if(c.id == this.redTarget){
           if(
             c.position[2] != this.position[2]
-            || Math.abs(c.position[0] - this.position[0]) > 5
-            || Math.abs(c.position[1] - this.position[1]) > 5
+            || Math.abs(c.position[0] - this.position[0]) > Math.floor( game.mapSize[0] / 2 )
+            || Math.abs(c.position[1] - this.position[1]) > Math.floor( game.mapSize[1] / 2 )
           ){
             this.redTarget = false;
             this.text = "Target lost.";
