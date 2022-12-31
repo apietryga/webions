@@ -1,30 +1,22 @@
-// const winston = require('winston');
 const { createLogger, format, transports} = require('winston');
-const { combine, timestamp } = format
+const { combine, timestamp, printf } = format
 
-// const logger = winston.createLogger({
 const logger = createLogger({
-// module.exports = winston.createLogger({
-  // level: 'info',
   format: combine( 
-    // winston.format.json(),
-    format.json(),
-    timestamp()
+    timestamp(),
+    printf(({ level, message, label, timestamp }) => {
+      return `[ ${timestamp.replace(/([T,Z])/g, " ")}]: ${message}`;
+    })
   ),
-  // defaultMeta: { service: 'user-service' },
   transports: [
-    // new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
-    // new winston.transports.File({ filename: 'logs/combined.log' }),
-    new transports.File({ filename: 'logs/combined.log' }),
+    new transports.File({ filename: 'logs/info.log', level: 'info' }),
   ],
 });
 
-// const logger = {
 module.exports = {
   error( message ){
     logger.log({
-      dt: new Date.now(),
       level: 'error',
       message
     })    
@@ -42,7 +34,3 @@ module.exports = {
     })
   },
 }
-
-// module.exports = new winston.transports.Console({
-//   format: winston.format.simple(),
-// })

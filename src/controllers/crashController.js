@@ -4,20 +4,10 @@ const dbc = new dbConnect();
 const cm = require('./creaturesController')
 const logger = require('../config/winston')
 
-// logger.add(new winston.transports.Console({
-//   format: winston.format.simple(),
-// }));
-// logger.log({
-//   level: 'info',
-//   message: 'eloelo'
-// })
-
-logger.log("elo")
-logger.error("elo2")
-
 // SAVE PLAYERS BEFORE SERVER CRASH
 const shutdown = signal => {
   return async err => {
+    logger.error(err)
     console.error({ title: "CRASH CONTROLLER", err })
     if(err.message === 'Socket closed unexpectedly'){
       // redis shut down, so set db again
