@@ -1,5 +1,16 @@
+// ! Cant run global vars from here, so make it again
 const dbConnect = require('../database/dbconnect')
 const dbc = new dbConnect();
+const cm = require('./creaturesController')
+const logger = require('../config/winston')
+
+// logger.add(new winston.transports.Console({
+//   format: winston.format.simple(),
+// }));
+logger.log({
+  level: 'info',
+  message: 'eloelo'
+})
 
 // SAVE PLAYERS BEFORE SERVER CRASH
 const shutdown = signal => {

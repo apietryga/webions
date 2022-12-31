@@ -4,6 +4,7 @@
     "body-parser": "^1.20.0",
     "chokidar": "^3.5.3",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-group-routes": "^1.1.0",
@@ -17,7 +18,8 @@
     "nunjucks-date-filter": "^0.1.1",
     "nunjucks-global-uid": "0.0.1",
     "redis": "^4.5.0",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "winston": "^3.8.2"
   },
   "name": "webions",
   "version": "1.0.0",
