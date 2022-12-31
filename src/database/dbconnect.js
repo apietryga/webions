@@ -102,6 +102,7 @@ class dbConnect{
 
   json = {
     async loadAll(){
+      if(!fs.existsSync(this.src)){fs.writeFileSync(this.src,"[]")}
       const content = fs.readFileSync(this.src,"utf8");
       if(content != null){
         return JSON.parse(content);
