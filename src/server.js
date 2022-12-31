@@ -8,6 +8,7 @@ const router = require("./router")
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
 const express = require('express')
+const cors = require('cors')
 const app = express()
 require('./controllers/crashController') // save players before serv crash
 require('./controllers/njkController').configure(app)
@@ -15,7 +16,7 @@ require('dotenv').config()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 app.use(cookieParser());
-
+app.use(cors())
 ( async () => {
   cm.init();
   global.cm = cm;
