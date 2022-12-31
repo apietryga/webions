@@ -7,10 +7,13 @@ const logger = require('../config/winston')
 // logger.add(new winston.transports.Console({
 //   format: winston.format.simple(),
 // }));
-logger.log({
-  level: 'info',
-  message: 'eloelo'
-})
+// logger.log({
+//   level: 'info',
+//   message: 'eloelo'
+// })
+
+logger.log("elo")
+logger.error("elo2")
 
 // SAVE PLAYERS BEFORE SERVER CRASH
 const shutdown = signal => {
