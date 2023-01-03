@@ -3,8 +3,7 @@ const { combine, timestamp, printf } = format
 
 const loggers = [
   'error',
-  'info', 
-  'debug',
+  'player',
 ]
 
 const logger = level => {
