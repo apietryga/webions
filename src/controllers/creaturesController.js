@@ -178,7 +178,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         }
       }
       // console.log({ param })
-      logger.player(param.player + ' logged in.')
+      logger.player(param.name + ' logged in.')
       // push player to online list
       if(isPlayer == false && !this.inLoading.includes(param.name)){
         this.inLoading.push(param.name);
