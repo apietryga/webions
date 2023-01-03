@@ -7,9 +7,8 @@ const logger = require('../config/winston')
 // SAVE PLAYERS BEFORE SERVER CRASH
 const shutdown = signal => {
   return async err => {
-    logger.error('[' + signal + ' ]' + err)
-    logger.error(err?.message)
-    console.error({ title: "CRASH CONTROLLER", err })
+    logger.error('[' + signal + ']: ' + err?.stack)
+    // console.error({ title: "CRASH CONTROLLER", err })
     if(err.message === 'Socket closed unexpectedly'){
       // redis shut down, so set db again
       global.dbconnected = dbc[await dbc.init()]
