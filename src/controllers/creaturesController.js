@@ -2,6 +2,7 @@ const inGameMonsters = require("../lists/monstersList").data;
 const game = require("../../public/js/gameDetails");
 const Creature = require("../components/Creature");
 const monstersTypes = require("../types/monstersTypes");
+const logger = require('../config/winston')
 const npcs = require("../lists/npcs").npcs;
 const disallowKeys = [
   "startPosition",
@@ -176,7 +177,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
           return isPlayer
         }
       }
-      console.log({ param })
+      // console.log({ param })
+      logger.player(param.player + ' logged in.')
       // push player to online list
       if(isPlayer == false && !this.inLoading.includes(param.name)){
         this.inLoading.push(param.name);
