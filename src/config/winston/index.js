@@ -15,7 +15,7 @@ const logger = level => {
       })
     ),
     transports: [
-      new transports.File({ filename: 'logs/'+ level +'.log', level }),
+      new transports.File({ filename: 'logs/'+ level +'.log', level: 'info' }),
     ],
   })
 }
@@ -23,7 +23,7 @@ const logger = level => {
 const configLoggers = {}
 loggers.forEach( level => {
   configLoggers[level] = message => {
-    logger(level).log({ level, message })
+    logger(level).log({ level: 'info', message })
   }
 })
 
