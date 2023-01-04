@@ -126,7 +126,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
           if(key == 'eq'){
             for(const eqKey of Object.keys(plr[key])){
               if(!Object.keys(player.eq).includes(eqKey)){
-                console.log("DELETING: "+eqKey);
+                // console.log("DELETING: "+eqKey);
                 delete plr.eq[eqKey];
               }
             }
@@ -204,7 +204,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         this.list.push(newPlayer);
         return newPlayer
       }
-      console.log("keep going")
+      // console.log("keep going")
       // kick off offline.
       const kickTime = isPlayer.focus?1000:20000;
       if(typeof isPlayer == "object" && new Date().getTime() - isPlayer.lastFrame > kickTime

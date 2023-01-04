@@ -116,7 +116,7 @@ module.exports = new class authController {
     const newPlayer = new Creature(validNick[1]);
     this.password.cryptPassword(req.body.password, async ( e, password ) => {
       if(e != null){ return console.error(e) }
-      console.log('stąd4')
+      // console.log('stąd4')
       await dbconnected.update({
         ...newPlayer,
         password,

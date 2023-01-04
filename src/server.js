@@ -11,7 +11,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 app.use(cors())
-require('./controllers/crashController') // save players before serv crash
+require('./controllers/crashController')
 require('./controllers/njkController').configure(app)
 require('dotenv').config()
 app.use(bodyParser.urlencoded({ extended: true }));
