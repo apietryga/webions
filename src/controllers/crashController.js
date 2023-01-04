@@ -4,6 +4,26 @@ const dbc = new dbConnect();
 const cm = require('./creaturesController')
 const logger = require('../config/winston')
 
+// CATCH ALL CONSOLE LOGS AND ERRORS
+// const log = console.log;
+// const err = console.error;
+// const extendConsole = val => {
+//   const date = new Date();
+//   const time = date.getHours()+":"+date.getMinutes(); 
+//   args = [time,val];
+//     logger.log(`[${time}]: ${val}`)
+// }
+// console.log = val => {     
+//   extendConsole(val);
+//   log.apply(console, args);
+// }
+// console.error = val => {     
+//   extendConsole(val);
+//   err.apply(console, args);
+// }
+
+
+
 // SAVE PLAYERS BEFORE SERVER CRASH
 const shutdown = signal => {
   return async err => {
@@ -17,7 +37,7 @@ const shutdown = signal => {
       player.console = "Server will restart in few seconds.";
       global.dbconnected.update(player);
     }
-    console.log('PLAYERS SAVED AFTER '+signal);
+    // console.log('PLAYERS SAVED AFTER '+signal);
   };
 }
 

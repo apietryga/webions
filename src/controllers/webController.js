@@ -6,6 +6,8 @@ const creatures = require("../types/monstersTypes");
 const npcs = require("../lists/npcs").npcs;
 const func = require("../../public/js/functions");
 const auth = require("./authController")
+const logger = require('../config/winston')
+
 module.exports = new class webController {
   constructor(){
     this.vals = { 
@@ -28,6 +30,8 @@ module.exports = new class webController {
   }
 
   index = (req, res) => {
+    // console.log("")
+
     this.vals.aside = `
       <a href="/players/online">Online list</a>
       <a href="/players/lastdeaths">Last deaths</a>`;
@@ -75,7 +79,8 @@ module.exports = new class webController {
   player = async ( req, res ) => {
     // console.log(req.params.player)
     this.vals.player = await dbconnected.load({ name:req.params.player })
-    console.log(this.vals.player)
+    // console.log(this.vals.player)
+    logger.player(this.vals.player.name + ' has been seen.')
     delete this.vals.player.token
     delete this.vals.player.password
     this.vals.player.type = 'player'
