@@ -2,6 +2,7 @@ const inGameMonsters = require("../lists/monstersList").data;
 const game = require("../../public/js/gameDetails");
 const Creature = require("../components/Creature");
 const monstersTypes = require("../types/monstersTypes");
+const logger = require('../config/winston')
 const npcs = require("../lists/npcs").npcs;
 const disallowKeys = [
   "startPosition",
@@ -51,8 +52,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
      //  update only monsters in area
     this.monstersInArea = [];
     for(const c of this.allMonsters){
-      if(Math.abs( c.position[0] - player.position[0] ) < 7
-      && Math.abs( c.position[1] - player.position[1] ) < 7){
+      if(Math.abs( c.position[0] - player.position[0] ) < Math.ceil( game.mapSize[0] / 2 ) + 1
+      && Math.abs( c.position[1] - player.position[1] ) < Math.ceil( game.mapSize[1] / 2 ) + 1 ){
         this.monstersInArea.push(c);
       }
     }
@@ -125,13 +126,13 @@ const cm = { // creatures managment [monsters = monsters & npc's]
           if(key == 'eq'){
             for(const eqKey of Object.keys(plr[key])){
               if(!Object.keys(player.eq).includes(eqKey)){
-                console.log("DELETING: "+eqKey);
+                // console.log("DELETING: "+eqKey);
                 delete plr.eq[eqKey];
               }
             }
           }
 
-          if(plr[key].constructor === Object){
+          if(plr[key]?.constructor === Object){
           // if it's object
             player[key] = {};
             for(const keyIn of Object.keys(plr[key])){
@@ -141,7 +142,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
                 player[key][keyIn] = plr[key][keyIn];
               }
             }
-          }else if(plr[key].constructor === Array){
+          }else if(plr[key]?.constructor === Array){
           // if it's array
             player[key] = [];
             for(const keyIn of Object.keys(plr[key])){
@@ -176,6 +177,8 @@ const cm = { // creatures managment [monsters = monsters & npc's]
           return isPlayer
         }
       }
+      // console.log({ param })
+      logger.player(param.name + ' logged in.')
       // push player to online list
       if(isPlayer == false && !this.inLoading.includes(param.name)){
         this.inLoading.push(param.name);
@@ -201,7 +204,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         this.list.push(newPlayer);
         return newPlayer
       }
-      console.log("keep going")
+      // console.log("keep going")
       // kick off offline.
       const kickTime = isPlayer.focus?1000:20000;
       if(typeof isPlayer == "object" && new Date().getTime() - isPlayer.lastFrame > kickTime

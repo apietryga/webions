@@ -10,14 +10,16 @@ const gamePlane = {
   },
   canvas : document.querySelector(".gamePlaneCanvas"),
   init () {
-    this.canvas.width = 440;
-    this.canvas.height = this.canvas.width;
-    this.gridSize = this.canvas.width/11;
+    this.canvas.width = game.square * game.mapSize[0];
+    this.canvas.height = game.square * game.mapSize[1];
+    // this.gridSize = this.canvas.width/11;
+    this.gridSize = this.canvas.width/game.mapSize[0];
     this.context = this.canvas.getContext("2d");
     inGameConsole = new Text();
     this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
-    controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
+    // controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
+    controls.planeClicking.init(this.canvas.width,this.canvas.width, game.square);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
 
     this.socketWorker = new Worker('/js/workers/socketWorker.js');
@@ -128,7 +130,8 @@ const gamePlane = {
     popup.init(title);
     clearInterval(this.interval);
     menus.console.log(
-      "Game Paused. <a href='/game.html'>RELOAD</a> to play.",
+      // "Game Paused. <a href='/game.html'>RELOAD</a> to play.",
+      "Game Paused. <a href='/game'>RELOAD</a> to play.",
       {color:"#fff"}
     )
   }

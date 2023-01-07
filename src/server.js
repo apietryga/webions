@@ -6,32 +6,32 @@ const cm = require('./controllers/creaturesController')
 const im = require('./controllers/itemsController')
 const router = require("./router")
 const bodyParser = require('body-parser');
+const cookieParser = require("cookie-parser");
 const express = require('express')
+const cors = require('cors')
 const app = express()
-require('./controllers/crashController') // save players before serv crash
+app.use(cors())
+require('./controllers/crashController')
 require('./controllers/njkController').configure(app)
 require('dotenv').config()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('./public'));
-
+app.use(cookieParser());
 ( async () => {
   cm.init();
   global.cm = cm;
   im.init();
   global.dbconnected = dbc[ await dbc.init() ]
 
-  // cm.players.init(dbc[game.db])
   cm.players.init(global.dbconnected)
 
   router.set({ app })
-  // router.set({ dbconnect: dbc[game.db] })
   router.set({ dbconnect: global.dbconnected })
   router.set({ players: cm.players })
   app.use(router.call)
 
-  const server = app.listen(process.env.PORT || 5000)
-  // wsController( server , cm, im, dbc[game.db])
+  const server = app.listen(process.env.PORT || 2095)
   wsController( server , cm, im, global.dbconnected)
   game.startServerTime = new Date().getTime();
-  console.log("SERWER IS RUNNING");
+  console.log("SERWER IS RUNNING ON PORT " + 2095);
 })()

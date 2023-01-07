@@ -827,7 +827,7 @@ const menus = {
       this.dom.className = "console";
       this.messages = document.createElement("div");
       this.messages.className = "messages";
-      this.log("Welcome in {{name}} v"+game.version,{color:"#0f0"})
+      this.log("Welcome in " + game.name + " v" + game.version, {color:"#0f0"} )
       this.input = document.createElement("input");
       this.input.className = 'messagesInput';
       this.input.setAttribute('spellcheck', 'false');

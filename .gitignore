@@ -1,7 +1,9 @@
-src/lists/playersList.json
 node_modules/
 dump.rdb
 Redis/
 sprite_pack/
-json/playersList.json
+logs/
 .env
+cloudflared-linux-amd64.deb
+cloudflared-linux-amd64.deb.1
+src/lists/playersList.json

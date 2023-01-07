@@ -83,10 +83,10 @@ class GameMap{
   // update view
   update([x,y,z] = [0,0,0],how = 'default'){ // player x y z - update all grids in player Area.
     this.grids = [];
-    const minY = (how == 'default')?y-6:y-10;
-    const minX = (how == 'default')?x-6:x-10;
-    const maxX = (how == 'default')?14:21;
-    const maxY = (how == 'default')?14:21;
+    const minY = y - Math.ceil( game.mapSize[1] / 2 );
+    const minX = x - Math.ceil( game.mapSize[0] / 2 );
+    const maxX = game.mapSize[0] + 3;
+    const maxY = game.mapSize[1] + 3;
     for(let nZ = this.minFloor; nZ <= z; nZ++){
       for(let nX = 0; nX < maxX; nX++){
         for(let nY = 0; nY < maxY; nY++){
@@ -144,6 +144,7 @@ class GameMap{
     }
     this.ws.send(JSON.stringify(valToSend)); 
     this.ws.onmessage = (mess) => {
+      console.log('mess')
       callback(JSON.parse(mess.data));
     }
   }
