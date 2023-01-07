@@ -132,7 +132,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
             }
           }
 
-          if(plr[key].constructor === Object){
+          if(plr[key]?.constructor === Object){
           // if it's object
             player[key] = {};
             for(const keyIn of Object.keys(plr[key])){
@@ -142,7 +142,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
                 player[key][keyIn] = plr[key][keyIn];
               }
             }
-          }else if(plr[key].constructor === Array){
+          }else if(plr[key]?.constructor === Array){
           // if it's array
             player[key] = [];
             for(const keyIn of Object.keys(plr[key])){
