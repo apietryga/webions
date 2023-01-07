@@ -34,7 +34,7 @@ const shutdown = signal => {
       global.dbconnected = dbc[await dbc.init()]
     }
     for(const player of cm.players.list){
-      player.console = "Server will restart in few seconds.";
+      // player.console = "Server will restart in few seconds.";
       global.dbconnected.update(player);
     }
     // console.log('PLAYERS SAVED AFTER '+signal);
