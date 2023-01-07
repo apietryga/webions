@@ -1,5 +1,6 @@
 // REDIRECTING FROM HTTP TO HTTPS
-if(location.host != "localhost:5000"){
+// if(location.host != "localhost:5000"){
+if(location.host != "localhost:2095"){
   if(location.protocol == "http:"){
     console.log("REDIRECTING TO HTTPS");
     window.location.replace(location.href.replace("http","https"));

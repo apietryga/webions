@@ -9,7 +9,8 @@ const router = {
 }
 router.call.route(['/','/index.html']).get( webController.index );
 router.call.route('/4devs.html').get( webController['4devs'] );
-router.call.route('/game.html').get( webController.game );
+router.call.route('/game').get( webController.game );
+router.call.route('/game').post( authController.login );
 router.call.group('/libary', router => { router.get([
   "/",
   "/about",

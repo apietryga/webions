@@ -35,8 +35,10 @@ const serv = {
     }
     await new Promise( resolve => {
       if(!this.paramsSent){
-        this.ws.send(JSON.stringify(this.paramUpdate()));
-        this.paramsSent = true
+        try {
+          this.ws.send(JSON.stringify(this.paramUpdate()));
+          this.paramsSent = true
+        } catch (ignore) { }
       }
       if(!this.connected){ resolve() }
         controls.falseQueneCall();
