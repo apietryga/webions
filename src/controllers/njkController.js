@@ -78,7 +78,7 @@ module.exports = {
     })
     .addFilter('getStats', ([players, page]) => {
       if(page == 'lastdeaths'){
-        players.forEach( p => {p.lastDeaths.forEach(d => { d.name = p.name } )})
+        players?.forEach( p => { p.lastDeaths?.forEach(d => { d.name = p.name } )})
         return players
         .flatMap(({ lastDeaths }) => lastDeaths)
         .sort((a, b) => {
