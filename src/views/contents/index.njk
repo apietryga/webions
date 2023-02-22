@@ -1,6 +1,21 @@
 <div class="content">
   <h3>v {{ version }}:</h3>
-  <canvas id="mapViewer" style="width:100%"></canvas>
+  <div class="canvasWrapper">
+    <div class="window">
+      <h2>GAME MAP</h2>
+      <div class="window-inside">
+        <canvas id="mapViewer" style="width:100%"></canvas>
+        
+        <div class="buttons">
+          <button>&uArr;</button>
+          <button>&rArr;</button>
+          <button>&dArr;</button>
+          <button>&lArr;</button>
+          <button>O</button>
+        </div>
+      </div>
+    </div>
+  </div>
   {{ message | safe}}
 </div>
 
