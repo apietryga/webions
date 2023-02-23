@@ -416,20 +416,41 @@ body{
     .window-inside{
       position:relative;
       .buttons{
+        bottom:1rem;
         display:grid;
-        width:4rem;
         height: 4rem;
-        grid-template-areas: 
-          ". t ."
-          "l o r"
-          ". d ."
-        ;
-
         position:absolute;
 
-        right:1rem;
-        bottom:1rem;
+        &.arrows{
+          right:1rem;
+          width:4rem;
+          grid-template-areas: 
+            ". t ."
+            "l o r"
+            ". d .";  
+          button{
+            &:nth-child(1){ grid-area: t; }
+            &:nth-child(2){ grid-area: r; }
+            &:nth-child(3){ grid-area: d; }
+            &:nth-child(4){ grid-area: l; }
+            &:nth-child(5){ grid-area: o; }
+          }
+        }
 
+        &.zoom{
+          right:1rem;
+          top:1rem;
+          width:4rem;
+
+          grid-template-areas: 
+          ". . p"
+          ". . ."
+          ". . m";
+          button{
+            &:nth-child(1){ grid-area: p; }
+            &:nth-child(2){ grid-area: m; }
+          }
+        }
 
         button{
           align-items: center;
@@ -439,13 +460,12 @@ body{
           width:100%;
           height:100%;
           position: relative;
-
-          &:nth-child(1){ grid-area: t; }
-          &:nth-child(2){ grid-area: r; }
-          &:nth-child(3){ grid-area: d; }
-          &:nth-child(4){ grid-area: l; }
-          &:nth-child(5){ grid-area: o; }
         }
+      }
+      &.gamemap{
+        background: #195B6E;
+        padding:0;
+        width:100%;
       }
     }
   }
