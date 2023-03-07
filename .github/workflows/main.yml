@@ -17,9 +17,9 @@ jobs:
     steps:
       - name: Configure SSH
         env:
-          SSH_USER: ${{ secrets.USER }}
-          SSH_KEY : ${{ secrets.PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.HOST }}
+          SSH_USER: ${{ secrets.USER }}
+          SSH_KEY: ${{ secrets.PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/staging.key
@@ -32,11 +32,11 @@ jobs:
             StrictHostKeyChecking no
           END
 
-      - name: Check where i am
-        run: ssh staging 'cd ~/webions && ls -la'
+      # - name: Check where i am
+      #   run: ssh staging 'cd ~/webions && ls -la'
 
       - name: Pull changes
-        run: ssh staging 'git pull'
+        run: ssh staging 'cd ~/webions && git pull'
 
       # - name: Check out the source
       #   run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
