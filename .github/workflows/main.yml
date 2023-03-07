@@ -22,7 +22,7 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ubuntu
+          SSH_USER: ${{ secrets.USER }}
           SSH_KEY: ${{ secrets.PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.IP }}
 
