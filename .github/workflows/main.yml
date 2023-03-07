@@ -19,7 +19,7 @@ jobs:
         env:
           SSH_USER: ${{ secrets.USER }}
           SSH_KEY : ${{ secrets.PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.IP }}
+          SSH_HOST: ${{ secrets.HOST }}
         run: |
           mkdir -p ~/.ssh/
           echo "${SSH_KEY}" > ~/.ssh/staging.key
