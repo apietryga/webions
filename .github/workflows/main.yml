@@ -19,7 +19,7 @@ jobs:
             echo "env_var:$FIRST_NAME"
             exit 1
           host: ${{ secrets.IP }}
-          user: root
+          user: ${{ secrets.USER }}
           # key: ${{ secrets.PRIVATE_KEY}}
           pass: ${{ secrets.PRIVATE_KEY }}
           args: "-tt -vvv"
