@@ -27,7 +27,7 @@ jobs:
           SSH_HOST: ${{ secrets.IP }}
 
       - name: Pull changes
-        run: git pull
+        run: ssh staging 'git pull'
 
       # - name: Check out the source
       #   run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
