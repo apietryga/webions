@@ -2,7 +2,7 @@ name: test
 on:
   push:
     branches:
-    - stage
+    - master
 
 env:
   FIRST_NAME: Mona
