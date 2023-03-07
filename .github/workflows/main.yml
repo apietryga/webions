@@ -1,59 +1,79 @@
-name: Deploy
+name: Remote update execution
 on:
-push:
- tags:
-   - 'GA*'
-# ...
-- name: Install SSH Client 🔑
-  uses: webfactory/ssh-agent@v0.4.0
-  with:
-    ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.IP }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        script: |
+          ${{ secrets.SCRIPT }}
 
-- name: Deploy 🚀
-  uses: JamesIves/github-pages-deploy-action@3.5.9
-  with:
-    BASE_BRANCH: master
-    BRANCH: gh-pages
-    CLEAN: true
-    FOLDER: .
-    SSH: true
-# ...
-# name: CI
-# on: [push, pull_request]
+# name: Deploy
+# on:
+# push:
+#  tags:
+#    - 'GA*'
 # jobs:
-#   # test:
-#   #   ...
-#   deploy:
-#     name: "Deploy to staging"
-#     runs-on: ubuntu-latest
-#     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-#     # needs: test
-#     steps:
-#       - name: Configure SSH
-#         run: |
-#           echo "hehe"
-#         # run: |
-#         #   mkdir -p ~/.ssh/
-#         #   echo "$SSH_KEY" > ~/.ssh/staging.key
-#         #   chmod 600 ~/.ssh/staging.key
-#         #   cat >>~/.ssh/config <<END
-#         #   Host staging
-#         #     HostName $SSH_HOST
-#         #     User $SSH_USER
-#         #     IdentityFile ~/.ssh/staging.key
-#         #     StrictHostKeyChecking no
-#         #   END
-#         env:
-#           SSH_USER: ${{ secrets.USER }}
-#           SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
-#           SSH_HOST: ${{ secrets.IP }}
+# # ...
+#   - name: Install SSH Client 🔑
+#     uses: webfactory/ssh-agent@v0.4.0
+#     with:
+#       ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-#       - name: Stop the server
-#         run: ssh staging 'sudo systemctl stop my-application'
+#   - name: Deploy 🚀
+#     uses: JamesIves/github-pages-deploy-action@3.5.9
+#     with:
+#       BASE_BRANCH: master
+#       BRANCH: gh-pages
+#       CLEAN: true
+#       FOLDER: .
+#       SSH: true
+# # ...
+# # name: CI
+# # on: [push, pull_request]
+# # jobs:
+# #   # test:
+# #   #   ...
+# #   deploy:
+# #     name: "Deploy to staging"
+# #     runs-on: ubuntu-latest
+# #     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+# #     # needs: test
+# #     steps:
+# #       - name: Configure SSH
+# #         run: |
+# #           echo "hehe"
+# #         # run: |
+# #         #   mkdir -p ~/.ssh/
+# #         #   echo "$SSH_KEY" > ~/.ssh/staging.key
+# #         #   chmod 600 ~/.ssh/staging.key
+# #         #   cat >>~/.ssh/config <<END
+# #         #   Host staging
+# #         #     HostName $SSH_HOST
+# #         #     User $SSH_USER
+# #         #     IdentityFile ~/.ssh/staging.key
+# #         #     StrictHostKeyChecking no
+# #         #   END
+# #         env:
+# #           SSH_USER: ${{ secrets.USER }}
+# #           SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+# #           SSH_HOST: ${{ secrets.IP }}
 
-#       - name: Check out the source
-#         run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+# #       - name: Stop the server
+# #         run: ssh staging 'sudo systemctl stop my-application'
 
-#       - name: Start the server
-#         if: ${{ always() }}
-#         run: ssh staging 'sudo systemctl start my-application'
+# #       - name: Check out the source
+# #         run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+
+# #       - name: Start the server
+# #         if: ${{ always() }}
+# #         run: ssh staging 'sudo systemctl start my-application'
