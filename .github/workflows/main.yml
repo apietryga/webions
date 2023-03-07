@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: executing remote ssh commands using password
-      uses: apietryga/webions/.github/workflows/main.yml@master
+      uses: appleboy/ssh-action@v0.1.8
       with:
         host: ${{ secrets.IP }}
         username: ${{ secrets.USER }}
