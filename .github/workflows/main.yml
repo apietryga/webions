@@ -26,15 +26,15 @@ jobs:
           SSH_KEY: ${{ secrets.PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.IP }}
 
-      - name: Stop the server
-        run: ssh staging 'sudo systemctl stop my-application'
+      - name: Pull changes
+        run: git pull
 
-      - name: Check out the source
-        run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+      # - name: Check out the source
+      #   run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
 
-      - name: Start the server
-        if: ${{ always() }}
-        run: ssh staging 'sudo systemctl start my-application'
+      # - name: Start the server
+      #   if: ${{ always() }}
+      #   run: ssh staging 'sudo systemctl start my-application'
 # name: CI
 # on:
 #   push:
