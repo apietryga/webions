@@ -13,8 +13,9 @@ jobs:
           cd /tmp
           ls -a
         host: ${{ secrets.HOST }}
-        user: root
-        key: ${{ secrets.PRIVATE_KEY}}
+        user: ${{ secrets.USER }}
+        # key: ${{ secrets.PRIVATE_KEY}}
+        pass: ${{ secrets.PRIVATE_KEY }}
     # - name: executing remote ssh commands using password
     #   uses: appleboy/ssh-action@v0.1.8
     #   with:
