@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
+      uses: apietryga/webions@master
       with:
         host: ${{ secrets.IP }}
         username: ${{ secrets.USER }}
