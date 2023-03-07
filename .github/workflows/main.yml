@@ -22,12 +22,12 @@ jobs:
           SSH_HOST: ${{ secrets.HOST }}
         run: |
           mkdir -p ~/.ssh/
-          echo "${SSH_KEY}" > ~/.ssh/staging.key
+          echo "$SSH_KEY" > ~/.ssh/staging.key
           chmod 600 ~/.ssh/staging.key
           cat >>~/.ssh/config <<END
           Host staging
-            HostName ${SSH_HOST}
-            User ${SSH_USER}
+            HostName $SSH_HOST
+            User $SSH_USER
             IdentityFile ~/.ssh/staging.key
             StrictHostKeyChecking no
           END
