@@ -26,6 +26,9 @@ jobs:
           SSH_KEY: ${{ secrets.PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.IP }}
 
+      - name: Check where i am
+        run: ssh staging 'ls -la'
+
       - name: Pull changes
         run: ssh staging 'git pull'
 
