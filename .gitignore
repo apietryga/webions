@@ -2,7 +2,7 @@ node_modules/
 dump.rdb
 Redis/
 sprite_pack/
-logs/
+logs/**
 .env
 cloudflared-linux-amd64.deb
 cloudflared-linux-amd64.deb.1
