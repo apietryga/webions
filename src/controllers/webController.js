@@ -1,5 +1,6 @@
 const MarkdownIt = require('markdown-it'), md = new MarkdownIt();
 const fs = require('fs');
+const { dirname, join } = require('path');
 const game = require("../../public/js/gameDetails");
 const itemTypes = require("../types/itemsTypes").types;
 const creatures = require("../types/monstersTypes");
@@ -7,6 +8,15 @@ const npcs = require("../lists/npcs").npcs;
 const func = require("../../public/js/functions");
 const auth = require("./authController")
 const logger = require('../config/winston')
+
+
+// const sass = require('sass');
+
+// console.log(__dirname)
+// const scssFilename = join(dirname(require.main.filename),'../public/style/account.scss')
+// console.log({ scssFilename })
+// const result = sass.compile(scssFilename);
+// console.log({ result })
 
 module.exports = new class webController {
   constructor(){
