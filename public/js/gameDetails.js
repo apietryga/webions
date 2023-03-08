@@ -10,4 +10,4 @@ const game = {
   square: 40, // px one square
 
 }
-if(typeof window == "undefined"){module.exports = game;}
+if(typeof window == "undefined"){ module.exports = game; }

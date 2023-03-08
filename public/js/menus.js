@@ -375,6 +375,14 @@ const menus = {
           sq.style.height = Math.floor((row.offsetWidth-12)/4)+"px";
         }
       }
+
+      // gamePlane
+      // const gamePlane = this.parent.querySelectorAll(".gamePlane");
+      // if(gamePlane){
+      //   console.log('RESIZING GP')
+      //   // consol
+      // }
+
     },
     show(DOMClassName){
       document.cookie = "mainMenu=show;";
