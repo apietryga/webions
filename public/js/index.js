@@ -1,7 +1,7 @@
 console.log("LOADING INDEX SCRIPT")
 const set = {
   scale: 1, 
-  width: 500,
+  width: 500, // map
   height: 223,
   // width: 300,
   // height: 150,
@@ -10,10 +10,10 @@ const set = {
   position: { 
     // x: -500,
     // y: -300,
-    // x: 0,
-    // y: 0,
-    x: -500,
-    y: -223,
+    x: 0,
+    y: 0,
+    // x: -500,
+    // y: -223,
     z: 0,
   },
   mouse: {
@@ -44,39 +44,32 @@ const drawMap = () => {
   // console.log({ pos_x: draw[1], w0: draw[3], w1: mV.width, w2: fM.width })
   // console.log({ pos_y: draw[2], h0: draw[4], h1: mV.height, h2: fM.height })
 
+
+  // const fielView = {
+  //   x: 100,
+  //   y: 100,
+  // }
+
   const draw = [
     fullMap,
-    // set.position.x * set.scale,
-    // set.position.x - 250,
-    // set.position.x + (set.width / set.scale) - set.width,
-    // (fullMap.width / set.scale) - fullMap.width ,
-    // 0,
-    // set.scale == 1 ? 0 : 0,
-    // set.position.x - (fullMap.width * set.scale / 2), 
-    // set.position.y - (fullMap.height * set.scale / 2), 
+
+    set.position.x + ((fullMap.width / 2) - (set.width * set.scale / 2)),
+    set.position.y + ((fullMap.height / 2) - (set.height * set.scale / 2)),
+
+    set.width * set.scale,
+    set.height * set.scale,
 
     // set.position.x,
     // set.position.y,
-
-    // fullMap.width / set.scale, 
-    // fullMap.height / set.scale,
+    // 0,
+    0,0,
+    
+    set.width,
+    set.height,
+   // set.position.x + set.width / set.scale,
+    // set.position.y + set.height / set.scale,
     // set.width * set.scale, 
     // set.height * set.scale,
-
-    // set.position.x + (set.width * set.scale / 2), 
-    // set.position.y + (set.height * set.scale / 2), 
-
-    // set.position.y, 
-    set.position.x + set.width / set.scale,
-    set.position.y + set.height / set.scale,
-    set.width * set.scale, 
-    set.height * set.scale,
-    // fullMap.width / set.scale, 
-    // fullMap.height / set.scale,
-
-    // 0,0,
-    // set.width, 
-    // set.height,
   ]
 
   // const fM = { width, height } = fullMap
