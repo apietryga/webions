@@ -424,6 +424,8 @@ body{
         display:grid;
         height: 4rem;
         position:absolute;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
 
         &.arrows{
           right:1rem;
