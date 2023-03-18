@@ -4,7 +4,8 @@
       <h2>GAME MAP</h2>
       <div class="window-inside gamemap">
         <canvas id="mapViewer" style="width:100%"></canvas>
-        
+        <div class="celownik">+</div>
+
         <div class="buttons arrows">
           <button>&uarr;</button>
           <button>&rarr;</button>
@@ -25,3 +26,19 @@
 
 
 <script src="/js/index.js"></script>
+
+<style>
+  .celownik{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    color:red;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    pointer-events: none;
+  }
+
+</style>
