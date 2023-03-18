@@ -10,8 +10,10 @@ const set = {
   position: { 
     // x: -500,
     // y: -300,
-    x: 0,
-    y: 0,
+    // x: 0,
+    // y: 0,
+    x: -500,
+    y: -223,
     z: 0,
   },
   mouse: {
@@ -24,30 +26,70 @@ const drawMap = () => {
   // console.log('drawnig')
   ctx.clearRect(0, 0, mV.width, mV.height);
 
+  // single workin
+  // const draw = [
+  //   fullMap,
+  //   set.position.x,
+  //   set.position.y, 
+  //   set.width * set.scale, 
+  //   set.height * set.scale,
+  // ]
+
+  // const fM = { width, height } = fullMap
+  // const fM = fullMap
+  // const mVs = { width, height } = mV
+  // const mVs = { width, height } = mV
+  // console.log({ ...draw, w: mV.width, w1: fM.width })
+  // console.log({ ...set })
+  // console.log({ pos_x: draw[1], w0: draw[3], w1: mV.width, w2: fM.width })
+  // console.log({ pos_y: draw[2], h0: draw[4], h1: mV.height, h2: fM.height })
+
   const draw = [
     fullMap,
-    set.position.x, 
-    set.position.y, 
-    set.width * set.scale, 
-    set.height * set.scale,
-    // set.position.x + set.width / 2 , 
-    // set.position.x + fullMap.width / 2 , 
-    // fullMap.width,
-    // fullMap.height,
-    // 0,0,
-    // 1000, 1000
+    // set.position.x * set.scale,
+    // set.position.x - 250,
+    // set.position.x + (set.width / set.scale) - set.width,
+    // (fullMap.width / set.scale) - fullMap.width ,
+    // 0,
+    // set.scale == 1 ? 0 : 0,
+    // set.position.x - (fullMap.width * set.scale / 2), 
+    // set.position.y - (fullMap.height * set.scale / 2), 
+
+    // set.position.x,
+    // set.position.y,
+
+    // fullMap.width / set.scale, 
+    // fullMap.height / set.scale,
     // set.width * set.scale, 
     // set.height * set.scale,
 
+    // set.position.x + (set.width * set.scale / 2), 
+    // set.position.y + (set.height * set.scale / 2), 
+
+    // set.position.y, 
+    set.position.x + set.width / set.scale,
+    set.position.y + set.height / set.scale,
+    set.width * set.scale, 
+    set.height * set.scale,
+    // fullMap.width / set.scale, 
+    // fullMap.height / set.scale,
+
+    // 0,0,
+    // set.width, 
+    // set.height,
   ]
 
   // const fM = { width, height } = fullMap
   const fM = fullMap
   // const mVs = { width, height } = mV
-  const mVs = { width, height } = mV
-  // console.log({ ...draw, w: mV.width, w1: fM.width })
+  // const mVs = { width, height } = mV
+  // const mVs = { width, height } = mV
+
+  console.log({ ...set })
   console.log({ pos_x: draw[1], w0: draw[3], w1: mV.width, w2: fM.width })
   console.log({ pos_y: draw[2], h0: draw[4], h1: mV.height, h2: fM.height })
+
+
 
   ctx.drawImage(
     ...draw
