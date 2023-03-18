@@ -209,8 +209,13 @@ body{
     background-color:var(--background-dark);
     border: 2px solid;
     border-color: var(--border-color-inside); 
-    padding:.5rem .5rem 0 .5rem;
     color:var(--font-lightest);
+    cursor:grab;
+    &:active{
+      cursor:grabbing;
+    }
+
+    padding:.5rem .5rem 0 .5rem;
     b{
       font-size:.7rem;
       padding:.5rem 2rem .5rem 0;

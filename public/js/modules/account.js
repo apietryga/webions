@@ -135,6 +135,7 @@ const UX = {
         document.querySelector('.window#'+name).classList.add('active')      
         document.querySelector('.window#'+name+' h2').innerText = name     
         document.querySelector('div.active')?.querySelector('input[type=text]')?.focus()
+        document.querySelector('.window#'+name+' input').focus()
       } catch (error) {
         console.log({ error })
         location.replace('/')
