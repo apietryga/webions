@@ -1,4 +1,3 @@
-console.log("LOADING INDEX SCRIPT")
 const set = {
   scale: 2, 
   width: 500,
@@ -35,6 +34,7 @@ const ctx = mV.getContext('2d')
 const fullMap = new Image();
 fullMap.src = '/img/page/fullmap.webp'
 fullMap.addEventListener("load", e => {
+  document.querySelector(".celownik").innerHTML = "+"
   mV.height = set.height
   mV.width = set.width
   drawMap()
