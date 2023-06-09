@@ -15,6 +15,7 @@ class ServerConnect extends WebSocket {
 		this.paramsSent = false
 		this.connected = false
 		this.lastSentParams = ""
+		this.message = {}
 	}
 
 	onOpen(){
@@ -38,16 +39,13 @@ class ServerConnect extends WebSocket {
 	}
 	
 	async onMessage(msg){
-		console.log({ msg })
-		// this.ws.onmessage = async msg => { 
-			this.paramsSent = false
-			// await res(msg,()=>{ return })
-					// const res = msg => {
-			const data = JSON.parse(msg.data);
-			// update game properties
-			this.datetime = data.game.time;
-			this.time = new Date(this.datetime).getTime();
-			gamePlane.fps = data.game.fps;
+		this.paramsSent = false
+		const data = JSON.parse(msg.data);
+		this.message = data
+		// update game properties
+		this.datetime = data.game.time;
+		this.time = new Date(this.datetime).getTime();
+		gamePlane.fps = data.game.fps;
 
 			// magic walls
 			// gamePlane.mwalls = data.walls;
@@ -207,8 +205,9 @@ class ServerConnect extends WebSocket {
 	}
 
 	async load(){
+		controls.falseQueneCall();
 		const newParams = JSON.stringify(this.paramUpdate())
-		console.log({ newParams })
+		// console.log({ newParams })
 		if(this.lastSentParams === newParams){ return }
 		this.lastSentParams = newParams
 
@@ -224,7 +223,7 @@ class ServerConnect extends WebSocket {
       }
       // if(!this.connected){ resolve() }
       if(!this.connected){ return }
-        controls.falseQueneCall();
+        // controls.falseQueneCall();
         const releaseKeys = [
           'itemAction',
           'says',
@@ -237,7 +236,7 @@ class ServerConnect extends WebSocket {
         for(const key of releaseKeys){
           if(isSet(this.param[key])){delete this.param[key];}
         }
-        
+    // return this.message
     // })
   }
 
