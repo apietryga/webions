@@ -8,6 +8,7 @@ const controls = {
   },
   falseQuene:[],
   falseQueneCall(){
+		console.log(this.vals)
     for(const f of this.falseQuene){
       this.vals.splice(this.vals.indexOf(f),1);
       this.falseQuene.splice(this.falseQuene.indexOf(f),1);

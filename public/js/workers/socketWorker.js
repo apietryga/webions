@@ -7,6 +7,7 @@ onmessage = (e) => {
 
 const socket = {
   init(){
+		console.log('data' )
     this.protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
     this.ws = new WebSocket(this.protocol+"//"+window.location.host+"/fetch/?name="+player.name,'echo-protocol');
     this.ws.onopen = () => {this.connected = true;console.log("WS open.");}
@@ -16,8 +17,8 @@ const socket = {
   },
 }
 
-socket.ws.onmessage = async msg => { 
-  console.log({ msg })
-  postMessage( { msg , wiadomosc: ' wiadomość dla ciebie :D'})
+// socket.ws.onmessage = async msg => { 
+//   console.log({ msg })
+//   postMessage( { msg , wiadomosc: ' wiadomość dla ciebie :D'})
 
-}
+// }

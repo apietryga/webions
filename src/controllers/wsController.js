@@ -12,6 +12,7 @@ const wsController = (server, cm, im, dbconnect) => {
   .on('request', req => {
     const connection = req.accept('echo-protocol', req.origin);
     connection.on('message',async data => {
+			console.log({ data })
       param = JSON.parse(data.utf8Data);
       // In game actions
       if(Object.keys(param).includes("name")){

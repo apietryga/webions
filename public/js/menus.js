@@ -880,6 +880,7 @@ const menus = {
   update(){
     this.mainMenu.update();
 
+		if(!player?.eq){ return }
     // REFRESH AMOUNT OF ITEMS IN EQ
     for(const eqField of Object.keys(player.eq)){
       if(isSet(player.eq[eqField].amount)){
