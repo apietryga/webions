@@ -216,7 +216,6 @@ class ServerConnect extends WebSocket {
 		// console.log({ newParams })
 		if(this.lastSentParams === newParams){ return }
 		this.lastSentParams = newParams
-
 		
 		// console.log(" loading ")
     // await new Promise( resolve => {
@@ -270,4 +269,3 @@ class ServerConnect extends WebSocket {
 
 }
 
-const serv = new ServerConnect()

@@ -27,12 +27,12 @@ const wsController = (server, cm, im, dbconnect) => {
       }
       // Getting data
       if(Object.keys(param).includes("get")){
-        const mapPatch = map.path;
-        if(param.get == "map"){
-          const mapRead = fs.readFileSync(mapPatch,{encoding:'utf8'});
-          const mapArr = JSON.parse(mapRead);
-          connection.sendUTF(stringify(mapArr,null,2));
-        }
+        // const mapPatch = map.path;
+        // if(param.get == "map"){
+        //   const mapRead = fs.readFileSync(mapPatch,{encoding:'utf8'});
+        //   const mapArr = JSON.parse(mapRead);
+        //   connection.sendUTF(stringify(mapArr,null,2));
+        // }
         // Get onlinelist
         if(param.get == "onlineList"){
           const onlineList = [];
@@ -43,7 +43,7 @@ const wsController = (server, cm, im, dbconnect) => {
         }
         // PUSH MAP
         if(param.get == "pushmap"){
-          connection.sendUTF(map.saveToFileMap(mapPatch,param));
+          connection.sendUTF(map.saveToFileMap(map.path,param));
         }
       }       
     })

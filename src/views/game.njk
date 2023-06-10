@@ -144,7 +144,7 @@
 <script>
   // preload ;>
 	const gamePlane = new GamePlane();
-    
+  const serv = new ServerConnect()
   const load = {
     details(text){
       document.querySelector(".loadDetails").innerHTML = text;
@@ -163,7 +163,7 @@
     load.both("Load serwer info",50);
     await serv.load()
     load.both("Loading map",70);
-    await map.generate()
+    await map.load()
     load.both("Loading Game Plane",90);
     gamePlane.init();
     setResolution();

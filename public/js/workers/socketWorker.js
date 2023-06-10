@@ -1,3 +1,4 @@
+/*
 onmessage = (e) => {
   console.log('Message received from main script');
   const workerResult = `Result: ${e.data[0] * e.data[1]}`;
@@ -22,3 +23,4 @@ const socket = {
 //   postMessage( { msg , wiadomosc: ' wiadomość dla ciebie :D'})
 
 // }
+// */

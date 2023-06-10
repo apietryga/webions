@@ -29,10 +29,13 @@ class GamePlane {
     // controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     controls.planeClicking.init(this.canvas.width,this.canvas.width, game.square);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
-
+		/*
     this.socketWorker = new Worker('/js/workers/socketWorker.js');
     this.socketWorker.postMessage('init');
     this.socketWorker.onmessage = data => { this.getServInfo( data ) }
+		// */
+		// this.player = new Creature()
+
   }
   
 	getServInfo( data ){

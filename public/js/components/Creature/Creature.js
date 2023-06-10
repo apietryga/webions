@@ -80,7 +80,6 @@ class Creature {
 		this.processing = {}
   }
   update(){
-
 		// SETTING SERVER INFO
 		if(this.serverUpdating){
 			if(this.serverUpdating.walk){

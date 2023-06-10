@@ -9,6 +9,8 @@ const func = require("../../public/js/functions");
 const auth = require("./authController")
 const logger = require('../config/winston')
 
+const GameMap = require("../../public/js/map");
+const map = new GameMap();
 
 // const sass = require('sass');
 
@@ -129,4 +131,13 @@ module.exports = new class webController {
     }
     return res.redirect('/acc/login');
   }
+
+	gameMap = (req, res) => {
+
+		const mapRead = fs.readFileSync(map.path,{encoding:'utf8'});
+		const mapArr = JSON.parse(mapRead);
+		return res.json(mapArr)
+
+	}
+	
 }

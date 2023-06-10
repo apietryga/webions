@@ -18,10 +18,7 @@ let fs,func,stringify;
 if(typeof window == "undefined"){fs = require("fs");func = require("./functions");stringify = require("json-stringify-pretty-compact");}
 class GameMap{
   constructor(){
-    // this.path = "./json/map.json";
-    // this.path = "./src/map/map.json";
     this.path = "./src/map/map.json";
-    // this.path = "./json/testmap.json";
     this.avalibleGrids = ['floors','halffloors'];
     this.notAvalibleGrids = ['walls','stairs','windows','mwalls'];
     this.template = [];
@@ -30,16 +27,8 @@ class GameMap{
     this.maxFloor = 0;
     this.minFloor = 0;
     this.visibleFloor = 0;
-    if(typeof window != "undefined"){
-    // client side
-      let protocol;(window.location.protocol == "https:")?protocol = "wss:":protocol = "ws:";
-      this.ws = new WebSocket(protocol+"//"+window.location.host+"/get",'echo-protocol');
-      this.ws.onopen = () => {
-        this.load(()=>{})  
-      }  
-    }else{
-    // server side
-      this.loadServ();
+    if(typeof window === "undefined"){
+      this.loadServ() // server side
     }
   }
   setMinMaxFloor(){
@@ -57,32 +46,18 @@ class GameMap{
     this.template = JSON.parse(c);
     this.setMinMaxFloor();
   }
-  load(callback){
-    this.loadSprites(()=>{
-      const dom = document.querySelector(".loadDetails");
-      (dom == null)?'':dom.innerHTML = "Load map...";
-      this.ws.send(JSON.stringify({"get":"map"}))
-      this.ws.onmessage = (mess) => {
-        const dt = JSON.parse(mess.data);
-        this.template = dt;
-        this.setMinMaxFloor();
-        callback(dt);
-      }
-    });
+	async load(){
+		const dom = document.querySelector(".loadDetails");
+		(dom == null)?'':dom.innerHTML = "Load map...";
+		await fetch('/game/get-map')
+		.then(dt => dt.json())
+		.then(dt => {
+			this.template = dt;
+			this.setMinMaxFloor();
+		})
   }
-  // generate(callback){
-  async generate(){
-    this.update();
-    // callback();
-  }
-  draw(){
-    for(const g of this.grids){
-      g.draw();
-    }
-  }
-  // update view
   update([x,y,z] = [0,0,0],how = 'default'){ // player x y z - update all grids in player Area.
-    this.grids = [];
+		this.grids = [];
     const minY = y - Math.ceil( game.mapSize[1] / 2 );
     const minX = x - Math.ceil( game.mapSize[0] / 2 );
     const maxX = game.mapSize[0] + 3;
