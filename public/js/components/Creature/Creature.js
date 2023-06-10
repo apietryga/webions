@@ -80,13 +80,15 @@ class Creature {
 		this.processing = {}
   }
   update(){
-		// console.log("UPDATE", this.serverUpdating)
+
+		// SETTING SERVER INFO
 		if(this.serverUpdating){
 			if(this.serverUpdating.walk){
 				this.processing.walk = this.serverUpdating.walk
 			}
 		}
 
+		// EXECUTING SERVER INFO
 		if(this.processing.walk){
 			this.walking()
 		}
@@ -124,38 +126,38 @@ class Creature {
       }
     }
     // WALKING
-    if(this.walk >= serv.time){
-      const walkTime = this.walk - this.walkingStart;
-      const timeLeft = walkTime - (serv.time - this.walkingStart);
-      // walking cyle (animation)
-      timeLeft > walkTime/2?this.cyle = 2:this.cyle = 1;
-      // monsers and npc's has 0 speed when stay.
-      if(this.speed > 0){
-        // CHANGE POSITION OF CREATURE
-        const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
-        this.position = equalArr(this.oldPos);
-        for(let l of [[0,1],[1,0]]){
-          if(this.newPos[2] != this.oldPos[2]){
-            this.position = this.newPos;
-          }
-          if(this.newPos[l[0]] == this.oldPos[l[0]] ){
-            if(this.newPos[l[1]] > this.oldPos[l[1]]){
-              this.position[l[1]] = this.oldPos[l[1]] + piece;
-            }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
-              this.position[l[1]] = this.oldPos[l[1]] - piece;
-            }
-          }
-        }
-      }else{
-        // this.direction = 1;
-        this.cyle = 0;
-      }
-    }else{
-      if(this.sprite != "tourets" && this.health > 0){
-        this.cyle = 0;
-      }
-      this.position = this.newPos;
-    }
+    // if(this.walk >= serv.time){
+    //   const walkTime = this.walk - this.walkingStart;
+    //   const timeLeft = walkTime - (serv.time - this.walkingStart);
+    //   // walking cyle (animation)
+    //   timeLeft > walkTime/2?this.cyle = 2:this.cyle = 1;
+    //   // monsers and npc's has 0 speed when stay.
+    //   if(this.speed > 0){
+    //     // CHANGE POSITION OF CREATURE
+    //     const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
+    //     this.position = equalArr(this.oldPos);
+    //     for(let l of [[0,1],[1,0]]){
+    //       if(this.newPos[2] != this.oldPos[2]){
+    //         this.position = this.newPos;
+    //       }
+    //       if(this.newPos[l[0]] == this.oldPos[l[0]] ){
+    //         if(this.newPos[l[1]] > this.oldPos[l[1]]){
+    //           this.position[l[1]] = this.oldPos[l[1]] + piece;
+    //         }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
+    //           this.position[l[1]] = this.oldPos[l[1]] - piece;
+    //         }
+    //       }
+    //     }
+    //   }else{
+    //     // this.direction = 1;
+    //     this.cyle = 0;
+    //   }
+    // }else{
+    //   if(this.sprite != "tourets" && this.health > 0){
+    //     this.cyle = 0;
+    //   }
+    //   this.position = this.newPos;
+    // }
     // CLEAR TARGETS
     if(this.whiteTarget){
       let opp = false;
@@ -377,54 +379,34 @@ class Creature {
   }
 
 	walking(){
-		// const data = this.serverUpdating.walk
+
 		const data = this.processing.walk
 		const time = new Date().getTime();
-
-		// tp - 100% 
-		// tc - x
-
-		// tp * x = 100tc
-		// x = 100tc / tp
-
-
 		const time_processing = data.time_end - data.time_start
 		const time_current = time - data.time_start
 		const percentage =  ((100 * time_current) / time_processing) / 100
 
-		let difference;
-		let valueToMove;
-		if(data.position_start[0] != data.position_end[0]){
-			difference = data.position_start[0] - data.position_end[0]
-			valueToMove = data.position_start[0] + (difference * percentage)
-			valueToMove = valueToMove.toFixed()
-			this.position[0] = valueToMove * 1
-		}
-
-		console.log({
-			data,
-			// from_start: time - data.time_start,
-			// to_end: time - data.time_end,
-			// full_time: data.time_end - data.time_start,
-			// time_processing,
-			// // percentage: 
-			// time_current,
-			// percentage,
-			valueToMove,
-			dfperc: (difference * percentage),
-			pos: this.position[0]
-
-		})
-		// console.log(
-
-			
-		// 	'fromStart', time - data.time_start, 
-		// 	'toend', time - data.time_end)
-		// console.log('fromStart', time - data.time_start)/
+		// end process on time end
 		if(time - data.time_end > 0){
-			delete this.processing.walk
+			this.cyle = 0;
+			this.position = this.processing.walk.position_end
+			return delete this.processing.walk
 		}
 
+		// change position on x and y axis
+		for(const axis of [0, 1]){
+			if(data.position_start[axis] != data.position_end[axis]){
+				const difference = data.position_start[axis] - data.position_end[axis]
+				const valueToMove = (data.position_start[axis] - (difference * percentage)).toFixed(2) * 1
+				this.position[axis] = valueToMove
+			}
+		}
 
+		// animate steps
+		this.cyle = 2;
+		if(( 0.25 < percentage && percentage < 0.50 ) || 0.75 < percentage ){
+			this.cyle = 1;
+		}
+		
 	}
 }
