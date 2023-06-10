@@ -145,26 +145,18 @@
   // preload ;>
 	const gamePlane = new GamePlane();
   const serv = new ServerConnect()
-  const load = {
-    details(text){
-      document.querySelector(".loadDetails").innerHTML = text;
-    },
-    progress(percent){
-      document.querySelector(".progressBar").style.width = percent+"%";
-    },
-    both(text,percent){
-      this.details(text);
-      this.progress(percent);
-    }
+	const DOMLoader = (text, percent) => {
+		document.querySelector(".loadDetails").innerHTML = text;
+		document.querySelector(".progressBar").style.width = percent + "%";
   }
-  load.both("Load sprites",10);
+  DOMLoader("Load sprites", 10);
   map.loadSprites( async ()=>{
     menus.init();
-    load.both("Load serwer info",50);
+    DOMLoader("Load serwer info", 50);
     await serv.load()
-    load.both("Loading map",70);
+    DOMLoader("Loading map", 70);
     await map.load()
-    load.both("Loading Game Plane",90);
+    DOMLoader("Loading Game Plane", 90);
     gamePlane.init();
     setResolution();
   })

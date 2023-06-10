@@ -1,4 +1,3 @@
-
 class ServerConnect extends WebSocket {
 
 	constructor() {
@@ -213,12 +212,9 @@ class ServerConnect extends WebSocket {
 	async load(){
 		controls.falseQueneCall();
 		const newParams = JSON.stringify(this.paramUpdate())
-		// console.log({ newParams })
 		if(this.lastSentParams === newParams){ return }
 		this.lastSentParams = newParams
 		
-		// console.log(" loading ")
-    // await new Promise( resolve => {
       if(!this.paramsSent){
         try {
           // this.ws.send(JSON.stringify(this.paramUpdate()));
@@ -226,9 +222,7 @@ class ServerConnect extends WebSocket {
           this.paramsSent = true
         } catch (err) { console.log({ err }) }
       }
-      // if(!this.connected){ resolve() }
       if(!this.connected){ return }
-        // controls.falseQueneCall();
         const releaseKeys = [
           'itemAction',
           'says',
@@ -241,8 +235,6 @@ class ServerConnect extends WebSocket {
         for(const key of releaseKeys){
           if(isSet(this.param[key])){delete this.param[key];}
         }
-    // return this.message
-    // })
   }
 
 	paramUpdate(){

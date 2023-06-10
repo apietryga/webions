@@ -380,7 +380,7 @@ class Creature {
   }
 
 	walking(){
-
+		
 		const data = this.processing.walk
 		const time = new Date().getTime();
 		const time_processing = data.time_end - data.time_start
