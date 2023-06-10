@@ -394,6 +394,7 @@ module.exports = class Creature {
     }
   }
   update(param,db,allCreatures,allItems, walls = []){
+		this.serverUpdating = {}
     const creatures = this.nearbyCreatures( allCreatures )
     const items = this.nearbyItems( allItems )
     // set focus
@@ -711,17 +712,30 @@ module.exports = class Creature {
         }
       }
 
+			
       // set new position or display error
       if(isFloor && ((this.type == "player" && typeof key != "undefined") 
         || (["monster","npc"].includes(this.type) && !func.compareTables(this.position,phantomPos)) )){
-          // for monsters
+
+				this.serverUpdating = {
+					walk: {
+						time_start: game.time.getTime(),
+						time_end: game.time.getTime() + Math.round(1000/this.totalSpeed),
+						position_start: this.position,
+						position_end: phantomPos,
+					},
+				}
+		
+		
+
+					// for monsters
           delete this.escapeStuck;
           // set exhaust
           this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
           this.position = phantomPos;
       }else if(this.type == "player" && typeof key != "undefined" && doorAvalible && !itemText){
         this.text = "There's no way.";
-      }  
+      }
     }
     // RED TARGETING [monsters] 
     if(this.type == "monster" && typeof playerInArea != "undefined"){

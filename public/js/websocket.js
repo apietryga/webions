@@ -39,6 +39,9 @@ class ServerConnect extends WebSocket {
 	}
 	
 	async onMessage(msg){
+
+		// gamePlane.divideUpdatesFromServer(msg)
+
 		this.paramsSent = false
 		const data = JSON.parse(msg.data);
 		this.message = data

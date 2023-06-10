@@ -1,20 +1,28 @@
 let fistIteration = true;
 let inGameConsole;
-const gamePlane = {
-  fps : game.fps,
-  actions: [],
-  items:[],
-  creatures : {
-    list: [],
-    ids: []
-  },
-  canvas : document.querySelector(".gamePlaneCanvas"),
+
+// const gamePlane = {
+class GamePlane {
+
+	constructor(){
+		this.fps = game.fps
+		this.actions = []
+		this.items = []
+		this.creatures = {
+			list: [],
+			ids: []
+		}
+		this.canvas = document.querySelector(".gamePlaneCanvas")
+    this.context = this.canvas.getContext("2d");
+	}
+
   init () {
+  // start () {
     this.canvas.width = game.square * game.mapSize[0];
     this.canvas.height = game.square * game.mapSize[1];
     // this.gridSize = this.canvas.width/11;
     this.gridSize = this.canvas.width/game.mapSize[0];
-    this.context = this.canvas.getContext("2d");
+    // this.context = this.canvas.getContext("2d");
     inGameConsole = new Text();
     this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
@@ -25,16 +33,40 @@ const gamePlane = {
     this.socketWorker = new Worker('/js/workers/socketWorker.js');
     this.socketWorker.postMessage('init');
     this.socketWorker.onmessage = data => { this.getServInfo( data ) }
-  },
-  getServInfo( data ){
+  }
+  
+	getServInfo( data ){
     console.log("GETTED SERV INFO", { data })
 
 
-  },
-  async updategamePlane() {
+  }
+
+	clearPlane(){
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+	}
+
+	// divideUpdatesFromServer = async message => {
+	// 	const data = JSON.parse(message.data)
+
+	// 	for(const creature of data.creatures){
+	// 		if(!creature.serverUpdating){ continue }
+
+	// 		console.log(creature.name +" has updates", creature.serverUpdating)
+	// 		// creature
+
+	// 	}
+
+	// 	console.log({ data })
+
+
+	// }
+
+  updategamePlane = async () => {
+		// console.log('this',  this )
     await serv.load()
       // console.log('serv loaded')
-      gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
+		this.clearPlane()
+      // gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
       if(isSet(player.update) && player.update.constructor === Function){
         player.update();
       }
@@ -124,7 +156,8 @@ const gamePlane = {
       menus.mainMenu.automation(document.querySelector('.wallerDOM'),player.autoMWDrop);
 
       fistIteration = false;
-  },
+  }
+
   stop(title = "GAME PAUSED."){
     // show popup
     popup.init(title);
@@ -135,4 +168,5 @@ const gamePlane = {
       {color:"#fff"}
     )
   }
+
 }

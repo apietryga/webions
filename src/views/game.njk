@@ -132,15 +132,19 @@
     position :[0,0,0]
   };
 </script>
+<!--| COMPONENTS |-->
+<script src="/js/components/Creature/Creature.js?v={{version}}"></script>
 <!--| GAMEPLANE PROPERTIES |-->
 <script src="/js/gameplane.js?v={{version}}"></script>
-<script src="/js/components.js?v={{version}}"></script>
+{# <script src="/js/components.js?v={{version}}"></script> #}
 <!--| WEBSOCKET SERVER CONNECTION |-->
 <script src="/js/websocket.js?v={{version}}"></script>
 <script src="/js/menus.js?v={{version}}"></script>
 <!--| PRELOAD |-->
 <script>
   // preload ;>
+	const gamePlane = new GamePlane();
+    
   const load = {
     details(text){
       document.querySelector(".loadDetails").innerHTML = text;
@@ -170,6 +174,8 @@
   }
 </script>
 <!--| DEVELOPER BUTTONS & STATS |-->
+<script src="/js/components.js?v={{version}}"></script>
+
 <script>
   const dev = {
     buttonIndex : 0,
