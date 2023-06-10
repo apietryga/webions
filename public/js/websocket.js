@@ -147,6 +147,9 @@ class ServerConnect extends WebSocket {
 				// updating values
 				for(const key of Object.keys(creature)){
 					// console.log(creature)
+					// if(key == "serverUpdating"){
+					// 	gamePlane.creatures.list[charId]["serverUpdating"] = creature[key];
+					// }
 					if(key == "position"){
 						// gamePlane.creatures.list[charId]["servPos"] = creature[key];
 						if(!compareTables(gamePlane.creatures.list[charId]["newPos"],creature[key])){
@@ -244,7 +247,10 @@ class ServerConnect extends WebSocket {
   }
 
 	paramUpdate(){
-    this.param.name = player.name;
+		// this.param.processingRightNow = player.processing ? JSON.stringify(Object.keys(player.processing)) : ""; 
+		// this.param.walkProcessing = player.processing?.walk ? true : false;
+		this.param.int = this.param?.int ? this.param.int + 1 : 1;
+		this.param.name = player.name;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
@@ -252,6 +258,7 @@ class ServerConnect extends WebSocket {
     if(isSet(player.sayToServ) && player.sayToServ){this.param.says = player.sayToServ;delete player.sayToServ;}
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     if(isSet(player.mwallDrop) && player.mwallDrop){this.param.mwallDrop = player.mwallDrop;delete player.mwallDrop;}
+		// console.log(this.param)
     return this.param;
   }
 

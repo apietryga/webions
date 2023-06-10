@@ -90,6 +90,7 @@ class Creature {
 
 		// EXECUTING SERVER INFO
 		if(this.processing.walk){
+			// console.log(this.processing.walk)
 			this.walking()
 		}
 
@@ -385,12 +386,14 @@ class Creature {
 		const time_processing = data.time_end - data.time_start
 		const time_current = time - data.time_start
 		const percentage =  ((100 * time_current) / time_processing) / 100
-
 		// end process on time end
 		if(time - data.time_end > 0){
+			console.log({ time_processing , time: time - data.time_end, p: this.processing.walk , s : this.serverUpdating})
 			this.cyle = 0;
 			this.position = this.processing.walk.position_end
-			return delete this.processing.walk
+			delete this.processing.walk
+			// this.processing.walk = null
+			return 
 		}
 
 		// change position on x and y axis

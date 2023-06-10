@@ -394,6 +394,7 @@ module.exports = class Creature {
     }
   }
   update(param,db,allCreatures,allItems, walls = []){
+		// console.log({ param })
 		this.serverUpdating = {}
     const creatures = this.nearbyCreatures( allCreatures )
     const items = this.nearbyItems( allItems )
@@ -717,13 +718,11 @@ module.exports = class Creature {
       if(isFloor && ((this.type == "player" && typeof key != "undefined") 
         || (["monster","npc"].includes(this.type) && !func.compareTables(this.position,phantomPos)) )){
 
-				this.serverUpdating = {
-					walk: {
-						time_start: game.time.getTime(),
-						time_end: game.time.getTime() + Math.round(1000/this.totalSpeed),
-						position_start: this.position,
-						position_end: phantomPos,
-					},
+				this.serverUpdating.walk = {
+					time_start: game.time.getTime(),
+					time_end: game.time.getTime() + Math.round(1000/this.totalSpeed),
+					position_start: this.position,
+					position_end: phantomPos,
 				}
 		
 		
