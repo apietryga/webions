@@ -45,22 +45,6 @@ class GamePlane {
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
 	}
 
-	// divideUpdatesFromServer = async message => {
-	// 	const data = JSON.parse(message.data)
-
-	// 	for(const creature of data.creatures){
-	// 		if(!creature.serverUpdating){ continue }
-
-	// 		console.log(creature.name +" has updates", creature.serverUpdating)
-	// 		// creature
-
-	// 	}
-
-	// 	console.log({ data })
-
-
-	// }
-
   updategamePlane = async () => {
 		// console.log('this',  this )
     await serv.load()

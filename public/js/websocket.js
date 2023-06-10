@@ -247,9 +247,15 @@ class ServerConnect extends WebSocket {
   }
 
 	paramUpdate(){
+		if(typeof player.processing === 'object'){
+			this.param.processing = Object.keys(player.processing).join("_")
+		}
+
+		// Clear server values
+		player.serverUpdate = {}
 		// this.param.processingRightNow = player.processing ? JSON.stringify(Object.keys(player.processing)) : ""; 
 		// this.param.walkProcessing = player.processing?.walk ? true : false;
-		this.param.int = this.param?.int ? this.param.int + 1 : 1;
+		// this.param.int = this.param?.int ? this.param.int + 1 : 1;
 		this.param.name = player.name;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
