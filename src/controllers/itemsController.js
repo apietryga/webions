@@ -21,7 +21,8 @@ const im = { // items management
       }
     }
     output.items = this.itemsInArea.reverse();
-    callback(output);
+    // callback(output);
+		return output
   }
 }
 module.exports = im

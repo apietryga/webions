@@ -91,13 +91,13 @@ const menus = {
               }
             }
           }else{
-            if(!dom.classList.contains("active")){
-              serv.param.autoMWDrop = true;
-              dom.classList.add("active");
-            }else{
-              serv.param.autoMWDrop = false;
-              dom.classList.remove("active");
-            }  
+            // if(!dom.classList.contains("active")){
+            //   serv.param.autoMWDrop = true;
+            //   dom.classList.add("active");
+            // }else{
+            //   serv.param.autoMWDrop = false;
+            //   dom.classList.remove("active");
+            // }  
           }
         }
       }

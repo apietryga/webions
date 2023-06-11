@@ -148,6 +148,8 @@ module.exports = class Creature {
     })
   }
   nearbyCreatures( allCreatures ){
+		// ! DONE IN gameController.js !
+		console.log("GET RID OF THIS !!!! |nearbyCreatures|")
     return allCreatures.filter( cr => {
       return Math.abs(cr.position[0] - this.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
         && Math.abs(cr.position[1] - this.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1

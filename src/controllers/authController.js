@@ -86,7 +86,7 @@ module.exports = new class authController {
     res.render('game.njk', {
       action : 'game',
       token,
-      nick: data.nick
+      nick: data.nick,
     })
   }
 

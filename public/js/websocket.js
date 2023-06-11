@@ -6,7 +6,7 @@ class ServerConnect extends WebSocket {
 		super(uri, 'echo-protocol')
 
 		this.onopen = this.onOpen
-		this.onmessage = this.onMessage
+		this.onmessage = this.getDataFromServer
 
 		this.param = { focus: true }
     window.onfocus = () => {this.param.focus = true;};
@@ -37,12 +37,13 @@ class ServerConnect extends WebSocket {
 		return gamePlane.stop()
 	}
 	
-	async onMessage(msg){
+	async getDataFromServer(msg){
 
 		// gamePlane.divideUpdatesFromServer(msg)
 
 		this.paramsSent = false
 		const data = JSON.parse(msg.data);
+		console.log({data})
 		this.message = data
 		// update game properties
 		this.datetime = data.game.time;
@@ -210,6 +211,8 @@ class ServerConnect extends WebSocket {
 	}
 
 	async sendDataToServer(){
+		// console.log("SENDING PARAMS")
+		// return 
 		const newParams = this.paramUpdate()
 		
 		if(!newParams){ return }
@@ -235,6 +238,7 @@ class ServerConnect extends WebSocket {
 		// this.param.walkProcessing = player.processing?.walk ? true : false;
 		// this.param.int = this.param?.int ? this.param.int + 1 : 1;
 		this.param.name = player.name;
+		this.param.id = player.id;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}

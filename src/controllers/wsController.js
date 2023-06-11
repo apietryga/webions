@@ -11,30 +11,57 @@ class WsController {
 		this.im = im
 		this.connection = null
 		this.dbconnect = dbconnect
+		this.requestsQueue = []
 	}
 
 	async getDataFromClient(data){
-		const param = JSON.parse(data.utf8Data);
-		console.log({ param })
+		console.log(data)
+		// const param = JSON.parse(data.utf8Data);
+		this.requestsQueue.push(data)
+
+		// console.log({ data })
 		// In game actions
-		if(Object.keys(param).includes("name")){
-			game.time = new Date();
-			game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%";
-			let [ output, player ] = await cm.update(param, this.dbconnect)
-			this.im.update(output,player,(output)=>{
-				wm.update(output, (output)=>{
-					this.connection.sendUTF(stringify(output,null,2));
-				})
-			})
-		}
+		// if(Object.keys(data).includes("name")){
+		// 	game.time = new Date();
+		// 	game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%";
+		// 	let [ output, player ] = await cm.update(data, this.dbconnect)
+		// 	console.log({ player })
+		// 	output = this.im.update(output, player)
+		// 	// this.im.update(output,player,(output)=>{
+		// 		// wm.update(output, (output)=>{
+		// 	output = wm.update(output)
+		// 			// this.connection.sendUTF(stringify(output,null,2));
+		// 	// this.sendDataToClient(output)
+		// 		// })
+		// 	// })
+		// }
+	}
+
+	sendDataToClient(data){
+		data = stringify({
+			...data,
+			game: {
+				time: new Date().getTime(),
+				cpu: Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%",
+			},
+		}, null, 2)
+		this.connection.sendUTF(data)
 	}
 
 }
 
-module.exports = (server, cm, im, dbconnect) => {
+module.exports = async (server, cm, im, dbconnect) => {
   const controller = new WsController( cm, im, dbconnect )
-	new WebSocketServer({httpServer : server}).on('request', req => {
-		controller.connection = req.accept('echo-protocol', req.origin)
-    controller.connection.on('message', async data => { controller.getDataFromClient(data) })
-  })
+	return await new Promise((res, rej) => {
+		new WebSocketServer({httpServer : server})
+		.on('request', req => {
+			controller.connection = req.accept('echo-protocol', req.origin)
+			controller.connection.on('message', async data => { 
+				data = JSON.parse(data.utf8Data)
+				controller.getDataFromClient(data) 
+			})
+			res(controller)
+		})
+		// setTimeout(() => { res('Server not responing') }, 5000);
+	})
 }

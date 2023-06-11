@@ -112,6 +112,7 @@ class GameMap{
     // return grid;
     return resultArr;
   }
+	/*
   push(callback){
     const valToSend = {
       "get":"pushmap",
@@ -123,6 +124,7 @@ class GameMap{
       callback(JSON.parse(mess.data));
     }
   }
+	// */
   loadSprites(callback) {
     let loadQuene = [];
     for(const s of sprites){

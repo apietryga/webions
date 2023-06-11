@@ -4,6 +4,8 @@ const dbConnect = require("./database/dbconnect");
 const dbc = new dbConnect();
 const cm = require('./controllers/creaturesController')
 const im = require('./controllers/itemsController')
+const Game = require('./controllers/gameController')
+
 const router = require("./router")
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
@@ -31,7 +33,10 @@ app.use(cookieParser());
   app.use(router.call)
 
   const server = app.listen(process.env.PORT || 2095)
-  wsController( server, cm, im, global.dbconnected)
-  game.startServerTime = new Date().getTime();
+  const wsServer = await wsController( server , cm, im, global.dbconnected)
+
+	new Game(wsServer)
+
+	game.startServerTime = new Date().getTime();
   console.log("Development server \nhttp://localhost:" + 2095);
 })()
