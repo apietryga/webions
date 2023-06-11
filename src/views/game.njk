@@ -152,9 +152,9 @@
   DOMLoader("Load sprites", 10);
   map.loadSprites( async ()=>{
     menus.init();
-    DOMLoader("Load serwer info", 50);
-    await serv.load()
-    DOMLoader("Loading map", 70);
+    //DOMLoader("Load serwer info", 50);
+    //await serv.sendDataToServer()
+    DOMLoader("Loading map", 50);
     await map.load()
     DOMLoader("Loading Game Plane", 90);
     gamePlane.init();

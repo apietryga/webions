@@ -38,11 +38,9 @@ class GamePlane {
 
   }
   
-	getServInfo( data ){
-    console.log("GETTED SERV INFO", { data })
-
-
-  }
+	// getServInfo( data ){
+  //   console.log("GETTED SERV INFO", { data })
+  // }
 
 	clearPlane(){
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -50,7 +48,7 @@ class GamePlane {
 
   updategamePlane = async () => {
 		// console.log('this',  this )
-    await serv.load()
+    await serv.sendDataToServer()
       // console.log('serv loaded')
 		this.clearPlane()
       // gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);

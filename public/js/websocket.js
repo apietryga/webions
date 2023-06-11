@@ -209,35 +209,22 @@ class ServerConnect extends WebSocket {
 		
 	}
 
-	async load(){
-		controls.falseQueneCall();
-		const newParams = JSON.stringify(this.paramUpdate())
-		if(this.lastSentParams === newParams){ return }
-		this.lastSentParams = newParams
+	async sendDataToServer(){
+		const newParams = this.paramUpdate()
 		
-      if(!this.paramsSent){
-        try {
-          // this.ws.send(JSON.stringify(this.paramUpdate()));
-          this.send(newParams);
-          this.paramsSent = true
-        } catch (err) { console.log({ err }) }
-      }
-      if(!this.connected){ return }
-        const releaseKeys = [
-          'itemAction',
-          'says',
-          'outfit',
-          'target',
-          'autoShot',
-          'mwallDrop',
-          'autoMWDrop'
-        ]
-        for(const key of releaseKeys){
-          if(isSet(this.param[key])){delete this.param[key];}
-        }
-  }
+		if(!newParams){ return }
+		
+		if(!this.paramsSent){
+			this.send(newParams);
+			this.paramsSent = true
+		}
+
+		this.clearParams()
+
+	}
 
 	paramUpdate(){
+		controls.falseQueneCall();
 		if(typeof player.processing === 'object'){
 			this.param.processing = Object.keys(player.processing).join("_")
 		}
@@ -256,8 +243,30 @@ class ServerConnect extends WebSocket {
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     if(isSet(player.mwallDrop) && player.mwallDrop){this.param.mwallDrop = player.mwallDrop;delete player.mwallDrop;}
 		// console.log(this.param)
-    return this.param;
+
+		const newParams = JSON.stringify(this.param)
+		if(this.lastSentParams === newParams){ 
+			return false
+		}
+		this.lastSentParams = newParams
+    return newParams
   }
+
+	clearParams(){
+		if(!this.connected){ return }
+		const releaseKeys = [
+			'itemAction',
+			'says',
+			'outfit',
+			'target',
+			'autoShot',
+			'mwallDrop',
+			'autoMWDrop'
+		]
+		for(const key of releaseKeys){
+			if(isSet(this.param[key])){delete this.param[key];}
+		}
+	}
 
 }
 

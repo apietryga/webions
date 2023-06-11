@@ -31,7 +31,7 @@ app.use(cookieParser());
   app.use(router.call)
 
   const server = app.listen(process.env.PORT || 2095)
-  wsController( server , cm, im, global.dbconnected)
+  wsController( server, cm, im, global.dbconnected)
   game.startServerTime = new Date().getTime();
   console.log("Development server \nhttp://localhost:" + 2095);
 })()
