@@ -41,6 +41,7 @@ class WsController {
 		data = stringify({
 			...data,
 			game: {
+				...game,
 				time: new Date().getTime(),
 				cpu: Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%",
 			},

@@ -40,22 +40,33 @@ module.exports = class Game {
 		// for(const request of this.wsServer.requestsQueue){
 		for(request of this.wsServer.requestsQueue){
 			const player = this.getPlayerFromList(request)
-			this.getNearbyCreaturesToUpdate(player)
+			this.creaturesToUpdateQueue.push(...this.getNearbyCreaturesToUpdate(player))
 		}
 
 		for(const creature of this.creaturesToUpdateQueue){
-			creature.update(request, dbconnected, this.creaturesToUpdateQueue, [], [])
+			console.log({ creature })
+			creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
 
-			if(creature.type == 'player'){
-				this.wsServer.sendDataToClient({
-					items: [],
-					walls: [],
-					creatures: [...this.summary.players, ...this.summary.monsters]
-				})
-			}
+			// if(creature.type == 'player'){
+			// 	this.wsServer.sendDataToClient({
+			// 		items: [],
+			// 		walls: [],
+			// 		creatures: [...this.summary.players, ...this.summary.monsters]
+			// 	})
+			// }
 
 			console.log({ creature })
 
+		}
+
+		for(const player of this.summary.players){
+			// if(creature.type == 'player'){
+			this.wsServer.sendDataToClient({
+				items: [],
+				walls: [],
+				creatures: [...this.summary.players, ...this.summary.monsters]
+			})
+			// }
 		}
 
 
@@ -77,7 +88,8 @@ module.exports = class Game {
 				})
 		})
 		
-		this.creaturesToUpdateQueue.push(...nearbyCreatures)
+		// this.creaturesToUpdateQueue.push(...nearbyCreatures)
+		return nearbyCreatures
 
 	}
 

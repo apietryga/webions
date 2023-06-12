@@ -149,7 +149,7 @@ module.exports = class Creature {
   }
   nearbyCreatures( allCreatures ){
 		// ! DONE IN gameController.js !
-		console.log("GET RID OF THIS !!!! |nearbyCreatures|")
+		// ! console.log("GET RID OF THIS !!!! |nearbyCreatures|")
     return allCreatures.filter( cr => {
       return Math.abs(cr.position[0] - this.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
         && Math.abs(cr.position[1] - this.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
@@ -396,7 +396,7 @@ module.exports = class Creature {
     }
   }
   update(param,db,allCreatures,allItems, walls = []){
-		// console.log({ param })
+		console.log({ param })
 		this.serverUpdating = {}
     const creatures = this.nearbyCreatures( allCreatures )
     const items = this.nearbyItems( allItems )
@@ -455,10 +455,13 @@ module.exports = class Creature {
         playerInArea = avaliblePlayers[0][0];
       }
     }
+		console.log({
+			walk: this.walk,
+			time: game.time.getTime() 
+		})
     // WALKING
     if(this.walk <= game.time.getTime() && this.health > 0 && this.speed !== false){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];
-
       // player walking from pushed keys
       let key;if(this.type == "player"){
         // get clicked key
@@ -726,6 +729,7 @@ module.exports = class Creature {
 					position_start: this.position,
 					position_end: phantomPos,
 				}
+				console.log("WALKING")
 		
 		
 

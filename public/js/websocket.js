@@ -147,9 +147,9 @@ class ServerConnect extends WebSocket {
 				// updating values
 				for(const key of Object.keys(creature)){
 					// console.log(creature)
-					// if(key == "serverUpdating"){
-					// 	gamePlane.creatures.list[charId]["serverUpdating"] = creature[key];
-					// }
+					if(key == "serverUpdating"){
+						gamePlane.creatures.list[charId]["serverUpdating"] = creature[key];
+					}
 					if(key == "position"){
 						// gamePlane.creatures.list[charId]["servPos"] = creature[key];
 						if(!compareTables(gamePlane.creatures.list[charId]["newPos"],creature[key])){
