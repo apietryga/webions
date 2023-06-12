@@ -17,14 +17,15 @@ module.exports = class Game {
 		}
 
 		this.creaturesToUpdateQueue = []
+		this.requestsQueue = {}
 
 		this.loadAllMonsters()
 		this.mainLoop()
 	}
 
 	mainLoop(){
-		setTimeout(() => { this.mainLoop() }, 1000)
-		if(!this.wsServer.requestsQueue){ return }
+		setTimeout(() => { this.mainLoop() }, 50)
+		if(!this.wsServer.clientsRequestsQueue){ return }
 
 		this.creaturesToUpdateQueue = []
 		this.resolveRequestsQueue()
@@ -34,34 +35,20 @@ module.exports = class Game {
 	}
 
 	async resolveRequestsQueue() {
-		// console.log("RQ: ", this.wsServer)
+		this.prepareQueues()
 		
-		let request;
-		// for(const request of this.wsServer.requestsQueue){
-		for(request of this.wsServer.requestsQueue){
-			const player = this.getPlayerFromList(request)
+		for(const player of this.summary.players){
 			this.creaturesToUpdateQueue.push(...this.getNearbyCreaturesToUpdate(player))
 		}
 
-		for(const creature of this.creaturesToUpdateQueue){
-			console.log({ creature })
-			creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
+		this.updateCreatures()
 
-			// if(creature.type == 'player'){
-			// 	this.wsServer.sendDataToClient({
-			// 		items: [],
-			// 		walls: [],
-			// 		creatures: [...this.summary.players, ...this.summary.monsters]
-			// 	})
-			// }
 
-			console.log({ creature })
-
-		}
 
 		for(const player of this.summary.players){
 			// if(creature.type == 'player'){
 			this.wsServer.sendDataToClient({
+				game,
 				items: [],
 				walls: [],
 				creatures: [...this.summary.players, ...this.summary.monsters]
@@ -70,10 +57,35 @@ module.exports = class Game {
 		}
 
 
-		this.wsServer.requestsQueue = []
+		this.wsServer.clientsRequestsQueue = []
 		// console.log()v
 
 
+	}
+
+	updateCreatures(){
+		console.log({ creaturesToUpdate: this.creaturesToUpdateQueue })
+		const playersWithRequests = Object.keys(this.requestsQueue)
+		for(const creature of this.creaturesToUpdateQueue){
+			if(!playersWithRequests.includes(creature.name)){
+				creature.update({}, global.dbconnected, this.creaturesToUpdateQueue, [], [])
+				continue
+			}
+			for(const request of this.requestsQueue[creature.name]){
+				creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
+			}
+		}
+		this.requestsQueue = {}
+	}
+
+	prepareQueues(){
+		for(const request of this.wsServer.clientsRequestsQueue){
+			const player = this.getPlayerFromList(request)
+			if(!this.requestsQueue[player.name]){
+				this.requestsQueue[player.name] = []
+			}
+			this.requestsQueue[player.name].push(request)
+		}
 	}
 
 	getNearbyCreaturesToUpdate(player){

@@ -396,7 +396,7 @@ module.exports = class Creature {
     }
   }
   update(param,db,allCreatures,allItems, walls = []){
-		console.log({ param })
+		game.time = new Date()
 		this.serverUpdating = {}
     const creatures = this.nearbyCreatures( allCreatures )
     const items = this.nearbyItems( allItems )
@@ -455,10 +455,6 @@ module.exports = class Creature {
         playerInArea = avaliblePlayers[0][0];
       }
     }
-		console.log({
-			walk: this.walk,
-			time: game.time.getTime() 
-		})
     // WALKING
     if(this.walk <= game.time.getTime() && this.health > 0 && this.speed !== false){
       let phantomPos = [this.position[0], this.position[1], this.position[2]];
@@ -728,10 +724,7 @@ module.exports = class Creature {
 					time_end: game.time.getTime() + Math.round(1000/this.totalSpeed),
 					position_start: this.position,
 					position_end: phantomPos,
-				}
-				console.log("WALKING")
-		
-		
+				}		
 
 					// for monsters
           delete this.escapeStuck;

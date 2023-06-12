@@ -11,13 +11,13 @@ class WsController {
 		this.im = im
 		this.connection = null
 		this.dbconnect = dbconnect
-		this.requestsQueue = []
+		this.clientsRequestsQueue = []
 	}
 
 	async getDataFromClient(data){
 		console.log(data)
 		// const param = JSON.parse(data.utf8Data);
-		this.requestsQueue.push(data)
+		this.clientsRequestsQueue.push(data)
 
 		// console.log({ data })
 		// In game actions
@@ -41,8 +41,8 @@ class WsController {
 		data = stringify({
 			...data,
 			game: {
-				...game,
-				time: new Date().getTime(),
+				...data.game,
+				// time: new Date().getTime(),
 				cpu: Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%",
 			},
 		}, null, 2)
