@@ -159,7 +159,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         player.update({name:player.name,type: 'initUpdate'},db,[],[]);
         // update player skills
         player.skills.level = -1;
-        player.updateSkills(db);
+        // player.updateSkills(db);
       }
     },
     async update(param, dbconnected){

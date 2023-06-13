@@ -1,16 +1,29 @@
-const inGameMonsters = require("../lists/monstersList").data;
-const Player = require("../components/Creatures/Player")
-const Monster = require("../components/Creatures/Monster")
-const monstersTypes = require("../types/monstersTypes");
-const npcs = require("../lists/npcs").npcs;
-const game = require("../../public/js/gameDetails");
+const inGameMonsters = require("../../lists/monstersList").data;
+const Player = require("../../components/Creatures/Player")
+const Monster = require("../../components/Creatures/Monster")
+const monstersTypes = require("../../types/monstersTypes");
+// const npcs = require("../../lists/npcs").npcs;
+const game = require("../../../public/js/gameDetails");
 
-require('../config/jsExtensions')
 
+require('../../config/jsExtensions')
+
+
+interface Summary {
+	players: Array<any>,
+	monsters: Array<any>,
+	items: Array<any>,
+	walls: Array<any>,
+}
 
 module.exports = class Game {
 
-	constructor(wsServer) {
+	private requestsQueue: any;
+	private summary: Summary;
+	private wsServer: any;
+	private creaturesToUpdateQueue: Array<any>;
+
+	constructor(wsServer: any) {
 		this.wsServer = wsServer
 		this.summary = {
 			players: [],
@@ -18,7 +31,7 @@ module.exports = class Game {
 			items: [],
 			walls: [],
 		}
-		// this.creaturesToUpdateQueue = []
+		this.creaturesToUpdateQueue = []
 		this.requestsQueue = {}
 		this.loadAllMonsters()
 		this.mainLoop()
@@ -63,11 +76,13 @@ module.exports = class Game {
 		const playersWithRequests = Object.keys(this.requestsQueue)
 		for(const creature of this.creaturesToUpdateQueue){
 			if(!playersWithRequests.includes(creature.name)){
-				creature.update({}, global.dbconnected, this.creaturesToUpdateQueue, [], [])
+				// creature.update({}, global.dbconnected , this.creaturesToUpdateQueue, [], [])
+				creature.update({}, this.creaturesToUpdateQueue, [], [])
 				continue
 			}
 			for(const request of this.requestsQueue[creature.name]){
-				creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
+				// creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
+				creature.update(request, this.creaturesToUpdateQueue, [], [])
 			}
 		}
 		this.requestsQueue = {}
@@ -83,7 +98,7 @@ module.exports = class Game {
 		}
 	}
 
-	getNearbyCreaturesToUpdate(player){
+	private getNearbyCreaturesToUpdate(player: any){
 		// console.log(...this.creaturesToUpdateQueue.map(c => c.serverUpdating) )
 
 		const nearbyCreatures = [...this.summary.monsters, ...this.summary.players].filter( cr => {
@@ -102,7 +117,7 @@ module.exports = class Game {
 
 	}
 
-	getPlayerFromList(request){
+	private getPlayerFromList(request: any){
 		let player = this.summary.players.find(i => i.name = request.name)
 		if(!player){
 			const id = this.summary.players.length + this.summary.monsters.length + 1
@@ -112,26 +127,27 @@ module.exports = class Game {
 		return player
 	}
 
-	loadAllMonsters(){
-    for(const m of inGameMonsters){
-			const monster = new Monster(m.name, this.summary.monsters.length, m.type || "monster")
+	private loadAllMonsters(): void {
+    // for(const m of inGameMonsters){
+		// 	const monster = new Monster(m.name, this.summary.monsters.length, m.type || "monster")
 
-      for(const k of Object.keys(m)){
-        monster[k] = m[k];
-      }
+    //   for(const k of Object.keys(m)){
+    //     monster[k] = m[k];
+    //   }
 
-			monster.startPosition = m.position;
+		// 	monster.startPosition = m.position;
       
-      for(const sm of monstersTypes.concat(npcs)){ // single monster
-        if(sm.name == m.name){
-          for(const md of Object.keys(sm)){ // monster details
-            monster[md] = sm[md];
-          }
-        }
-      }
-      // monster.maxHealth = monster.health;
-      this.summary.monsters.push(monster);
-    }
+    //   // for(const sm of monstersTypes.concat(npcs)){ // single monster
+    //   for(const sm of monstersTypes){ // single monster
+    //     if(sm.name == m.name){
+    //       for(const md of Object.keys(sm)){ // monster details
+    //         monster[md] = sm[md];
+    //       }
+    //     }
+    //   }
+    //   // monster.maxHealth = monster.health;
+    //   this.summary.monsters.push(monster);
+    // }
 	}
 
 }

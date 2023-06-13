@@ -6,16 +6,11 @@
   "author": "apietryga",
   "license": "ISC",
   "scripts": {
-
     "_start": "node src/server.js",
     "start": "nodemon src/server.js",
     "scss": "node-sass --output-style=compressed --recursive public/style/scss --watch -o public/style/",
-
     "__comment": "//npm-run-all --parallel start scss",
-
     "dev": "npm-run-all --parallel start scss",
-
-
     "start2": "concurrently --names \"WATCH,SERVE\" -c \"bgMagenta.bold,bgGreen.bold\"  \"npm run scss\" \"npm run serve\"",
     "serve": "lite-server",
     "prod": "(npm run start&)"
@@ -59,6 +54,7 @@
   "devDependencies": {
     "@types/redis": "^4.0.11",
     "concurrently": "^3.5.0",
-    "node-sass": "^8.0.0"
+    "node-sass": "^8.0.0",
+    "typescript": "^5.1.3"
   }
 }

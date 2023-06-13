@@ -4,7 +4,7 @@ const dbConnect = require("./database/dbconnect");
 const dbc = new dbConnect();
 const cm = require('./controllers/creaturesController')
 const im = require('./controllers/itemsController')
-const Game = require('./controllers/gameController')
+const Game = require('./controllers/Game/Game')
 
 const router = require("./router")
 const bodyParser = require('body-parser');
