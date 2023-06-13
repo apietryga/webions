@@ -5,6 +5,9 @@ const monstersTypes = require("../types/monstersTypes");
 const npcs = require("../lists/npcs").npcs;
 const game = require("../../public/js/gameDetails");
 
+require('../config/jsExtensions')
+
+
 module.exports = class Game {
 
 	constructor(wsServer) {
@@ -15,10 +18,8 @@ module.exports = class Game {
 			items: [],
 			walls: [],
 		}
-
-		this.creaturesToUpdateQueue = []
+		// this.creaturesToUpdateQueue = []
 		this.requestsQueue = {}
-
 		this.loadAllMonsters()
 		this.mainLoop()
 	}
@@ -26,15 +27,12 @@ module.exports = class Game {
 	mainLoop(){
 		setTimeout(() => { this.mainLoop() }, 50)
 		if(!this.wsServer.clientsRequestsQueue){ return }
-
 		this.creaturesToUpdateQueue = []
 		this.resolveRequestsQueue()
-
-
-
 	}
 
 	async resolveRequestsQueue() {
+
 		this.prepareQueues()
 		
 		for(const player of this.summary.players){
@@ -43,28 +41,25 @@ module.exports = class Game {
 
 		this.updateCreatures()
 
-
-
 		for(const player of this.summary.players){
 			// if(creature.type == 'player'){
 			this.wsServer.sendDataToClient({
 				game,
 				items: [],
 				walls: [],
-				creatures: [...this.summary.players, ...this.summary.monsters]
+				creatures: this.creaturesToUpdateQueue,
 			})
 			// }
 		}
 
 
 		this.wsServer.clientsRequestsQueue = []
-		// console.log()v
 
 
 	}
 
 	updateCreatures(){
-		console.log({ creaturesToUpdate: this.creaturesToUpdateQueue })
+		// console.log(...this.creaturesToUpdateQueue.map(c => c.serverUpdating) )
 		const playersWithRequests = Object.keys(this.requestsQueue)
 		for(const creature of this.creaturesToUpdateQueue){
 			if(!playersWithRequests.includes(creature.name)){
@@ -89,11 +84,13 @@ module.exports = class Game {
 	}
 
 	getNearbyCreaturesToUpdate(player){
-		
+		// console.log(...this.creaturesToUpdateQueue.map(c => c.serverUpdating) )
+
 		const nearbyCreatures = [...this.summary.monsters, ...this.summary.players].filter( cr => {
+			console.log(cr.serverUpdating)
 			return Math.abs(cr.position[0] - player.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
 				&& Math.abs(cr.position[1] - player.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
-				// && player.name != cr.name
+				// && (cr.serverUpdating && !cr.serverUpdating.isEmpty())
 				&& this.creaturesToUpdateQueue.map( i => {
 					if( i.id ){ return i.id != cr.id }
 					return i.name != cr.name

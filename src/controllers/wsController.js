@@ -15,7 +15,7 @@ class WsController {
 	}
 
 	async getDataFromClient(data){
-		console.log(data)
+		// console.log(data)
 		// const param = JSON.parse(data.utf8Data);
 		this.clientsRequestsQueue.push(data)
 
