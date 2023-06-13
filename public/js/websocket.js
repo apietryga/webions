@@ -2,6 +2,7 @@ class ServerConnect extends WebSocket {
 
 	constructor() {
 		const protocol = window.location.protocol == "https:" ? "wss:" : "ws:";
+		// const uri = protocol + "//" + window.location.host + "/fetch/?name=" + player.name
 		const uri = protocol + "//" + window.location.host + "/fetch/?name=" + player.name
 		super(uri, 'echo-protocol')
 
@@ -11,7 +12,7 @@ class ServerConnect extends WebSocket {
 		this.param = { focus: true }
     window.onfocus = () => {this.param.focus = true;};
     window.onblur  = () => {this.param.focus = false;};
-		this.paramsSent = false
+		// this.paramsSent = false
 		this.connected = false
 		this.lastSentParams = ""
 		this.message = {}
@@ -41,7 +42,7 @@ class ServerConnect extends WebSocket {
 
 		// gamePlane.divideUpdatesFromServer(msg)
 
-		this.paramsSent = false
+		// this.paramsSent = false
 		const data = JSON.parse(msg.data);
 		console.log({data})
 		this.message = data
@@ -211,16 +212,18 @@ class ServerConnect extends WebSocket {
 	}
 
 	async sendDataToServer(){
-		// console.log("SENDING PARAMS")
 		// return 
 		const newParams = this.paramUpdate()
 		
+		// console.log("SENDING PARAMS")
+		
 		if(!newParams){ return }
 		
-		if(!this.paramsSent){
+		// if(!this.paramsSent){
+			console.log('sended', {newParams})
 			this.send(newParams);
-			this.paramsSent = true
-		}
+			// this.paramsSent = true
+		// }
 
 		this.clearParams()
 
@@ -252,6 +255,7 @@ class ServerConnect extends WebSocket {
 		if(this.lastSentParams === newParams){ 
 			return false
 		}
+		// console.log({newParams})
 		this.lastSentParams = newParams
     return newParams
   }

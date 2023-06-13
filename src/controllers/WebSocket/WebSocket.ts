@@ -1,21 +1,29 @@
 const os = require("os");
 const stringify = require("json-stringify-pretty-compact");
 const WebSocketServer = require("websocket").server;
-const wm = require('../controllers/wallsController')
-const game = require("../../public/js/gameDetails");
+const wm = require('../wallsController')
+const game = require("../../../public/js/gameDetails");
 
 class WsController {
 
-	constructor(cm, im, dbconnect){
-		this.cm = cm
-		this.im = im
+	// private cm:any 
+	// private im:any 
+	public connection:any 
+	// private cmdbconnect:any 
+	private clientsRequestsQueue:any 
+
+	constructor(){
+	// constructor(cm:any , im: any ){
+		// this.cm = cm
+		// this.im = im
 		this.connection = null
-		this.dbconnect = dbconnect
+		// this.dbconnect = dbconnect
 		this.clientsRequestsQueue = []
 	}
 
-	async getDataFromClient(data){
-		// console.log(data)
+	public async getDataFromClient(data: any): Promise<void> {
+
+		console.log({ data })
 		// const param = JSON.parse(data.utf8Data);
 		this.clientsRequestsQueue.push(data)
 
@@ -37,7 +45,7 @@ class WsController {
 		// }
 	}
 
-	sendDataToClient(data){
+	sendDataToClient(data:any){
 		data = stringify({
 			...data,
 			game: {
@@ -51,14 +59,17 @@ class WsController {
 
 }
 
-module.exports = async (server, cm, im, dbconnect) => {
-  const controller = new WsController( cm, im, dbconnect )
+module.exports = async (server:any) => {
+// module.exports = async (server:any, cm:any, im:any) => {
+  // const controller = new WsController( cm, im  )
+  const controller = new WsController()
 	return await new Promise((res, rej) => {
 		new WebSocketServer({httpServer : server})
-		.on('request', req => {
+		.on('request', (req: { accept: (arg0: string, arg1: any) => any; origin: any; }) => {
 			controller.connection = req.accept('echo-protocol', req.origin)
-			controller.connection.on('message', async data => { 
+			controller.connection.on('message', async (data: { utf8Data: string; }) => { 
 				data = JSON.parse(data.utf8Data)
+				// console.log("MESSAGE", data)
 				controller.getDataFromClient(data) 
 			})
 			res(controller)

@@ -53,6 +53,7 @@ module.exports = new class authController {
   }
 
   login = async ( req, res ) => {
+		console.log('LOGIN')
     const data = req.body
     const currentTokens = [];
     const allPlayers = await dbconnected.loadAll();

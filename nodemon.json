@@ -4,7 +4,6 @@
     "src/views",
     "public"
   ],
-	"watch": ["src"],
-  "ext": "ts"
+	"watch": ["src"]
 
 }

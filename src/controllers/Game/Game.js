@@ -15,12 +15,23 @@ const Monster = require("../../components/Creatures/Monster");
 const monstersTypes = require("../../types/monstersTypes");
 // const npcs = require("../../lists/npcs").npcs;
 const game = require("../../../public/js/gameDetails");
+const WebSocket = require('../WebSocket/WebSocket');
 require('../../config/jsExtensions');
 module.exports = class Game {
-    constructor(wsServer) {
+    constructor(server) {
         this.requestsQueue = [];
         this.creaturesToUpdateQueue = [];
-        this.wsServer = wsServer;
+        this.clientsRequestsQueue = [];
+        this.server = server;
+        // new WebSocketServer({httpServer : server})
+        // .on('request', (req: { accept: (arg0: string, arg1: any) => any; origin: any; }) => {
+        // 	// clientsRequestsQueue.push()
+        // })
+        // this.wsServer = WebSocket( server )
+        // this.server = server
+        // this.wsServer = WebSocket( server , cm, im)
+        // const wsServer = wsController( server , cm, im, global.dbconnected)
+        // this.wsServer = wsServer
         this.summary = {
             players: [],
             monsters: [],
@@ -29,11 +40,24 @@ module.exports = class Game {
         };
         // this.creaturesToUpdateQueue = []
         // this.requestsQueue = {}
-        this.loadAllMonsters();
-        this.mainLoop();
+        // this.loadAllMonsters()
+        // ( async () => {
+        // 	await this.run()
+        // 	this.mainLoop()
+        // })()
+        // this.wsServer.on()
+        this.init();
+    }
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.wsServer = yield WebSocket(this.server);
+            // return this.wsServer = await WebSocket( this.server )
+            this.mainLoop();
+        });
     }
     mainLoop() {
         setTimeout(() => { this.mainLoop(); }, 50);
+        // console.log('sss', this.wsServer)
         if (!this.wsServer.clientsRequestsQueue) {
             return;
         }
@@ -47,15 +71,18 @@ module.exports = class Game {
                 this.creaturesToUpdateQueue.push(...this.getNearbyCreaturesToUpdate(player));
             }
             this.updateCreatures();
+            // console.log('looping')
             for (const player of this.summary.players) {
-                // if(creature.type == 'player'){
-                this.wsServer.sendDataToClient({
-                    game,
-                    items: [],
-                    walls: [],
-                    creatures: this.creaturesToUpdateQueue,
-                });
-                // }
+                // 
+                if (Object.keys(player.serverUpdating).length) {
+                    console.log('servUpdating', player.serverUpdating, Object.keys(player.serverUpdating).length);
+                    this.wsServer.sendDataToClient({
+                        game,
+                        items: [],
+                        walls: [],
+                        creatures: this.creaturesToUpdateQueue,
+                    });
+                }
             }
             this.wsServer.clientsRequestsQueue = [];
         });
@@ -88,7 +115,7 @@ module.exports = class Game {
     getNearbyCreaturesToUpdate(player) {
         // console.log(...this.creaturesToUpdateQueue.map(c => c.serverUpdating) )
         const nearbyCreatures = [...this.summary.monsters, ...this.summary.players].filter(cr => {
-            console.log(cr.serverUpdating);
+            // console.log(cr.serverUpdating)
             return Math.abs(cr.position[0] - player.position[0]) < Math.ceil(game.mapSize[0] / 2) + 1
                 && Math.abs(cr.position[1] - player.position[1]) < Math.ceil(game.mapSize[1] / 2) + 1
                 // && (cr.serverUpdating && !cr.serverUpdating.isEmpty())
@@ -107,6 +134,7 @@ module.exports = class Game {
         if (!player) {
             const id = this.summary.players.length + this.summary.monsters.length + 1;
             player = new Player(request.name, id);
+            console.log("NEW");
             this.summary.players.push(player);
         }
         return player;
