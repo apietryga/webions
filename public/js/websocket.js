@@ -204,29 +204,16 @@ class ServerConnect extends WebSocket {
 			dev.stats.ping = this.time - player.lastFrame;
 			dev.stats.cpu = data.game.cpu;
 			dev.stats.redTarget = player.redTarget;
-			// dev.stats.ws = JSON.stringify(gamePlane.creatures.list);
 			dev.update();
-			// resolve()
-		// }
 		
 	}
 
 	async sendDataToServer(){
-		// return 
 		const newParams = this.paramUpdate()
-		
-		// console.log("SENDING PARAMS")
-		
 		if(!newParams){ return }
-		
-		// if(!this.paramsSent){
-			console.log('sended', {newParams})
-			this.send(newParams);
-			// this.paramsSent = true
-		// }
-
+		console.log('sended', { newParams })
+		this.send(newParams);
 		this.clearParams()
-
 	}
 
 	paramUpdate(){
@@ -234,12 +221,7 @@ class ServerConnect extends WebSocket {
 		if(typeof player.processing === 'object'){
 			this.param.processing = Object.keys(player.processing).join("_")
 		}
-
-		// Clear server values
 		player.serverUpdate = {}
-		// this.param.processingRightNow = player.processing ? JSON.stringify(Object.keys(player.processing)) : ""; 
-		// this.param.walkProcessing = player.processing?.walk ? true : false;
-		// this.param.int = this.param?.int ? this.param.int + 1 : 1;
 		this.param.name = player.name;
 		this.param.id = player.id;
     controls.planeClicking.followRoute();
@@ -249,13 +231,10 @@ class ServerConnect extends WebSocket {
     if(isSet(player.sayToServ) && player.sayToServ){this.param.says = player.sayToServ;delete player.sayToServ;}
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     if(isSet(player.mwallDrop) && player.mwallDrop){this.param.mwallDrop = player.mwallDrop;delete player.mwallDrop;}
-		// console.log(this.param)
-
 		const newParams = JSON.stringify(this.param)
 		if(this.lastSentParams === newParams){ 
 			return false
 		}
-		// console.log({newParams})
 		this.lastSentParams = newParams
     return newParams
   }

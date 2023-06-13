@@ -1,17 +1,8 @@
-// const wsController = require('./controllers/wsController')
-// const wsController = require('./controllers/WebSocket/WebSocket')
-// const game = require("../public/js/gameDetails");
-// const WebSocketServer = require("websocket").server;
-// import {WebsocketBuilder} from 'websocket-ts';
-// import * as WebSocket from 'ws';
-import * as http from 'http';
-// const WebSocket = require('ws');
 const dbConnect = require("./database/dbconnect");
 const dbc = new dbConnect();
 const cm = require('./controllers/creaturesController')
 const im = require('./controllers/itemsController')
 const Game = require('./controllers/Game/Game')
-
 const router = require("./router")
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
@@ -28,7 +19,6 @@ app.use(express.static('./public'));
 app.use(cookieParser());
 
 declare global {
-  // var NEW_GLOBAL: string;
   var dbconnected: any;
   var cm: any;
 }
@@ -47,15 +37,7 @@ declare global {
 
 	const server = app.listen(process.env.PORT || 2095)
   
-  // game.startServerTime = new Date().getTime();
   console.log("Development server \nhttp://localhost:" + 2095);
-	// console.log({ wsServer })
 	new Game(server)
-  // const server = app.listen()
-	// const port = 3001
-	// server.listen( port, () => {
-	// 		// console.log(`Server started on port ${server.address().port} :)`);
-	// 		console.log("Server run on \nhttp://localhost:" + port);
-	// });
-	// game.startServerTime = new Date().getTime();
+	
 })()

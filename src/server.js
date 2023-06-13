@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// const WebSocket = require('ws');
 const dbConnect = require("./database/dbconnect");
 const dbc = new dbConnect();
 const cm = require('./controllers/creaturesController');
@@ -43,15 +42,6 @@ app.use(cookieParser());
     router.set({ players: cm.players });
     app.use(router.call);
     const server = app.listen(process.env.PORT || 2095);
-    // game.startServerTime = new Date().getTime();
     console.log("Development server \nhttp://localhost:" + 2095);
-    // console.log({ wsServer })
     new Game(server);
-    // const server = app.listen()
-    // const port = 3001
-    // server.listen( port, () => {
-    // 		// console.log(`Server started on port ${server.address().port} :)`);
-    // 		console.log("Server run on \nhttp://localhost:" + port);
-    // });
-    // game.startServerTime = new Date().getTime();
 }))();
