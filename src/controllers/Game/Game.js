@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const inGameMonsters = require("../../lists/monstersList").data;
 const Player = require("../../components/Creatures/Player");
 const Monster = require("../../components/Creatures/Monster");
@@ -17,6 +18,8 @@ const game = require("../../../public/js/gameDetails");
 require('../../config/jsExtensions');
 module.exports = class Game {
     constructor(wsServer) {
+        this.requestsQueue = [];
+        this.creaturesToUpdateQueue = [];
         this.wsServer = wsServer;
         this.summary = {
             players: [],
@@ -24,8 +27,8 @@ module.exports = class Game {
             items: [],
             walls: [],
         };
-        this.creaturesToUpdateQueue = [];
-        this.requestsQueue = {};
+        // this.creaturesToUpdateQueue = []
+        // this.requestsQueue = {}
         this.loadAllMonsters();
         this.mainLoop();
     }

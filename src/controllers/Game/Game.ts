@@ -5,23 +5,18 @@ const monstersTypes = require("../../types/monstersTypes");
 // const npcs = require("../../lists/npcs").npcs;
 const game = require("../../../public/js/gameDetails");
 
+// const { Summary } = require("./interfaces")
+import { Summary } from './GameInterfaces'
 
 require('../../config/jsExtensions')
 
 
-interface Summary {
-	players: Array<any>,
-	monsters: Array<any>,
-	items: Array<any>,
-	walls: Array<any>,
-}
-
 module.exports = class Game {
 
-	private requestsQueue: any;
+	private requestsQueue: any = [];
 	private summary: Summary;
 	private wsServer: any;
-	private creaturesToUpdateQueue: Array<any>;
+	private creaturesToUpdateQueue: Array<any> = [];
 
 	constructor(wsServer: any) {
 		this.wsServer = wsServer
@@ -31,8 +26,8 @@ module.exports = class Game {
 			items: [],
 			walls: [],
 		}
-		this.creaturesToUpdateQueue = []
-		this.requestsQueue = {}
+		// this.creaturesToUpdateQueue = []
+		// this.requestsQueue = {}
 		this.loadAllMonsters()
 		this.mainLoop()
 	}
@@ -151,3 +146,4 @@ module.exports = class Game {
 	}
 
 }
+
