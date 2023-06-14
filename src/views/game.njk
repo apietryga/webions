@@ -173,7 +173,7 @@
     buttonIndex : 0,
     init(){
       // this.makeDevButt("STOP",()=>{gamePlane.stop()});
-      // this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
+      //this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
       this.makeStatsField();
       this.update();
     },
@@ -185,7 +185,7 @@
         position:fixed;
       `;
       butt.innerHTML =  title;
-      butt.style.zIndex = 4;
+      butt.style.zIndex = 5;
       document.body.append(butt);
       butt.style.marginTop = ((butt.clientHeight+10)*this.buttonIndex)+ "px";
       this.buttonIndex++;

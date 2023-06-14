@@ -25,6 +25,7 @@ module.exports = class Game {
     constructor(server) {
         this.requestsQueue = {};
         this.creaturesToUpdateQueue = [];
+        // TODO INCREASE IT AFTER NPCS AND MONSTERS LOAD
         this.uid = 0;
         this.server = server;
         this.summary = {

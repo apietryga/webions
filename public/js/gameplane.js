@@ -54,6 +54,9 @@ class GamePlane {
       // gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
       if(isSet(player.update) && player.update.constructor === Function){
         player.update();
+				if(fistIteration){
+					player.position = player.newPos
+				}
       }
       menus.update();
       if(!isSet(player.newPos)){player.newPos = player.position;}
@@ -118,7 +121,7 @@ class GamePlane {
         }
       })
       // draw all in order
-      for(const e of drawStack.concat(nicksStack)){ e.draw(); }
+     	for(const e of drawStack.concat(nicksStack)){ e.draw(); }
       // update actions
       for(const a of gamePlane.actions){a.update();}
       inGameConsole.update();

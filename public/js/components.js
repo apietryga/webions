@@ -26,7 +26,6 @@ class Grid {
     let phantomPlayer = (typeof player === 'undefined')?plr:player; 
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
-
     const w = (typeof map.sprites[this.type] != "undefined")?map.sprites[this.type].dataset.w:game.square;
     if(this.type == 'doors' && compareTables(this.position,phantomPlayer.newPos)){
       this.cyle = 1;

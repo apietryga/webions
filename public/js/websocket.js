@@ -44,7 +44,7 @@ class ServerConnect extends WebSocket {
 
 		// this.paramsSent = false
 		const data = JSON.parse(msg.data);
-		console.log({data})
+		// console.log({data})
 		this.message = data
 		// update game properties
 		this.datetime = data.game.time;
@@ -145,6 +145,7 @@ class ServerConnect extends WebSocket {
 						}
 					}
 				}
+
 				// updating values
 				for(const key of Object.keys(creature)){
 					// console.log(creature)
@@ -211,7 +212,7 @@ class ServerConnect extends WebSocket {
 	async sendDataToServer(){
 		const newParams = this.paramUpdate()
 		if(!newParams){ return }
-		console.log('sended', { newParams })
+		// console.log('sended', { newParams })
 		this.send(newParams);
 		this.clearParams()
 	}

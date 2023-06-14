@@ -19,7 +19,6 @@ class WsController {
 	}
 
 	sendDataToClient(player:any, data:any){
-		console.log({ player, data, wss })
 		data.game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%"
 		data = stringify(data, null, 2)
 		const connection = wss.connections.find((ws: any) => ws.name == player.name)

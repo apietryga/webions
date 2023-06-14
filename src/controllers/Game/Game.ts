@@ -22,7 +22,9 @@ module.exports = class Game {
 	private wsServer: any;
 	private server: any;
 	private creaturesToUpdateQueue: Array<any> = [];
-	private uid: number = 0;
+
+	// TODO INCREASE IT AFTER NPCS AND MONSTERS LOAD
+	private uid: number = 0; 
 
 	constructor(server: any) {
 		this.server = server
