@@ -5,6 +5,9 @@ const monstersTypes = require("../../types/monstersTypes");
 // const npcs = require("../../lists/npcs").npcs;
 const game = require("../../../public/js/gameDetails");
 // const WebSocket = require('../WebSocket/WebSocket')
+const playersList = require("../../lists/playersList.json")
+// import playersList from "../../lists/playersList.json"
+
 
 import WebSocket from '../WebSocket/WebSocket'
 
@@ -58,7 +61,7 @@ module.exports = class Game {
 
 		this.wsServer.clientsRequestsQueue = []
 
-		setTimeout(() => { this.mainLoop() }, 100)
+		setTimeout(() => { this.mainLoop() }, 25)
 
 	}
 
@@ -102,7 +105,6 @@ module.exports = class Game {
 			const player = this.getPlayer(request)
 			if(!this.requestsQueue[player.name]){
 				this.requestsQueue[player.name] = request
-				// this.requestsQueue[player.name].push(request)
 			}
 		}
 	}
@@ -150,9 +152,21 @@ module.exports = class Game {
 	}
 
 	private addPlayerToGame(request:any){
-		// const id = this.summary.players.length + this.summary.monsters.length + 1
-		const player = new Player(request.name, ++this.uid)
+		let player = new Player(request.name, ++this.uid)
+		player = this.getPlayersPropertiesFromBase(player)
 		this.summary.players.push(player)
+		return player
+	}
+
+	private getPlayersPropertiesFromBase(player: any){
+		const basePlayer = playersList.filter((bp: any) => bp.name === player.name )?.[0]
+
+		console.log({ basePlayer, playersList, player })
+
+		for(const key of Object.keys(basePlayer)){
+			player[key] = basePlayer[key]
+		}
+
 		return player
 	}
 

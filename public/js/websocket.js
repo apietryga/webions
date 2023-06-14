@@ -46,7 +46,6 @@ class ServerConnect extends WebSocket {
 
 		// this.paramsSent = false
 		const data = JSON.parse(msg.data);
-		// console.log({data})
 		this.message = data
 		// update game properties
 		this.datetime = data.game.time;
@@ -226,7 +225,7 @@ class ServerConnect extends WebSocket {
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
 
-		if(controls.vals.length && !player.processing.walk){
+		if(controls.vals.length && !player.processing?.walk){
 			this.clientUpdate.controls = controls.vals
 		}
 

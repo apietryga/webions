@@ -19,6 +19,8 @@ const monstersTypes = require("../../types/monstersTypes");
 // const npcs = require("../../lists/npcs").npcs;
 const game = require("../../../public/js/gameDetails");
 // const WebSocket = require('../WebSocket/WebSocket')
+const playersList = require("../../lists/playersList.json");
+// import playersList from "../../lists/playersList.json"
 const WebSocket_1 = __importDefault(require("../WebSocket/WebSocket"));
 // require('../../config/jsExtensions')
 module.exports = class Game {
@@ -53,7 +55,7 @@ module.exports = class Game {
         this.updateCreatures();
         this.sendUpdatesToClients();
         this.wsServer.clientsRequestsQueue = [];
-        setTimeout(() => { this.mainLoop(); }, 100);
+        setTimeout(() => { this.mainLoop(); }, 25);
     }
     sendUpdatesToClients() {
         for (const creature of this.creaturesToUpdateQueue) {
@@ -90,7 +92,6 @@ module.exports = class Game {
             const player = this.getPlayer(request);
             if (!this.requestsQueue[player.name]) {
                 this.requestsQueue[player.name] = request;
-                // this.requestsQueue[player.name].push(request)
             }
         }
     }
@@ -122,9 +123,18 @@ module.exports = class Game {
         return this.addPlayerToGame(request);
     }
     addPlayerToGame(request) {
-        // const id = this.summary.players.length + this.summary.monsters.length + 1
-        const player = new Player(request.name, ++this.uid);
+        let player = new Player(request.name, ++this.uid);
+        player = this.getPlayersPropertiesFromBase(player);
         this.summary.players.push(player);
+        return player;
+    }
+    getPlayersPropertiesFromBase(player) {
+        var _a;
+        const basePlayer = (_a = playersList.filter((bp) => bp.name === player.name)) === null || _a === void 0 ? void 0 : _a[0];
+        console.log({ basePlayer, playersList, player });
+        for (const key of Object.keys(basePlayer)) {
+            player[key] = basePlayer[key];
+        }
         return player;
     }
     loadAllMonsters() {
