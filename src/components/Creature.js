@@ -80,7 +80,7 @@ module.exports = class Creature {
       this.sprite = "gm";
     }
     this.baseSpeed = this.speed;
-		this.serverUpdating = { loading: true }
+		this.serverUpdating = { login: true }
   }
   // getHit = (db,from,type = 'fist') =>{
   //   if(this.type != "player" || func.isSet(this.totalDef)){
@@ -400,11 +400,12 @@ module.exports = class Creature {
   // update(param,db,allCreatures,allItems, walls = []){
 		game.time = new Date()
 		// free update first time
-		if(this.serverUpdating.loading){
-			this.serverUpdating.loading = false
-		}else{
-			this.serverUpdating = {}
-		}
+		this.serverUpdating = this.serverUpdating.login ? { login: false } : {}
+		// if(this.serverUpdating.loading){
+		// 	this.serverUpdating.loading = false
+		// }else{
+		// 	this.serverUpdating = {}
+		// }
     // const creatures = this.nearbyCreatures( allCreatures )
     const creatures = []
     const items = this.nearbyItems( allItems )
@@ -726,7 +727,7 @@ module.exports = class Creature {
 			// set new position or display error
       if(isFloor && ((this.type == "player" && typeof key != "undefined") 
         || (["monster","npc"].includes(this.type) && !func.compareTables(this.position,phantomPos)) )){
-				console.log("EE")
+				// console.log("EE")
 				this.serverUpdating.walk = {
 					time_start: game.time.getTime(),
 					time_end: game.time.getTime() + Math.round(1000/this.totalSpeed),

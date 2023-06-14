@@ -10,7 +10,6 @@ import { Summary } from './GameInterfaces'
 
 require('../../config/jsExtensions')
 
-
 module.exports = class Game {
 
 	private requestsQueue: any = [];
@@ -18,7 +17,7 @@ module.exports = class Game {
 	private wsServer: any;
 	private server: any;
 	private creaturesToUpdateQueue: Array<any> = [];
-	private clientsRequestsQueue: Array<any> = [];
+	// private clientsRequestsQueue: Array<any> = [];
 
 	constructor(server: any) {
 		this.server = server
@@ -79,8 +78,11 @@ module.exports = class Game {
 		for(const player of this.summary.players){
 			// 
 			if(Object.keys(player.serverUpdating).length){
-				console.log('servUpdating', player.serverUpdating, Object.keys(player.serverUpdating).length)
+				// console.log('servUpdating', player.serverUpdating, Object.keys(player.serverUpdating).length)
 				this.wsServer.sendDataToClient({
+					name: player.name,
+					key: player.key
+				},{
 					game,
 					items: [],
 					walls: [],
@@ -99,15 +101,23 @@ module.exports = class Game {
 		// console.log(...this.creaturesToUpdateQueue.map(c => c.serverUpdating) )
 		const playersWithRequests = Object.keys(this.requestsQueue)
 		for(const creature of this.creaturesToUpdateQueue){
+			
 			if(!playersWithRequests.includes(creature.name)){
 				// creature.update({}, global.dbconnected , this.creaturesToUpdateQueue, [], [])
 				creature.update({}, this.creaturesToUpdateQueue, [], [])
 				continue
 			}
+
 			for(const request of this.requestsQueue[creature.name]){
+				if(request.logout){
+					this.summary.players = []
+				}
 				// creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
 				creature.update(request, this.creaturesToUpdateQueue, [], [])
+				// console.log({ creature, request })
 			}
+
+
 		}
 		this.requestsQueue = {}
 	}

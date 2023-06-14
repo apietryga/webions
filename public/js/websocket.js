@@ -218,12 +218,12 @@ class ServerConnect extends WebSocket {
 
 	paramUpdate(){
 		controls.falseQueneCall();
-		if(typeof player.processing === 'object'){
-			this.param.processing = Object.keys(player.processing).join("_")
-		}
+		// if(typeof player.processing === 'object'){
+			// this.param.processing = Object.keys(player.processing).join("_")
+		// }
 		player.serverUpdate = {}
-		this.param.name = player.name;
-		this.param.id = player.id;
+		// this.param.name = player.name;
+		// this.param.id = player.id;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}

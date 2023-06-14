@@ -18,10 +18,10 @@ const game = require("../../../public/js/gameDetails");
 const WebSocket = require('../WebSocket/WebSocket');
 require('../../config/jsExtensions');
 module.exports = class Game {
+    // private clientsRequestsQueue: Array<any> = [];
     constructor(server) {
         this.requestsQueue = [];
         this.creaturesToUpdateQueue = [];
-        this.clientsRequestsQueue = [];
         this.server = server;
         // new WebSocketServer({httpServer : server})
         // .on('request', (req: { accept: (arg0: string, arg1: any) => any; origin: any; }) => {
@@ -75,8 +75,11 @@ module.exports = class Game {
             for (const player of this.summary.players) {
                 // 
                 if (Object.keys(player.serverUpdating).length) {
-                    console.log('servUpdating', player.serverUpdating, Object.keys(player.serverUpdating).length);
+                    // console.log('servUpdating', player.serverUpdating, Object.keys(player.serverUpdating).length)
                     this.wsServer.sendDataToClient({
+                        name: player.name,
+                        key: player.key
+                    }, {
                         game,
                         items: [],
                         walls: [],
@@ -97,8 +100,12 @@ module.exports = class Game {
                 continue;
             }
             for (const request of this.requestsQueue[creature.name]) {
+                if (request.logout) {
+                    this.summary.players = [];
+                }
                 // creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
                 creature.update(request, this.creaturesToUpdateQueue, [], []);
+                // console.log({ creature, request })
             }
         }
         this.requestsQueue = {};
@@ -159,3 +166,4 @@ module.exports = class Game {
         // }
     }
 };
+//# sourceMappingURL=Game.js.map

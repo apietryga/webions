@@ -107,7 +107,8 @@ const menus = {
         { title: "PAUSE GAME",
           innerHTML: "⏸",
           type: "a",
-          onclick: () => {gamePlane.stop();}
+          // onclick: () => {gamePlane.stop();}
+          onclick: () => {serv.close();gamePlane.stop();}
         },
         { title: "REFRESH GAME",
           innerHTML: "🔄",

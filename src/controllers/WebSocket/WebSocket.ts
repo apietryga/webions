@@ -18,29 +18,48 @@ class WsController {
 		this.clientsRequestsQueue.push(data)
 	}
 
-	sendDataToClient(data:any){
-		data = stringify({
-			...data,
-			game: {
-				...data.game,
-				cpu: Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%",
-			},
-		}, null, 2)
-		this.connection.sendUTF(data)
+	sendDataToClient(player:any, data:any){
+		data.game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%"
+		data = stringify(data, null, 2)
+		const connection = wss.connections.find((ws: any) => ws.name == player.name)
+		console.log({ connection, wss })
+		connection.sendUTF(data)
 	}
 
 }
 
+let wss:any;
+
 module.exports = async (server:any) => {
   const controller = new WsController()
 	return await new Promise((res, rej) => {
-		new WebSocketServer({httpServer : server})
-		.on('request', (req: { accept: (arg0: string, arg1: any) => any; origin: any; }) => {
-			controller.connection = req.accept('echo-protocol', req.origin)
-			controller.connection.on('message', async (data: { utf8Data: string; }) => { 
+		wss = new WebSocketServer({ httpServer : server })
+		wss.on('request', (req: any, test:any) => {
+
+			const connection = req.accept('echo-protocol', req.origin)
+			connection.name = req.resourceURL.query.name
+
+			connection.on('message', async (data: { utf8Data: string; }) => {
 				data = JSON.parse(data.utf8Data)
-				controller.getDataFromClient(data) 
+				controller.getDataFromClient({
+					...data, 
+					name: req.resourceURL.query.name, 
+					key: req.key
+				}) 
 			})
+
+			connection.on('close', () => {
+				controller.getDataFromClient({ 
+					name: req.resourceURL.query.name, 
+					key: req.key, 
+					logout: true 
+				}) 
+			})
+
+			connection.on('error', (error: any) => { 
+				console.log('error:', error)
+			})
+
 			res(controller)
 		})
 	})

@@ -23,22 +23,38 @@ class WsController {
             this.clientsRequestsQueue.push(data);
         });
     }
-    sendDataToClient(data) {
-        data = stringify(Object.assign(Object.assign({}, data), { game: Object.assign(Object.assign({}, data.game), { cpu: Math.round((100 * (os.totalmem() - os.freemem())) / os.totalmem) + "%" }) }), null, 2);
-        this.connection.sendUTF(data);
+    sendDataToClient(player, data) {
+        data.game.cpu = Math.round((100 * (os.totalmem() - os.freemem())) / os.totalmem) + "%";
+        data = stringify(data, null, 2);
+        const connection = wss.connections.find((ws) => ws.name == player.name);
+        console.log({ connection, wss });
+        connection.sendUTF(data);
     }
 }
+let wss;
 module.exports = (server) => __awaiter(void 0, void 0, void 0, function* () {
     const controller = new WsController();
     return yield new Promise((res, rej) => {
-        new WebSocketServer({ httpServer: server })
-            .on('request', (req) => {
-            controller.connection = req.accept('echo-protocol', req.origin);
-            controller.connection.on('message', (data) => __awaiter(void 0, void 0, void 0, function* () {
+        wss = new WebSocketServer({ httpServer: server });
+        wss.on('request', (req, test) => {
+            const connection = req.accept('echo-protocol', req.origin);
+            connection.name = req.resourceURL.query.name;
+            connection.on('message', (data) => __awaiter(void 0, void 0, void 0, function* () {
                 data = JSON.parse(data.utf8Data);
-                controller.getDataFromClient(data);
+                controller.getDataFromClient(Object.assign(Object.assign({}, data), { name: req.resourceURL.query.name, key: req.key }));
             }));
+            connection.on('close', () => {
+                controller.getDataFromClient({
+                    name: req.resourceURL.query.name,
+                    key: req.key,
+                    logout: true
+                });
+            });
+            connection.on('error', (error) => {
+                console.log('error:', error);
+            });
             res(controller);
         });
     });
 });
+//# sourceMappingURL=WebSocket.js.map

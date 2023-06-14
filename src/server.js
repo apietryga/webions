@@ -45,3 +45,4 @@ app.use(cookieParser());
     console.log("Development server \nhttp://localhost:" + 2095);
     new Game(server);
 }))();
+//# sourceMappingURL=server.js.map
