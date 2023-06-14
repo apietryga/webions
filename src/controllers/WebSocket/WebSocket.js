@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const os = require("os");
 const stringify = require("json-stringify-pretty-compact");
 const WebSocketServer = require("websocket").server;
@@ -20,6 +21,8 @@ class WsController {
     }
     getDataFromClient(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            // if()
+            // console.log({ data })
             this.clientsRequestsQueue.push(data);
         });
     }
@@ -27,12 +30,15 @@ class WsController {
         data.game.cpu = Math.round((100 * (os.totalmem() - os.freemem())) / os.totalmem) + "%";
         data = stringify(data, null, 2);
         const connection = wss.connections.find((ws) => ws.name == player.name);
-        console.log({ connection, wss });
+        if (!connection) {
+            return console.log("ERROR - no connection for ", player.name, { wss });
+        }
         connection.sendUTF(data);
     }
 }
 let wss;
-module.exports = (server) => __awaiter(void 0, void 0, void 0, function* () {
+// module.exports = async (server:any) => {
+exports.default = (server) => __awaiter(void 0, void 0, void 0, function* () {
     const controller = new WsController();
     return yield new Promise((res, rej) => {
         wss = new WebSocketServer({ httpServer: server });
@@ -41,12 +47,11 @@ module.exports = (server) => __awaiter(void 0, void 0, void 0, function* () {
             connection.name = req.resourceURL.query.name;
             connection.on('message', (data) => __awaiter(void 0, void 0, void 0, function* () {
                 data = JSON.parse(data.utf8Data);
-                controller.getDataFromClient(Object.assign(Object.assign({}, data), { name: req.resourceURL.query.name, key: req.key }));
+                controller.getDataFromClient(Object.assign(Object.assign({}, data), { name: req.resourceURL.query.name }));
             }));
             connection.on('close', () => {
                 controller.getDataFromClient({
                     name: req.resourceURL.query.name,
-                    key: req.key,
                     logout: true
                 });
             });

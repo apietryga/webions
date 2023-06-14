@@ -4,161 +4,137 @@ const Monster = require("../../components/Creatures/Monster")
 const monstersTypes = require("../../types/monstersTypes");
 // const npcs = require("../../lists/npcs").npcs;
 const game = require("../../../public/js/gameDetails");
-const WebSocket = require('../WebSocket/WebSocket')
-// const { Summary } = require("./interfaces")
-import { Summary } from './GameInterfaces'
+// const WebSocket = require('../WebSocket/WebSocket')
+
+import WebSocket from '../WebSocket/WebSocket'
 
 require('../../config/jsExtensions')
 
 module.exports = class Game {
 
 	private requestsQueue: any = [];
-	private summary: Summary;
+	private summary:  {
+		players: Array<any>,
+		monsters: Array<any>,
+		items: Array<any>,
+		walls: Array<any>,
+	};
 	private wsServer: any;
 	private server: any;
 	private creaturesToUpdateQueue: Array<any> = [];
-	// private clientsRequestsQueue: Array<any> = [];
 
 	constructor(server: any) {
 		this.server = server
-		// new WebSocketServer({httpServer : server})
-		// .on('request', (req: { accept: (arg0: string, arg1: any) => any; origin: any; }) => {
-		// 	// clientsRequestsQueue.push()
-		// })
-		// this.wsServer = WebSocket( server )
-		// this.server = server
-		// this.wsServer = WebSocket( server , cm, im)
-		// const wsServer = wsController( server , cm, im, global.dbconnected)
-		// this.wsServer = wsServer
 		this.summary = {
 			players: [],
 			monsters: [],
 			items: [],
 			walls: [],
 		}
-		// this.creaturesToUpdateQueue = []
-		// this.requestsQueue = {}
-
-		// this.loadAllMonsters()
-		
-		// ( async () => {
-		// 	await this.run()
-		// 	this.mainLoop()
-		// })()
-		// this.wsServer.on()
 		this.init()
 	}
 
-	async init(){
+	private async init(){
 		this.wsServer = await WebSocket( this.server )
-		// return this.wsServer = await WebSocket( this.server )
 		this.mainLoop()
 	}
 
-	mainLoop(){
-		setTimeout(() => { this.mainLoop() }, 50)
-		// console.log('sss', this.wsServer)
+	private mainLoop(){
+
 		if(!this.wsServer.clientsRequestsQueue){ return }
-		this.creaturesToUpdateQueue = []
-		this.resolveRequestsQueue()
-	}
-
-	async resolveRequestsQueue() {
-
-		this.prepareQueues()
 		
-		for(const player of this.summary.players){
-			this.creaturesToUpdateQueue.push(...this.getNearbyCreaturesToUpdate(player))
-		}
+		this.requestsQueue = []
+		this.getIterationRequestsQueue()
+		
+		this.creaturesToUpdateQueue = []
+		this.getIterationCreaturesUpdateQueue()
 
 		this.updateCreatures()
+		this.wsServer.clientsRequestsQueue = []
 
-		// console.log('looping')
+		setTimeout(() => { this.mainLoop() }, 50)
 
-		for(const player of this.summary.players){
-			// 
-			if(Object.keys(player.serverUpdating).length){
-				// console.log('servUpdating', player.serverUpdating, Object.keys(player.serverUpdating).length)
+	}
+
+	private updateCreatures(){
+		for(const creature of this.creaturesToUpdateQueue){
+			const request = this.requestsQueue[creature.name] || {}
+
+			if(request.logout){
+				this.summary.players = this.summary.players.filter( player => {
+					return player.name !== creature.name;
+				})
+				continue
+			}
+
+			creature.update(request, this.creaturesToUpdateQueue, [], [])
+			if(creature.type === 'player'){
 				this.wsServer.sendDataToClient({
-					name: player.name,
-					key: player.key
+					name: creature.name,
+					key: creature.key
 				},{
 					game,
 					items: [],
 					walls: [],
-					creatures: this.creaturesToUpdateQueue,
+					creatures: this.summary.players,
 				})
 			}
 		}
-
-
-		this.wsServer.clientsRequestsQueue = []
-
-
 	}
 
-	updateCreatures(){
-		// console.log(...this.creaturesToUpdateQueue.map(c => c.serverUpdating) )
-		const playersWithRequests = Object.keys(this.requestsQueue)
-		for(const creature of this.creaturesToUpdateQueue){
-			
-			if(!playersWithRequests.includes(creature.name)){
-				// creature.update({}, global.dbconnected , this.creaturesToUpdateQueue, [], [])
-				creature.update({}, this.creaturesToUpdateQueue, [], [])
-				continue
-			}
-
-			for(const request of this.requestsQueue[creature.name]){
-				if(request.logout){
-					this.summary.players = []
-				}
-				// creature.update(request, global.dbconnected, this.creaturesToUpdateQueue, [], [])
-				creature.update(request, this.creaturesToUpdateQueue, [], [])
-				// console.log({ creature, request })
-			}
-
-
-		}
-		this.requestsQueue = {}
-	}
-
-	prepareQueues(){
+	private getIterationRequestsQueue(){
 		for(const request of this.wsServer.clientsRequestsQueue){
-			const player = this.getPlayerFromList(request)
+			const player = this.getPlayer(request)
 			if(!this.requestsQueue[player.name]){
-				this.requestsQueue[player.name] = []
+				this.requestsQueue[player.name] = request
+				// this.requestsQueue[player.name].push(request)
 			}
-			this.requestsQueue[player.name].push(request)
 		}
 	}
 
-	private getNearbyCreaturesToUpdate(player: any){
-		// console.log(...this.creaturesToUpdateQueue.map(c => c.serverUpdating) )
+	private getIterationCreaturesUpdateQueue(){
 
-		const nearbyCreatures = [...this.summary.monsters, ...this.summary.players].filter( cr => {
-			// console.log(cr.serverUpdating)
-			return Math.abs(cr.position[0] - player.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
-				&& Math.abs(cr.position[1] - player.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
-				// && (cr.serverUpdating && !cr.serverUpdating.isEmpty())
-				&& this.creaturesToUpdateQueue.map( i => {
+		for(const player of this.summary.players){
+
+			const nearbyCreatures = [...this.summary.monsters, ...this.summary.players].filter( cr => {
+
+				const isSet = this.creaturesToUpdateQueue.filter( i => {
 					if( i.id ){ return i.id != cr.id }
 					return i.name != cr.name
 				})
-		})
-		
-		// this.creaturesToUpdateQueue.push(...nearbyCreatures)
-		return nearbyCreatures
+
+				if(isSet.length){ return false }
+
+				if(cr.type == 'player' && cr.name === player.name){
+					return this.requestsQueue[player.name] ? true : false
+				}
+
+				return Math.abs(cr.position[0] - player.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
+					&& Math.abs(cr.position[1] - player.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
+				})
+
+			this.creaturesToUpdateQueue.push(...nearbyCreatures)
+
+		}
 
 	}
 
-	private getPlayerFromList(request: any){
-		let player = this.summary.players.find(i => i.name = request.name)
-		if(!player){
-			const id = this.summary.players.length + this.summary.monsters.length + 1
-			player = new Player(request.name, id)
-			console.log("NEW")
-			this.summary.players.push(player)
+	private getPlayer(request: any){
+		
+		for(const player of this.summary.players){
+			if(player.name === request.name){
+				return player
+			}
 		}
+
+		return this.addPlayerToGame(request)
+
+	}
+
+	private addPlayerToGame(request:any){
+		const id = this.summary.players.length + this.summary.monsters.length + 1
+		const player = new Player(request.name, id)
+		this.summary.players.push(player)
 		return player
 	}
 

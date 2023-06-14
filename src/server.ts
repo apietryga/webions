@@ -36,8 +36,8 @@ declare global {
   app.use(router.call)
 
 	const server = app.listen(process.env.PORT || 2095)
-  
-  console.log("Development server \nhttp://localhost:" + 2095);
 	new Game(server)
+  
+  console.log("Server running\nhttp://localhost:" + 2095);
 	
 })()

@@ -15,6 +15,8 @@ class WsController {
 	}
 
 	public async getDataFromClient(data: any): Promise<void> {
+		// if()
+		// console.log({ data })
 		this.clientsRequestsQueue.push(data)
 	}
 
@@ -22,7 +24,9 @@ class WsController {
 		data.game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%"
 		data = stringify(data, null, 2)
 		const connection = wss.connections.find((ws: any) => ws.name == player.name)
-		console.log({ connection, wss })
+		if(!connection){
+			return console.log("ERROR - no connection for ", player.name, { wss })
+		}
 		connection.sendUTF(data)
 	}
 
@@ -30,7 +34,8 @@ class WsController {
 
 let wss:any;
 
-module.exports = async (server:any) => {
+// module.exports = async (server:any) => {
+export default async (server:any) => {
   const controller = new WsController()
 	return await new Promise((res, rej) => {
 		wss = new WebSocketServer({ httpServer : server })
@@ -44,14 +49,12 @@ module.exports = async (server:any) => {
 				controller.getDataFromClient({
 					...data, 
 					name: req.resourceURL.query.name, 
-					key: req.key
 				}) 
 			})
 
 			connection.on('close', () => {
 				controller.getDataFromClient({ 
 					name: req.resourceURL.query.name, 
-					key: req.key, 
 					logout: true 
 				}) 
 			})
