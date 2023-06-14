@@ -15,12 +15,11 @@ class WsController {
 	}
 
 	public async getDataFromClient(data: any): Promise<void> {
-		// if()
-		// console.log({ data })
 		this.clientsRequestsQueue.push(data)
 	}
 
 	sendDataToClient(player:any, data:any){
+		console.log({ player, data, wss })
 		data.game.cpu = Math.round((100*(os.totalmem() - os.freemem()))/os.totalmem)+"%"
 		data = stringify(data, null, 2)
 		const connection = wss.connections.find((ws: any) => ws.name == player.name)

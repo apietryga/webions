@@ -20,11 +20,12 @@ const monstersTypes = require("../../types/monstersTypes");
 const game = require("../../../public/js/gameDetails");
 // const WebSocket = require('../WebSocket/WebSocket')
 const WebSocket_1 = __importDefault(require("../WebSocket/WebSocket"));
-require('../../config/jsExtensions');
+// require('../../config/jsExtensions')
 module.exports = class Game {
     constructor(server) {
-        this.requestsQueue = [];
+        this.requestsQueue = {};
         this.creaturesToUpdateQueue = [];
+        this.uid = 0;
         this.server = server;
         this.summary = {
             players: [],
@@ -44,24 +45,17 @@ module.exports = class Game {
         if (!this.wsServer.clientsRequestsQueue) {
             return;
         }
-        this.requestsQueue = [];
+        this.requestsQueue = {};
         this.getIterationRequestsQueue();
         this.creaturesToUpdateQueue = [];
         this.getIterationCreaturesUpdateQueue();
         this.updateCreatures();
+        this.sendUpdatesToClients();
         this.wsServer.clientsRequestsQueue = [];
         setTimeout(() => { this.mainLoop(); }, 50);
     }
-    updateCreatures() {
+    sendUpdatesToClients() {
         for (const creature of this.creaturesToUpdateQueue) {
-            const request = this.requestsQueue[creature.name] || {};
-            if (request.logout) {
-                this.summary.players = this.summary.players.filter(player => {
-                    return player.name !== creature.name;
-                });
-                continue;
-            }
-            creature.update(request, this.creaturesToUpdateQueue, [], []);
             if (creature.type === 'player') {
                 this.wsServer.sendDataToClient({
                     name: creature.name,
@@ -73,6 +67,21 @@ module.exports = class Game {
                     creatures: this.summary.players,
                 });
             }
+        }
+    }
+    updateCreatures() {
+        for (const creature of this.creaturesToUpdateQueue) {
+            const request = this.requestsQueue[creature.name] || {};
+            if (request.logout) {
+                this.summary.players = this.summary.players.filter(player => {
+                    return player.name !== creature.name;
+                });
+                this.creaturesToUpdateQueue = this.creaturesToUpdateQueue.filter(player => {
+                    return player.name !== creature.name;
+                });
+                continue;
+            }
+            creature.update(request, this.creaturesToUpdateQueue, [], []);
         }
     }
     getIterationRequestsQueue() {
@@ -87,22 +96,20 @@ module.exports = class Game {
     getIterationCreaturesUpdateQueue() {
         for (const player of this.summary.players) {
             const nearbyCreatures = [...this.summary.monsters, ...this.summary.players].filter(cr => {
-                const isSet = this.creaturesToUpdateQueue.filter(i => {
-                    if (i.id) {
-                        return i.id != cr.id;
-                    }
-                    return i.name != cr.name;
-                });
-                if (isSet.length) {
-                    return false;
-                }
                 if (cr.type == 'player' && cr.name === player.name) {
                     return this.requestsQueue[player.name] ? true : false;
+                }
+                if (cr.type == 'player' && !this.requestsQueue[cr.name] && !this.requestsQueue[player.name]) {
+                    return false;
                 }
                 return Math.abs(cr.position[0] - player.position[0]) < Math.ceil(game.mapSize[0] / 2) + 1
                     && Math.abs(cr.position[1] - player.position[1]) < Math.ceil(game.mapSize[1] / 2) + 1;
             });
-            this.creaturesToUpdateQueue.push(...nearbyCreatures);
+            for (const pushingCreature of nearbyCreatures) {
+                if (!this.creaturesToUpdateQueue.filter(cr => pushingCreature.id == cr.id).length) {
+                    this.creaturesToUpdateQueue.push(pushingCreature);
+                }
+            }
         }
     }
     getPlayer(request) {
@@ -114,8 +121,8 @@ module.exports = class Game {
         return this.addPlayerToGame(request);
     }
     addPlayerToGame(request) {
-        const id = this.summary.players.length + this.summary.monsters.length + 1;
-        const player = new Player(request.name, id);
+        // const id = this.summary.players.length + this.summary.monsters.length + 1
+        const player = new Player(request.name, ++this.uid);
         this.summary.players.push(player);
         return player;
     }
