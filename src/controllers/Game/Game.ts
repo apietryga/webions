@@ -58,7 +58,7 @@ module.exports = class Game {
 
 		this.wsServer.clientsRequestsQueue = []
 
-		setTimeout(() => { this.mainLoop() }, 50)
+		setTimeout(() => { this.mainLoop() }, 100)
 
 	}
 

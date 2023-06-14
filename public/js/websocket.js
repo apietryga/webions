@@ -12,6 +12,8 @@ class ServerConnect extends WebSocket {
 		this.param = { focus: true }
     window.onfocus = () => {this.param.focus = true;};
     window.onblur  = () => {this.param.focus = false;};
+    // window.onfocus = () => {this.clientUpdate.focus = true;};
+    // window.onblur  = () => {this.clientUpdate.focus = false;};
 		// this.paramsSent = false
 		this.connected = false
 		this.lastSentParams = ""
@@ -210,34 +212,42 @@ class ServerConnect extends WebSocket {
 	}
 
 	async sendDataToServer(){
-		const newParams = this.paramUpdate()
-		if(!newParams){ return }
-		// console.log('sended', { newParams })
-		this.send(newParams);
+		this.paramUpdate()
+		if(!Object.keys(this.clientUpdate).length){ return }
+
+		this.send(JSON.stringify(this.clientUpdate));
 		this.clearParams()
 	}
 
 	paramUpdate(){
 		controls.falseQueneCall();
-		// if(typeof player.processing === 'object'){
-			// this.param.processing = Object.keys(player.processing).join("_")
-		// }
+		this.clientUpdate = {}
 		player.serverUpdate = {}
-		// this.param.name = player.name;
-		// this.param.id = player.id;
     controls.planeClicking.followRoute();
     this.param.controls = controls.vals;
+
+		if(controls.vals.length && !player.processing.walk){
+			this.clientUpdate.controls = controls.vals
+		}
+
+		if(this.param.focus != this.lastSentParams.focus){
+			this.clientUpdate.focus = this.param.focus
+		}
+
     if(player.setRedTarget){this.param.target = player.setRedTarget;delete player.setRedTarget}
     if(player.itemAction){this.param.itemAction = player.itemAction;delete player.itemAction}
     if(isSet(player.sayToServ) && player.sayToServ){this.param.says = player.sayToServ;delete player.sayToServ;}
     if(isSet(controls.outfit)){this.param.outfit = controls.outfit; delete controls.outfit;}
     if(isSet(player.mwallDrop) && player.mwallDrop){this.param.mwallDrop = player.mwallDrop;delete player.mwallDrop;}
-		const newParams = JSON.stringify(this.param)
-		if(this.lastSentParams === newParams){ 
-			return false
-		}
-		this.lastSentParams = newParams
-    return newParams
+		// const newParams = JSON.stringify(this.param)
+		// const newParams = this.param
+		// if(this.lastSentParams === this.param){ 
+		// 	// return false
+		// 	this.clientUpdate = {}
+		// }
+		// this.lastSentParams = newParams
+		this.lastSentParams = {...this.param}
+    // return newParams
   }
 
 	clearParams(){

@@ -53,7 +53,7 @@ module.exports = class Game {
         this.updateCreatures();
         this.sendUpdatesToClients();
         this.wsServer.clientsRequestsQueue = [];
-        setTimeout(() => { this.mainLoop(); }, 50);
+        setTimeout(() => { this.mainLoop(); }, 100);
     }
     sendUpdatesToClients() {
         for (const creature of this.creaturesToUpdateQueue) {

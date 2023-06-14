@@ -78,6 +78,7 @@ class Creature {
       }
     }
 		this.processing = {}
+		// this.currentlyWalking = false
   }
   update(){
 		// SETTING SERVER INFO
@@ -394,6 +395,12 @@ class Creature {
 			delete this.processing.walk
 			delete this.serverUpdating
 			return 
+		}
+
+		// change position on z axis
+		if(data.position_start[2] != data.position_end[2]){
+			this.position = data.position_end
+			return
 		}
 
 		// change position on x and y axis
