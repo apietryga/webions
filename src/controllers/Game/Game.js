@@ -12,18 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// const mostersList = require("../../lists/monstersList").data;
 const monstersList = require("../../lists/monstersList").data;
 const npcsList = require("../../lists/npcsList").data;
 const Player = require("../../components/Creatures/Player");
 const Monster = require("../../components/Creatures/Monster");
 const NPC = require("../../components/Creatures/NPC");
-// const monstersTypes = require("../../types/monstersTypes");
-// const npcs = require("../../lists/npcs").npcs;
 const game = require("../../../public/js/gameDetails");
-// const WebSocket = require('../WebSocket/WebSocket')
-// const playersList = require("../../lists/playersList.json")
-// import playersList from "../../lists/playersList.json"
 const WebSocket_1 = __importDefault(require("../WebSocket/WebSocket"));
 // require('../../config/jsExtensions')
 module.exports = class Game {
@@ -51,10 +45,7 @@ module.exports = class Game {
         });
     }
     mainLoop() {
-        setTimeout(() => { this.mainLoop(); }, 25);
-        if (!this.wsServer.clientsRequestsQueue.length) {
-            return;
-        }
+        setTimeout(() => { this.mainLoop(); }, 100);
         this.requestsQueue = {};
         this.getIterationRequestsQueue();
         this.creaturesToUpdateQueue = [];
@@ -64,6 +55,8 @@ module.exports = class Game {
         this.wsServer.clientsRequestsQueue = [];
     }
     sendUpdatesToClients() {
+        // console.log({to_update: this.creaturesToUpdateQueue })
+        console.log('to_update:', this.creaturesToUpdateQueue.map(c => c.name));
         for (const creature of this.creaturesToUpdateQueue) {
             if (creature.type === 'player') {
                 this.wsServer.sendDataToClient({
@@ -73,15 +66,14 @@ module.exports = class Game {
                     game,
                     items: [],
                     walls: [],
-                    // creatures: this.summary.players,
                     creatures: this.creaturesToUpdateQueue,
                 });
             }
         }
     }
     initNPCs() {
-        this.summary.npcs = npcsList.map((monster) => {
-            return new NPC(monster.name, ++this.uid, monster.position);
+        this.summary.npcs = npcsList.map((npc) => {
+            return new NPC(npc.name, ++this.uid, npc.position);
         });
     }
     initMonsters() {
@@ -90,7 +82,6 @@ module.exports = class Game {
         });
     }
     updateCreatures() {
-        console.log({ cre: this.creaturesToUpdateQueue });
         for (const creature of this.creaturesToUpdateQueue) {
             const request = this.requestsQueue[creature.name] || {};
             if (request.logout) {
@@ -115,7 +106,9 @@ module.exports = class Game {
     }
     getIterationCreaturesUpdateQueue() {
         for (const player of this.summary.players) {
-            const nearbyCreatures = [...this.summary.monsters, ...this.summary.npcs, ...this.summary.players].filter(cr => {
+            let areNearestUpdated = false;
+            const nearbyCreatures = [...this.summary.monsters, ...this.summary.npcs, ...this.summary.players]
+                .filter(cr => {
                 if (cr.type == 'player' && cr.name === player.name) {
                     return this.requestsQueue[player.name] ? true : false;
                 }
@@ -124,12 +117,17 @@ module.exports = class Game {
                 }
                 return Math.abs(cr.position[0] - player.position[0]) < Math.ceil(game.mapSize[0] / 2) + 1
                     && Math.abs(cr.position[1] - player.position[1]) < Math.ceil(game.mapSize[1] / 2) + 1;
-            });
-            console.log({ player, nearbyCreatures });
-            for (const pushingCreature of nearbyCreatures) {
+            })
+                .forEach(pushingCreature => {
+                if (Object.keys(pushingCreature.serverUpdating).length) {
+                    areNearestUpdated = true;
+                }
                 if (!this.creaturesToUpdateQueue.filter(cr => pushingCreature.id == cr.id).length) {
                     this.creaturesToUpdateQueue.push(pushingCreature);
                 }
+            });
+            if (areNearestUpdated && !this.creaturesToUpdateQueue.filter(cr => player.id == cr.id).length) {
+                this.creaturesToUpdateQueue.push(player);
             }
         }
     }

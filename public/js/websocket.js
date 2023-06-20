@@ -24,6 +24,7 @@ class ServerConnect extends WebSocket {
 	}
 	
 	onclose(e) {
+		console.log('closin')
 		// set connection
 		if(e != null){console.error(e)}
 		this.connected = false;console.log("WS closed.");
@@ -39,12 +40,10 @@ class ServerConnect extends WebSocket {
 	}
 	
 	async getDataFromServer(msg){
-
-		// gamePlane.divideUpdatesFromServer(msg)
-
-		// this.paramsSent = false
 		const data = JSON.parse(msg.data);
 		this.message = data
+
+		// console.log(data.creatures[0].position)
 		// update game properties
 		this.datetime = data.game.time;
 		this.time = new Date(this.datetime).getTime();
