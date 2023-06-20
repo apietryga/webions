@@ -1,7 +1,7 @@
-const Creature = require('../Creature')
+const NPCModel = require('../Creature')
 const npcsTypes = require("../../types/npcsTypes");
 
-module.exports = class NPC extends Creature {
+module.exports = class NPC extends NPCModel {
 
 	constructor(name: string, id: number, position: Array<number>){
 		

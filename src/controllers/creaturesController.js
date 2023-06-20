@@ -1,6 +1,7 @@
 const inGameMonsters = require("../lists/monstersList").data;
 const game = require("../../public/js/gameDetails");
 const Creature = require("../components/Creature");
+// import Creature from "../components/Creature"
 const Monster = require("../components/Creatures/Monster");
 const monstersTypes = require("../types/monstersTypes");
 const logger = require('../config/winston')

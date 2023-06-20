@@ -4,7 +4,7 @@ const func = require("../../public/js/functions");
 const game = require("../../public/js/gameDetails");
 const Item = require("./Item");
 
-module.exports = class Creature {
+class Creature {
   
 	constructor(nickName,creaturesLength = 0,type = "monster"){
     // this.creatures = require('../modules/creature')
@@ -1023,3 +1023,5 @@ module.exports = class Creature {
   }
 }
 
+module.exports = Creature
+// export default Creature
