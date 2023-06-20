@@ -4,7 +4,7 @@ const Creature = require("../components/Creature");
 const Monster = require("../components/Creatures/Monster");
 const monstersTypes = require("../types/monstersTypes");
 const logger = require('../config/winston')
-const npcs = require("../lists/npcs").npcs;
+const npcs = require("../lists/npcsList").data;
 const disallowKeys = [
   "startPosition",
   "email",

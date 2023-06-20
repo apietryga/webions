@@ -1,7 +1,7 @@
 // const bcrypt = require('bcrypt');
 const bcrypt = require('bcryptjs');
 const func = require('../../public/js/functions')
-const npcs = require('../lists/npcs').npcs;
+const npcs = require('../lists/npcsList').data;
 const creatures = require('../types/monstersTypes');
 const monsters = creatures.filter( creature => typeof creature.type == "undefined" && creature.sprite != "tourets" )
 const monstersNames = func.getNamesFromObjArr(monsters).concat(func.getNamesFromObjArr(npcs));

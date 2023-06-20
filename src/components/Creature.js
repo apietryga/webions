@@ -5,7 +5,8 @@ const game = require("../../public/js/gameDetails");
 const Item = require("./Item");
 
 module.exports = class Creature {
-  constructor(nickName,creaturesLength = 0,type = "monster"){
+  
+	constructor(nickName,creaturesLength = 0,type = "monster"){
     // this.creatures = require('../modules/creature')
     // this.items = require('../modules/item')
     this.id = creaturesLength+1; 
@@ -82,6 +83,25 @@ module.exports = class Creature {
     this.baseSpeed = this.speed;
 		this.serverUpdating = { login: true }
   }
+
+	setPosition(position){
+		if(position){
+			this.position = position
+		}
+	}	
+
+	loadProperties(list){
+		
+		const props = list.filter( item => item.name === this.name )?.[0]
+
+		if(props){
+			for(const key in props){
+				this[key] = props[key]
+			}
+		}
+
+	}
+
   // getHit = (db,from,type = 'fist') =>{
   //   if(this.type != "player" || func.isSet(this.totalDef)){
   //     let hit = from.skills[type];
@@ -879,7 +899,7 @@ module.exports = class Creature {
       this.exhaust.heal =  game.time.getTime() + this.exhaustTime;
     }
     // HEALING [monster]
-    if(this.type == "monster" && func.isSet(this.skills.healing) && this.skills.healing > 0 && this.exhaust.heal <= game.time.getTime() && this.health > 0){
+    if(this.type == "monster" && func.isSet(this.skills?.healing) && this.skills.healing > 0 && this.exhaust.heal <= game.time.getTime() && this.health > 0){
       if(this.health + this.skills.healing > this.maxHealth){
         this.health = this.maxHealth;
       }else{

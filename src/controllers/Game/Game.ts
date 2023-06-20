@@ -1,11 +1,14 @@
-const inGameMonsters = require("../../lists/monstersList").data;
+// const mostersList = require("../../lists/monstersList").data;
+const monstersList = require("../../lists/monstersList").data;
+const npcsList = require("../../lists/npcsList").data;
 const Player = require("../../components/Creatures/Player")
 const Monster = require("../../components/Creatures/Monster")
-const monstersTypes = require("../../types/monstersTypes");
+const NPC = require("../../components/Creatures/NPC")
+// const monstersTypes = require("../../types/monstersTypes");
 // const npcs = require("../../lists/npcs").npcs;
 const game = require("../../../public/js/gameDetails");
 // const WebSocket = require('../WebSocket/WebSocket')
-const playersList = require("../../lists/playersList.json")
+// const playersList = require("../../lists/playersList.json")
 // import playersList from "../../lists/playersList.json"
 
 
@@ -20,13 +23,12 @@ module.exports = class Game {
 		players: Array<any>,
 		monsters: Array<any>,
 		items: Array<any>,
+		npcs: Array<any>,
 		walls: Array<any>,
 	};
 	private wsServer: any;
 	private server: any;
 	private creaturesToUpdateQueue: Array<any> = [];
-
-	// TODO INCREASE IT AFTER NPCS AND MONSTERS LOAD
 	private uid: number = 0; 
 
 	constructor(server: any) {
@@ -34,6 +36,8 @@ module.exports = class Game {
 		this.summary = {
 			players: [],
 			monsters: [],
+			npcs: [],
+			// monsters,
 			items: [],
 			walls: [],
 		}
@@ -42,12 +46,15 @@ module.exports = class Game {
 
 	private async init(){
 		this.wsServer = await WebSocket( this.server )
+		this.initMonsters()
+		this.initNPCs()
 		this.mainLoop()
 	}
 
 	private mainLoop(){
 
-		if(!this.wsServer.clientsRequestsQueue){ return }
+		setTimeout(() => { this.mainLoop() }, 25)
+		if(!this.wsServer.clientsRequestsQueue.length){ return }
 		
 		this.requestsQueue = {}
 		this.getIterationRequestsQueue()
@@ -61,8 +68,6 @@ module.exports = class Game {
 
 		this.wsServer.clientsRequestsQueue = []
 
-		setTimeout(() => { this.mainLoop() }, 25)
-
 	}
 
 	private sendUpdatesToClients(){
@@ -75,13 +80,31 @@ module.exports = class Game {
 					game,
 					items: [],
 					walls: [],
-					creatures: this.summary.players,
+					// creatures: this.summary.players,
+					creatures: this.creaturesToUpdateQueue,
 				})
 			}
 		}
 	}
 
+	private initNPCs(){
+		
+		this.summary.npcs = npcsList.map(( monster: any ) => {
+			return new NPC(monster.name, ++this.uid, monster.position)
+		})
+
+	}
+
+	private initMonsters(){
+
+		this.summary.monsters = monstersList.map(( monster: any ) => {
+			return new Monster(monster.name, ++this.uid, monster.position)
+		})
+
+	}
+
 	private updateCreatures(){
+		console.log({ cre: this.creaturesToUpdateQueue})
 		for(const creature of this.creaturesToUpdateQueue){
 			const request = this.requestsQueue[creature.name] || {}
 
@@ -113,7 +136,7 @@ module.exports = class Game {
 
 		for(const player of this.summary.players){
 
-			const nearbyCreatures = [...this.summary.monsters, ...this.summary.players].filter( cr => {
+			const nearbyCreatures = [...this.summary.monsters, ...this.summary.npcs, ...this.summary.players].filter( cr => {
 
 				if(cr.type == 'player' && cr.name === player.name){
 					return this.requestsQueue[player.name] ? true : false
@@ -126,6 +149,8 @@ module.exports = class Game {
 				return Math.abs(cr.position[0] - player.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
 					&& Math.abs(cr.position[1] - player.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
 			})
+
+			console.log({ player, nearbyCreatures})
 
 			for(const pushingCreature of nearbyCreatures){
 
@@ -147,50 +172,10 @@ module.exports = class Game {
 			}
 		}
 
-		return this.addPlayerToGame(request)
-
-	}
-
-	private addPlayerToGame(request:any){
-		let player = new Player(request.name, ++this.uid)
-		player = this.getPlayersPropertiesFromBase(player)
+		const player = new Player(request.name, ++this.uid)
 		this.summary.players.push(player)
 		return player
-	}
 
-	private getPlayersPropertiesFromBase(player: any){
-		const basePlayer = playersList.filter((bp: any) => bp.name === player.name )?.[0]
-
-		console.log({ basePlayer, playersList, player })
-
-		for(const key of Object.keys(basePlayer)){
-			player[key] = basePlayer[key]
-		}
-
-		return player
-	}
-
-	private loadAllMonsters(): void {
-    // for(const m of inGameMonsters){
-		// 	const monster = new Monster(m.name, this.summary.monsters.length, m.type || "monster")
-
-    //   for(const k of Object.keys(m)){
-    //     monster[k] = m[k];
-    //   }
-
-		// 	monster.startPosition = m.position;
-      
-    //   // for(const sm of monstersTypes.concat(npcs)){ // single monster
-    //   for(const sm of monstersTypes){ // single monster
-    //     if(sm.name == m.name){
-    //       for(const md of Object.keys(sm)){ // monster details
-    //         monster[md] = sm[md];
-    //       }
-    //     }
-    //   }
-    //   // monster.maxHealth = monster.health;
-    //   this.summary.monsters.push(monster);
-    // }
 	}
 
 }

@@ -1,15 +1,15 @@
 this.data = [
   // npc's
-  {"name":"Slepo Oma", "position":[35, -9,-1]},
-  {"name":"King", "position":[55, -30,-1]},
+  // {"name":"Slepo Oma", "position":[35, -9,-1]},
+  // {"name":"King", "position":[55, -30,-1]},
 
   // TEMPLE
-  {"name":"Cat","position":[35,-9,1]},
+  // {"name":"Cat","position":[35,-9,1]},
   // CITY
-  {"name":"Cat","position":[24,-5,0]},
-  {"name":"Cat","position":[40,6,0]},
+  // {"name":"Cat","position":[24,-5,0]},
+  // {"name":"Cat","position":[40,6,0]},
   // DEPO
-  {"name":"Training Man","position":[43,0,-1]},
+  // {"name":"Training Man","position":[43,0,-1]},
   {"name":"Training Man","position":[43,5,-1]},
   // CASTLE
   {"name":"Minotaur","position":[55,-20,-2]},

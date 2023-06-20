@@ -10,10 +10,8 @@ class ServerConnect extends WebSocket {
 		this.onmessage = this.getDataFromServer
 
 		this.param = { focus: true }
-    window.onfocus = () => {this.param.focus = true;};
-    window.onblur  = () => {this.param.focus = false;};
-    // window.onfocus = () => {this.clientUpdate.focus = true;};
-    // window.onblur  = () => {this.clientUpdate.focus = false;};
+    // window.onfocus = () => {this.param.focus = true;};
+    // window.onblur  = () => {this.param.focus = false;};
 		// this.paramsSent = false
 		this.connected = false
 		this.lastSentParams = ""
