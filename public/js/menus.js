@@ -292,7 +292,7 @@ const menus = {
       ];
       
       let refreshSkills = false;
-      if(isSet(this.skills)){
+      if(isSet(this.skills) && isSet(player?.skills)){
         for(const key of Object.keys(player.skills)){
           if(this.skills[key] != player.skills[key] && !notShowing.includes(key)){
             this.skills[key] = player.skills[key];
