@@ -45,7 +45,7 @@ module.exports = class Game {
         });
     }
     mainLoop() {
-        setTimeout(() => { this.mainLoop(); }, 1000);
+        setTimeout(() => { this.mainLoop(); }, 100);
         this.requestsQueue = {};
         this.getIterationRequestsQueue();
         this.creaturesToUpdateQueue = [];
@@ -56,7 +56,7 @@ module.exports = class Game {
     }
     sendUpdatesToClients() {
         // console.log({to_update: this.creaturesToUpdateQueue })
-        console.log('to_update:', this.creaturesToUpdateQueue.map(c => c.name));
+        // console.log('to_update:', this.creaturesToUpdateQueue.map(c => c.name) )
         for (const creature of this.creaturesToUpdateQueue) {
             if (creature.type === 'player') {
                 this.wsServer.sendDataToClient({

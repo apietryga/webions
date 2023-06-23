@@ -85,10 +85,15 @@ class Creature {
 
 		// SETTING SERVER INFO
 		if(this.serverUpdating){
+			
 			if(this.serverUpdating.walk){
-				// console.log('updateProcessing', this.serverUpdating)
 				this.processing.walk = this.serverUpdating.walk
 			}
+			
+			if(this.serverUpdating.sprite){
+				this.sprite = this.serverUpdating.sprite
+			}
+
 		}
 
 		// EXECUTING SERVER INFO

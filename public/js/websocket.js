@@ -113,10 +113,48 @@ class ServerConnect extends WebSocket {
 				}
 
 				// console.log(creature.serverUpdate)
+				// creature.serverUpdating = dataCreature.serverUpdating
+				// creature.id = dataCreature.id
+				// creature.name = dataCreature.name
+				// creature.name = dataCreature.name
+				// if(creature.serverUpdate){
+				// 	console.log(creature.serverUpdate)
+				// }
+				// console.log({dataCreature})
+				const keys = [
+					'serverUpdating',
+					'name',
+					'id',
+					'sprite',
+					'colors',
+					// 'type',
+					// 'position',
+					'direction',
+					// "walk",
+					// "speed",
+					// "totalSpeed",
+					// "direction",
+					"health",
+					// "maxHealth",
+					"totalHealth",
+					// "redTarget",
+					// "restore",
+					// "sprite",
+					// "exhaustTime",
+					// "exhaust",
+					// "baseSpeed",
+					// "serverUpdating",
+					// "skills",
+					// "speaker",
+					// "dial"
+			]
 
-				for(const property in dataCreature){
+				// for(const property in dataCreature){
+				for(const property of keys){
 					creature[property] = dataCreature[property]
 				}
+
+				// console.log({ creature })
 				
 				if(creature.name === player.name){
 					player = creature
