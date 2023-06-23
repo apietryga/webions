@@ -47,15 +47,18 @@ class ServerConnect extends WebSocket {
 		// update game properties
 		this.datetime = data.game.time;
 		this.time = new Date(this.datetime).getTime();
-		gamePlane.fps = data.game.fps;
+		gamePlane.fps = data.game.fps
+
+		// console.log(' game', data.game)
+		// gamePlane = {...data.game}
 
 
-		console.log({ data })
+		// console.log({ data })
 
 		// return
 
 			// magic walls
-			// gamePlane.mwalls = [];
+			gamePlane.mwalls = [];
 			// for(const mwall of data.walls){
 			// 	gamePlane.mwalls.push(new Grid([0,mwall[0]*1,mwall[1]*1,mwall[2]*1,'mwalls']));
 			// }
@@ -99,15 +102,31 @@ class ServerConnect extends WebSocket {
 			// updating creatures values
 			for(const dataCreature of data.creatures){
 				// dataCreature
-				gamePlane.creatures.filter(cr => cr.id === dataCreature.id)?.[0]
+				let creature = gamePlane.creatures.list.filter(cr => cr.id === dataCreature.id)?.[0]
+
+				if(!creature){
+					// creature = dataCreature
+					const {type, position, name, id} = dataCreature
+					creature = new Creature(type, position, name, id)
+					gamePlane.creatures.list.push(creature)
+					continue
+				}
+
+				// console.log(creature.serverUpdate)
+
+				for(const property in dataCreature){
+					creature[property] = dataCreature[property]
+				}
 				
+				if(creature.name === player.name){
+					player = creature
+				}
+				// creature
 
 
-				// for(const properties of dataCreature){
-
-				// }
+				
 				// const creature = data.creatures[property]
-				gamePlane.creatures
+				// gamePlane.creatures
 			}
 
 			// for(const creature of data.creatures){

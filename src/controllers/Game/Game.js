@@ -45,7 +45,7 @@ module.exports = class Game {
         });
     }
     mainLoop() {
-        setTimeout(() => { this.mainLoop(); }, 100);
+        setTimeout(() => { this.mainLoop(); }, 1000);
         this.requestsQueue = {};
         this.getIterationRequestsQueue();
         this.creaturesToUpdateQueue = [];

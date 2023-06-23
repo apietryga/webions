@@ -81,6 +81,8 @@ class Creature {
 		// this.currentlyWalking = false
   }
   update(){
+		// console.log('updateing', this)
+
 		// SETTING SERVER INFO
 		if(this.serverUpdating){
 			if(this.serverUpdating.walk){
@@ -290,6 +292,7 @@ class Creature {
             this.x - game.square, this.y-game.square, 100, 100
           );
       }else{
+				if(!this.sprite){ return }
         const img = map.sprites[this.sprite];
         ctx.drawImage(
           img, this.cyle * img.width/3, this.direction * img.width/3, img.width/3, img.height/5,
