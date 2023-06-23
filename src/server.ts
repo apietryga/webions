@@ -23,12 +23,12 @@ declare global {
   var cm: any;
 }
 ( async () => {
-  cm.init();
-  global.cm = cm;
-  im.init();
+  // cm.init();
+  // global.cm = cm;
+  // im.init();
   global.dbconnected = dbc[ await dbc.init() ]
 
-  cm.players.init(global.dbconnected)
+  // cm.players.init(global.dbconnected)
 
   router.set({ app })
   router.set({ dbconnect: global.dbconnected })

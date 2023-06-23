@@ -1,3 +1,4 @@
+/*
 const inGameMonsters = require("../lists/monstersList").data;
 const game = require("../../public/js/gameDetails");
 const Creature = require("../components/Creature");
@@ -233,3 +234,4 @@ const cm = { // creatures managment [monsters = monsters & npc's]
   }
 }
 module.exports = cm
+*/

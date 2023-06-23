@@ -32,11 +32,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express_1.default.static('./public'));
 app.use(cookieParser());
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    cm.init();
-    global.cm = cm;
-    im.init();
+    // cm.init();
+    // global.cm = cm;
+    // im.init();
     global.dbconnected = dbc[yield dbc.init()];
-    cm.players.init(global.dbconnected);
+    // cm.players.init(global.dbconnected)
     router.set({ app });
     router.set({ dbconnect: global.dbconnected });
     router.set({ players: cm.players });
