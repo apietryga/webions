@@ -1,7 +1,7 @@
-const Creature = require('../Creature')
+const Creature_player = require('./Creature')
 const playersList = require("../../lists/playersList");
 
-module.exports = class Player extends Creature {
+module.exports = class Player extends Creature_player {
 
 	constructor(name:string, id: number){
 		super(name, id, 'player')

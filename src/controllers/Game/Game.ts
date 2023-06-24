@@ -140,6 +140,10 @@ module.exports = class Game {
 					return false
 				}
 
+				if(!cr.position || !player.position){
+					return false
+				}
+				
 				return Math.abs(cr.position[0] - player.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
 					&& Math.abs(cr.position[1] - player.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
 			})

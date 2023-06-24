@@ -1,4 +1,4 @@
-const MonsterModel = require('../Creature')
+const MonsterModel = require('./Creature')
 const monstersTypes = require("../../types/monstersTypes");
 
 module.exports = class Monster extends MonsterModel {

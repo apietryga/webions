@@ -37,7 +37,7 @@ export default async (server:any) => {
   const controller = new WsController()
 	return await new Promise((res, rej) => {
 		wss = new WebSocketServer({ httpServer : server })
-		wss.on('request', (req: any, test:any) => {
+		wss.on('request', (req: any) => {
 
 			const connection = req.accept('echo-protocol', req.origin)
 			connection.name = req.resourceURL.query.name

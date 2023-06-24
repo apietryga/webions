@@ -1,7 +1,7 @@
 "use strict";
-const Creature = require('../Creature');
+const Creature_player = require('./Creature');
 const playersList = require("../../lists/playersList");
-module.exports = class Player extends Creature {
+module.exports = class Player extends Creature_player {
     constructor(name, id) {
         super(name, id, 'player');
         this.loadProperties(playersList);

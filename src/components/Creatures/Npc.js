@@ -1,5 +1,5 @@
 "use strict";
-const NPCModel = require('../Creature');
+const NPCModel = require('./Creature');
 const npcsTypes = require("../../types/npcsTypes");
 module.exports = class NPC extends NPCModel {
     constructor(name, id, position) {

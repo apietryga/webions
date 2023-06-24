@@ -40,7 +40,7 @@ exports.default = (server) => __awaiter(void 0, void 0, void 0, function* () {
     const controller = new WsController();
     return yield new Promise((res, rej) => {
         wss = new WebSocketServer({ httpServer: server });
-        wss.on('request', (req, test) => {
+        wss.on('request', (req) => {
             const connection = req.accept('echo-protocol', req.origin);
             connection.name = req.resourceURL.query.name;
             connection.on('message', (data) => __awaiter(void 0, void 0, void 0, function* () {
