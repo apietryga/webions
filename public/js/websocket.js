@@ -137,6 +137,8 @@ class ServerConnect extends WebSocket {
 					"health",
 					// "maxHealth",
 					"totalHealth",
+					// "visibleFloor"
+					
 					// "redTarget",
 					// "restore",
 					// "sprite",

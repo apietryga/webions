@@ -175,13 +175,14 @@ module.exports = class Creature extends old_creature {
                 // isWall = true;
                 return false;
             }
-            // if(checkGrid[4] == "stairs"){
-            // 	if(["monster","npc"].includes(this.type)){isFloor = false;}
-            // 	if(this.type == "player"){
-            // 		isStairs = true;
-            // 		phantomPos = checkGrid[5];
-            // 	}
-            // }
+            if (checkGrid[4] == "stairs") {
+                // if(["monster","npc"].includes(this.type)){isFloor = false;}
+                if (this.type == "player") {
+                    // isStairs = true;
+                    // phantomPos = checkGrid[5];
+                    this.phantomPos = checkGrid[5];
+                }
+            }
             if (checkGrid[4] == "doors") {
                 doorAvalible = false;
                 if (["monster", "npc"].includes(this.type)) {
