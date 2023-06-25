@@ -165,7 +165,6 @@ module.exports = class Creature extends old_creature {
 		return this.phantomPos
 	}
 
-
 	isPosAvalible(){
 		let isFloor = false;
 		// let isStairs = false;

@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Webions",
+      "name": "DEV",
       "skipFiles": [
         "<node_internals>/**"
       ],
