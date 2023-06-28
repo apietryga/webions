@@ -102,13 +102,33 @@ class ServerConnect extends WebSocket {
 			// updating creatures values
 			for(const dataCreature of data.creatures){
 				// dataCreature
-				let creature = gamePlane.creatures.list.filter(cr => cr.id === dataCreature.id)?.[0]
+				
+        
+        let creature = gamePlane.creatures.list.filter(cr => cr.id === dataCreature.id)?.[0]
 
 				if(!creature){
 					// creature = dataCreature
-					const {type, position, name, id} = dataCreature
-					creature = new Creature(type, position, name, id)
+          // if(type )
+					const { type, position, name, id } = dataCreature
+          // console.log({ type })
+
+          if(type === 'player'){
+            // creature = new Creature(type, position, name, id)
+            creature = new Player(position, name, id)
+          }
+
+          if(type === 'monster'){
+            creature = new Monster(position, name, id)
+          }
+
+          if(type === 'npc'){
+            creature = new Npc(position, name, id)
+          }
+
 					gamePlane.creatures.list.push(creature)
+
+          console.log({ list: gamePlane.creatures.list, dataCreature })
+
 					continue
 				}
 

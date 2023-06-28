@@ -12,12 +12,12 @@ class Creature {
     this.x = x ;
     this.y = y ;
     this.z = z;
-    if(this.type == "player"){
-      // this.x = 200;
-      // this.y = 200;
-      this.x = Math.floor( game.mapSize[0]/2 ) * game.square;
-      this.y = Math.floor( game.mapSize[1]/2 ) * game.square;
-    }
+    // if(this.type == "player"){
+    //   // this.x = 200;
+    //   // this.y = 200;
+    //   this.x = Math.floor( game.mapSize[0]/2 ) * game.square;
+    //   this.y = Math.floor( game.mapSize[1]/2 ) * game.square;
+    // }
     // this.direction = 1;
     this.position = [x, y, z]; //x y z
     this.newPos =  equalArr(this.position);
