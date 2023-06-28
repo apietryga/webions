@@ -5,7 +5,7 @@ class Player extends Creature {
     super( 'player', position, name, id )
 
     if(name === player.name){
-      this.main = true
+      this.character = true
       this.x = Math.floor( game.mapSize[0]/2 ) * game.square;
       this.y = Math.floor( game.mapSize[1]/2 ) * game.square;
     }

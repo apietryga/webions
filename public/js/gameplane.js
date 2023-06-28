@@ -17,72 +17,70 @@ class GamePlane {
 	}
 
   init () {
-  // start () {
     this.canvas.width = game.square * game.mapSize[0];
     this.canvas.height = game.square * game.mapSize[1];
-    // this.gridSize = this.canvas.width/11;
     this.gridSize = this.canvas.width/game.mapSize[0];
     // this.context = this.canvas.getContext("2d");
     inGameConsole = new Text();
-    this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
+    // this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
     // controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     controls.planeClicking.init(this.canvas.width,this.canvas.width, game.square);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
-		/*
-    this.socketWorker = new Worker('/js/workers/socketWorker.js');
-    this.socketWorker.postMessage('init');
-    this.socketWorker.onmessage = data => { this.getServInfo( data ) }
-		// */
-		// this.player = new Creature()
-
+		// this.player = new Player()
   }
-  
-	// getServInfo( data ){
-  //   console.log("GETTED SERV INFO", { data })
-  // }
 
-	clearPlane(){
-		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-	}
+  initGameProps(){
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if(player.update && player.update.constructor === Function){
+      player.update();
+      if(fistIteration){
+        player.position = player.newPos
+      }
+    }
+    if(!player.newPos){player.newPos = player.position;}
+  }
+
+  getRenderStacks(){
+    const drawStack = []
+    const nicksStack = []
+
+    const filteredMWalls = [];
+    for(const wall of this.mwalls){
+      if(wall.position[2] <= map.visibleFloor ){
+        filteredMWalls.push(wall);
+      }
+    }
+
+    const allElements = map.grids
+      .concat(this.creatures.list)
+      .concat(this.items)
+      .concat(filteredMWalls)
+      
+    for(const el of allElements){
+      el.update();
+      drawStack.push(el);
+      if(el.nick){
+        nicksStack.push(el.nick);
+      }
+    }
+
+    return { drawStack, nicksStack }
+  }
 
   updategamePlane = async () => {
-		// console.log('this',  this )
     await serv.sendDataToServer()
-      // console.log('serv loaded')
-		this.clearPlane()
-      // gamePlane.context.clearRect(0, 0, gamePlane.canvas.width, gamePlane.canvas.height);
-      if(isSet(player.update) && player.update.constructor === Function){
-        player.update();
-				if(fistIteration){
-					player.position = player.newPos
-				}
-      }
-      menus.update();
-      if(!isSet(player.newPos)){player.newPos = player.position;}
-      map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
-      const drawStack = [];
-      const nicksStack = [];
-      // filter mwalls zIndex
-      const filteredMWalls = [];
-      if(!gamePlane.mwalls){return }
-      for(const wall of gamePlane.mwalls){
-        if(wall.position[2] <= map.visibleFloor ){
-          filteredMWalls.push(wall);
-        }
-      }
-      const allElements = map.grids
-        .concat(gamePlane.creatures.list)
-        .concat(gamePlane.items)
-        .concat(filteredMWalls);
-      for(const el of allElements){
-        el.update();
-        drawStack.push(el);
-        if(el.constructor === Creature){
-          nicksStack.push(el.nick);
-        }
-      }
-      const upperEls = ['upperwalls','doors','walls','mwalls'];
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.initGameProps()
+    menus.update();
+    map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
+
+    if(!this.mwalls){ return }
+    const { drawStack, nicksStack } = this.getRenderStacks()
+    
+    const upperEls = ['upperwalls','doors','walls','mwalls'];
+
+      
       drawStack.sort((a,b)=>{
         a.pos = [a.position[0]*1,a.position[1]*1,a.position[2]*1];
         b.pos = [b.position[0]*1,b.position[1]*1,b.position[2]*1];
@@ -120,8 +118,10 @@ class GamePlane {
           return -1
         }
       })
+
       // draw all in order
      	for(const e of drawStack.concat(nicksStack)){ e.draw(); }
+     	// for(const e of drawStack){ e.draw() }
       // update actions
       for(const a of gamePlane.actions){a.update();}
       inGameConsole.update();
@@ -151,7 +151,6 @@ class GamePlane {
     popup.init(title);
     clearInterval(this.interval);
     menus.console.log(
-      // "Game Paused. <a href='/game.html'>RELOAD</a> to play.",
       "Game Paused. <a href='/game'>RELOAD</a> to play.",
       {color:"#fff"}
     )
