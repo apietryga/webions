@@ -109,11 +109,13 @@ class GamePlane {
   }
 
   updategamePlane = async () => {
+    // console.log(map.visibleFloor)
     await serv.sendDataToServer()
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.initGameProps()
     menus.update();
-    map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
+    map.update([player.position[0],player.position[1],map.visibleFloor]);
+    // map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
     if(!this.mwalls){ return }
     const { drawStack, nicksStack } = this.getRenderStacks()
     const drawStackInOrder = this.getRenderOrder(drawStack)

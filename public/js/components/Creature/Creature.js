@@ -4,8 +4,9 @@ class Creature {
     this.type = type;
     this.cyle = 0;
     this.name = pName;
-    this.width = game.square;
-    this.height = game.square;
+    this.width = this.height = game.square;
+    // this.width = game.square;
+    // this.height = game.square;
     // this.sprite = "citizen"; 
     // this.img = map.sprites[this.sprite];
     this.hideFloor = "none";
@@ -134,39 +135,7 @@ class Creature {
         }
       }
     }
-    // WALKING
-    // if(this.walk >= serv.time){
-    //   const walkTime = this.walk - this.walkingStart;
-    //   const timeLeft = walkTime - (serv.time - this.walkingStart);
-    //   // walking cyle (animation)
-    //   timeLeft > walkTime/2?this.cyle = 2:this.cyle = 1;
-    //   // monsers and npc's has 0 speed when stay.
-    //   if(this.speed > 0){
-    //     // CHANGE POSITION OF CREATURE
-    //     const piece = 1 - Math.round((timeLeft/walkTime)*10)/10;
-    //     this.position = equalArr(this.oldPos);
-    //     for(let l of [[0,1],[1,0]]){
-    //       if(this.newPos[2] != this.oldPos[2]){
-    //         this.position = this.newPos;
-    //       }
-    //       if(this.newPos[l[0]] == this.oldPos[l[0]] ){
-    //         if(this.newPos[l[1]] > this.oldPos[l[1]]){
-    //           this.position[l[1]] = this.oldPos[l[1]] + piece;
-    //         }else if(this.newPos[l[1]] < this.oldPos[l[1]]){
-    //           this.position[l[1]] = this.oldPos[l[1]] - piece;
-    //         }
-    //       }
-    //     }
-    //   }else{
-    //     // this.direction = 1;
-    //     this.cyle = 0;
-    //   }
-    // }else{
-    //   if(this.sprite != "tourets" && this.health > 0){
-    //     this.cyle = 0;
-    //   }
-    //   this.position = this.newPos;
-    // }
+    
     // CLEAR TARGETS
     if(this.whiteTarget){
       let opp = false;
@@ -199,40 +168,11 @@ class Creature {
       controls.currentTarget = -1;
       controls.whiteTarget = false;
     }
-    // SET VISIBLE FLOOR
-    if(this.type == "player"){
-      // check windows around
-      let isWindow = false;
-      const z = player.newPos[2];
-      const checkIfWindows = [
-        [player.newPos[0],player.newPos[1]-1],
-        [player.newPos[0],player.newPos[1]+1],
-        [player.newPos[0]-1,player.newPos[1]],
-        [player.newPos[0]+1,player.newPos[1]]
-      ];
-      for(const ch of checkIfWindows){
-        for(const g of map.getGrid([ch[0],ch[1],z])){
-          if(g[4] == "windows"){
-            isWindow = true;
-          }
-        }  
-      }
-      // if player is under ground
-      if(this.position[2] < 0){
-        map.visibleFloor = z;
-      // if is something above player [level up]
-      }else if(map.getGrid([this.newPos[0],this.newPos[1],this.newPos[2]+1])[0]){
-        map.visibleFloor = z;
-      // if is something above player [2 level up]
-      }else if(map.getGrid([this.newPos[0],this.newPos[1],this.newPos[2]+2])[0]){
-        map.visibleFloor = z+1;
-      // if player is near window
-      }else if(isWindow){
-        map.visibleFloor = z;
-      }else{
-        map.visibleFloor = map.maxFloor;
-      }
+    
+    if(this.character){
+      this.setVisibleFloor()
     }
+    
     // SET OTHER CREATURES DEPENDS OF PLAYER POSITION
     if(this.type != "player" && typeof player.position != null){
       this.x = (this.position[0] - player.position[0] + Math.floor( game.mapSize[0] / 2 )) * game.square;
