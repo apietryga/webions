@@ -127,7 +127,7 @@ class ServerConnect extends WebSocket {
 
 					gamePlane.creatures.list.push(creature)
 
-          console.log({ list: gamePlane.creatures.list, dataCreature })
+          // console.log({ list: gamePlane.creatures.list, dataCreature })
 
 					continue
 				}
