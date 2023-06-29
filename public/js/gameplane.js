@@ -29,7 +29,7 @@ class GamePlane {
   }
 
   initGameProps(){
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     if(player.update && player.update.constructor === Function){
       player.update();
       if(fistIteration){
@@ -108,7 +108,9 @@ class GamePlane {
     return drawStack
   }
 
+  // async updategamePlane() {
   updategamePlane = async () => {
+    // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     // console.log(map.visibleFloor)
     await serv.sendDataToServer()
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
