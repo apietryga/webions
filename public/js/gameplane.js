@@ -20,7 +20,7 @@ class GamePlane {
     this.gridSize = this.canvas.width/game.mapSize[0];
     // this.context = this.canvas.getContext("2d");
     inGameConsole = new Text();
-    this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
+    // this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
     // controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     controls.planeClicking.init(this.canvas.width,this.canvas.width, game.square);
@@ -108,8 +108,8 @@ class GamePlane {
     return drawStack
   }
 
-  // async updategamePlane() {
   updategamePlane = async () => {
+    // async updategamePlane() {
     // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     // console.log(map.visibleFloor)
     await serv.sendDataToServer()

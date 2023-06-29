@@ -81,6 +81,7 @@ class Creature {
 		this.processing = {}
 		// this.currentlyWalking = false
   }
+  
   update(){
 		// console.log('updateing', this)
 
@@ -179,6 +180,7 @@ class Creature {
       this.y = (this.position[1] - player.position[1] + Math.floor( game.mapSize[1] / 2 )) * game.square;  
     }
   }
+
   draw(){
     let ctx = gamePlane.context;
     // SAYING
