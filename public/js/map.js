@@ -57,7 +57,13 @@ class GameMap{
 		})
   }
   update([x,y,z] = [0,0,0],how = 'default'){ // player x y z - update all grids in player Area.
-		this.grids = [];
+    // console.log(x,y,z )
+    // [x,y,z] = [x,y,z].toFixed()
+    x = x.toFixed()
+    y = y.toFixed()
+    z = z.toFixed()
+
+    this.grids = [];
     const minY = y - Math.ceil( game.mapSize[1] / 2 );
     const minX = x - Math.ceil( game.mapSize[0] / 2 );
     const maxX = game.mapSize[0] + 3;

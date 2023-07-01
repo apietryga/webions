@@ -20,7 +20,7 @@ class GamePlane {
     this.gridSize = this.canvas.width/game.mapSize[0];
     // this.context = this.canvas.getContext("2d");
     inGameConsole = new Text();
-    // this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
+    this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
     // controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     controls.planeClicking.init(this.canvas.width,this.canvas.width, game.square);
@@ -54,7 +54,6 @@ class GamePlane {
       .concat(this.creatures.list)
       .concat(this.items)
       .concat(filteredMWalls)
-      
     for(const el of allElements){
       el.update();
       drawStack.push(el);
@@ -109,14 +108,14 @@ class GamePlane {
   }
 
   updategamePlane = async () => {
-    // async updategamePlane() {
-    // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // console.log(map.visibleFloor)
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     await serv.sendDataToServer()
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.initGameProps()
     menus.update();
+
+
     map.update([player.position[0],player.position[1],map.visibleFloor]);
+
     // map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
     if(!this.mwalls){ return }
     const { drawStack, nicksStack } = this.getRenderStacks()

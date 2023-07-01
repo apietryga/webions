@@ -339,6 +339,9 @@ function get_cookie(name){
   });
 }
 
+// Array.prototype.toFixed = function() {
+//   this.map(i => { i => i.toFixed()})
+// }
 
 // signs for health, manaRegen etc.
 const sign = {
