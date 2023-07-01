@@ -33,10 +33,10 @@ class Player extends Creature {
     if(this.position[2] < 0){
       map.visibleFloor = z;
     // if is something above player [level up]
-    }else if(map.getGrid([this.position[0],this.position[1],this.position[2]+1])[0]){
+    }else if(map.getGrid([this.position[0].toFixed(),this.position[1].toFixed(),this.position[2]+1])[0]){
       map.visibleFloor = z;
     // if is something above player [2 level up]
-    }else if(map.getGrid([this.position[0],this.position[1],this.position[2]+2])[0]){
+    }else if(map.getGrid([this.position[0].toFixed(),this.position[1].toFixed(),this.position[2]+2])[0]){
       map.visibleFloor = z+1;
     // if player is near window
     }else if(isWindow){

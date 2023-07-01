@@ -39,6 +39,7 @@ class GameMap{
         if(floor*1 < this.minFloor){this.minFloor = floor*1;}
       }
     }
+    console.log("SETTING MAX ")
     this.visibleFloor = this.maxFloor*1;
   }
   loadServ(){
@@ -61,7 +62,6 @@ class GameMap{
     // [x,y,z] = [x,y,z].toFixed()
     x = x.toFixed()
     y = y.toFixed()
-    z = z.toFixed()
 
     this.grids = [];
     const minY = y - Math.ceil( game.mapSize[1] / 2 );

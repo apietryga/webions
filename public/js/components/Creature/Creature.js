@@ -331,8 +331,10 @@ class Creature {
   }
 
 	walking(){
-		
-		const data = this.processing.walk
+
+    
+    const data = this.processing.walk
+    console.log('walkin', data.position_start, data.position_end, this.position)
 		const time = new Date().getTime();
 		const time_processing = data.time_end - data.time_start
 		const time_current = time - data.time_start

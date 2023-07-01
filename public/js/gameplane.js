@@ -54,6 +54,7 @@ class GamePlane {
       .concat(this.creatures.list)
       .concat(this.items)
       .concat(filteredMWalls)
+
     for(const el of allElements){
       el.update();
       drawStack.push(el);
@@ -113,7 +114,7 @@ class GamePlane {
     this.initGameProps()
     menus.update();
 
-
+    // map.update([player.position[0],player.position[1],map.visibleFloor]);
     map.update([player.position[0],player.position[1],map.visibleFloor]);
 
     // map.update([player.newPos[0],player.newPos[1],map.visibleFloor]);
