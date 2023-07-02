@@ -30,7 +30,6 @@ module.exports = class Game {
             players: [],
             monsters: [],
             npcs: [],
-            // monsters,
             items: [],
             walls: [],
         };

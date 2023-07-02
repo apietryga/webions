@@ -39,7 +39,6 @@ class GameMap{
         if(floor*1 < this.minFloor){this.minFloor = floor*1;}
       }
     }
-    console.log("SETTING MAX ")
     this.visibleFloor = this.maxFloor*1;
   }
   loadServ(){

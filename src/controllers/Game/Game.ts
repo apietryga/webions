@@ -13,10 +13,10 @@ module.exports = class Game {
 
 	private requestsQueue: any = {};
 	private summary:  {
-		players: Array<any>,
-		monsters: Array<any>,
-		items: Array<any>,
-		npcs: Array<any>,
+		players: Array<typeof Player>,
+		monsters: Array<typeof Player>,
+		items: Array<typeof Monster>,
+		npcs: Array<typeof NPC>,
 		walls: Array<any>,
 	};
 	private wsServer: any;
@@ -30,7 +30,6 @@ module.exports = class Game {
 			players: [],
 			monsters: [],
 			npcs: [],
-			// monsters,
 			items: [],
 			walls: [],
 		}

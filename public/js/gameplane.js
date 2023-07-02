@@ -18,14 +18,11 @@ class GamePlane {
     this.canvas.width = game.square * game.mapSize[0];
     this.canvas.height = game.square * game.mapSize[1];
     this.gridSize = this.canvas.width/game.mapSize[0];
-    // this.context = this.canvas.getContext("2d");
     inGameConsole = new Text();
     this.interval = setInterval(this.updategamePlane, 1000/gamePlane.fps);
     controls.init();
-    // controls.planeClicking.init(this.canvas.width,this.canvas.width,40);
     controls.planeClicking.init(this.canvas.width,this.canvas.width, game.square);
     this.canvas.addEventListener(mobileControls.ev, (e) => {controls.planeClicking.get(e)});
-		// this.player = new Player()
   }
 
   initGameProps(){
@@ -121,6 +118,7 @@ class GamePlane {
     if(!this.mwalls){ return }
     const { drawStack, nicksStack } = this.getRenderStacks()
     const drawStackInOrder = this.getRenderOrder(drawStack)
+    console.log(drawStackInOrder)
     // draw all in order
     for(const e of drawStackInOrder.concat(nicksStack)){ e.draw(); }
     // update actions

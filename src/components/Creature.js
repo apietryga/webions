@@ -427,7 +427,7 @@ class Creature{
 		game.time = new Date()
 		this.time = (new Date()).getTime()
 		// free update first time
-		this.serverUpdating = this.serverUpdating.login ? { login: false } : {}
+		// this.serverUpdating = this.serverUpdating.login ? { login: false } : {}
 		// this.serverUpdating = {}
 		// if(this.serverUpdating.loading){
 		// 	this.serverUpdating.loading = false

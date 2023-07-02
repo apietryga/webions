@@ -20,7 +20,7 @@ module.exports = class Creature extends old_creature {
             return null;
         }
         // this.phantomPos = this.handleSpecialGrids(phantomPos)
-        console.log(this.name, this.phantomPos);
+        // console.log(this.name, this.phantomPos)
         // ladder 
         // if(this.type == "player"){
         //   for(const item of items){

@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbConnect = require("./database/dbconnect");
 const dbc = new dbConnect();
-const cm = require('./controllers/creaturesController');
-const im = require('./controllers/itemsController');
+// const cm = require('./controllers/creaturesController')
+// const im = require('./controllers/itemsController')
 const Game = require('./controllers/Game/Game');
 const router = require("./router");
 const bodyParser = require('body-parser');
@@ -39,7 +39,7 @@ app.use(cookieParser());
     // cm.players.init(global.dbconnected)
     router.set({ app });
     router.set({ dbconnect: global.dbconnected });
-    router.set({ players: cm.players });
+    // router.set({ players: cm.players })
     app.use(router.call);
     const server = app.listen(process.env.PORT || 2095);
     new Game(server);

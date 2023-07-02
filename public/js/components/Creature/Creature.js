@@ -175,7 +175,7 @@ class Creature {
     }
     
     // SET OTHER CREATURES DEPENDS OF PLAYER POSITION
-    if(this.type != "player" && typeof player.position != null){
+    if(this.name !== player.name && typeof player.position != null){
       this.x = (this.position[0] - player.position[0] + Math.floor( game.mapSize[0] / 2 )) * game.square;
       this.y = (this.position[1] - player.position[1] + Math.floor( game.mapSize[1] / 2 )) * game.square;  
     }
@@ -332,9 +332,8 @@ class Creature {
 
 	walking(){
 
-    
     const data = this.processing.walk
-    console.log('walkin', data.position_start, data.position_end, this.position)
+    // console.log('walkin', data.position_start, data.position_end, this.position)
 		const time = new Date().getTime();
 		const time_processing = data.time_end - data.time_start
 		const time_current = time - data.time_start

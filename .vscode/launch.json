@@ -13,6 +13,15 @@
       ],
       "runtimeExecutable": "nodemon",
       "program": "${workspaceFolder}/src/server.js",
-    }
+    },
+    {
+      "name": "DEV_TS",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "console": "internalConsole",
+      "runtimeArgs": [ "run", "dev_ts" ],
+    },
   ]
 }

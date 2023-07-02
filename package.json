@@ -11,6 +11,7 @@
     "scss": "node-sass --output-style=compressed --recursive public/style/scss --watch -o public/style/",
     "__comment": "//npm-run-all --parallel start scss",
     "dev": "npm-run-all --parallel start scss",
+    "dev_ts": "nodemon src/server.ts",
     "start2": "concurrently --names \"WATCH,SERVE\" -c \"bgMagenta.bold,bgGreen.bold\"  \"npm run scss\" \"npm run serve\"",
     "serve": "lite-server",
     "prod": "(npm run _start&)"

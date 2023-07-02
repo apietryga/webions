@@ -175,10 +175,11 @@ class ServerConnect extends WebSocket {
 				for(const property of keys){
           creature[property] = dataCreature[property]
 				}
-
-        if(creature.name === 'Slepo Oma'){
-          console.log(dataCreature.serverUpdating)
-        }
+        
+        // if(creature.name === 'GM'){
+        // // if(creature.name === 'Slepo Oma'){
+        //   console.log(dataCreature.serverUpdating)
+        // }
 
 				// console.log({ creature })
 				

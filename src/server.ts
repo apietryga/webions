@@ -1,7 +1,7 @@
 const dbConnect = require("./database/dbconnect");
 const dbc = new dbConnect();
-const cm = require('./controllers/creaturesController')
-const im = require('./controllers/itemsController')
+// const cm = require('./controllers/creaturesController')
+// const im = require('./controllers/itemsController')
 const Game = require('./controllers/Game/Game')
 const router = require("./router")
 const bodyParser = require('body-parser');
@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 declare global {
   var dbconnected: any;
-  var cm: any;
+  // var cm: any;
 }
 ( async () => {
   // cm.init();
@@ -32,7 +32,7 @@ declare global {
 
   router.set({ app })
   router.set({ dbconnect: global.dbconnected })
-  router.set({ players: cm.players })
+  // router.set({ players: cm.players })
   app.use(router.call)
 
 	const server = app.listen(process.env.PORT || 2095)
