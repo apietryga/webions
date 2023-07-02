@@ -49,7 +49,8 @@ class GameMap{
 	async load(){
 		const dom = document.querySelector(".loadDetails");
 		(dom == null)?'':dom.innerHTML = "Load map...";
-		await fetch('/game/get-map')
+		// await fetch('/game/get-map')
+		await fetch('/game/get-map/map.json')
 		.then(dt => dt.json())
 		.then(dt => {
 			this.template = dt;
@@ -216,3 +217,7 @@ class GameMap{
   }
 }
 if(typeof window == "undefined"){module.exports = GameMap;}
+// if(typeof window !== "undefined"){
+//   exit;
+// }
+// export default GameMap;

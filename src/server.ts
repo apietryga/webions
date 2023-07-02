@@ -1,21 +1,24 @@
-const dbConnect = require("./database/dbconnect");
-const dbc = new dbConnect();
-// const cm = require('./controllers/creaturesController')
-// const im = require('./controllers/itemsController')
-const Game = require('./controllers/Game/Game')
-const router = require("./router")
-const bodyParser = require('body-parser');
-const cookieParser = require("cookie-parser");
+// import dbConnect from "./database/dbconnect";
+import dbc from "./database/dbconnect";
+// const dbc = dbConnect();
+import Game from './controllers/Game/Game';
+
+import router from "./router";
+import bodyParser from 'body-parser';
+import cookieParser from "cookie-parser";
 // const express = require('express')
 import express from 'express';
-const cors = require('cors')
+import cors from 'cors';
 const app = express()
 app.use(cors())
-require('./controllers/crashController')
+// require('./controllers/crashController')
 require('./controllers/njkController').configure(app)
 require('dotenv').config()
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.static('./public'));
+app.use('/game/get-map', express.static('./src/map/'));
+
 app.use(cookieParser());
 
 declare global {
@@ -26,7 +29,8 @@ declare global {
   // cm.init();
   // global.cm = cm;
   // im.init();
-  global.dbconnected = dbc[ await dbc.init() ]
+  global.dbconnected = dbc[ 'json' ]
+  // global.dbconnected = 'json'
 
   // cm.players.init(global.dbconnected)
 

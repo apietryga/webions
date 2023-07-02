@@ -118,7 +118,6 @@ class GamePlane {
     if(!this.mwalls){ return }
     const { drawStack, nicksStack } = this.getRenderStacks()
     const drawStackInOrder = this.getRenderOrder(drawStack)
-    console.log(drawStackInOrder)
     // draw all in order
     for(const e of drawStackInOrder.concat(nicksStack)){ e.draw(); }
     // update actions

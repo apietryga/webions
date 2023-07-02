@@ -32,7 +32,14 @@ const dataToSave = [
 ];
 
 class dbConnect{
+
+  public selected_db: string
+  constructor(){
+    this.selected_db = 'json'
+  }
+
   // async init(callback){
+  // public redis: any
   async init(){
     if(process.env.DEV){ return 'json' }
     return 'json'
@@ -65,12 +72,8 @@ class dbConnect{
     return db
   }
 
-  constructor(){
-
-  }
-
   // db types 
-  redis = {
+  public redis: any = {
     async loadAll(){
       const keys = await this.client.keys('*')
       const players = []
@@ -79,14 +82,14 @@ class dbConnect{
       }
       return players
     },
-    async load( player ){
+    async load( player:any ){
       const bPlayer = await this.client.get( player.name )
       if(!bPlayer){ return false }
       return JSON.parse( bPlayer )
     },
-    async update( player ){
+    async update( player:any ){
       if(!player?.name){ return false }
-      const valToStore = {};
+      const valToStore:any = {};
       for(const key of Object.keys(player)){
         if(dataToSave.includes(key)){
           valToStore[key] = player[key];
@@ -95,7 +98,7 @@ class dbConnect{
       const stringyfy = JSON.stringify(valToStore);
       return await this.client.set( player.name, stringyfy );
     },
-    del(playerName){
+    del(playerName:any){
       this.client.del(playerName);
     }
   }
@@ -109,11 +112,11 @@ class dbConnect{
       }
       return []
     },
-    async load( player ){
+    async load( player:any ){
       const p = await this.playerIsSet( player.name )
       return p[0]
     },
-    async update( player ){
+    async update( player:any ){
       const p = await this.playerIsSet(player.name)
         if(typeof p[0] == "object"){
           for(const k of Object.keys(player)){
@@ -123,7 +126,7 @@ class dbConnect{
           }
         }else{
           // create new record
-          const nPlayer = {};
+          const nPlayer:any = {};
           for(const k of Object.keys(player)){
             if(dataToSave.includes(k)){
               nPlayer[k] = player[k];
@@ -133,7 +136,7 @@ class dbConnect{
         }
         this.save(p[1]);
     },
-    del(playerName){
+    del(playerName:any){
       const allPlayers = JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
       for(const [i,player] of allPlayers.entries()){
         if(player.name == playerName){
@@ -144,7 +147,7 @@ class dbConnect{
     },
 
     // FOR INTERNAL USAGE ONLY
-    async playerIsSet( name ){
+    async playerIsSet( name:any ){
       const allPlayers = await JSON.parse(fs.readFileSync(this.src,{encoding:"utf8"}));
       let isPlayer, index, p;
       for([ index, p ] of allPlayers.entries()){
@@ -155,7 +158,7 @@ class dbConnect{
       }
       return [isPlayer, allPlayers, index];
     },
-    save(newContent){
+    save(newContent:any){
       fs.writeFileSync(this.src, stringify(newContent));  
     },
     src: "./src/lists/playersList.json",
@@ -213,4 +216,5 @@ class dbConnect{
   //   }
   // }
 }
-module.exports = dbConnect;
+// module.exports = dbConnect;
+export default new dbConnect()

@@ -1,3 +1,4 @@
+
 const monstersList = require("../../lists/monstersList").data;
 const npcsList = require("../../lists/npcsList").data;
 const Player = require("../../components/Creatures/Player")
@@ -8,8 +9,8 @@ const game = require("../../../public/js/gameDetails");
 import WebSocket from '../WebSocket/WebSocket'
 
 // require('../../config/jsExtensions')
-
-module.exports = class Game {
+export default class Game {
+// module.exports = class Game {
 
 	private requestsQueue: any = {};
 	private summary:  {

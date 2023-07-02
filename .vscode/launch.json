@@ -19,9 +19,9 @@
       "type": "node",
       "request": "launch",
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "ts-node-esm",
       "console": "internalConsole",
-      "runtimeArgs": [ "run", "dev_ts" ],
+      "runtimeArgs": [ "src/server.ts" ],
     },
   ]
 }
