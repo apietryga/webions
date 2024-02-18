@@ -16,6 +16,10 @@ class ServerConnect extends WebSocket {
 		this.connected = false
 		this.lastSentParams = ""
 		this.message = {}
+
+    this.game = new Game()
+
+    console.log("GAME IMPMENETED")
 	}
 
 	onOpen(){
@@ -41,11 +45,11 @@ class ServerConnect extends WebSocket {
 	
 	async getDataFromServer(msg){
 
+    // ! here the newest gameplane update
+    this.game.setData(msg.data, gamePlane)
+
 		const data = JSON.parse(msg.data);
 		this.message = data
-
-    // gamePlane.creatures.list = data.creatures
-    // console.log('message', data.creatures)
 
 		// update game properties
 		this.datetime = data.game.time;
@@ -54,143 +58,45 @@ class ServerConnect extends WebSocket {
 
     // magic walls
     gamePlane.mwalls = [];
-			// for(const mwall of data.walls){
-			// 	gamePlane.mwalls.push(new Grid([0,mwall[0]*1,mwall[1]*1,mwall[2]*1,'mwalls']));
-			// }
+    // for(const mwall of data.walls){
+    // 	gamePlane.mwalls.push(new Grid([0,mwall[0]*1,mwall[1]*1,mwall[2]*1,'mwalls']));
+    // }
 
-			// player died
-			// if(typeof data.game.dead != "undefined"){
-			// 	gamePlane.stop("You are dead.");
-			// 	// callback();
-			// 	return
-			// }
+    // player died
+    // if(typeof data.game.dead != "undefined"){
+    // 	gamePlane.stop("You are dead.");
+    // 	// callback();
+    // 	return
+    // }
 
-			// get names of online players
-			// let onlinePlayers = [];
-			// for(const p of data.creatures){
-			// 	if(p.type == "player"){
-			// 		onlinePlayers.push(p.name);
-			// 	}
-			// }
+    // get names of online players
+    // let onlinePlayers = [];
+    // for(const p of data.creatures){
+    // 	if(p.type == "player"){
+    // 		onlinePlayers.push(p.name);
+    // 	}
+    // }
 
-			// kick off offline players and update creature names
-			// for(const ac of gamePlane.creatures.list){
-			// 	if(!onlinePlayers.includes(ac.name) && ac.type == "enemy"){
-			// 		gamePlane.actions.push(new Action("misc",ac.position[0]+ac.x,ac.position[1]+ac.y,40,40,0));     
-			// 		gamePlane.creatures.list.splice(gamePlane.creatures.list.indexOf(ac),1);
-			// 		if(gamePlane.creatures.ids.includes(ac.id)){
-			// 			gamePlane.creatures.ids.splice(gamePlane.creatures.ids.indexOf(ac.id),1);
-			// 		}
-			// 		continue;
-			// 	}
-			// 	if(!gamePlane.creatures.ids.includes(ac.id)){
-			// 		gamePlane.creatures.ids.push(ac.id);
-			// 	}
-			// }
+    // kick off offline players and update creature names
+    // for(const ac of gamePlane.creatures.list){
+    // 	if(!onlinePlayers.includes(ac.name) && ac.type == "enemy"){
+    // 		gamePlane.actions.push(new Action("misc",ac.position[0]+ac.x,ac.position[1]+ac.y,40,40,0));     
+    // 		gamePlane.creatures.list.splice(gamePlane.creatures.list.indexOf(ac),1);
+    // 		if(gamePlane.creatures.ids.includes(ac.id)){
+    // 			gamePlane.creatures.ids.splice(gamePlane.creatures.ids.indexOf(ac.id),1);
+    // 		}
+    // 		continue;
+    // 	}
+    // 	if(!gamePlane.creatures.ids.includes(ac.id)){
+    // 		gamePlane.creatures.ids.push(ac.id);
+    // 	}
+    // }
 
-			// update items
-			// gamePlane.items = [];
-			// for(const item of data.items){
-			// 	gamePlane.items.push(new Item(item));
-			// }
-
-			// updating creatures values
-      console.log('data.creatures', data.creatures)
-			for(const dataCreature of data.creatures){
-				// dataCreature
-        
-        let creature = gamePlane.creatures.list.filter(cr => cr.id === dataCreature.id)?.[0]
-
-        console.log('before creature', creature, gamePlane.creatures.list)
-				if(! creature){
-					// creature = dataCreature
-          // if(type )
-					const { type, position, name, id } = dataCreature
-          // console.log({ type })
-
-          if(type === 'player'){
-            // creature = new Creature(type, position, name, id)
-            creature = new Player(position, name, id)
-          }
-
-          if(type === 'monster'){
-            creature = new Monster(position, name, id)
-          }
-
-          if(type === 'npc'){
-            creature = new Npc(position, name, id)
-          }
-
-					gamePlane.creatures.list.push(creature)
-
-          // console.log({ list: gamePlane.creatures.list, dataCreature })
-
-					continue
-				}
-        console.log('creature', creature)
-
-				// console.log(creature.serverUpdate)
-				// creature.serverUpdating = dataCreature.serverUpdating
-				// creature.id = dataCreature.id
-				// creature.name = dataCreature.name
-				// creature.name = dataCreature.name
-				// if(creature.serverUpdate){
-				// 	console.log(creature.serverUpdate)
-				// }
-				// console.log({dataCreature})
-				const keys = [
-					'serverUpdating',
-					'name',
-					'id',
-					'sprite',
-					'colors',
-					// 'type',
-					// 'position',
-					'direction',
-					// "walk",
-					// "speed",
-					// "totalSpeed",
-					// "direction",
-					"health",
-					// "maxHealth",
-					"totalHealth",
-					// "visibleFloor"
-					
-					// "redTarget",
-					// "restore",
-					// "sprite",
-					// "exhaustTime",
-					// "exhaust",
-					// "baseSpeed",
-					// "serverUpdating",
-					// "skills",
-					// "speaker",
-					// "dial"
-			]
-
-				// for(const property in dataCreature){
-				for(const property of keys){
-          creature[property] = dataCreature[property]
-				}
-        
-        // if(creature.name === 'GM'){
-        // // if(creature.name === 'Slepo Oma'){
-        //   console.log(dataCreature.serverUpdating)
-        // }
-
-				// console.log({ creature })
-				// console.log('creatures names', creature.name, player.name)
-				if(creature.name === player.name){
-          // console.log({ creature })
-					player = creature
-				}
-				// creature
-
-
-				
-				// const creature = data.creatures[property]
-				// gamePlane.creatures
-			}
+    // update items
+    // gamePlane.items = [];
+    // for(const item of data.items){
+    // 	gamePlane.items.push(new Item(item));
+    // }
 
 			// for(const creature of data.creatures){
 			// // 	let myChar;
