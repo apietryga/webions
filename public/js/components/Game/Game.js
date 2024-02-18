@@ -46,7 +46,7 @@ class Game {
   setCreatures(data){
 
     const creatures = new Map()
-    console.log({data})
+
     data.creatures.forEach(creature => {
       creatures.set(creature.id, creature)
     })
