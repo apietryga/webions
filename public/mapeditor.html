@@ -137,7 +137,7 @@
       window.history.replaceState(null, null, "?position="+this.position);
       // update display 
       displayPos();
-
+			console.log('eee')
       map.visibleFloor = this.position[2]*1;
       const ctx = this.canvas.getContext("2d");
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

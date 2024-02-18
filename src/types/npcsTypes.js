@@ -1,9 +1,10 @@
-this.npcs = [
+module.exports = [
   { name:"Slepo Oma",
     sprite:"oma",
     health:100,
     type:"npc",
     speed:1.3,
+		position:[35, -9,-1],
     skills:{
       fist:0,
       exp:-50,
@@ -33,6 +34,7 @@ this.npcs = [
     sprite:"king",
     health:10000000,
     speed:0.8,
+		position:[55, -30,-1],
     skills:{
       fist:10,
       exp:1,

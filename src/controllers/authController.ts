@@ -1,35 +1,40 @@
-// const bcrypt = require('bcrypt');
-const bcrypt = require('bcryptjs');
-const func = require('../../public/js/functions')
-const npcs = require('../lists/npcs').npcs;
-const creatures = require('../types/monstersTypes');
-const monsters = creatures.filter( creature => typeof creature.type == "undefined" && creature.sprite != "tourets" )
-const monstersNames = func.getNamesFromObjArr(monsters).concat(func.getNamesFromObjArr(npcs));
-const Creature = require('../components/Creature')
+const bcrypt = require('bcrypt');
+// import bcrypt from 'bcryptjs';
+// const func = require('../../public/js/functions')
+import func from '../helpers/functions';
+const npcs = require('../lists/npcsList').data;
+import creatures from '../types/monstersTypes';
+const monsters = creatures.filter((creature: any) => typeof creature.type == "undefined" && creature.sprite != "tourets" )
+// const monstersNames = func.getNamesFromObjArr(monsters).concat(func.getNamesFromObjArr(npcs));
 
-module.exports = new class authController {
+const monstersNames = monsters.map((m:any) => m.name).concat(npcs.map((n:any) => n.name)) 
+// const monstersNames = func.getNamesFromObjArr(monsters).concat(func.getNamesFromObjArr(npcs));
+// import Creature from '../components/Creature';
+const Creature =  require('../components/Creature');
+
+export default new class authController {
   password = {
-    cryptPassword : (password, callback) => {
-      bcrypt.genSalt(10, function(err, salt) {
+    cryptPassword : (password: string, callback: Function) => {
+      bcrypt.genSalt(10, function(err:string, salt: string) {
         if (err){
           console.error(err);
           return callback(err);
         }
-        bcrypt.hash(password, salt, function(err, hash) {
+        bcrypt.hash(password, salt, function(err: string, hash: string) {
           return callback(err, hash);
         });
       });
     },
-    comparePassword : async ( plainPass, hashword ) => {
+    comparePassword : async ( plainPass: string, hashword:string ) => {
       return await bcrypt.compare(plainPass, hashword)
     },
   }
 
-  async isAuth( req ){ // cookie login
+  async isAuth( req: any ){ // cookie login
     if(!req.cookies?.token || req.cookies?.token == ''){ return false }
 
     const all = await dbconnected.loadAll()
-    const player = all.filter( player => player.token === req.cookies.token )[0]
+    const player = all.filter((player:any) => player.token === req.cookies.token )[0]
 
     if(player){
       return {
@@ -42,9 +47,10 @@ module.exports = new class authController {
     return false 
   }
 
-  home = (req, res) => { 
+  home = (req:any, res:any) => { 
     const vals = {
-      action : req.url.replace("/", "")
+      action : req.url.replace("/", ""),
+      js: ''
     }
     if(req.url == '/register'){
       vals.js = `<script>let monstersNames = ${ JSON.stringify( monstersNames ) }</script>`
@@ -52,12 +58,13 @@ module.exports = new class authController {
     res.render('account.njk', vals) 
   }
 
-  login = async ( req, res ) => {
+  login = async ( req:any, res:any ) => {
+		console.log('LOGIN')
     const data = req.body
-    const currentTokens = [];
+    const currentTokens: Array<any> = [];
     const allPlayers = await dbconnected.loadAll();
 
-    const dbres = allPlayers.find( player => { 
+    const dbres = allPlayers.find((player:any) => { 
       currentTokens.push( player.token )
       return player.name == data.nick 
     })
@@ -86,11 +93,11 @@ module.exports = new class authController {
     res.render('game.njk', {
       action : 'game',
       token,
-      nick: data.nick
+      nick: data.nick,
     })
   }
 
-  logout = (req, res) => { 
+  logout = (req:any, res:any) => { 
     res.render('account.njk', {
       action: 'result',
       js: "<script>delete_cookie('token')</script>",
@@ -98,7 +105,7 @@ module.exports = new class authController {
     }) 
   }
 
-  register = async ( req, res ) => {
+  register = async ( req:any, res:any ) => {
     const vals = {
       action : 'register',
       js : `<script>let monstersNames = ${ JSON.stringify( monstersNames ) }</script>`
@@ -114,7 +121,7 @@ module.exports = new class authController {
       return res.render('account.njk', { ...vals, message : "<b style='color:red;'>"+validNick[1]+"</b>" })
     }
     const newPlayer = new Creature(validNick[1]);
-    this.password.cryptPassword(req.body.password, async ( e, password ) => {
+    this.password.cryptPassword(req.body.password, async ( e:string, password:string ) => {
       if(e != null){ return console.error(e) }
       // console.log('stąd4')
       await dbconnected.update({
@@ -130,6 +137,6 @@ module.exports = new class authController {
     })
   }
 
-  forgot = (req, res) => { res.render('account.njk', req.query) }
+  forgot = (req:any, res:any) => { res.render('account.njk', req.query) }
 
 }

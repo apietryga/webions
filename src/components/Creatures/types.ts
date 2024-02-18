@@ -1,0 +1,4 @@
+interface Creature {
+	name: string,
+	
+}

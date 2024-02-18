@@ -1,9 +1,12 @@
+/*
 const inGameMonsters = require("../lists/monstersList").data;
 const game = require("../../public/js/gameDetails");
 const Creature = require("../components/Creature");
+// import Creature from "../components/Creature"
+const Monster = require("../components/Creatures/Monster");
 const monstersTypes = require("../types/monstersTypes");
 const logger = require('../config/winston')
-const npcs = require("../lists/npcs").npcs;
+const npcs = require("../lists/npcsList").data;
 const disallowKeys = [
   "startPosition",
   "email",
@@ -18,14 +21,15 @@ const cm = { // creatures managment [monsters = monsters & npc's]
   monstersInArea: [],
   loadMonsters(){
     for(const m of inGameMonsters){
-      let monster;
-      if(typeof m.type != "undefined"){
-        monster = new Creature(m.name,this.allMonsters.length,"monster");
-        // monster.type = m.type;
-      }else{
-        monster = new Creature(m.name,this.allMonsters.length,m.type);
-        // monster.type = "monster";
-      }
+			const monster = new Monster(m.name, this.allMonsters.length, m.type || "monster")
+      // let monster;
+      // if(typeof m.type != "undefined"){
+      //   monster = new Creature(m.name,this.allMonsters.length,"monster");
+      //   // monster.type = m.type;
+      // }else{
+      //   monster = new Creature(m.name,this.allMonsters.length,m.type);
+      //   // monster.type = "monster";
+      // }
 
       for(const k of Object.keys(m)){
         monster[k] = m[k];
@@ -157,7 +161,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         player.update({name:player.name,type: 'initUpdate'},db,[],[]);
         // update player skills
         player.skills.level = -1;
-        player.updateSkills(db);
+        // player.updateSkills(db);
       }
     },
     async update(param, dbconnected){
@@ -187,7 +191,7 @@ const cm = { // creatures managment [monsters = monsters & npc's]
         let newID = 1; while(ids.includes(newID)){newID++;}
         // get info from srv;
         const newPlayer = new Creature(param.name,newID-1,"player");
-        const res = await dbconnected.load(newPlayer)
+        const res = await dbconnected?.load(newPlayer)
         if(res){
           // merge it with newPlayer
           const defaultPosition = newPlayer.position;
@@ -230,3 +234,4 @@ const cm = { // creatures managment [monsters = monsters & npc's]
   }
 }
 module.exports = cm
+*/

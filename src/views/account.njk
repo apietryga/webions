@@ -46,11 +46,21 @@
         <form action="/game" method="post">
           <div class="nick">
             <label for="nick">Username:</label>
-            <input type="text" id="nick" name="nick" placeholder="nick">
+            <input 
+              type="text" 
+              id="nick" 
+              name="nick" 
+              placeholder="nick"
+              autocomplete="nick"
+            >
           </div>
           <div class="pass">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="password">
+            <input type="password" 
+              id="password" name="password" 
+              placeholder="password"
+              autocomplete="current-password"
+            >
           </div>
           <div class="buttons">
             <input type="submit" value="Ok" name="type">  
@@ -67,10 +77,20 @@
 
         <form action="/acc/register" method="post">
           <div class="nick">
-            <input type="text" placeholder="nick" name="nick">
+            <input 
+              type="text" 
+              placeholder="nick" 
+              name="nick"
+              autocomplete="nick"
+            >
           </div>
           <div class="pass">
-            <input type="password" name="password" placeholder="password">
+            <input 
+              type="password" 
+              name="password" 
+              placeholder="password"
+              autocomplete="current-password"
+            >
           </div>
           <div class="pass">
             <input type="text" placeholder="email" name="email">
@@ -101,7 +121,12 @@
 
         <form action="/acc/forgot" method="post">
           <div class="email">
-            <input type="text" placeholder="nick" name="nick">
+            <input 
+              type="text" 
+              placeholder="nick" 
+              name="nick"
+              autocomplete="nick"
+            >
           </div>
           <div class="buttons">
             <input type="submit" value="Remind" name="type">
@@ -116,9 +141,15 @@
       <div class="window-inside">
 
         <form action="/acc/newpass" method="post">
+          <input type="text" name="username" autocomplete="username" style="display:none">
           <input type="hidden" name="passToken">
           <div class="pass">
-            <input type="password" placeholder="new&nbsp;password" name="newpass">
+            <input 
+              type="password" 
+              placeholder="new&nbsp;password" 
+              name="newpass"
+              autocomplete="new-password"
+            >
           </div>
           <input type="submit" value="CHANGE" name="type">
         </form>

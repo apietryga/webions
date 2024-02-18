@@ -1,7 +1,7 @@
 // ! Cant run global vars from here, so make it again
 const dbConnect = require('../database/dbconnect')
 const dbc = new dbConnect();
-const cm = require('./creaturesController')
+// const cm = require('./creaturesController')
 const logger = require('../config/winston')
 
 // CATCH ALL CONSOLE LOGS AND ERRORS
@@ -33,10 +33,10 @@ const shutdown = signal => {
       // redis shut down, so set db again
       global.dbconnected = dbc[await dbc.init()]
     }
-    for(const player of cm.players.list){
-      // player.console = "Server will restart in few seconds.";
-      global.dbconnected.update(player);
-    }
+    // for(const player of cm.players.list){
+    //   // player.console = "Server will restart in few seconds.";
+    //   global.dbconnected.update(player);
+    // }
     // console.log('PLAYERS SAVED AFTER '+signal);
   };
 }
