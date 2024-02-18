@@ -7,12 +7,15 @@ const NPC = require("../../components/Creatures/NPC")
 const game = require("../../../public/js/gameDetails");
 
 import WebSocket from '../WebSocket/WebSocket'
+import { Server } from 'http';
 
-// require('../../config/jsExtensions')
 export default class Game {
-// module.exports = class Game {
 
 	private requestsQueue: any = {};
+	private wsServer: any;
+	private server: Server;
+	private creaturesToUpdateQueue: Array<any> = [];
+	private uid: number = 0; 
 	private summary:  {
 		players: Array<typeof Player>,
 		monsters: Array<typeof Player>,
@@ -20,12 +23,8 @@ export default class Game {
 		npcs: Array<typeof NPC>,
 		walls: Array<any>,
 	};
-	private wsServer: any;
-	private server: any;
-	private creaturesToUpdateQueue: Array<any> = [];
-	private uid: number = 0; 
 
-	constructor(server: any) {
+	constructor(server: Server) {
 		this.server = server
 		this.summary = {
 			players: [],
@@ -46,8 +45,8 @@ export default class Game {
 
 	private mainLoop(){
 
-		setTimeout(() => { this.mainLoop() }, 100)
-		
+    setTimeout(() => { this.mainLoop() }, 100)
+
 		this.requestsQueue = {}
 		this.getIterationRequestsQueue()
 		
@@ -60,24 +59,30 @@ export default class Game {
 
 		this.wsServer.clientsRequestsQueue = []
 
-	}
+		// setTimeout(() => { this.mainLoop() }, 100)
+		
+  }
 
 	private sendUpdatesToClients(){
-		// console.log({to_update: this.creaturesToUpdateQueue })
-		// console.log('to_update:', this.creaturesToUpdateQueue.map(c => c.name) )
-		for(const creature of this.creaturesToUpdateQueue){
-			if(creature.type === 'player'){
-				this.wsServer.sendDataToClient({
-					name: creature.name,
-					key: creature.key
-				},{
-					game,
-					items: [],
-					walls: [],
-					creatures: this.creaturesToUpdateQueue,
-				})
-			}
-		}
+    this.creaturesToUpdateQueue.forEach(creature => {
+
+			if(creature.type !== 'player') return
+
+      const player = {
+        name: creature.name,
+        key: creature.key
+      }
+
+      const data = {
+          game,
+          items: [],
+          walls: [],
+          creatures: this.creaturesToUpdateQueue,
+      }
+
+      this.wsServer.sendDataToClient(player, data)
+
+		})
 	}
 
 	private initNPCs(){

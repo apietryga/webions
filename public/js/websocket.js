@@ -40,25 +40,20 @@ class ServerConnect extends WebSocket {
 	}
 	
 	async getDataFromServer(msg){
+
 		const data = JSON.parse(msg.data);
 		this.message = data
 
+    // gamePlane.creatures.list = data.creatures
+    // console.log('message', data.creatures)
 
 		// update game properties
 		this.datetime = data.game.time;
 		this.time = new Date(this.datetime).getTime();
 		gamePlane.fps = data.game.fps
 
-		// console.log(' game', data.game)
-		// gamePlane = {...data.game}
-
-
-		// console.log({ data })
-
-		// return
-
-			// magic walls
-			gamePlane.mwalls = [];
+    // magic walls
+    gamePlane.mwalls = [];
 			// for(const mwall of data.walls){
 			// 	gamePlane.mwalls.push(new Grid([0,mwall[0]*1,mwall[1]*1,mwall[2]*1,'mwalls']));
 			// }
@@ -100,13 +95,14 @@ class ServerConnect extends WebSocket {
 			// }
 
 			// updating creatures values
+      console.log('data.creatures', data.creatures)
 			for(const dataCreature of data.creatures){
 				// dataCreature
-				
         
         let creature = gamePlane.creatures.list.filter(cr => cr.id === dataCreature.id)?.[0]
 
-				if(!creature){
+        console.log('before creature', creature, gamePlane.creatures.list)
+				if(! creature){
 					// creature = dataCreature
           // if(type )
 					const { type, position, name, id } = dataCreature
@@ -131,6 +127,7 @@ class ServerConnect extends WebSocket {
 
 					continue
 				}
+        console.log('creature', creature)
 
 				// console.log(creature.serverUpdate)
 				// creature.serverUpdating = dataCreature.serverUpdating
@@ -182,8 +179,9 @@ class ServerConnect extends WebSocket {
         // }
 
 				// console.log({ creature })
-				
+				// console.log('creatures names', creature.name, player.name)
 				if(creature.name === player.name){
+          // console.log({ creature })
 					player = creature
 				}
 				// creature
@@ -195,102 +193,107 @@ class ServerConnect extends WebSocket {
 			}
 
 			// for(const creature of data.creatures){
-			// 	let myChar;
-			// 	let charId;
-			// 	if(!gamePlane.creatures.ids.includes(creature.id)){
-			// 		if(creature.name == player.name){
-			// 			player = new Creature("player",player.position,player.name); 
-			// 			myChar = player;
-			// 		}else{
-			// 			let type = "monster";
-			// 			if(creature.type == "player"){type = "enemy";}
-			// 			if(creature.type == "npc"){type = "npc";}
-			// 			// }else if(creature.type == "npc"){type = "npc"}
-			// 			myChar = new Creature(type,creature.position,creature.name);
-			// 		}
-			// 		myChar.id = creature.id;
-			// 		// prevent double chars/players
-			// 		let isPlayer = false;
-			// 		let isSet = false;
-			// 		for(const cr of gamePlane.creatures.list){
-			// 			if(myChar.id == cr.id){
-			// 				isSet = true;
-			// 			}
-			// 			if(cr.type == "player" && myChar.type == "player"){
-			// 				isPlayer = true;              
-			// 			}
-			// 		}
+			// // 	let myChar;
+			// // 	let charId;
+			// 	if(! gamePlane.creatures.ids.includes(creature.id)){
 
-			// 		if( !isPlayer && !isSet){
-			// 			gamePlane.creatures.list.push(myChar);
-			// 		}
-			// 		charId = gamePlane.creatures.list.length-1;
-			// 	}else{
-			// 		// find it in gamePlane.creatures.list
-			// 		for(const [i,pl] of gamePlane.creatures.list.entries()){
-			// 			if(pl.id == creature.id){
-			// 				myChar = creature;
-			// 				charId = i;
-			// 			}
-			// 		}
-			// 		// update ingameconsole
-			// 		if(creature.name == player.name && creature.text != "" && isSet(creature.text)){
-			// 			inGameConsole.text = creature.text;
-			// 			if(creature.text == "Target lost."){
-			// 				controls.currentTarget = -1;
-			// 			}
-			// 			if(creature.text == "There's no way."){
-			// 				joyPad.vibrate(0.1,10);
-			// 			}
-			// 		}
-			// 	}
+      //     if(creature.name == player.name){
 
-			// 	// updating values
-			// 	for(const key of Object.keys(creature)){
-			// 		// console.log(creature)
-			// 		if(key == "serverUpdating"){
-			// 			gamePlane.creatures.list[charId]["serverUpdating"] = creature[key];
-			// 		}
-			// 		if(key == "position"){
-			// 			// gamePlane.creatures.list[charId]["servPos"] = creature[key];
-			// 			if(!compareTables(gamePlane.creatures.list[charId]["newPos"],creature[key])){
-			// 				gamePlane.creatures.list[charId]["oldPos"] = gamePlane.creatures.list[charId]["newPos"];
-			// 				gamePlane.creatures.list[charId]["newPos"] = creature[key];
-			// 				gamePlane.creatures.list[charId]["walkingStart"] = serv.time;
-			// 			}
-			// 			continue;
-			// 		}
-			// 		if(key == "health"){gamePlane.creatures.list[charId]["oldHealth"] = gamePlane.creatures.list[charId]["health"];}
-			// 		if(key == "mana"){gamePlane.creatures.list[charId]["oldMana"] = gamePlane.creatures.list[charId]["mana"];}
-			// 		if(key == "skills"){
-			// 			let oldExp;
-			// 			let oldLvl;
-			// 			if(gamePlane.creatures.list[charId].type == "player"
-			// 			&& isSet(gamePlane.creatures.list[charId].skills)){
-			// 				if(gamePlane.creatures.list[charId].skills["exp"] != creature[key]["exp"]){
-			// 					oldExp = gamePlane.creatures.list[charId].skills["exp"];
-			// 				}
-			// 				if(gamePlane.creatures.list[charId].skills["level"] != creature[key]["level"]){
-			// 					oldLvl = gamePlane.creatures.list[charId].skills["level"];                  
-			// 				}
-			// 			}
-			// 			gamePlane.creatures.list[charId].skills = {};
-			// 			for(const k of Object.keys(creature[key])){
-			// 				if(k == "exp" && isSet(oldExp)){
-			// 					gamePlane.creatures.list[charId].skills["oldExp"] = oldExp;
-			// 				}
-			// 				if(k == "level" && isSet(oldLvl)){
-			// 					gamePlane.creatures.list[charId].skills["oldLvl"] = oldLvl;
-			// 				}
-			// 				gamePlane.creatures.list[charId].skills[k] = creature[key][k];
-			// 			}
-			// 			if(!isSet(oldExp)){gamePlane.creatures.list[charId].skills["oldExp"] = gamePlane.creatures.list[charId].skills["exp"];}
-			// 			if(!isSet(oldLvl)){gamePlane.creatures.list[charId].skills["oldLvl"] = gamePlane.creatures.list[charId].skills["level"];}
-			// 			continue;
-			// 		}
-			// 		if(key == "type"){continue;}
-			// 		if(key == "console"){menus.console.log(creature[key])}
-			// 		gamePlane.creatures.list[charId][key] = creature[key];
+      //       const { position, name, id } = creature
+      //       player =  new Player(position, name, id) 
+      //       // player = new Creature("player", creature.position, creature.name, creature.id); 
+      //       console.log("player", player.id, player)
+      //     // 			myChar = player;
+      //         // }else{
+      //     // 			let type = "monster";
+      //     // 			if(creature.type == "player"){type = "enemy";}
+      //     // 			if(creature.type == "npc"){type = "npc";}
+      //     // 			// }else if(creature.type == "npc"){type = "npc"}
+      //     // 			myChar = new Creature(type,creature.position,creature.name);
+      //     // 		}
+      //     // 		myChar.id = creature.id;
+      //     // 		// prevent double chars/players
+      //     // 		let isPlayer = false;
+      //     // 		let isSet = false;
+      //     // 		for(const cr of gamePlane.creatures.list){
+      //     // 			if(myChar.id == cr.id){
+      //     // 				isSet = true;
+      //     // 			}
+      //     // 			if(cr.type == "player" && myChar.type == "player"){
+      //     // 				isPlayer = true;              
+      //     // 			}
+      //   }
+
+			// // 		if( !isPlayer && !isSet){
+			// // 			gamePlane.creatures.list.push(myChar);
+			// // 		}
+			// // 		charId = gamePlane.creatures.list.length-1;
+			// // 	}else{
+			// // 		// find it in gamePlane.creatures.list
+			// // 		for(const [i,pl] of gamePlane.creatures.list.entries()){
+			// // 			if(pl.id == creature.id){
+			// // 				myChar = creature;
+			// // 				charId = i;
+			// // 			}
+			// // 		}
+			// // 		// update ingameconsole
+			// // 		if(creature.name == player.name && creature.text != "" && isSet(creature.text)){
+			// // 			inGameConsole.text = creature.text;
+			// // 			if(creature.text == "Target lost."){
+			// // 				controls.currentTarget = -1;
+			// // 			}
+			// // 			if(creature.text == "There's no way."){
+			// // 				joyPad.vibrate(0.1,10);
+			// // 			}
+			// // 		}
+			// // 	}
+
+			// // 	// updating values
+			// // 	for(const key of Object.keys(creature)){
+			// // 		// console.log(creature)
+			// // 		if(key == "serverUpdating"){
+			// // 			gamePlane.creatures.list[charId]["serverUpdating"] = creature[key];
+			// // 		}
+			// // 		if(key == "position"){
+			// // 			// gamePlane.creatures.list[charId]["servPos"] = creature[key];
+			// // 			if(!compareTables(gamePlane.creatures.list[charId]["newPos"],creature[key])){
+			// // 				gamePlane.creatures.list[charId]["oldPos"] = gamePlane.creatures.list[charId]["newPos"];
+			// // 				gamePlane.creatures.list[charId]["newPos"] = creature[key];
+			// // 				gamePlane.creatures.list[charId]["walkingStart"] = serv.time;
+			// // 			}
+			// // 			continue;
+			// // 		}
+			// // 		if(key == "health"){gamePlane.creatures.list[charId]["oldHealth"] = gamePlane.creatures.list[charId]["health"];}
+			// // 		if(key == "mana"){gamePlane.creatures.list[charId]["oldMana"] = gamePlane.creatures.list[charId]["mana"];}
+			// // 		if(key == "skills"){
+			// // 			let oldExp;
+			// // 			let oldLvl;
+			// // 			if(gamePlane.creatures.list[charId].type == "player"
+			// // 			&& isSet(gamePlane.creatures.list[charId].skills)){
+			// // 				if(gamePlane.creatures.list[charId].skills["exp"] != creature[key]["exp"]){
+			// // 					oldExp = gamePlane.creatures.list[charId].skills["exp"];
+			// // 				}
+			// // 				if(gamePlane.creatures.list[charId].skills["level"] != creature[key]["level"]){
+			// // 					oldLvl = gamePlane.creatures.list[charId].skills["level"];                  
+			// // 				}
+			// // 			}
+			// // 			gamePlane.creatures.list[charId].skills = {};
+			// // 			for(const k of Object.keys(creature[key])){
+			// // 				if(k == "exp" && isSet(oldExp)){
+			// // 					gamePlane.creatures.list[charId].skills["oldExp"] = oldExp;
+			// // 				}
+			// // 				if(k == "level" && isSet(oldLvl)){
+			// // 					gamePlane.creatures.list[charId].skills["oldLvl"] = oldLvl;
+			// // 				}
+			// // 				gamePlane.creatures.list[charId].skills[k] = creature[key][k];
+			// // 			}
+			// // 			if(!isSet(oldExp)){gamePlane.creatures.list[charId].skills["oldExp"] = gamePlane.creatures.list[charId].skills["exp"];}
+			// // 			if(!isSet(oldLvl)){gamePlane.creatures.list[charId].skills["oldLvl"] = gamePlane.creatures.list[charId].skills["level"];}
+			// // 			continue;
+			// // 		}
+			// // 		if(key == "type"){continue;}
+			// // 		if(key == "console"){menus.console.log(creature[key])}
+			// // 		gamePlane.creatures.list[charId][key] = creature[key];
 			// 	}
 			// }
 

@@ -1,5 +1,5 @@
 class Creature {
-  constructor(type,[x, y, z], pName,id){
+  constructor(type, [x, y, z], pName, id){
     this.id = id;
     this.type = type;
     this.cyle = 0;
