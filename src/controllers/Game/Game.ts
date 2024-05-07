@@ -1,10 +1,13 @@
-
-const monstersList = require("../../lists/monstersList").data;
+// const monstersList = require("../../lists/monstersList").data;
 const npcsList = require("../../lists/npcsList").data;
 const Player = require("../../components/Creatures/Player")
 const Monster = require("../../components/Creatures/Monster")
 const NPC = require("../../components/Creatures/NPC")
 const game = require("../../../public/js/gameDetails");
+
+import MonsterProvider from '../../components/Providers/Monsters'
+
+// const MonstersProvider = require('../../components/Providers/Monsters')
 
 import WebSocket from '../WebSocket/WebSocket'
 import { Server } from 'http';
@@ -26,9 +29,11 @@ export default class Game {
 
 	constructor(server: Server) {
 		this.server = server
+		// this.summary = null
 		this.summary = {
 			players: [],
-			monsters: [],
+			// monsters: [],
+      monsters: new MonsterProvider().items,
 			npcs: [],
 			items: [],
 			walls: [],
@@ -38,16 +43,16 @@ export default class Game {
 
 	private async init(){
 		this.wsServer = await WebSocket( this.server )
-		this.initMonsters()
+		// this.initMonsters()
 		this.initNPCs()
-		this.mainLoop()
+		this.loop()
 	}
 
-	private mainLoop(){
+	private loop(){
 
-    setTimeout(() => { this.mainLoop() }, 100)
+    setTimeout(() => this.loop(), 100)
 
-		this.requestsQueue = {}
+    this.requestsQueue = {}
 		this.getIterationRequestsQueue()
 		
 		this.creaturesToUpdateQueue = []
@@ -58,8 +63,6 @@ export default class Game {
 		this.sendUpdatesToClients()
 
 		this.wsServer.clientsRequestsQueue = []
-
-		// setTimeout(() => { this.mainLoop() }, 100)
 		
   }
 
@@ -93,13 +96,13 @@ export default class Game {
 
 	}
 
-	private initMonsters(){
+	// private initMonsters(){
 
-		this.summary.monsters = monstersList.map(( monster: any ) => {
-			return new Monster(monster.name, ++this.uid, monster.position)
-		})
+	// 	this.summary.monsters = monstersList.map(( monster: any ) => {
+	// 		return new Monster(monster.name, ++this.uid, monster.position)
+	// 	})
 
-	}
+	// }
 
 	private updateCreatures(){
 
