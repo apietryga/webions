@@ -1,15 +1,10 @@
 // const monstersList = require("../../lists/monstersList").data;
-import monsters from '../../lists/monsters'
+import { monsters, StaticMonster } from '../../lists/monsters'
 
-import Provider from '../Provider'
 // const Provider = require('../Provider')
+import Provider from '../Provider'
 import Monster from '../Creatures/Monster'
 import Creature from '../Creature'
-
-interface StaticMonster{
-  name: string,
-  position: Array<number>
-}
 
 export default class MonstersProvider extends Provider{
 

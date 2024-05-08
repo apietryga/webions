@@ -1,11 +1,15 @@
 // const monstersList = require("../../lists/monstersList").data;
 const npcsList = require("../../lists/npcsList").data;
-const Player = require("../../components/Creatures/Player")
-const Monster = require("../../components/Creatures/Monster")
+// const Player = require("../../components/Creatures/Player")
+// const Monster = require("../../components/Creatures/Monster")
 const NPC = require("../../components/Creatures/NPC")
 const game = require("../../../public/js/gameDetails");
 
 import MonsterProvider from '../../components/Providers/Monsters'
+import Monster from '../../components/Creatures/Monster'
+import Player from '../../components/Creatures/Player'
+// import Creature from '../../components/Creature'
+import { monsters, StaticMonster } from '../../lists/monsters'
 
 // const MonstersProvider = require('../../components/Providers/Monsters')
 
@@ -18,22 +22,38 @@ export default class Game {
 	private wsServer: any;
 	private server: Server;
 	private creaturesToUpdateQueue: Array<any> = [];
-	private uid: number = 0; 
+	private uid: number = 1; 
+
+  private creatures: Map<number, Player | Monster >;
+
 	private summary:  {
-		players: Array<typeof Player>,
-		monsters: Array<typeof Player>,
+		// players: Array<typeof Player>,
+		players: Array<Player>,
+		// monsters: Array<typeof Player>,
 		items: Array<typeof Monster>,
 		npcs: Array<typeof NPC>,
 		walls: Array<any>,
 	};
 
 	constructor(server: Server) {
-		this.server = server
-		// this.summary = null
+
+    this.server = server
+    this.creatures = new Map()
+    // this.initMonsters()
+    monsters.map(( monster: StaticMonster ) => {
+      this.creatures.set(++this.uid, new Monster(monster))
+		})
+
+
+    // console.log(this.creatures)
+
+    // new
+
+    // this.summary = null
 		this.summary = {
 			players: [],
 			// monsters: [],
-      monsters: new MonsterProvider().items,
+      // monsters: new MonsterProvider().items,
 			npcs: [],
 			items: [],
 			walls: [],
@@ -44,11 +64,17 @@ export default class Game {
 	private async init(){
 		this.wsServer = await WebSocket( this.server )
 		// this.initMonsters()
-		this.initNPCs()
+		// this.initNPCs()
 		this.loop()
 	}
 
 	private loop(){
+
+    for(const [ uid, creature ] of this.creatures){
+      // console.log({ creature })
+      creature.loop()
+    }
+    // this.creatures.forEach(creature => creature.loop())
 
     setTimeout(() => this.loop(), 100)
 
@@ -98,9 +124,13 @@ export default class Game {
 
 	// private initMonsters(){
 
-	// 	this.summary.monsters = monstersList.map(( monster: any ) => {
-	// 		return new Monster(monster.name, ++this.uid, monster.position)
+
+	// 	monsters.map(( monster: StaticMonster ) => {
+  //     this.creatures.set(++this.uid, new Monster(monster))
 	// 	})
+	// 	// this.summary.monsters = monstersList.map(( monster: any ) => {
+	// 	// 	return new Monster(monster.name, ++this.uid, monster.position)
+	// 	// })
 
 	// }
 
@@ -119,7 +149,9 @@ export default class Game {
 				continue
 			}
 
-			creature.update(request, this.creaturesToUpdateQueue, [], [])
+      console.log({ request })
+
+			// creature.update(request, this.creaturesToUpdateQueue, [], [])
 			
 		}
 	}
@@ -137,7 +169,8 @@ export default class Game {
 
 		for(const player of this.summary.players){
 			let areNearestUpdated = false
-			const nearbyCreatures = [...this.summary.monsters, ...this.summary.npcs, ...this.summary.players]
+			// const nearbyCreatures = [...this.summary.monsters, ...this.summary.npcs, ...this.summary.players]
+			const nearbyCreatures = [ ...this.summary.npcs, ...this.summary.players]
 			.filter( cr => {
 
 				if(cr.type == 'player' && cr.name === player.name){
@@ -167,9 +200,9 @@ export default class Game {
 
 			})
 
-			if(areNearestUpdated && !this.creaturesToUpdateQueue.filter(cr => player.id == cr.id).length){
-				this.creaturesToUpdateQueue.push(player)
-			}
+			// if(areNearestUpdated && !this.creaturesToUpdateQueue.filter(cr => player.id == cr.id).length){
+			// 	this.creaturesToUpdateQueue.push(player)
+			// }
 
 		}
 

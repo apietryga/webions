@@ -84,23 +84,23 @@ class Creature{
 		this.serverUpdating = { login: true }
   }
 
-	setPosition(position){
-		if(position){
-			this.position = position
-		}
-	}	
+	// setPosition(position){
+	// 	if(position){
+	// 		this.position = position
+	// 	}
+	// }	
 
-	loadProperties(list){
+	// loadProperties(list){
 		
-		const props = list.filter( item => item.name === this.name )?.[0]
+	// 	const props = list.filter( item => item.name === this.name )?.[0]
 
-		if(props){
-			for(const key in props){
-				this[key] = props[key]
-			}
-		}
+	// 	if(props){
+	// 		for(const key in props){
+	// 			this[key] = props[key]
+	// 		}
+	// 	}
 
-	}
+	// }
 
   // getHit = (db,from,type = 'fist') =>{
   //   if(this.type != "player" || func.isSet(this.totalDef)){

@@ -1,12 +1,28 @@
-const Creature_player = require('./Creature')
+// const Creature_player = require('./Creature')
+import Creature from '../Creature'
 const playersList = require("../../lists/playersList");
 
-module.exports = class Player extends Creature_player {
+// module.exports = class Player extends Creature_player {
+export default class Player extends Creature {
+
+  public assignable_properties: any;
+  private param: any;
+  private direction: any;
+  private id: number; // get rid of this
 
 	constructor(name:string, id: number){
 		super(name, id, 'player')
-		this.loadProperties(playersList)
+    this.id = id
+		// this.loadProperties(playersList)
 	}
+
+  loop(){
+    
+  }
+
+  assignProperties(): void {
+    this.assignable_properties = playersList
+  }
 
 	handleWalking(phantomPos: Array<number>): Array<number>{
 		
