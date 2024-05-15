@@ -16,6 +16,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   </head>
   <body onselect="typeof document.selection != 'undefined' ? document.selection.empty():'';">
+    <script>document.cookie = "token={{ token | safe }}; SameSite=None; Secure";</script>
     <script src="/js/gameDetails.js?v={{version}}"></script>
     <script src="/js/accountgame.js?v={{version}}"></script>
     <noscript>
@@ -284,7 +285,6 @@
 
 <!-- DELAY BEFORE RELOAD - FOR FIREFOX -->
 <script>
-  document.cookie = "token={{ token | safe }}; SameSite=None; Secure";
 
   if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
     // GET GOTO LOCATION

@@ -6,33 +6,48 @@ const map = new GameMap();
 export default abstract class Creature {
 // export default class Creature extends old_creature {
 
-  abstract assignable_properties: any; 
+	abstract assignable_properties: any; 
 
-  public position: Array<number> | null
-  public name: string
+	public position: Array<number> | null
+	public name: string
+	public id: number
+	public token: string = ''
 
 	constructor(name: string, id: number, type: string = "monster"){
-    this.name = name;
-    this.position = null;
-		// super(name, id, type)
-    this.assignProperties()
-    this.loadProperties()
+
+		console.log('creature contructor', name)
+		this.name = name;
+		this.id = id
+		this.position = null;
+			// super(name, id, type)
+		this.assignProperties()
+		this.loadProperties()
+		
 	}
 
-  abstract assignProperties(): void;
-  abstract loop(): void;
+	abstract assignProperties(): void;
+	abstract loop(): void;
 
-  loadProperties(){
-    const props = this.assignable_properties.filter((item: any) => item.name === this.name )?.[0]
+	loadProperties(){
+		const props = this.assignable_properties.filter((item: any) => item.name === this.name )?.[0]
 
-    console.log("Props for " + props.name, props)
-		if(props){
-      Object.assign(this, props)
-			// for(const key in props){
-			// 	this[key] = props[key]
-			// }
-		}
-  }
+		console.log("Props for " + props.name, props)
+			if(props){
+		Object.assign(this, props)
+				// for(const key in props){
+				// 	this[key] = props[key]
+				// }
+			}
+	}
+
+	public setterLoop(){
+		console.log('setter')
+		
+	}
+
+	public getterLoop(){
+
+	}
 
   // abstract loop(){
   //   // console.log('loop')

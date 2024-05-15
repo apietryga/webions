@@ -5,24 +5,31 @@ const playersList = require("../../lists/playersList");
 // module.exports = class Player extends Creature_player {
 export default class Player extends Creature {
 
-  public assignable_properties: any;
-  private param: any;
-  private direction: any;
-  private id: number; // get rid of this
+	public assignable_properties: any;
+	private param: any;
+	private direction: any;
+	public id: number; // get rid of this
+	public serverUpdating: Object = {}
 
-	constructor(name:string, id: number){
+	constructor(name:string, id: number, token: string){
+
 		super(name, id, 'player')
-    this.id = id
+		
+		console.log('player constructor', name, id)
+		this.id = id
+		this.token = token
+		console.log('end of player constructor')
 		// this.loadProperties(playersList)
 	}
 
-  loop(){
-    
-  }
+	public loop(){
 
-  assignProperties(): void {
-    this.assignable_properties = playersList
-  }
+	}
+
+	assignProperties(): void {
+		console.log('assign_properites')
+		this.assignable_properties = playersList
+	}
 
 	handleWalking(phantomPos: Array<number>): Array<number>{
 		

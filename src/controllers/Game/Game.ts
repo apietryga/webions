@@ -15,6 +15,7 @@ import { monsters, StaticMonster } from '../../lists/monsters'
 
 import WebSocket from '../WebSocket/WebSocket'
 import { Server } from 'http';
+import GameActions from '../../components/Actions/GameActions';
 
 export default class Game {
 
@@ -23,8 +24,10 @@ export default class Game {
 	private server: Server;
 	private creaturesToUpdateQueue: Array<any> = [];
 	private uid: number = 1; 
+	private game_actions: GameActions
+	private loop_no: number = 0
 
-  private creatures: Map<number, Player | Monster >;
+	private creatures: Map<number, Player | Monster >;
 
 	private summary:  {
 		// players: Array<typeof Player>,
@@ -37,19 +40,15 @@ export default class Game {
 
 	constructor(server: Server) {
 
-    this.server = server
-    this.creatures = new Map()
-    // this.initMonsters()
-    monsters.map(( monster: StaticMonster ) => {
-      this.creatures.set(++this.uid, new Monster(monster))
+		this.server = server
+		this.creatures = new Map()
+		this.game_actions = new GameActions()
+		// this.initMonsters()
+		monsters.map(( monster: StaticMonster ) => {
+			this.creatures.set(++this.uid, new Monster(monster))
 		})
 
 
-    // console.log(this.creatures)
-
-    // new
-
-    // this.summary = null
 		this.summary = {
 			players: [],
 			// monsters: [],
@@ -65,21 +64,34 @@ export default class Game {
 		this.wsServer = await WebSocket( this.server )
 		// this.initMonsters()
 		// this.initNPCs()
+		this.game_actions.assignSocket(this.wsServer)
+
 		this.loop()
 	}
 
 	private loop(){
 
-    for(const [ uid, creature ] of this.creatures){
-      // console.log({ creature })
-      creature.loop()
-    }
-    // this.creatures.forEach(creature => creature.loop())
+		for(const [ uid, creature ] of this.creatures){
+			this.game_actions.apply(creature)
+			creature.loop()
+		}
 
-    setTimeout(() => this.loop(), 100)
+		// if(0)
 
-    this.requestsQueue = {}
-		this.getIterationRequestsQueue()
+		for(const [token, actions] of this.wsServer.requests){
+			console.log({ token, actions })
+			const new_player_uid = ++this.uid
+			const new_player = new Player(actions[0].name, new_player_uid, token)
+			this.creatures.set(new_player_uid, new_player)
+		}
+		// console.log(this.wsServer.requests)
+
+		// for(const [ uid, creature ] of this.creatures){
+		// 	creature.setterLoop()
+		// }
+
+		this.requestsQueue = {}
+		// this.getIterationRequestsQueue()
 		
 		this.creaturesToUpdateQueue = []
 		this.getIterationCreaturesUpdateQueue()
@@ -89,27 +101,32 @@ export default class Game {
 		this.sendUpdatesToClients()
 
 		this.wsServer.clientsRequestsQueue = []
-		
-  }
+
+		if(++this.loop_no < 4){
+			setTimeout(() => this.loop(), 100)
+		}
+			
+	}
 
 	private sendUpdatesToClients(){
-    this.creaturesToUpdateQueue.forEach(creature => {
+
+		this.creaturesToUpdateQueue.forEach(creature => {
 
 			if(creature.type !== 'player') return
 
-      const player = {
-        name: creature.name,
-        key: creature.key
-      }
+			const player = {
+				name: creature.name,
+				key: creature.key
+			}
 
-      const data = {
-          game,
-          items: [],
-          walls: [],
-          creatures: this.creaturesToUpdateQueue,
-      }
+			const data = {
+				game,
+				items: [],
+				walls: [],
+				creatures: this.creaturesToUpdateQueue,
+			}
 
-      this.wsServer.sendDataToClient(player, data)
+			this.wsServer.sendDataToClient(player, data)
 
 		})
 	}
@@ -149,21 +166,21 @@ export default class Game {
 				continue
 			}
 
-      console.log({ request })
+			// console.log({ request })
 
 			// creature.update(request, this.creaturesToUpdateQueue, [], [])
 			
 		}
 	}
 
-	private getIterationRequestsQueue(): void{
-		for(const request of this.wsServer.clientsRequestsQueue){
-			const player = this.getPlayer(request)
-			if(!this.requestsQueue[player.name]){
-				this.requestsQueue[player.name] = request
-			}
-		}
-	}
+	// private getIterationRequestsQueue(): void{
+	// 	for(const request of this.wsServer.clientsRequestsQueue){
+	// 		const player = this.getPlayer(request)
+	// 		if(!this.requestsQueue[player.name]){
+	// 			this.requestsQueue[player.name] = request
+	// 		}
+	// 	}
+	// }
 
 	private getIterationCreaturesUpdateQueue(): void{
 
@@ -208,19 +225,23 @@ export default class Game {
 
 	}
 
-	private getPlayer(request: any){
+	// private getPlayer(request: any){
 		
-		for(const player of this.summary.players){
-			if(player.name === request.name){
-				return player
-			}
-		}
+	// 	for(const player of this.summary.players){
+	// 		if(player.name === request.name){
+	// 			return player
+	// 		}
+	// 	}
 
-		const player = new Player(request.name, ++this.uid)
-		this.summary.players.push(player)
-		return player
+	// 	console.log({request})
 
-	}
+	// 	const player_uid = ++this.uid
+	// 	const player = new Player(request.name, player_uid)
+	// 	this.creatures.set(player_uid, player)
+	// 	this.summary.players.push(player)
+	// 	return player
+
+	// }
 
 }
 

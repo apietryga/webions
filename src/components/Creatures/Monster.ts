@@ -8,6 +8,7 @@ export default class Monster extends Creature {
 
 	// constructor(name: string, id: number, position:Array<number>){
 	public assignable_properties: any;
+	public serverUpdating: Object = {}
 
   constructor(monster: StaticMonster){
 
