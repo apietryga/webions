@@ -68,13 +68,14 @@ export default async (server:any) => {
 
 			connection.on('message', async (data: { utf8Data: string; }) => {
 
-				data = JSON.parse(data.utf8Data)
 				const token = req.cookies.find((item: any) => item.name == 'token')?.value
+				data = JSON.parse(data.utf8Data)
 
-				controller.getDataFromClient({
-					...data, 
-					name: req.resourceURL.query.name, 
-				}, token)
+				// controller.getDataFromClient({
+				// 	...data, 
+				// 	name: req.resourceURL.query.name, 
+				// }, token)
+				controller.getDataFromClient(data, token)
 
 			})
 

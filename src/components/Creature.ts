@@ -6,29 +6,47 @@ export default abstract class Creature {
 
 	abstract assignable_properties: any; 
 
-	public position: Array<number> | null
+	// public position: Array<number> | null
 	public name: string
 	public id: number
 	public token: string = ''
+	public type: string
+
+	public properties: any
+
+
+	// public health: any
+	// public mana: any
+	// public maxHealth: any
+	// public maxMana: any
+
+	// public lastFrame: any
+	// public redTarget: any
+	// public skills: any
+	// public speed: any
+	// public sprite: any
 
 	constructor(name: string, id: number, type: string = "monster", token:string = ''){
 		// console.log('creature start', this)
 		this.name = name;
 		this.id = id
-		this.position = null;
+		// this.position = [0, 0, 0];
 		this.token = token
-		// console.log('creature end', this)
+		this.type = type
+		this.properties = {}
+		console.log('creature end', this)
+		this.assignProperties()
 	}
 
-	abstract assignProperties(): void;
-	abstract loop(actions: Array<Object>): void;
+	abstract assignProperties(): void
+	abstract loop(actions: Array<Object>): void
 
 	loadProperties(){
 
 		const props = this.assignable_properties.filter((item: any) => item.name === this.name )?.[0]
 		console.log("Props for " + props.name, props)
 		if(props){
-			Object.assign(this, props)
+			Object.assign(this.properties, props)
 			// for(const key in props){
 			// 	this[key] = props[key]
 			// }
@@ -38,8 +56,318 @@ export default abstract class Creature {
 
 	sendToClient(){
 
-		return null
+		return true
 
+	}
+
+	exposeProperties(){
+		return {
+			id: this.id,
+			name: this.name,
+			type: this.type,
+			 
+			position: this.properties.position,
+			// colors: this.properties.colors,
+			// direction: this.properties.direction,
+			
+			health: this.properties.health, 
+			totalHealth: this.properties.maxHealth, 
+			lastFrame: this.properties.lastFrame, 
+			mana: this.properties.mana, 
+			totalMana: this.properties.maxMana, 
+			redTarget: this.properties.redTarget, 
+			skills: this.properties.skills, 
+			speed: this.properties.speed, 
+			sprite: this.properties.sprite, 
+
+			direction: 2,
+
+			// "walk": 1704496691064,
+			// "totalSpeed": 3.5,
+			// "restore": false,
+			// "exhaustTime": 1000,
+			// "exhaust": {
+			// 	"fist": 1703619284899,
+			// 	"dist": 1703980874249,
+			// 	"mwall": 0,
+			// 	"heal": 1702674125925,
+			// 	"say": 0
+			// },
+			// "autoShot": false,
+			// "autoMWDrop": false,
+			// "quests": [],
+			// "colors": {
+			// 	"head": [240, 127, 13],
+			// 	"chest": [240, 240, 13],
+			// 	"legs": [240, 13, 13],
+			// 	"foots": [212, 212, 212]
+			// },
+			// "eq": {
+			// 	"hd": {
+			// 		"type": "item",
+			// 		"name": "Magic Hat",
+			// 		"sprite": "items",
+			// 		"spriteNr": 13,
+			// 		"handle": [
+			// 			"hd"
+			// 		],
+			// 		"pickable": true,
+			// 		"mana": 400,
+			// 		"manaRegen": 50,
+			// 		"position": [
+			// 			43,
+			// 			1,
+			// 			-1
+			// 		],
+			// 		"actionType": "pickUp",
+			// 		"visibleFloor": -1,
+			// 		"field": "hd",
+			// 		"pos": [
+			// 			43,
+			// 			1,
+			// 			-1
+			// 		]
+			// 	},
+			// 	"bp": {
+			// 		"name": "Backpack",
+			// 		"sprite": "items",
+			// 		"spriteNr": 0,
+			// 		"cap": 8,
+			// 		"handle": [
+			// 			"bp"
+			// 		],
+			// 		"pickable": true,
+			// 		"position": [
+			// 			34,
+			// 			0,
+			// 			0
+			// 		],
+			// 		"actionType": "drop",
+			// 		"field": "bp",
+			// 		"in": [
+			// 			{
+			// 				"name": "Coins",
+			// 				"amount": 600,
+			// 				"position": [
+			// 					81,
+			// 					-16,
+			// 					1
+			// 				],
+			// 				"sprite": "coins",
+			// 				"spriteNr": 1,
+			// 				"handle": [
+			// 					"lh",
+			// 					"rh"
+			// 				],
+			// 				"pickable": true
+			// 			},
+			// 			{
+			// 				"name": "Coins",
+			// 				"amount": 53,
+			// 				"position": [
+			// 					71,
+			// 					12,
+			// 					1
+			// 				],
+			// 				"sprite": "coins",
+			// 				"spriteNr": 1,
+			// 				"handle": [
+			// 					"lh",
+			// 					"rh"
+			// 				],
+			// 				"pickable": true
+			// 			}
+			// 		]
+			// 	},
+			// 	"nc": {
+			// 		"type": "item",
+			// 		"name": "Random Item",
+			// 		"sprite": "items",
+			// 		"spriteNr": 15,
+			// 		"handle": [
+			// 			"lh",
+			// 			"rh",
+			// 			"bp",
+			// 			"nc",
+			// 			"hd",
+			// 			"ch",
+			// 			"lg",
+			// 			"ft"
+			// 		],
+			// 		"pickable": true,
+			// 		"randStats": [
+			// 			{
+			// 				"speed": "0 - 3"
+			// 			},
+			// 			{
+			// 				"mana": "0 - 100"
+			// 			},
+			// 			{
+			// 				"manaRegen": "0 - 50"
+			// 			},
+			// 			{
+			// 				"health": "0 - 200"
+			// 			},
+			// 			{
+			// 				"def": "0 - 100"
+			// 			}
+			// 		],
+			// 		"mana": 76,
+			// 		"manaRegen": 31,
+			// 		"health": 129,
+			// 		"def": 48,
+			// 		"position": [
+			// 			36,
+			// 			-11,
+			// 			-1
+			// 		],
+			// 		"actionType": "drop",
+			// 		"field": "bp",
+			// 		"in": [],
+			// 		"pos": [
+			// 			51,
+			// 			-11,
+			// 			1
+			// 		]
+			// 	},
+			// 	"ch": {
+			// 		"type": "item",
+			// 		"name": "King Armor",
+			// 		"sprite": "items",
+			// 		"spriteNr": 7,
+			// 		"handle": [
+			// 			"ch"
+			// 		],
+			// 		"pickable": true,
+			// 		"def": 100,
+			// 		"position": [
+			// 			52,
+			// 			-12,
+			// 			1
+			// 		],
+			// 		"actionType": "pickUp",
+			// 		"visibleFloor": 7,
+			// 		"field": "ch",
+			// 		"pos": [
+			// 			52,
+			// 			-12,
+			// 			1
+			// 		]
+			// 	},
+			// 	"lh": {
+			// 		"type": "item",
+			// 		"name": "Simple Shield",
+			// 		"sprite": "items",
+			// 		"spriteNr": 11,
+			// 		"handle": [
+			// 			"lh",
+			// 			"rh"
+			// 		],
+			// 		"pickable": true,
+			// 		"def": 20,
+			// 		"position": [
+			// 			34,
+			// 			-10,
+			// 			0
+			// 		],
+			// 		"actionType": "pickUp",
+			// 		"visibleFloor": 0,
+			// 		"field": "lh",
+			// 		"pos": [
+			// 			34,
+			// 			-10,
+			// 			0
+			// 		]
+			// 	},
+			// 	"rh": {
+			// 		"type": "item",
+			// 		"name": "Wand of Destiny",
+			// 		"sprite": "items",
+			// 		"fist": 100,
+			// 		"dist": 100,
+			// 		"spriteNr": 10,
+			// 		"manaRegen": 100,
+			// 		"handle": [
+			// 			"lh",
+			// 			"rh"
+			// 		],
+			// 		"pickable": true,
+			// 		"position": [
+			// 			36,
+			// 			-10,
+			// 			-1
+			// 		],
+			// 		"actionType": "drop",
+			// 		"visibleFloor": -1,
+			// 		"field": "rh",
+			// 		"pos": [
+			// 			54,
+			// 			-7,
+			// 			1
+			// 		]
+			// 	},
+			// 	"lg": {
+			// 		"type": "item",
+			// 		"name": "Simple Legs",
+			// 		"sprite": "items",
+			// 		"spriteNr": 4,
+			// 		"handle": [
+			// 			"lg"
+			// 		],
+			// 		"pickable": true,
+			// 		"manaRegen": 10,
+			// 		"position": [
+			// 			146,
+			// 			7,
+			// 			1
+			// 		],
+			// 		"actionType": "pickUp",
+			// 		"visibleFloor": 5,
+			// 		"field": "lg"
+			// 	},
+			// 	"ft": {
+			// 		"type": "item",
+			// 		"name": "Simple Boots",
+			// 		"sprite": "items",
+			// 		"spriteNr": 5,
+			// 		"handle": [
+			// 			"ft"
+			// 		],
+			// 		"pickable": true,
+			// 		"speed": 1,
+			// 		"position": [
+			// 			32,
+			// 			-23,
+			// 			0
+			// 		],
+			// 		"actionType": "pickUp",
+			// 		"visibleFloor": 0,
+			// 		"field": "ft"
+			// 	}
+			// },
+			// "manaRegenValue": 0,
+			// "manaRegenExhoust": 1704496693329,
+			// "locker": {
+			// 	"name": "Locker",
+			// 	"in": [],
+			// 	"cap": 10,
+			// 	"field": "locker"
+			// },
+			// "baseSpeed": 3,
+			// "lastMWall": [],
+			// "text": "",
+			// "focus": true,
+			// "lockerOpened": false,
+			// "totalDef": 256,
+			// "totalFist": 288,
+			// "totalDist": 289,
+			// "totalMana": 1086,
+			// "totalManaRegen": 191,
+			// "shotTarget": 5,
+			// "bulletOnTarget": 1703980873549
+
+
+		}
 	}
 
 	// walking(){

@@ -28,12 +28,36 @@ export default class GameActions {
 
     public apply(creature: Player | Monster){
 
-        // console.log(creature)
+        // console.log({ creature })
         if(creature.name == 'GM'){
             // console.log(creature.serverUpdating)
             const actions = this.requests.get(creature.token)
             if(typeof actions !== 'undefined'){
                 creature.loop(actions)
+
+
+                const send_to_client = creature.sendToClient()
+                if(send_to_client){
+        
+                    const exposed_creatures = Array.from(this.creatures, ([name, value]) => value.exposeProperties())
+        
+                    console.log({ exposed_creatures })
+
+                    const data = {
+                        game,
+                        items: [],
+                        walls: [],
+                        // creatures: this.creaturesToUpdateQueue,
+                        // creatures: [],
+                        // creatures: Array.fromthis.creatures,
+                        // creatures: Array.from(this.creatures, ([name, value]) => ({ name, value }))
+                        creatures: exposed_creatures
+                    }
+        
+                    this.wsServer.sendDataToClient(creature, data)
+                }
+        
+
             }
 
 
@@ -47,30 +71,32 @@ export default class GameActions {
 
         this.requests.delete(creature.token)
 
-        if(creature.name != 'GM'){
-            return
-        }
+        // if(creature.name != 'GM'){
+        //     return
+        // }
 
-        console.log({ creature })
+        // console.log({ creature })
 
-        return
+        // return
 
-        const send_to_client = creature.sendToClient()
-        if(send_to_client){
+        // const send_to_client = creature.sendToClient()
+        // if(send_to_client){
 
-            const data = {
-                game,
-                items: [],
-                walls: [],
-                // creatures: this.creaturesToUpdateQueue,
-                // creatures: [],
-                // creatures: Array.fromthis.creatures,
-                // creatures: Array.from(this.creatures, ([name, value]) => ({ name, value }))
-                creatures: Array.from(this.creatures, ([name, value]) => value)
-            }
+        //     const exposed_creatures = Array.from(this.creatures, ([name, value]) => value.exposeProperties())
 
-            this.wsServer.sendDataToClient(creature, data)
-        }
+        //     const data = {
+        //         game,
+        //         items: [],
+        //         walls: [],
+        //         // creatures: this.creaturesToUpdateQueue,
+        //         // creatures: [],
+        //         // creatures: Array.fromthis.creatures,
+        //         // creatures: Array.from(this.creatures, ([name, value]) => ({ name, value }))
+        //         creatures: exposed_creatures
+        //     }
+
+        //     this.wsServer.sendDataToClient(creature, data)
+        // }
 
 
         // if(creature.serverUpdating)

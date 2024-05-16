@@ -72,6 +72,7 @@ export default class Game {
 
 	private loop(){
 
+		// console.log('loop')
 		for(const [ uid, creature ] of this.creatures){
 			this.game_actions.apply(creature)
 			// creature.loop()
@@ -81,10 +82,10 @@ export default class Game {
 
 		for(const [token, actions] of this.wsServer.requests){
 			const new_player_uid = ++this.uid
-			console.log({ token, actions, new_player_uid })
-			const new_player = new Player(actions[0].name, new_player_uid, token)
+			// console.log({ token, actions, new_player_uid })
+			const new_player = new Player('', new_player_uid, token)
 			this.creatures.set(new_player_uid, new_player)
-			console.log({ new_player })
+			// console.log({ new_player })
 		}
 		// console.log(this.wsServer.requests)
 
@@ -186,48 +187,48 @@ export default class Game {
 	// 	}
 	// }
 
-	private getIterationCreaturesUpdateQueue(): void{
+	// private getIterationCreaturesUpdateQueue(): void{
 
-		for(const player of this.summary.players){
-			let areNearestUpdated = false
-			// const nearbyCreatures = [...this.summary.monsters, ...this.summary.npcs, ...this.summary.players]
-			const nearbyCreatures = [ ...this.summary.npcs, ...this.summary.players]
-			.filter( cr => {
+	// 	for(const player of this.summary.players){
+	// 		let areNearestUpdated = false
+	// 		// const nearbyCreatures = [...this.summary.monsters, ...this.summary.npcs, ...this.summary.players]
+	// 		const nearbyCreatures = [ ...this.summary.npcs, ...this.summary.players]
+	// 		.filter( cr => {
 
-				if(cr.type == 'player' && cr.name === player.name){
-					return this.requestsQueue[player.name] ? true : false
-				}
+	// 			if(cr.type == 'player' && cr.name === player.name){
+	// 				return this.requestsQueue[player.name] ? true : false
+	// 			}
 
-				if(cr.type == 'player' && !this.requestsQueue[cr.name] && !this.requestsQueue[player.name]){
-					return false
-				}
+	// 			if(cr.type == 'player' && !this.requestsQueue[cr.name] && !this.requestsQueue[player.name]){
+	// 				return false
+	// 			}
 
-				if(!cr.position || !player.position){
-					return false
-				}
+	// 			if(!cr.position || !player.position){
+	// 				return false
+	// 			}
 				
-				return Math.abs(cr.position[0] - player.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
-					&& Math.abs(cr.position[1] - player.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
-			})
-			.forEach( pushingCreature => {
+	// 			return Math.abs(cr.position[0] - player.position[0]) < Math.ceil( game.mapSize[0] / 2 ) + 1
+	// 				&& Math.abs(cr.position[1] - player.position[1]) < Math.ceil( game.mapSize[1] / 2 ) + 1
+	// 		})
+	// 		.forEach( pushingCreature => {
 				
-				if(Object.keys(pushingCreature.serverUpdating).length){
-					areNearestUpdated = true
-				}
+	// 			if(Object.keys(pushingCreature.serverUpdating).length){
+	// 				areNearestUpdated = true
+	// 			}
 
-				if(!this.creaturesToUpdateQueue.filter(cr => pushingCreature.id == cr.id).length){
-					this.creaturesToUpdateQueue.push(pushingCreature)
-				}
+	// 			if(!this.creaturesToUpdateQueue.filter(cr => pushingCreature.id == cr.id).length){
+	// 				this.creaturesToUpdateQueue.push(pushingCreature)
+	// 			}
 
-			})
+	// 		})
 
-			// if(areNearestUpdated && !this.creaturesToUpdateQueue.filter(cr => player.id == cr.id).length){
-			// 	this.creaturesToUpdateQueue.push(player)
-			// }
+	// 		// if(areNearestUpdated && !this.creaturesToUpdateQueue.filter(cr => player.id == cr.id).length){
+	// 		// 	this.creaturesToUpdateQueue.push(player)
+	// 		// }
 
-		}
+	// 	}
 
-	}
+	// }
 
 	// private getPlayer(request: any){
 		

@@ -10,28 +10,23 @@ export default class Monster extends Creature {
 	public assignable_properties: any;
 	public serverUpdating: Object = {}
 
-  constructor(monster: StaticMonster){
-
-    // this.assignable_variables = monstersTypes
-		
+	constructor(monster: StaticMonster){
+		// this.assignable_variables = monstersTypes
 		super(monster.name, 0, 'monster')
-		
-    this.position = monster.position
-    // Object.assign(this, monstersTypes)
+		this.properties.position = monster.position
+		// Object.assign(this, monstersTypes)
 		// this.setPosition(monster.position)
 		// this.loadProperties(monstersTypes)
-
 	}
 
-  assignProperties(): void {
-    this.assignable_properties = monstersTypes
-  }
+	assignProperties(): void {
+		this.assignable_properties = monstersTypes
+	}
 
-  loop(){
-    // console.log('monster_loop')
-    // this.update();
-
-  }
+	loop(){
+		// console.log('monster_loop')
+		// this.update();
+	}
 
 	// handleWalking(phantomPos: Array<number>): Array<number>{
 
