@@ -2,11 +2,11 @@ import Player from "../Creatures/Player"
 
 export default class PlayerActions {
 
-    // private player
+    private properties
 
-    // constructor(player: Player){
-    //     this.player = player
-    // }
+    constructor(properties: any){
+        this.properties = properties
+    }
 
     handleAction(action: any){
 
@@ -23,17 +23,17 @@ export default class PlayerActions {
 
         controls.forEach(control => {
 
-            if([37].includes(control)){
+            if([37, 39, 38, 40].includes(control)){
                 this.walk(control)
             }
 
-
         })
-        console.log({ controls })
+        // console.log({ controls })
 
     }
 
     walk(control: number){
+        console.log({ control })
 
     // if(this.walk <= game.time.getTime() && this.health > 0 && this.speed !== false){
     //   let phantomPos = [this.position[0], this.position[1], this.position[2]];

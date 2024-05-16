@@ -7,41 +7,30 @@ export default class Player extends Creature {
 	public assignable_properties: any;
 	public serverUpdating: Object = {}
 
-	// public autoMWDrop: any
-	// public autoShot: any
-	// public colors: any
-	// public email: any
-	// public eq: any
-	// public lastDeaths: any
-	// public lastMWall: any
-	// public password: any
-	// public quests: any
-	// public sex: any
-	// public token: any
-	// public properties: any
+	public properties: any
 
-	// private actions: PlayerActions
+	private actions: PlayerActions
 	
 	constructor(name:string, id: number, token: string){
 		super(name, id, 'player', token)
 		// console.log(this)
 		this.token = token
-		// this.actions = new PlayerActions(this)
+		this.actions = new PlayerActions(this.properties)
 	}
 
 	public loop(actions: Array<Object>){
-		console.log('player.loop', actions)
+		// console.log('player.loop', actions)
 
-		// actions.forEach(action => {
-		// 	this.actions.handleAction(action)
-		// 	// console.log({ action })
-		// })
+		actions.forEach(action => {
+			this.actions.handleAction(action)
+			// console.log({ action })
+		})
 
 	}
 
 	assignProperties(): void {
 		// console.log('assign_properites', playersList)
-		console.log('assign_properites')
+		// console.log('assign_properites')
 		// this.assignable_properties = playersList
 
 		const current_player = playersList.find((player:any) => player.token == this.token)

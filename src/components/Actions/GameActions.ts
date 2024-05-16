@@ -41,7 +41,7 @@ export default class GameActions {
         
                     const exposed_creatures = Array.from(this.creatures, ([name, value]) => value.exposeProperties())
         
-                    console.log({ exposed_creatures })
+                    // console.log({ exposed_creatures })
 
                     const data = {
                         game,

@@ -34,25 +34,25 @@ export default abstract class Creature {
 		this.token = token
 		this.type = type
 		this.properties = {}
-		console.log('creature end', this)
+		// console.log('creature end', this)
 		this.assignProperties()
 	}
 
 	abstract assignProperties(): void
 	abstract loop(actions: Array<Object>): void
 
-	loadProperties(){
+	// loadProperties(){
 
-		const props = this.assignable_properties.filter((item: any) => item.name === this.name )?.[0]
-		console.log("Props for " + props.name, props)
-		if(props){
-			Object.assign(this.properties, props)
-			// for(const key in props){
-			// 	this[key] = props[key]
-			// }
-		}
+	// 	const props = this.assignable_properties.filter((item: any) => item.name === this.name )?.[0]
+	// 	console.log("Props for " + props.name, props)
+	// 	if(props){
+	// 		Object.assign(this.properties, props)
+	// 		// for(const key in props){
+	// 		// 	this[key] = props[key]
+	// 		// }
+	// 	}
 
-	}
+	// }
 
 	sendToClient(){
 
