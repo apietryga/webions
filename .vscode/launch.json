@@ -12,7 +12,7 @@
         "<node_internals>/**"
       ],
       "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/src/server.js",
+      "program": "${workspaceFolder}/src/server.ts",
     },
     {
       "name": "DEV_TS",

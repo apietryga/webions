@@ -65,6 +65,7 @@ export default class Game {
 		// this.initMonsters()
 		// this.initNPCs()
 		this.game_actions.assignSocket(this.wsServer)
+		this.game_actions.assignCreatures(this.creatures)
 
 		this.loop()
 	}
@@ -73,16 +74,17 @@ export default class Game {
 
 		for(const [ uid, creature ] of this.creatures){
 			this.game_actions.apply(creature)
-			creature.loop()
+			// creature.loop()
 		}
 
 		// if(0)
 
 		for(const [token, actions] of this.wsServer.requests){
-			console.log({ token, actions })
 			const new_player_uid = ++this.uid
+			console.log({ token, actions, new_player_uid })
 			const new_player = new Player(actions[0].name, new_player_uid, token)
 			this.creatures.set(new_player_uid, new_player)
+			console.log({ new_player })
 		}
 		// console.log(this.wsServer.requests)
 
@@ -90,21 +92,23 @@ export default class Game {
 		// 	creature.setterLoop()
 		// }
 
-		this.requestsQueue = {}
+		// this.requestsQueue = {}
 		// this.getIterationRequestsQueue()
 		
-		this.creaturesToUpdateQueue = []
-		this.getIterationCreaturesUpdateQueue()
+		// this.creaturesToUpdateQueue = []
+		// this.getIterationCreaturesUpdateQueue()
 
-		this.updateCreatures()
+		// this.updateCreatures()
 
-		this.sendUpdatesToClients()
+		// this.sendUpdatesToClients()
 
-		this.wsServer.clientsRequestsQueue = []
+		// this.wsServer.clientsRequestsQueue = []
 
-		if(++this.loop_no < 4){
-			setTimeout(() => this.loop(), 100)
-		}
+		// if(++this.loop_no < 4){
+			setTimeout(() => {
+				this.loop()
+			}, 300)
+		// }
 			
 	}
 

@@ -1,10 +1,8 @@
-// const old_creature = require('../Creature')
-const func = require("../../../public/js/functions");
-const GameMap = require("../../../public/js/map");
+const func = require("../../public/js/functions");
+const GameMap = require("../../public/js/map");
 const map = new GameMap();
 
 export default abstract class Creature {
-// export default class Creature extends old_creature {
 
 	abstract assignable_properties: any; 
 
@@ -13,45 +11,36 @@ export default abstract class Creature {
 	public id: number
 	public token: string = ''
 
-	constructor(name: string, id: number, type: string = "monster"){
-
-		console.log('creature contructor', name)
+	constructor(name: string, id: number, type: string = "monster", token:string = ''){
+		// console.log('creature start', this)
 		this.name = name;
 		this.id = id
 		this.position = null;
-			// super(name, id, type)
-		this.assignProperties()
-		this.loadProperties()
-		
+		this.token = token
+		// console.log('creature end', this)
 	}
 
 	abstract assignProperties(): void;
-	abstract loop(): void;
+	abstract loop(actions: Array<Object>): void;
 
 	loadProperties(){
+
 		const props = this.assignable_properties.filter((item: any) => item.name === this.name )?.[0]
-
 		console.log("Props for " + props.name, props)
-			if(props){
-		Object.assign(this, props)
-				// for(const key in props){
-				// 	this[key] = props[key]
-				// }
-			}
-	}
-
-	public setterLoop(){
-		console.log('setter')
-		
-	}
-
-	public getterLoop(){
+		if(props){
+			Object.assign(this, props)
+			// for(const key in props){
+			// 	this[key] = props[key]
+			// }
+		}
 
 	}
 
-  // abstract loop(){
-  //   // console.log('loop')
-  // }
+	sendToClient(){
+
+		return null
+
+	}
 
 	// walking(){
 

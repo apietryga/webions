@@ -7,6 +7,7 @@ const Item = require("./Item");
 class Creature{
   
 	constructor(nickName,creaturesLength = 0,type = "monster"){
+    console.log("CREATURE INIT")
     // this.creatures = require('../modules/creature')
     // this.items = require('../modules/item')
     this.id = creaturesLength+1; 
