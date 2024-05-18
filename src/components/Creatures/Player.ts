@@ -20,6 +20,7 @@ export default class Player extends Creature {
 
 	public loop(actions: Array<Object>){
 		// console.log('player.loop', actions)
+		this.properties.serverUpdating = null
 
 		actions.forEach(action => {
 			this.actions.handleAction(action)
@@ -33,8 +34,16 @@ export default class Player extends Creature {
 		// console.log('assign_properites')
 		// this.assignable_properties = playersList
 
-		const current_player = playersList.find((player:any) => player.token == this.token)
+		// TODO: change to login by token
+		const current_player = playersList
+			// .find((player:any) => player.token == this.token)
+			.find((player:any) => player.name == 'GM')
+
+		// console.log({ current_player, token: this.token, })
+
 		// console.log({current_player})
+		if(! current_player) return
+
 		this.name = current_player.name
 		this.properties.position = current_player.position
 
@@ -65,6 +74,9 @@ export default class Player extends Creature {
 		this.properties.speed = current_player.speed //: 5
 		this.properties.sprite = current_player.sprite //: 'gm'
 		// this.token = current_player.token //: 'zhxh9ivaxg'
+		this.properties.walk = 0
+		this.properties.direction = 2
+		this.properties.serverUpdating = null
 		
 	}
 

@@ -84,11 +84,9 @@ class Creature {
   }
   
   update(){
-		// console.log('updateing', this)
 
 		// SETTING SERVER INFO
 		if(this.serverUpdating){
-			
 			if(this.serverUpdating.walk){
 				this.processing.walk = this.serverUpdating.walk
 			}
@@ -339,6 +337,8 @@ class Creature {
 		const time_processing = data.time_end - data.time_start
 		const time_current = time - data.time_start
 		const percentage =  ((100 * time_current) / time_processing) / 100
+
+    console.log({ percentage })
 
 		// end process on time end
 		if(time - data.time_end > 0){

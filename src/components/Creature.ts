@@ -61,6 +61,8 @@ export default abstract class Creature {
 	}
 
 	exposeProperties(){
+		const game_time = new Date().getTime()
+
 		return {
 			id: this.id,
 			name: this.name,
@@ -72,15 +74,19 @@ export default abstract class Creature {
 			
 			health: this.properties.health, 
 			totalHealth: this.properties.maxHealth, 
-			lastFrame: this.properties.lastFrame, 
+			lastFrame: game_time, 
 			mana: this.properties.mana, 
 			totalMana: this.properties.maxMana, 
+			totalSpeed: 7,
+
 			redTarget: this.properties.redTarget, 
 			skills: this.properties.skills, 
 			speed: this.properties.speed, 
 			sprite: this.properties.sprite, 
 
-			direction: 2,
+			direction: this.properties.direction,
+			walk: this.properties.walk,
+			serverUpdating: this.properties.serverUpdating,
 
 			// "walk": 1704496691064,
 			// "totalSpeed": 3.5,

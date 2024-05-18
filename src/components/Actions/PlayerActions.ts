@@ -32,104 +32,46 @@ export default class PlayerActions {
 
     }
 
-    walk(control: number){
-        console.log({ control })
+    walk(key: number){
 
-    // if(this.walk <= game.time.getTime() && this.health > 0 && this.speed !== false){
-    //   let phantomPos = [this.position[0], this.position[1], this.position[2]];
-    //   // player walking from pushed keys
-    //   let key;if(this.type == "player"){
-    //     // get clicked key
-    //     if(typeof param.controls != "undefined" && param.controls.length > 0){
-    //       // get some of arrow key
-    //       for(const k of [37,39,38,40]){
-    //         if(param.controls.includes(k)){
-    //           key = k;
-    //           break;
-    //         }
-    //       }
-    //     }
-    //     // set probably future position
-    //     switch (key) {
-    //       case 39: phantomPos[0]++;this.direction = 2; break; // right key
-    //       case 37: phantomPos[0]--;this.direction = 3; break; // left key
-    //       case 38: phantomPos[1]--;this.direction = 0; break; // up key
-    //       case 40: phantomPos[1]++;this.direction = 1; break; // down key
-    //     }
-    //   }
-    //   let r;  // direction of move
-    //   // monsters & npc's walking
-    //   if(["monster","npc"].includes(this.type)){
-    //     // set walking type (random / follow / escape)
-    //     let walkingMode = "random";
-    //     // walking modes
-    //     if(this.type == "npc"){
-    //       if(func.isSet(this.talking)){
-    //         walkingMode = "stay";
-    //       }else{
-    //         walkingMode = "random";
-    //       }
-    //     }else{
-    //       if(isPlayerNear){
-    //         if(this.health > 0.2*this.maxHealth && playerInArea.health > 0){
-    //           walkingMode = "follow";
-    //         }else{
-    //           walkingMode = "escape";
-    //         }
-    //       }  
-    //     }
-    //     // move monster
-    //     if(walkingMode == "follow"){
-    //       if(Math.abs(this.position[0] - playerInArea.position[0]) > 1
-    //       || Math.abs(this.position[1] - playerInArea.position[1]) > 1){
-    //         const routeFinded = func.setRoute(this.position,playerInArea.position,map,creatures,200,walls);
-    //         if(routeFinded){
-    //           phantomPos[0] = routeFinded[0][0];
-    //           phantomPos[1] = routeFinded[0][1];  
-    //         }else{
-    //           walkingMode = "random";
-    //         }
-    //       }
-    //     }
-    //     if(walkingMode == "escape"){
-    //       let [monX,monY] = this.position;
-    //       let [plaX,plaY] = playerInArea.position; 
-    //       let posibilites = [];
-    //       if(monX <= plaX){posibilites.push(3);}
-    //       if(monX >= plaX){posibilites.push(1);}
-    //       if(monY >= plaY){posibilites.push(2);}
-    //       if(monY <= plaY){posibilites.push(0);}      
-    //       let posibilitesId = Math.round(Math.random()*(posibilites.length-1));
-    //       r = posibilites[posibilitesId];
+        const game_time = new Date().getTime()
 
-    //       if(this.escapeStuck){
-    //         walkingMode = "random";
-    //       }
-    //       this.escapeStuck = true;
-    //     }
-    //     if(walkingMode == "random") {
-    //       r = Math.floor(Math.random() * 4);
-    //     }
-    //     if(walkingMode == "stay"){
-    //       r = -1;
-    //     }
-    //     if (r == 0) {phantomPos[1]--;} // up
-    //     if (r == 1) {phantomPos[0]++;} // right
-    //     if (r == 2) {phantomPos[1]++;} // down
-    //     if (r == 3) {phantomPos[0]--;} // left
-    //     // r == -1 -> stop, but wait this time
-    //     // setting monster direction
-    //     if(phantomPos[0] > this.position[0]){this.direction = 2;}        
-    //     if(phantomPos[0] < this.position[0]){this.direction = 3;}        
-    //     if(phantomPos[1] > this.position[1]){this.direction = 1;}        
-    //     if(phantomPos[1] < this.position[1]){this.direction = 0;}
-    //   }
+        if(this.properties.walk > game_time){
+            return
+        }
 
-    //   // CHEKCKING IF POSITION IS AVAILBLE
-    //   let isFloor = false;
-    //   let isStairs = false;
-    //   let doorAvalible = true;
-    //   let isWall = false;
+        let phantomPos = [...this.properties.position]
+
+        switch (key) {
+          case 39: phantomPos[0]++;this.properties.direction = 2; break; // right key
+          case 37: phantomPos[0]--;this.properties.direction = 3; break; // left key
+          case 38: phantomPos[1]--;this.properties.direction = 0; break; // up key
+          case 40: phantomPos[1]++;this.properties.direction = 1; break; // down key
+        }
+
+        // console.log({ phantomPos })
+
+        // this.properties.walk = {
+        //     time_start: game_time,            
+        //     time_end: game_time + Math.round(1000/this.properties.totalSpeed)
+        // }
+        this.properties.serverUpdating = {
+            walk: {
+                time_start: game_time,            
+                time_end: game_time + Math.round(1000/this.properties.totalSpeed),
+                position_start: this.properties.position,
+                position_end: phantomPos,
+
+            }
+        }
+
+        this.properties.position = phantomPos
+
+
+        // let isFloor = false;
+        // let isStairs = false;
+        // let doorAvalible = true;
+        // let isWall = false;
 
     //   // check grids 
     //   const avalibleGrids = func.equalArr(map.avalibleGrids);
@@ -311,7 +253,7 @@ export default class PlayerActions {
     //       this.walk = game.time.getTime() + Math.round(1000/this.totalSpeed);
     //       this.position = phantomPos;
     //   }else if(this.type == "player" && typeof key != "undefined" && doorAvalible && !itemText){
-    //     this.text = "There's no way.";
+        // this.text = "There's no way.";
     //   }
     // }
 
