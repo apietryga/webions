@@ -77,6 +77,7 @@ export default class Player extends Creature {
 		this.properties.walk = 0
 		this.properties.direction = 2
 		this.properties.serverUpdating = null
+		this.properties.totalSpeed = 2
 		
 	}
 

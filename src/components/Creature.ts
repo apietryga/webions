@@ -77,7 +77,7 @@ export default abstract class Creature {
 			lastFrame: game_time, 
 			mana: this.properties.mana, 
 			totalMana: this.properties.maxMana, 
-			totalSpeed: 7,
+			totalSpeed: this.properties.totalSpeed,
 
 			redTarget: this.properties.redTarget, 
 			skills: this.properties.skills, 

@@ -338,8 +338,6 @@ class Creature {
 		const time_current = time - data.time_start
 		const percentage =  ((100 * time_current) / time_processing) / 100
 
-    console.log({ percentage })
-
 		// end process on time end
 		if(time - data.time_end > 0){
 			this.cyle = 0;

@@ -49,20 +49,16 @@ export default class PlayerActions {
           case 40: phantomPos[1]++;this.properties.direction = 1; break; // down key
         }
 
-        // console.log({ phantomPos })
+        const walk = {
+            time_start: game_time,            
+            time_end: game_time + Math.round(1000/this.properties.totalSpeed),
+            position_start: this.properties.position,
+            position_end: phantomPos,
 
-        // this.properties.walk = {
-        //     time_start: game_time,            
-        //     time_end: game_time + Math.round(1000/this.properties.totalSpeed)
-        // }
+        }
+
         this.properties.serverUpdating = {
-            walk: {
-                time_start: game_time,            
-                time_end: game_time + Math.round(1000/this.properties.totalSpeed),
-                position_start: this.properties.position,
-                position_end: phantomPos,
-
-            }
+            walk,
         }
 
         this.properties.position = phantomPos
