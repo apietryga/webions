@@ -7,12 +7,21 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Webions",
+      "name": "DEV",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "runtimeExecutable": "nodemon",
-      "program": "${workspaceFolder}/src/server.js",
-    }
+      "program": "${workspaceFolder}/src/server.ts",
+    },
+    {
+      "name": "DEV_TS",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "ts-node-esm",
+      "console": "internalConsole",
+      "runtimeArgs": [ "src/server.ts" ],
+    },
   ]
 }

@@ -3,6 +3,7 @@
     "src/lists",
     "src/views",
     "public"
-  ]
+  ],
+	"watch": ["src"]
 
 }

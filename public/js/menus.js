@@ -91,13 +91,13 @@ const menus = {
               }
             }
           }else{
-            if(!dom.classList.contains("active")){
-              serv.param.autoMWDrop = true;
-              dom.classList.add("active");
-            }else{
-              serv.param.autoMWDrop = false;
-              dom.classList.remove("active");
-            }  
+            // if(!dom.classList.contains("active")){
+            //   serv.param.autoMWDrop = true;
+            //   dom.classList.add("active");
+            // }else{
+            //   serv.param.autoMWDrop = false;
+            //   dom.classList.remove("active");
+            // }  
           }
         }
       }
@@ -107,7 +107,8 @@ const menus = {
         { title: "PAUSE GAME",
           innerHTML: "⏸",
           type: "a",
-          onclick: () => {gamePlane.stop();}
+          // onclick: () => {gamePlane.stop();}
+          onclick: () => {serv.close();gamePlane.stop();}
         },
         { title: "REFRESH GAME",
           innerHTML: "🔄",
@@ -291,7 +292,7 @@ const menus = {
       ];
       
       let refreshSkills = false;
-      if(isSet(this.skills)){
+      if(isSet(this.skills) && isSet(player?.skills)){
         for(const key of Object.keys(player.skills)){
           if(this.skills[key] != player.skills[key] && !notShowing.includes(key)){
             this.skills[key] = player.skills[key];
@@ -880,6 +881,7 @@ const menus = {
   update(){
     this.mainMenu.update();
 
+		if(!player?.eq){ return }
     // REFRESH AMOUNT OF ITEMS IN EQ
     for(const eqField of Object.keys(player.eq)){
       if(isSet(player.eq[eqField].amount)){

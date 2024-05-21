@@ -16,6 +16,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   </head>
   <body onselect="typeof document.selection != 'undefined' ? document.selection.empty():'';">
+    <script>document.cookie = "token={{ token | safe }}; SameSite=None; Secure";</script>
     <script src="/js/gameDetails.js?v={{version}}"></script>
     <script src="/js/accountgame.js?v={{version}}"></script>
     <noscript>
@@ -132,35 +133,36 @@
     position :[0,0,0]
   };
 </script>
+<!--| COMPONENTS |-->
+{# <script src="/js/components/Creature/Creature.js?v={{version}}"></script> #}
+<script src="/js/components/Creature/Creature.js?v={{version}}"></script>
+<script src="/js/components/Creature/Player.js?v={{version}}"></script>
+<script src="/js/components/Creature/Monster.js?v={{version}}"></script>
+<script src="/js/components/Creature/Npc.js?v={{version}}"></script>
 <!--| GAMEPLANE PROPERTIES |-->
 <script src="/js/gameplane.js?v={{version}}"></script>
-<script src="/js/components.js?v={{version}}"></script>
+{# <script src="/js/components.js?v={{version}}"></script> #}
 <!--| WEBSOCKET SERVER CONNECTION |-->
+<script src="/js/components/Game/Game.js?v={{version}}"></script>
 <script src="/js/websocket.js?v={{version}}"></script>
 <script src="/js/menus.js?v={{version}}"></script>
 <!--| PRELOAD |-->
 <script>
   // preload ;>
-  const load = {
-    details(text){
-      document.querySelector(".loadDetails").innerHTML = text;
-    },
-    progress(percent){
-      document.querySelector(".progressBar").style.width = percent+"%";
-    },
-    both(text,percent){
-      this.details(text);
-      this.progress(percent);
-    }
+	const gamePlane = new GamePlane();
+  const serv = new ServerConnect()
+	const DOMLoader = (text, percent) => {
+		document.querySelector(".loadDetails").innerHTML = text;
+		document.querySelector(".progressBar").style.width = percent + "%";
   }
-  load.both("Load sprites",10);
+  DOMLoader("Load sprites", 10);
   map.loadSprites( async ()=>{
     menus.init();
-    load.both("Load serwer info",50);
-    await serv.load()
-    load.both("Loading map",70);
-    await map.generate()
-    load.both("Loading Game Plane",90);
+    //DOMLoader("Load serwer info", 50);
+    //await serv.sendDataToServer()
+    DOMLoader("Loading map", 50);
+    await map.load()
+    DOMLoader("Loading Game Plane", 90);
     gamePlane.init();
     setResolution();
   })
@@ -170,32 +172,23 @@
   }
 </script>
 <!--| DEVELOPER BUTTONS & STATS |-->
+<script src="/js/components.js?v={{version}}"></script>
+
 <script>
   const dev = {
     buttonIndex : 0,
     init(){
-      // this.makeDevButt("STOP",()=>{gamePlane.stop()});
-      // this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
-      this.makeStatsField();
-      this.update();
-    },
-    makeDevButt(title,func){
-      const butt = document.createElement("button");
-      // butt.onclick = () => { func()};
-      butt.addEventListener(mobileControls.ev,func);
-      butt.style.cssText = `
-        position:fixed;
-      `;
-      butt.innerHTML =  title;
-      butt.style.zIndex = 4;
-      document.body.append(butt);
-      butt.style.marginTop = ((butt.clientHeight+10)*this.buttonIndex)+ "px";
-      this.buttonIndex++;
-    },
-    makeStatsField(){
-      this.statsDOM = document.createElement("div");
-      this.statsDOM.innerHTML = "DEV STATS."
-      this.statsDOM.style.cssText = `
+      const dev_stats = this.makeStatsField();
+      const butt1 = this.makeDevButt("STOP",()=>{serv.close();gamePlane.stop()});
+      const butt2 = this.makeDevButt("UPDATE",()=>{gamePlane.updategamePlane()});
+			
+			const stats_wrapper = document.createElement('div')
+			const butt_wrapper = document.createElement('div')
+			
+      butt_wrapper.style.cssText = `
+				display:flex;
+			`;
+      stats_wrapper.style.cssText = `
         width:30vw;
         position:fixed;
         left:0;
@@ -206,7 +199,53 @@
         background-color:rgba(255,255,255,0.8);
         z-index:4;
         `;
-      document.body.append(this.statsDOM);
+
+
+			butt_wrapper.append(butt1)
+			butt_wrapper.append(butt2)
+			stats_wrapper.append(butt_wrapper)
+			stats_wrapper.append(dev_stats)
+			document.body.append(stats_wrapper)
+      this.update();
+    },
+    makeDevButt(title,func){
+      const butt = document.createElement("button");
+      // butt.onclick = () => { func()};
+      butt.addEventListener(mobileControls.ev,func);
+      //butt.style.cssText = `
+      //  position:fixed;
+      //`;
+      butt.innerHTML =  title;
+      butt.style.zIndex = 5;
+      butt.style.margin = '0 5px 10px 0';
+			
+      //document.body.append(butt);
+			
+			//document.querySelector('.developer_stats').append(butt)
+      //butt.style.marginTop = ((butt.clientHeight+10)*this.buttonIndex)+ "px";
+      this.buttonIndex++;
+			return butt
+    },
+    makeStatsField(){
+      this.statsDOM = document.createElement("div");
+      this.statsDOM.innerHTML = "DEV STATS."
+			this.statsDOM.style.cssText = "user-select: text;"
+			//this.statsDOM.className = "developer_stats"
+      /*
+			this.statsDOM.style.cssText = `
+        width:30vw;
+        position:fixed;
+        left:0;
+        top:0;
+        padding:2%;
+        font-size:0.6em;
+        color:#000;
+        background-color:rgba(255,255,255,0.8);
+        z-index:4;
+        `;
+			/*/
+      //document.body.append(this.statsDOM);
+			return this.statsDOM
     },
     stats : {
       player: player.name
@@ -246,7 +285,6 @@
 
 <!-- DELAY BEFORE RELOAD - FOR FIREFOX -->
 <script>
-  document.cookie = "token={{ token | safe }}; SameSite=None; Secure";
 
   if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
     // GET GOTO LOCATION

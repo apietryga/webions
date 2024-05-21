@@ -1,4 +1,4 @@
-const monstersTypes = [
+export default [
   { name:"Training Man",
   // type:"npc",
     // sprite:"trainingMan",
@@ -164,5 +164,3 @@ const monstersTypes = [
   },
   
 ]
-
-module.exports = monstersTypes;
