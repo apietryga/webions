@@ -4,8 +4,10 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "./.nuxt/tsconfig.json"
   ],
+  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     
     /* Visit https://aka.ms/tsconfig to read more about this file */

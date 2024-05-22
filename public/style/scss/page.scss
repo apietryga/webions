@@ -3,12 +3,12 @@
   // box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
-@for $i from 1 to 6 {h#{$i}{margin:0;}}
-@keyframes walk {
-  0%   {background-position:-18px -98px;}
-  50%  {background-position:-98px -98px;}
-  100% { background-position: -178px -98px;}
-}
+// @for $i from 1 to 6 {h#{$i}{margin:0;}}
+// @keyframes walk {
+//   0%   {background-position:-18px -98px;}
+//   50%  {background-position:-98px -98px;}
+//   100% { background-position: -178px -98px;}
+// }
 // $tw:rgba(255, 255, 255, 0.096);
 // $bodyBg:rgb(90, 27, 27);
 // $hbg:rgba(0, 0, 0, 0.5);

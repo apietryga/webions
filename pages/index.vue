@@ -21,6 +21,9 @@
 
             </div>
             </div>
+
+            <page-markdown file="readme"></page-markdown>
+
         </div>
     </div>
 </template>
@@ -59,7 +62,7 @@
                 speed: 2,
             }
         }
-        
+
         const mV = document.querySelector("#mapViewer");
         const ctx = mV.getContext('2d')
         const fullMap = new Image();
@@ -143,4 +146,5 @@
         })
 
     })
+
 </script>
