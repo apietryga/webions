@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{ libary_asset }}
+        {{ library_asset }}
     </div>
 </template>
 
@@ -9,6 +9,6 @@
     import { useRoute } from 'nuxt/app'
 
     const route = useRoute()
-    const libary_asset = route.params.libary_asset
+    const library_asset = route.params.library_asset
 
 </script>

@@ -1,0 +1,41 @@
+<template>
+  <div class="install">
+    <h2 id="install">Install client</h2>
+    <h3 id="windows">Windows</h3>
+    <div class="windows">
+      <ol>
+        <li>Open {{name}} in Chrome</li>
+        <li>Click on the three squares</li>
+        <li>Go to "More tools" > "Create shortcut"</li>
+        <li>Check "Open as window"</li>
+        <li>Click "Create"</li>
+        <li>Open {{name}} from tour desktop.</li>
+      </ol>
+      <img src="/img/page/install_windows.webp">
+    </div>
+
+    <h3 id="android">Android</h3>
+    <div class="android">
+      <ol>
+        <li>Open Webions in Chrome</li>
+        <li>Tap the menu icon (3 dots in upper right-hand corner)</li>
+        <li>Tap "Add to homescreen</li>
+        <li>You can type your own name of app and finally click "Add"</li>
+      </ol>
+    </div>
+
+    <h3 id="ios">IOS</h3>
+    <div class="ios">
+      <ol>
+        <li>Open Webions in Safari</li>
+        <li>Tap the Share icon (the square with an arrow pointing out of it) at the bottom of the screen.</li>
+        <li>Scroll down and tap "Add to Home Screen"</li>
+        <li>You can type your own name of app and finally click "Add"</li>
+      </ol>
+    </div>
+  </div>
+</template>
+
+<script setup>
+    const name = "Webions"
+</script>

@@ -1,30 +1,28 @@
 <template>
-    <div class="content">
-        <div class="canvasWrapper">
-            <div class="window">
-            <h2>GAME MAP</h2>
-            <div class="window-inside gamemap">
-                <canvas id="mapViewer" style="width:100%"></canvas>
-                <div class="celownik">loading map preview...</div>
+    <div class="canvasWrapper">
+        <div class="window">
+        <h2>GAME MAP</h2>
+        <div class="window-inside gamemap">
+            <canvas id="mapViewer" style="width:100%"></canvas>
+            <div class="celownik">loading map preview...</div>
 
-                <div class="buttons arrows">
-                <button>&uarr;</button>
-                <button>&rarr;</button>
-                <button>&darr;</button>
-                <button>&larr;</button>
-                </div>
-
-                <div class="buttons zoom">
-                <button>+</button>
-                <button>-</button>
-                </div>
-
-            </div>
+            <div class="buttons arrows">
+            <button>&uarr;</button>
+            <button>&rarr;</button>
+            <button>&darr;</button>
+            <button>&larr;</button>
             </div>
 
-            <page-markdown file="readme"></page-markdown>
+            <div class="buttons zoom">
+            <button>+</button>
+            <button>-</button>
+            </div>
 
         </div>
+        </div>
+
+        <page-markdown file="readme"></page-markdown>
+
     </div>
 </template>
 
