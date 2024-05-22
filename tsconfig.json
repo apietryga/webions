@@ -1,5 +1,13 @@
 {
+  "include": [
+    "*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ],
   "compilerOptions": {
+    
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */

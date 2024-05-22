@@ -1,6 +1,9 @@
 @use 'base.scss';
 
 .layout__default{
+    display:flex;
+    flex-direction: column;
+    min-height:calc(100vh - (2 * var(--frame-size)) );
 
     > header{
         @extend %onFrame;
@@ -55,6 +58,328 @@
           }
         }
     }
+    
+    > .wrapper{
+      position:relative;
+      display:flex;
+      flex:1;
+      main{
+        a{cursor:pointer;}
+        pre{white-space: break-spaces;}
+        @extend %onFrame;
+        flex:3;
+        padding:5px;
+        // everywhere 
+        .content{
+          h1{padding:0;}
+          padding:10px;
+          @extend %onFrame;
+          background-color: rgba(255, 255, 255, 0.11);
+          img{max-width:100%;}
+
+          .canvasWrapper{
+            // border:2px dashed red;
+            .window{
+              display:flex !important;
+              position:relative !important;
+          
+              .window-inside{
+                position:relative;
+                .buttons{
+                  bottom:1rem;
+                  display:grid;
+                  height: 4rem;
+                  position:absolute;
+                  grid-template-columns: 1fr 1fr 1fr;
+                  grid-template-rows: 1fr 1fr 1fr;
+          
+                  &.arrows{
+                    right:1rem;
+                    width:4rem;
+                    grid-template-areas: 
+                      ". t ."
+                      "l o r"
+                      ". d .";  
+                    button{
+                      &:nth-child(1){ grid-area: t; }
+                      &:nth-child(2){ grid-area: r; }
+                      &:nth-child(3){ grid-area: d; }
+                      &:nth-child(4){ grid-area: l; }
+                      &:nth-child(5){ grid-area: o; }
+                    }
+                  }
+          
+                  &.zoom{
+                    right:1rem;
+                    top:1rem;
+                    width:4rem;
+          
+                    grid-template-areas: 
+                    ". . p"
+                    ". . ."
+                    ". . m";
+                    button{
+                      &:nth-child(1){ grid-area: p; }
+                      &:nth-child(2){ grid-area: m; }
+                    }
+                  }
+          
+                  button{
+                    align-items: center;
+                    display:flex;
+                    justify-content: center;
+                    padding: 0;
+                    width:100%;
+                    height:100%;
+                    position: relative;
+                  }
+                }
+                &.gamemap{
+                  background: #195B6E;
+                  padding:0;
+                  width:100%;
+                }
+              }
+            }
+          }        
+  
+        }
+        // players 
+        >table{
+          @extend %onFrame;
+          border-spacing: 0;
+          width:100% !important;
+          th{
+            @extend %onFrame;
+            background-color:  rgba(0, 0, 0, 0.493);
+          }
+          .listBody{
+            @extend %onFrameButt;
+            cursor:pointer;
+          }
+          // Player list
+          .listBody,.listHead{ // tr's from lists
+            display:flex;
+            width:100%;
+            td,th{
+              padding:5px 20px;
+              &:nth-child(2){
+                width:60%;
+              }
+              &:nth-child(3),&:nth-child(1){
+                text-align:center;
+                width:20%;
+              }
+            }
+            td:nth-child(2){
+              $brdr: 2px solid #737373; 
+              border-left: $brdr ;
+              border-right: $brdr;
+            }
+            &:nth-child(even){background-color:var(--sc)!important;}
+            &:nth-child(odd){background-color: var(--tc)!important;}
+            th{background-color: #2f2f2f!important;}
+          }
+          // Player details
+          .detailsBody, .detailsHead{
+            // eq display
+            .eq{
+              padding:2%;
+              .allFields{
+                margin:0 auto;
+                display:grid;
+                width:150px;
+                grid-template-areas: 
+                "nc hd bp"
+                "lh ch rh"
+                ". lg ."
+                ". ft ."
+                ;
+                >div{
+                  @extend %inFrame;
+                  width:50px;
+                  height:50px;
+                  display:grid;
+                  place-items:center;
+                  canvas{
+                    min-width: 50%;
+                    min-height: 50%;
+                    max-width: 100%;
+                    max-height: 100%;
+                  }
+                }
+              }
+            }
+            .quests{
+              padding:2%;
+              ul{
+                // padding:0;
+                margin: 0;
+
+                li{
+                  text-align: left;
+                  padding:.2rem;
+                }
+              }
+            }
+            >td{
+              @extend %inFrame;
+              cursor: default;
+              text-align: center;
+              .spriteWrapper{
+                display:flex;
+                justify-content: center;
+                .sprite{
+                  width:50px;
+                  height:50px;
+                  background-repeat:no-repeat;
+                  background-position:-18px -98px;
+                  animation: walk 0.4s step-start infinite;
+                }  
+              }
+              .healthBar,.manaBar{
+                border:2px solid #000;
+                margin:2%;
+                border-radius: 7px;
+                position:relative;
+                height:25px;
+                div{
+                  height:100%;
+                  border-radius:5px;
+                  position:absolute;
+                  font-size:15px;
+                  &:nth-child(2){ // label
+                    width:100%;
+                    display:flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                }
+              }
+              .label{
+                background-color:rgba(0, 0, 0, 0.534);
+                
+              }
+              // .healthBar{background-color: rgb(32, 97, 19);}
+              // .manaBar
+              // .manaBar{background-color: #0c3181;}
+              &:nth-child(1){
+                width:30%;
+                background-color:var(--sc);
+                border-right:0;
+              }
+              &:nth-child(2){
+                width:70%;
+                background-color:var(--tc);
+                border-left:0;
+              }
+              table{
+                background-color:#2f2f2f;
+
+                width:100%;
+                cursor:default;
+                td{
+                  padding:5px;
+                  &:nth-child(1){
+                    text-align:right;
+                    background-color:var(--sc);
+                    padding-right:10px;
+
+                  }
+                  &:nth-child(2){
+                    background-color:var(--tc);
+                  }
+                }
+              }
+            }
+          }
+        }
+        h1{
+          padding:0 0 5px 5px ;
+          a{color:inherit;}
+        }
+        // Libary
+        .content{
+          .scrollWrapper{
+            overflow-x: auto;
+            div{
+              width:100%;
+              display:flex;
+              justify-content: center;
+            }
+          }
+          &.items,&.monsters{
+            display:flex;
+            justify-content: center;
+            width:100%;
+            table{
+              flex:1;
+              @extend %onFrame;
+              border-spacing: 0;
+              max-width:100%;
+              th{
+                &:not(th:nth-child(1)){
+                  @extend %onFrameButt;
+                }
+                background-color:  #2f2f2f;
+                &.items:nth-child(1){min-width:44px;}
+                &.monsters:nth-child(1){width:84px;}
+                &:nth-child(1){
+                  border:0;
+                  background-color: transparent;
+                }
+                padding:0!important;
+              }
+              td{
+                border:2px solid rgb(88, 85, 85);
+                &:not(td:nth-child(2)){
+                  text-align:center;
+                }
+                &:not(td:nth-child(1)){
+                  border-left:0;
+                }
+                &:not(td:nth-last-child(1)){
+                  border-right:0;
+                }
+                div{
+                  text-align: center;
+                  font-style: italic;
+                }
+                &:hover{
+                  background-color:rgb(99, 86, 86); 
+                }
+                .items{
+                  display:flex;
+                  flex-wrap:wrap;
+                }
+                ul{
+                  margin:0;
+                  padding:0;
+                  list-style: none;
+                  text-align: left;
+                }
+              }
+              &.monsters td:nth-child(1){min-height:80px;}
+            }
+          }
+          &.items .sprite{height:46px;}
+          &.monsters .sprite{height:86px;div{margin:0!important;}}  
+        }
+        article{
+          @extend %onFrame;
+          padding:10px;
+          >a{
+            font-size:1.5em;
+          }
+          p{
+            margin:0;
+          }
+          &:not(article:nth-last-child(1)){
+            margin-bottom:5px;
+          }
+        }
+      }
+    }
 
     nav,aside,footer{
         @extend %onFrame;
@@ -68,7 +393,7 @@
           color:inherit;
         }
     }
-    
+
     footer{a{flex:1;}}    
 
 }

@@ -1,7 +1,17 @@
 <template>
     <div class="layout__default">
         <page-header></page-header>
-        <slot></slot>
+        <div class="wrapper">
+            <nav>
+                NAV
+            </nav>
+            <main>
+                <slot></slot>
+            </main>
+            <aside>
+                ASIDE
+            </aside>
+        </div>
         <page-footer></page-footer>
     </div>
 </template>
