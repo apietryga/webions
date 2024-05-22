@@ -14,7 +14,8 @@
     "dev": "nodemon src/server.ts",
     "start2": "concurrently --names \"WATCH,SERVE\" -c \"bgMagenta.bold,bgGreen.bold\"  \"npm run scss\" \"npm run serve\"",
     "serve": "lite-server",
-    "prod": "(npm run _start&)"
+    "prod": "(npm run _start&)",
+    "bun": "bun server/boot.ts --watch"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "nunjucks": "^3.2.3",
     "nunjucks-date-filter": "^0.1.1",
     "nunjucks-global-uid": "0.0.1",
+    "nuxt": "^3.11.2",
     "redis": "^4.5.0",
     "websocket": "^1.0.34",
     "winston": "^3.8.2"
@@ -59,6 +61,7 @@
     "@types/node": "^20.3.1",
     "@types/redis": "^4.0.11",
     "concurrently": "^3.5.0",
+    "sass": "^1.77.2",
     "typescript": "^5.1.3"
   }
 }

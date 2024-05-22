@@ -7,3 +7,6 @@ logs/**
 cloudflared-linux-amd64.deb
 cloudflared-linux-amd64.deb.1
 src/lists/playersList.json
+.nuxt
+.output
+bun.lockb

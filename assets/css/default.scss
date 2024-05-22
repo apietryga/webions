@@ -1,0 +1,74 @@
+@use 'base.scss';
+
+.layout__default{
+
+    > header{
+        @extend %onFrame;
+        display:flex;
+        justify-content: space-between;
+        position:relative;
+        .logo{
+          @extend %onFrameButt;
+          display:flex;
+          align-items: stretch;
+          padding: 5px 12px;
+          padding-right:20px;
+          font-size: 0.6em;
+          p{
+            flex:1;
+            margin:0;
+            font-weight:bold;
+            font-size:1.5rem;
+          }
+          small{
+            height:1.5rem;
+          }
+        }
+        .play{
+          @extend %onFrame;
+          flex:1;
+          justify-content: center;
+          display:flex;
+          justify-content: center;
+          align-items: center;
+          a{
+            background: linear-gradient(#B79900,#9A0102,#9A0102,#B79900);
+            @extend %onFrameButt;
+            width:100%;
+            height:100%;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            font-size:1.5em;
+          }
+        }
+        a{
+          color:inherit;
+          display:flex;
+          align-items: center;
+          padding:2%;
+          justify-content: flex-start;
+          img{
+            height:4em;
+            width:4em;
+            margin-right:1em;
+          }
+        }
+    }
+
+    nav,aside,footer{
+        @extend %onFrame;
+        display:flex;
+        justify-content: space-evenly;
+        a{
+          display:flex;
+          justify-content: center;
+          align-items: center;
+          @extend %onFrameButt;
+          color:inherit;
+        }
+    }
+    
+    footer{a{flex:1;}}    
+
+}

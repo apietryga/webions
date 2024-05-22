@@ -1,0 +1,51 @@
+
+*{
+    box-sizing: border-box;
+}
+
+html{
+    height:100%;
+    body{
+        @extend %inFrame;
+        margin:0;
+        display:flex;
+        flex-direction: column;
+        min-height:100%;
+        a{
+            text-decoration:none;
+            // color:inherit;
+            color:rgb(127, 127, 241);
+        }
+    }
+}
+
+$tw:rgba(255, 255, 255, 0.096);
+$bodyBg:rgb(90, 27, 27);
+$hbg:rgba(0, 0, 0, 0.5);
+$sc:#9a01013f;  // for tables second color
+$tc:#b7990038;  // for tables thirth color
+
+%inFrame{
+  border: 2px solid;
+  border-color: #444444 #737373 #737373 #444444;
+  background-color: rgb(47, 47, 47);
+  color:#AEAEAC;
+}
+
+%onFrame{
+  border: 2px solid;
+  border-color: #737373 #444444 #444444 #737373;
+  background-color: rgb(47, 47, 47);
+  color:#AEAEAC;
+}
+
+%onFrameButt{
+  @extend %onFrame;
+  cursor:pointer;
+  &:active{
+    @extend %inFrame;
+  }
+  &:hover{
+    background-color:rgb(68, 67, 67);
+  }
+}
