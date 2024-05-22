@@ -11,15 +11,41 @@
                 <tbody>
                     <tr v-for="item in items">
                         <td v-for="key in headers">
+
                             <template v-if="key == ''">
                                 <page-item-preview 
                                     :sprite="item.sprite"
                                     :spriteNr="item.spriteNr"
                                 />
                             </template>
+
+                            <template v-else-if="item[key]?.constructor?.name === 'Object'">
+                                <ul>
+                                    <li v-for="(value, icoValue) in item[key]"
+                                        style="display:flex;">
+                                        <page-pictogram :name="icoValue"/>
+                                        {{ value }}
+                                    </li>
+                                </ul>
+
+                            </template> 
+
+                            <template v-else-if="item[key]?.constructor?.name === 'Array'">
+                                <div class="items">
+                                    <div v-for="item in item[key]">
+                                        {{ item.name }}
+                                    </div>
+                                </div>
+                            </template> 
+                           
+                            <template v-else-if="item[key] === false">
+                                X
+                            </template>
+
                             <template v-else>
                                 {{ item[key] }}
                             </template>
+
                         </td>
                     </tr>
                 </tbody>
@@ -42,7 +68,7 @@
     })
 
     const getItems = async () => {
-        items.value = await $fetch('/api/assets/items')        
+        items.value = await $fetch('/api/assets/' + props.items_type)        
     }
 
     const properties = {
@@ -59,12 +85,16 @@
                 'mana',
                 'cap'
             ],
-            items: [
-
-            ]
         },
         monsters: {
-            items: []
+            headers: [
+                '',
+                'name',
+                'health',
+                'speed',
+                'skills',
+                'loot',
+            ]
         }
     }
 

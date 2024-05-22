@@ -9,7 +9,7 @@
             </nuxt-link>
         </div>
         <div class="play">
-            <nuxt-link to="game">
+            <nuxt-link to="/game">
                 PLAY !
             </nuxt-link>
         </div>
