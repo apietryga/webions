@@ -13,10 +13,10 @@
       <nuxt-link to="./library/controls">Controls</nuxt-link>
       <p>
         Few information about controls in game. Here you can learn about
-        <!-- <nuxt-link to="?page=controls#wt">white targeting</nuxt-link>, 
-        <nuxt-link to="?page=controls#rt">red targeting</nuxt-link>, 
-        <nuxt-link to="?page=controls#dt">distance shooting</nuxt-link> and 
-        <nuxt-link to="?page=controls#healing">healing</nuxt-link>. -->
+        <nuxt-link :to="{ path: 'library/controls', hash: '#wt'}">white targeting</nuxt-link>, 
+        <nuxt-link :to="{ path: 'library/controls', hash: '#rt'}">red targeting</nuxt-link>, 
+        <nuxt-link :to="{ path: 'library/controls', hash: '#ds'}">distance shooting</nuxt-link> and 
+        <nuxt-link :to="{ path: 'library/controls', hash: '#healing'}">healing</nuxt-link>.
       </p>
     </article>
     <article>
