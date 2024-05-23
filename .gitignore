@@ -10,3 +10,4 @@ src/lists/playersList.json
 .nuxt
 .output
 bun.lockb
+.data
