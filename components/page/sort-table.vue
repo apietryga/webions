@@ -32,8 +32,8 @@
 
                             <template v-else-if="item[key]?.constructor?.name === 'Array'">
                                 <div class="items">
-                                    <div v-for="item in item[key]">
-                                        {{ item.name }}
+                                    <div v-for="subitem in item[key]">
+                                        {{ subitem.name }}
                                     </div>
                                 </div>
                             </template> 

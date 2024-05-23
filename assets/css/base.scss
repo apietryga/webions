@@ -24,9 +24,9 @@
 html{
     height:100%;
     body{
-        min-height:calc(100vh - (2 * var(--frame-size)) );
-        @extend %inFrame;
+        min-height:100vh;
         margin:0;
+        background-color: var(--background-the-darkest);
         a{
             text-decoration:none;
             color:rgb(127, 127, 241);
@@ -204,5 +204,22 @@ $tc:#b7990038;  // for tables thirth color
   0%   {background-position:-18px -98px;}
   50%  {background-position:-98px -98px;}
   100% { background-position: -178px -98px;}
+}
+
+input[type=submit], button, .btn{
+  background-color: var(--background-dark);
+  border:1px solid;
+  border-color: var(--border-color-outside);
+  color:var(--font-ligher);
+  cursor:pointer;
+  font-weight: bold;
+  font-size:.6rem;
+  padding:.2rem 1rem; 
+  width:fit-content; 
+}
+
+input[type=submit]:active, button:active, .btn:active{
+  transition:.1s;
+  border-color: var(--border-color-inside);
 }
 

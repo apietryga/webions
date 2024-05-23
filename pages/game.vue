@@ -8,7 +8,10 @@
 </template>
 
 <script setup lang="ts">
-    definePageMeta({
-        layout: 'game'
-    })
+
+    // @ts-nocheck
+    definePageMeta({ layout: 'game' })
+
+    navigateTo('/auth')
+
 </script>
