@@ -5,6 +5,8 @@ import * as schema from '../database/schema'
 
 export const tables = schema
 
+console.log({ dv: hubDatabase() })
+
 export function useDrizzle() {
     // @ts-ignore
     return drizzle(hubDatabase(), { schema })

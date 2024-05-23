@@ -3,17 +3,16 @@ import { migrate } from 'drizzle-orm/d1/migrator'
 
 // @ts-ignore
 export default defineNitroPlugin(async () => {
-  if (!import.meta.dev) return
-
+    if (!import.meta.dev) return
     // @ts-ignore
     onHubReady(async () => {
-    // @ts-ignore
-    await migrate(useDrizzle(), { migrationsFolder: 'server/database/migrations' })
-      .then(() => {
-        consola.success('Database migrations done')
-      })
-      .catch((err) => {
-        consola.error('Database migrations failed', err)
-      })
-  })
+        // @ts-ignore
+        await migrate(useDrizzle(), { migrationsFolder: 'server/database/migrations' })
+        .then(() => {
+            consola.success('Database migrations done')
+        })
+        .catch((err) => {
+            consola.error('Database migrations failed', err)
+        })
+    })
 })
